@@ -1,0 +1,9 @@
+#pt_table
+ {
+     cursor: pointer;
+ }
+ 
+ #pt_table tbody tr >td:first-child:hover
+ {
+     background-color:#bdc0e5;
+ } 

@@ -1,0 +1,11 @@
+<tr><td align='right'> <a href = $web_root" .
+				"/controller.php?document&retrieve&patient_id=$pid&document_id=$doc_id" .
+				"/tmp$extension" .  // Force image type URL for fancybox
+				" onclick=top.restoreSession(); class='image_modal'>" .
+                " <img src = $web_root" .
+				"/controller.php?document&retrieve&patient_id=$pid&document_id=$doc_id" .
+				" width=30 height=30 alt='$doc_catg:$image_file'>  </a> </td></tr>
+				
+				
+				
+				size:2.3in 3.1in; margin: 0cm
