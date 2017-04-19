@@ -194,14 +194,13 @@ function getRatePlan(plan)
 <table width='96%'>
 
  <tr>
- <?php if($newcrop_user_role['newcrop_user_role']!='erxrep') { ?>
-  <td width='33%' nowrap class='bold'><?php echo xlt('Consultation Brief Description'); ?>:</td>
-  <input type='hidden' name='pc_catid' id='pc_catid' value='<?php   if($result['pc_catid']!='')
-  { echo $result['pc_catid']; } ?>'>
-<input type='text' size='10' name='form_date' id='form_date' value='<?php echo $viewmode ? substr($result['date'], 0, 10) : date('Y-m-d'); ?>'>
- 
- <?php  } if($newcrop_user_role['newcrop_user_role']!='erxdoctor'){ ?>
-  <td width='34%' rowspan='2' align='center' valign='center' class='text'>
+
+  <td width='33%' nowrap class='bold' 
+   <?php if($newcrop_user_role['newcrop_user_role']!='erxdoctor') { ?>
+  style="visibility:hidden;opacity:0"
+   <?php  } ?>><?php echo xlt('Consultation Brief Description'); ?>:</td>
+
+  <td width='34%' rowspan='2' align='center' valign='center' class='text' <?php  if($newcrop_user_role['newcrop_user_role']=='erxdoctor') { ?> style="visibility:hidden;position:absolute" <?php } ?>>
    <table>
 
     <tr<?php if ($GLOBALS['athletic_team']) echo " style='visibility:hidden;'"; ?>>
@@ -461,12 +460,13 @@ if ($fres) {
    </table>
 
   </td>
-  <?php } elseif($newcrop_user_role['newcrop_user_role']!='erxrep') { ?>
-  <td class='bold' width='33%' nowrap>
+
+  <td class='bold' width='33%'
+  <?php  if($newcrop_user_role['newcrop_user_role']!='erxdoctor') { ?> style="visibility:hidden;position:absolute" <?php } else { ?> style="float:left" <?php } ?> nowrap>
     <div style='float:left'>
    <?php echo xlt('Issues (Injuries/Medical/Allergy)'); ?>
     </div>
-    <div style='float:left;margin-left:8px;margin-top:-3px'>
+    <div>
 <?php if ($GLOBALS['athletic_team']) { // they want the old-style popup window ?>
       <a href="#" class="css_button_small link_submit"
        onclick="return newissue()"><span><?php echo xlt('Add'); ?></span></a>
@@ -478,7 +478,7 @@ if ($fres) {
   </td>
  </tr>
 
- <tr>
+ <tr <?php  if($newcrop_user_role['newcrop_user_role']!='erxdoctor') { ?> style="visibility:hidden;position:absolute" <?php } ?>>
   <td class='text' valign='top'>
    <textarea name='reason' cols='40' rows='12' wrap='virtual' style='width:96%'
     ><?php echo $viewmode ? text($result['reason']) : text($GLOBALS['default_chief_complaint']); ?></textarea>
@@ -513,7 +513,7 @@ while ($irow = sqlFetchArray($ires)) {
 
   </td>
  </tr>
-  <?php } ?>
+
 </table>
 
 </form>
@@ -521,12 +521,10 @@ while ($irow = sqlFetchArray($ires)) {
 </body>
 
 <script language="javascript">
- <?php if($newcrop_user_role['newcrop_user_role']!='erxdoctor') { ?>
 /* required for popup calendar */
 Calendar.setup({inputField:"form_date", ifFormat:"%Y-%m-%d", button:"img_form_date"});
 Calendar.setup({inputField:"form_onset_date", ifFormat:"%Y-%m-%d", button:"img_form_onset_date"});
 <?php
- }
 if (!$viewmode) { ?>
  function duplicateVisit(enc, datestr) {
      $.jAlert({'type': 'confirm', 'confirmQuestion': 'A visit already exists for this patient today. Click NO to open it, or YES to proceed with creating a new one.','!onConfirm': function(){
