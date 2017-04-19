@@ -197,7 +197,7 @@ function getRatePlan(plan)
 
   <td width='33%' nowrap class='bold' 
    <?php if($newcrop_user_role['newcrop_user_role']!='erxdoctor') { ?>
-  style="visibility:hidden;opacity:0"
+  style="visibility:hidden;position: absolute"
    <?php  } ?>><?php echo xlt('Consultation Brief Description'); ?>:</td>
 
   <td width='34%' rowspan='2' align='center' valign='center' class='text' <?php  if($newcrop_user_role['newcrop_user_role']=='erxdoctor') { ?> style="visibility:hidden;position:absolute" <?php } ?>>
