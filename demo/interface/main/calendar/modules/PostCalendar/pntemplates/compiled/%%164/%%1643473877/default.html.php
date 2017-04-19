@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.3.1, created on 2015-02-24 01:16:26
+<?php /* Smarty version 2.3.1, created on 2017-04-19 18:27:52
          compiled from default/views/day/default.html */ ?>
 
 <?php 
@@ -30,4 +30,4 @@ $this->_smarty_include("$TPL_NAME/views/day/orig_default.html", array());
 $this->_tpl_vars = $_smarty_tpl_vars;
 unset($_smarty_tpl_vars);
  ?>
-<?php endif; ?>
+<?php endif; ?>

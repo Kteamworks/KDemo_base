@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.3.1, created on 2015-02-24 01:16:26
+<?php /* Smarty version 2.3.1, created on 2017-04-19 18:27:52
          compiled from default/views/day/ajax_template.html */ ?>
 <?php $this->_load_plugins(array(
 array('function', 'assign', 'default/views/day/ajax_template.html', 354, false),
@@ -912,4 +912,4 @@ echo "<P>";
 </script>
 
 
-</html>
+</html>

@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.3.1, created on 2015-02-24 01:16:26
+<?php /* Smarty version 2.3.1, created on 2017-04-19 18:27:52
          compiled from default/views/header.html */ ?>
 <html>
 <head>
@@ -43,4 +43,4 @@ if ($GLOBALS['concurrent_layout']) {
 else {
     echo "<body class='body_top'>";
 }
- ?>
+ ?>

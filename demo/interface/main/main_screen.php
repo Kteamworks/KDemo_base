@@ -93,9 +93,17 @@ else if (isset($_GET['mode']) && $_GET['mode'] == "loadcalendar") {
 }
 else if ($GLOBALS['concurrent_layout']) {
   // new layout
-  if ($GLOBALS['default_top_pane']) {
+  
+   if ($GLOBALS['default_top_pane']) {
+	  $newcrop_user_role=sqlQuery("select newcrop_user_role from users where username='".$_SESSION['authUser']."'");
+ if($newcrop_user_role['newcrop_user_role']=='erxdoctor')
+ {
+	 $frame1url="../main/finder/p_dynamic_finder.php";
+ } else
+ {
     $frame1url=attr($GLOBALS['default_top_pane']);
-  } else {
+ }
+  }else {
     $frame1url = "main_info.php";
   }
 }
