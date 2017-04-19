@@ -50,7 +50,9 @@ $fake_register_globals=false;
     // showing a new patient, so check for active reminders
     $active_reminders = active_alert_summary($pid,"reminders-due");
   }
-
+if(isset($_POST['pt_portal'])) {
+sqlQuery("UPDATE patient_data SET allow_patient_portal = 'YES' WHERE pid=".$pid);
+}
 function print_as_money($money) {
 	preg_match("/(\d*)\.?(\d*)/",$money,$moneymatches);
 	$tmp = wordwrap(strrev($moneymatches[1]),3,",",1);
@@ -601,7 +603,7 @@ $(window).load(function() {
   }
   if (!($portalUserSetting)) {
     // Show that the patient has not authorized portal access
-    echo "<td style='padding-left:1em;'>" . htmlspecialchars( xl('Patient has not authorized the Patient Portal.'), ENT_NOQUOTES) . "</td>";
+    echo "<td>" . htmlspecialchars( xl('This patient is not authorized to the Patient Portal '), ENT_NOQUOTES) . "<form id='form-id' action='' method='post'><input type='hidden' name='pt_portal' value='".$_SESSION['pid']."'><button class='css_button_small' type='submit' value='submit'>click here</button></form> to authorize</td>";
   }
   //Patient Portal
 
@@ -624,9 +626,11 @@ if ($GLOBALS['patient_id_category_name']) {
 <table cellspacing='0' cellpadding='0' border='0'>
  <tr>
   <td class="small" colspan='4'>
+  <?php  $newcrop_user_role=sqlQuery("select newcrop_user_role from users where username='".$_SESSION['authUser']."'"); if($newcrop_user_role['newcrop_user_role']!='erxrep'){ ?>
 <a href="../history/history.php" onclick='top.restoreSession()'>
 <?php echo htmlspecialchars(xl('History'),ENT_NOQUOTES); ?></a>
 |
+  <?php } ?>
 <?php //note that we have temporarily removed report screen from the modal view ?>
 <a href="../report/patient_report.php" onclick='top.restoreSession()'>
 <?php echo htmlspecialchars(xl('Report'),ENT_NOQUOTES); ?></a>
@@ -642,11 +646,14 @@ if ($GLOBALS['patient_id_category_name']) {
 <a href="../transaction/transactions.php" class='iframe large_modal' onclick='top.restoreSession()'>
 <?php echo htmlspecialchars(xl('Transactions'),ENT_NOQUOTES); ?></a>
 |
+<?php if($newcrop_user_role['newcrop_user_role']!='erxrep'){ ?>
 <a href="stats_full.php?active=all" onclick='top.restoreSession()'>
 <?php echo htmlspecialchars(xl('Issues'),ENT_NOQUOTES); ?></a>
 |
+<?php } ?>
 <a href="../tcpdf/examples/example_051.php" class='iframe large_modal' onclick='top.restoreSession()'>
 <?php echo htmlspecialchars(xl('ID Card'),ENT_NOQUOTES); ?></a>
+<?php if($newcrop_user_role['newcrop_user_role']!='erxrep'){ ?>
 |
 <a href= "" onclick='top.restoreSession()'>
 <?php echo htmlspecialchars(xl('Check Out'),ENT_NOQUOTES);
@@ -662,7 +669,7 @@ else{
 sqlStatement("UPDATE form_encounter SET out_to='Examined By',out_time=NOW() where encounter= '".$enc."' ");
 }
 ?></a>
-
+<?php } ?>
 <!-- DISPLAYING HOOKS STARTS HERE -->
 <?php
 	$module_query = sqlStatement("SELECT msh.*,ms.menu_name,ms.path,m.mod_ui_name,m.type FROM modules_hooks_settings AS msh
@@ -1058,7 +1065,7 @@ expand_collapse_widget($widgetTitle, $widgetLabel, $widgetButtonLabel,
                         </td>
                 </tr>
                 <?php } //end if prw is activated  ?>
-              
+             <?php if($newcrop_user_role['newcrop_user_role']!='erxrep'){ ?> 
        <tr>
        <td width='650px'>
 <?php
@@ -1113,7 +1120,7 @@ expand_collapse_widget($widgetTitle, $widgetLabel, $widgetButtonLabel,
   } ?>
   </td>
     </tr>
-<?php } ?>    		
+			 <?php } } ?>    		
  <?php // labdata ?>
     <tr>
      <td width='650px'>
@@ -1593,7 +1600,7 @@ expand_collapse_widget($widgetTitle, $widgetLabel, $widgetButtonLabel,
 						"directory = 'track_anything' AND state = 1");
 		$track_is_registered = $tmp['count'];
 		if($track_is_registered){
-			echo "<tr> <td>";
+			echo "<!-- <tr> <td>";
 			// track_anything expand collapse widget
 			$widgetTitle = xl("Tracks");
 			$widgetLabel = "track_anything";
@@ -1619,7 +1626,7 @@ expand_collapse_widget($widgetTitle, $widgetLabel, $widgetButtonLabel,
       <div style='margin-left:10px' class='text'><img src='../../pic/ajax-loader.gif'/></div><br/>
       </div>
      </td>
-    </tr>
+    </tr> -->
 <?php  }  // end track_anything ?>
     </table>
 
@@ -1635,6 +1642,11 @@ expand_collapse_widget($widgetTitle, $widgetLabel, $widgetButtonLabel,
 <?php if (false && $GLOBALS['athletic_team']) { ?>
 <script language='JavaScript'>
  Calendar.setup({inputField:"form_userdate1", ifFormat:"%Y-%m-%d", button:"img_userdate1"});
+ activate_pt_portal
+ var form = document.getElementById("form-id");
+document.getElementById("activate_pt_portal").addEventListener("click", function () {
+  form.submit();
+});
 </script>
 <?php } ?>
 

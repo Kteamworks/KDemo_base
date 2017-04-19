@@ -1,0 +1,44 @@
+select {
+    color: black;
+}
+.user-menu .user-image {
+    float: left;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+	background: white;
+    margin-right: 10px;
+}
+.dropdown.user.user-menu{
+    display: block;
+    padding: 10px 15px;
+	max-width: 242px;
+}
+.dropdown-toggle span {
+	display: block;
+	white-space: nowrap;
+	overflow: hidden;
+	float: left;
+}
+#logout_link {
+	    padding: 5px;
+}
+.logo-lg {
+	color: rgb(153,153,153) !important;
+
+}
+.logo-lg b {
+color: rgb(21,100,145);
+}
+.dropdown.user.user-menu form {
+    margin: 0px;
+}
+#OpenImgUpload {
+	float: left;
+	}
+.alink {
+	font-style: italic;
+	}
+	#form-id {
+		display:inline;
+	}

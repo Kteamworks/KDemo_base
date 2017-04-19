@@ -55,7 +55,9 @@ $newcrop_user_role=sqlQuery("select newcrop_user_role from users where username=
  if($newcrop_user_role['newcrop_user_role']=='erxdoctor') {
 	 $normalurl = "patient_file/summary/demographics.php";
  }
- 
+  if($newcrop_user_role['newcrop_user_role']=='erxrep') {
+	 $normalurl = "patient_file/front_payment.php";
+ }
 /* if($pc_catid==10)
 {
 	$normalurl = "patient_file/front_payment.php";

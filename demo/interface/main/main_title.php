@@ -9,6 +9,10 @@ include_once('../globals.php');
 <head>
 
 <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
+<link rel="stylesheet" href="../../library/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="../../library/dist/css/AdminLTE.css">
+<link rel="stylesheet" href="../../library/css/mycss.css">
 <style type="text/css">
       .hidden {
         display:none;
@@ -79,25 +83,31 @@ $res = sqlQuery("select * from users where username='".$_SESSION{"authUser"}."'"
 	<table cellspacing="0" cellpadding="1" style="margin:0px 0px 0px 3px;">
 
 <?php if (acl_check('patients','demo','',array('write','addonly') )) { ?>
-<tr><td style="vertical-align:text-bottom;">
-		<a href='' class="css_button_small" style="margin:0px;vertical-align:top;" id='new0' onClick=" return top.window.parent.left_nav.loadFrame2('new0','RTop','new/new.php')">
+<tr class="main-header"><td style="vertical-align:text-bottom;">
+<a  href='main_title.php' onclick="javascript:parent.left_nav.goHome();return false;" class="logo">
+      <span class="logo-lg"><b>Med</b>SMART</span>
+    </a>
+	<a href="#" class="sidebar-toggle"  href="main_title.php" id='showMenuLink' title="Hide Sidebar" onclick='javascript:showhideMenu();return false;'>
+        <span class="sr-only"><?php xl('Hide Menu','e'); ?></span>
+      </a>
+		<a href='' class="css_button_small" style="margin:14px;vertical-align:top;" id='new0' onClick=" return top.window.parent.left_nav.loadFrame2('new0','RTop','new/new.php')">
 		<span><?php echo htmlspecialchars( xl('NEW PATIENT'), ENT_QUOTES); ?></span></a>
     </td>
-    <td style="vertical-align:text-bottom;">
+    <td>
             <a href='' class="css_button_small" style="margin:0px;vertical-align:top;display:none;" id='clear_active' onClick="javascript:parent.left_nav.clearactive();return false;">
             <span><?php echo htmlspecialchars( xl('CLEAR ACTIVE PATIENT'), ENT_QUOTES); ?></span></a>
     </td>
 </tr>
 <?php } //end of acl_check('patients','demo','',array('write','addonly') if ?>
 
-	<tr><td valign="baseline"><B>
+	<!--<tr><td valign="baseline"><B>
 		<a class="text" style='vertical-align:text-bottom;' href="main_title.php" id='showMenuLink' onclick='javascript:showhideMenu();return false;'><?php xl('Hide Menu','e'); ?></a></B>
-	</td></tr></table>
+	</td></tr> --></table>
 <?php } else { ?>
 &nbsp;
 <?php } ?>
 </td>
-<td style="margin:3px 0px 3px 0px;vertical-align:middle;">
+ <td style="margin:3px 0px 3px 0px;vertical-align:middle;">
         <div style='margin-left:10px; float:left; display:none' id="current_patient_block">
             <span class='text'><?php xl('Patient','e'); ?>:&nbsp;</span><span class='title_bar_top' id="current_patient"><b><?php xl('None','e'); ?></b></span>
         </div>
@@ -109,31 +119,83 @@ $res = sqlQuery("select * from users where username='".$_SESSION{"authUser"}."'"
 		</div></td></tr>
 	<tr><td valign="baseline" align="center">	
         <div style='display:none' class='text' id="current_encounter_block" >
-            <span class='text'><?php xl('Selected Visit','e'); ?>:&nbsp;</span><span class='title_bar_top' id="current_encounter"><b><?php xl('None','e'); ?></b></span> 
+            <span class='text'><?php xl('Selected Encounter','e'); ?>:&nbsp;</span><span class='title_bar_top' id="current_encounter"><b><?php xl('None','e'); ?></b></span> 
 		</div></td></tr></table>
 </td>
 <td>
-<img style="position:absolute;top:0;right:184;"src=" <?php echo $GLOBALS['webroot']?>/interface/pic/logo.png" />
+<img style="position:absolute;top:0;right:240;"src=" <?php echo $GLOBALS['webroot']?>/interface/pic/logo.png" />
 </td>
 
 <td align="right">
-	<table cellspacing="0" cellpadding="1" style="margin:0px 3px 0px 0px;"><tr>
-		<td align="right" class="text" style="vertical-align:text-bottom;"><a href='main_title.php' onclick="javascript:parent.left_nav.goHome();return false;" ><?php xl('Home','e'); ?></a>
+	<table cellspacing="0" cellpadding="1" style="margin:0px 3px 0px 0px;"><tr class="dropdown user user-menu">
+<td>
+
+<form action="upload.php" method="post" id="form" enctype="multipart/form-data">
+<input type="file" id="imgupload" name="fileToUpload" style="visibility:hidden;position:absolute;opacity:0"/> 
+</form>
+            <a href="#" class="dropdown-toggle" title="Upload Image" id="OpenImgUpload" data-toggle="dropdown">
+			<?php if($res['user_image']) { ?>
+              <img src="<?php echo $res['user_image']; ?>" class="user-image" alt="User Image">
+			<?php } elseif($res['newcrop_user_role'] == 'erxdoctor') { ?>
+			<img src="../../library/dist/img/doctor.png" class="user-image" alt="User Image">
+			<?php } elseif($res['newcrop_user_role'] == 'erxrep') { ?>
+			<img src="../../library/dist/img/receptionist.png" class="user-image" alt="User Image">
+			<?php } elseif($res['newcrop_user_role'] == 'erxcash') { ?>
+			<img src="../../library/dist/img/cashier.png" class="user-image" alt="User Image">
+			<?php } elseif($res['newcrop_user_role'] == 'erxnurse') { ?>
+			<img src="../../library/dist/img/nurse.png" class="user-image" alt="User Image">
+			<?php } elseif($res['newcrop_user_role'] == 'erxlab') { ?>
+			<img src="../../library/dist/img/lab.png" class="user-image" alt="User Image">
+			<?php } else { ?>
+			<img src="../../library/dist/img/user.jpg" class="user-image" alt="User Image">
+			<?php } ?>
+              <span class="hidden-xs" title="<?php echo htmlspecialchars( xl('Authorization group') .': '.$_SESSION['authGroup'], ENT_QUOTES); ?>"><?php echo htmlspecialchars($res{"fname"}.' '.$res{"lname"},ENT_NOQUOTES); ?></span>
+            </a></td>
+		<!-- <td align="right" class="text" style="vertical-align:text-bottom;"><a href='main_title.php' onclick="javascript:parent.left_nav.goHome();return false;" ><?php xl('Home','e'); ?></a>
 		&nbsp;|&nbsp;
-		<a href="../reports/ecash.php" target="_blank" id="help_link" >
-			<?php xl('Cash HO','e'); ?></a>&nbsp;</td>
-		<td align="right" style="vertical-align:top;"><a href="../logout.php" target="_top" class="css_button_small" style='float:right;' id="logout_link" onclick="top.restoreSession()" >
-			<span><?php echo htmlspecialchars( xl('Logout'), ENT_QUOTES) ?></span></a></td>
-	</tr><tr>
+		<a href="http://open-emr.org/wiki/index.php/OpenEMR_4.2.0_Users_Guide" target="_blank" id="help_link" >
+			<?php xl('Manual','e'); ?></a>&nbsp;</td> -->
+		<td align="right" style="vertical-align:top;">
+		<a href="../logout.php" target="_top" id="logout_link" onclick="top.restoreSession()" title="Logout"><i class="fa fa-sign-out"></i></a>
+		<!--<a href="../logout.php" target="_top" class="css_button_small" style='float:right;' id="logout_link" onclick="top.restoreSession()" >
+			<span><?php echo htmlspecialchars( xl('Logout'), ENT_QUOTES) ?></span></a> -->
+			</td>
+	</tr>
+	<!--<tr>
 		<td colspan='2' valign="baseline" align='right'><B>
 			<span class="text title_bar_top" title="<?php echo htmlspecialchars( xl('Authorization group') .': '.$_SESSION['authGroup'], ENT_QUOTES); ?>"><?php echo htmlspecialchars($res{"fname"}.' '.$res{"lname"},ENT_NOQUOTES); ?></span></span></td>
-    	</tr></table>
+    	</tr> -->
+		</table>
 </td>
 </tr>
 </table>
-
+<script src="../../library/dist/jQuery/jquery-2.2.3.min.js"></script>
+<script src="../../library/js/bootstrap.min.js"></script>
+<script src="../../library/dist/js/app.min.js"></script>
 <script type="text/javascript" language="javascript">
 parent.loadedFrameCount += 1;
+$('#OpenImgUpload').click(function(){ $('#imgupload').trigger('click'); });
+document.getElementById("imgupload").onchange = function() {
+    document.getElementById("form").submit(function(e){
+e.preventDefault();
+    var formData = new FormData($(this)[0]);
+
+    $.ajax({
+        url: 'upload.php',
+        type: 'POST',
+        data: formData,
+        async: false,
+        success: function (data) {
+            alert(data)
+        },
+        cache: false,
+        contentType: false,
+        processData: false
+    });
+
+    return false;
+});
+};
 </script>
 
 </body>

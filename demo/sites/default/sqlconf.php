@@ -4,8 +4,8 @@
 
 $host	= 'localhost';
 $port	= '3306';
-$login	= 'mangoo';
-$pass	= 'mangoo123';
+$login	= 'root';
+$pass	= '';
 $dbase	= 'mangoo';
 
 //Added ability to disable

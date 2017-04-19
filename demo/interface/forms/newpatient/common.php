@@ -190,11 +190,15 @@ function getRatePlan(plan)
  </div>
 
 <br> <br>
-
+<?php $newcrop_user_role=sqlQuery("select newcrop_user_role from users where username='".$_SESSION['authUser']."'"); ?>
 <table width='96%'>
 
  <tr>
+ <?php if($newcrop_user_role['newcrop_user_role']!='erxrep') { ?>
   <td width='33%' nowrap class='bold'><?php echo xlt('Consultation Brief Description'); ?>:</td>
+  <input type='hidden' name='pc_catid' id='pc_catid' value='<?php   if($result['pc_catid']!='')
+  { echo $result['pc_catid']; } ?>'>
+ <?php  } if($newcrop_user_role['newcrop_user_role']!='erxdoctor'){ ?>
   <td width='34%' rowspan='2' align='center' valign='center' class='text'>
    <table>
 
@@ -455,7 +459,7 @@ if ($fres) {
    </table>
 
   </td>
-
+  <?php } elseif($newcrop_user_role['newcrop_user_role']!='erxrep') { ?>
   <td class='bold' width='33%' nowrap>
     <div style='float:left'>
    <?php echo xlt('Issues (Injuries/Medical/Allergy)'); ?>
@@ -507,7 +511,7 @@ while ($irow = sqlFetchArray($ires)) {
 
   </td>
  </tr>
-
+  <?php } ?>
 </table>
 
 </form>
@@ -515,10 +519,12 @@ while ($irow = sqlFetchArray($ires)) {
 </body>
 
 <script language="javascript">
+ <?php if($newcrop_user_role['newcrop_user_role']!='erxdoctor') { ?>
 /* required for popup calendar */
 Calendar.setup({inputField:"form_date", ifFormat:"%Y-%m-%d", button:"img_form_date"});
 Calendar.setup({inputField:"form_onset_date", ifFormat:"%Y-%m-%d", button:"img_form_onset_date"});
 <?php
+ }
 if (!$viewmode) { ?>
  function duplicateVisit(enc, datestr) {
      $.jAlert({'type': 'confirm', 'confirmQuestion': 'A visit already exists for this patient today. Click NO to open it, or YES to proceed with creating a new one.','!onConfirm': function(){
