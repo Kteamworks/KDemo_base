@@ -17,11 +17,16 @@ $fake_register_globals=false;
 //
 
 require_once('../../globals.php');
+require_once($GLOBALS['srcdir'].'/patient.inc');
+require_once($GLOBALS['srcdir'].'/encounter.inc');
 require_once($GLOBALS['srcdir'].'/lists.inc');
 require_once($GLOBALS['srcdir'].'/acl.inc');
 require_once($GLOBALS['fileroot'].'/custom/code_types.inc.php');
 require_once($GLOBALS['srcdir'].'/options.inc.php');
-
+$encounter=$_GET["encounter"] ? $_GET["encounter"] : $GLOBALS['encounter'];
+$e=$_GET["encounter"] ? $_GET["encounter"] : $GLOBALS['encounter'];
+setencounter($encounter);
+ include_once("$srcdir/pid.inc");
  // Check authorization.
  if (acl_check('patients','med')) {
   $tmp = getPatientData($pid, "squad");
@@ -95,7 +100,59 @@ function newEncounter() {
 }
 
 </script>
+<script type="text/javascript">
+function setMyPatient() {
+<?php if ($GLOBALS['concurrent_layout']) { ?>
+ // Avoid race conditions with loading of the left_nav or Title frame.
+ if (!parent.allFramesLoaded()) {
+  setTimeout("setMyPatient()", 500);
+  return;
+ }
+<?php 
+ $result = getPatientData($pid, "*, DATE_FORMAT(DOB,'%Y-%m-%d') as DOB_YMD");
+ if (isset($_GET['set_pid'])) { ?>
+ parent.left_nav.setPatient(<?php echo "'" . htmlspecialchars(($result['fname']) . " " . ($result['lname']),ENT_QUOTES) .
+   "'," . htmlspecialchars($pid,ENT_QUOTES) . ",'" . htmlspecialchars(($result['genericname1']),ENT_QUOTES) .
+   "','', ' " . htmlspecialchars(xl('DOB') . ": " . oeFormatShortDate($result['DOB_YMD']) . " " . xl('Age') . ": " . getPatientAgeDisplay($result['DOB_YMD']), ENT_QUOTES) . "'"; ?>);
+ var EncounterDateArray = new Array;
+ var CalendarCategoryArray = new Array;
+ var EncounterIdArray = new Array;
+ var Count = 0;
+<?php
+  //Encounter details are stored to javacript as array.
+  $result4 = sqlStatement("SELECT fe.encounter,fe.encounter_ipop,fe.date,openemr_postcalendar_categories.pc_catname FROM form_encounter AS fe ".
+    " left join openemr_postcalendar_categories on fe.pc_catid=openemr_postcalendar_categories.pc_catid  WHERE fe.pid = ? order by fe.date desc", array($pid));
+  if(sqlNumRows($result4)>0) {
+    while($rowresult4 = sqlFetchArray($result4)) {
+?>
+ EncounterIdArray[Count] = '<?php echo htmlspecialchars($rowresult4['encounter'], ENT_QUOTES); ?>';
+ EncounterDateArray[Count] = '<?php echo htmlspecialchars(oeFormatShortDate(date("Y-m-d", strtotime($rowresult4['date']))), ENT_QUOTES); ?>';
+ CalendarCategoryArray[Count] = '<?php echo htmlspecialchars(xl_appt_category($rowresult4['pc_catname']), ENT_QUOTES); ?>';
+ Count++;
+<?php
+    }
+  }
+?>
 
+ parent.left_nav.setPatientEncounter(EncounterIdArray,EncounterDateArray,CalendarCategoryArray);
+  <?php
+  $test = sqlStatement("SELECT fe.encounter,fe.encounter_ipop,fe.date,openemr_postcalendar_categories.pc_catname FROM form_encounter AS fe ".
+    " left join openemr_postcalendar_categories on fe.pc_catid=openemr_postcalendar_categories.pc_catid  WHERE fe.pid = ? and  fe.encounter=? order by fe.date desc", array($pid,$e));
+	 $test1=sqlFetchArray($test);
+?>
+ EncounterIdArray1= '<?php echo htmlspecialchars($test1['encounter'], ENT_QUOTES); ?>';
+ EncounterDateArray1 = '<?php echo htmlspecialchars(oeFormatShortDate(date("Y-m-d", strtotime($test1['date']))), ENT_QUOTES); ?>';
+ CalendarCategoryArray1 = '<?php echo htmlspecialchars(xl_appt_category($test1['pc_catname']), ENT_QUOTES); ?>';
+ parent.left_nav.setEncounter(EncounterDateArray1,EncounterIdArray1,CalendarCategoryArray1);
+<?php } // end setting new pid ?>
+ parent.left_nav.setRadio(window.name, 'dem');
+ parent.left_nav.syncRadios();
+<?php } // end concurrent layout ?>
+}
+$(window).load(function() {
+ setMyPatient();
+});
+</script>
 </head>
 
 <body class="body_top">
@@ -103,6 +160,9 @@ function newEncounter() {
 <br>
 <div style="text-align:center" class="buttons">
   <a href='javascript:;' class='css_button' id='back'><span><?php echo htmlspecialchars( xl('Back'), ENT_NOQUOTES); ?></span></a>
+</div>
+<div style="text-align:center;align:right" class="buttons">
+  <a href='javascript:;' class='css_button' id='next'><span><?php echo htmlspecialchars( xl('Next'), ENT_NOQUOTES); ?></span></a>
 </div>
 <br>
 <br>
@@ -265,6 +325,12 @@ echo "</table>";
 // jQuery stuff to make the page a little easier to use
 
 $(document).ready(function(){
+	<?php 
+	$id=sqlStatement("SELECT id from form_encounter where encounter='".$_SESSION['encounter']."'");
+	$id1=sqlFetchArray($id);
+	$id2=$id1['id'];
+	
+	?>
     $(".statrow").mouseover(function() { $(this).toggleClass("highlight"); });
     $(".statrow").mouseout(function() { $(this).toggleClass("highlight"); });
 
@@ -273,6 +339,10 @@ $(document).ready(function(){
     $("#newencounter").click(function() { newEncounter(); });
     $("#history").click(function() { GotoHistory(); });
     $("#back").click(function() { GoBack(); });
+	var id = '<?php echo "$id2";?>';
+	$("#next").click(function() { 
+	location.href='../encounter/view_form.php?formname=newpatient&id='+id;
+	});
 
     $(".noneCheck").click(function() {
       top.restoreSession();

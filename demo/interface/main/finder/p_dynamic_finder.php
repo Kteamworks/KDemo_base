@@ -245,10 +245,11 @@ document.location.href = "../../patient_file/summary/demographics.php?set_pid=" 
  $(document).ready(function() {
     $('table#pt_table.display.datatable tr').live("click", function() {
 		var name=$(this).text();
-		var formname='admit';
+		var formname='all';
 		top.restoreSession();
 		//alert(encounter);
-		document.location.href="../../patient_file/history/history.php?set_pid=" + newpid+'&encounter='+enc;
+		//document.location.href="../../patient_file/history/history.php?set_pid=" + newpid+'&encounter='+enc;
+		document.location.href="../../patient_file/summary/stats_full.php?set_pid=" +newpid+'&active='+formname+'&encounter='+enc;
 		/*if(name=="Transfer")
 		{
 		//alert(newpid);
