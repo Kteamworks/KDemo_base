@@ -53,7 +53,7 @@ else
   $normalurl = "$rootdir/patient_file/encounter/patient_encounter.php";
 $newcrop_user_role=sqlQuery("select newcrop_user_role from users where username='".$_SESSION['authUser']."'");
  if($newcrop_user_role['newcrop_user_role']=='erxdoctor') {
-	 $normalurl = "patient_file/summary/demographics.php";
+	 $normalurl = "patient_file/encounter/load_form.php?formname=vitals";
  }
   if($newcrop_user_role['newcrop_user_role']=='erxrep') {
 	 $normalurl = "patient_file/front_payment.php";
