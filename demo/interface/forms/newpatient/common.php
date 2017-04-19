@@ -198,7 +198,8 @@ function getRatePlan(plan)
   <td width='33%' nowrap class='bold'><?php echo xlt('Consultation Brief Description'); ?>:</td>
   <input type='hidden' name='pc_catid' id='pc_catid' value='<?php   if($result['pc_catid']!='')
   { echo $result['pc_catid']; } ?>'>
- <input type='text' size='10' name='form_date' id='form_date' value='<?php echo $viewmode ? substr($result['date'], 0, 10) : date('Y-m-d'); ?>'>
+<input type='text' size='10' name='form_date' id='form_date' value='<?php echo $viewmode ? substr($result['date'], 0, 10) : date('Y-m-d'); ?>'>
+ 
  <?php  } if($newcrop_user_role['newcrop_user_role']!='erxdoctor'){ ?>
   <td width='34%' rowspan='2' align='center' valign='center' class='text'>
    <table>
@@ -520,11 +521,12 @@ while ($irow = sqlFetchArray($ires)) {
 </body>
 
 <script language="javascript">
-
+ <?php if($newcrop_user_role['newcrop_user_role']!='erxdoctor') { ?>
 /* required for popup calendar */
 Calendar.setup({inputField:"form_date", ifFormat:"%Y-%m-%d", button:"img_form_date"});
 Calendar.setup({inputField:"form_onset_date", ifFormat:"%Y-%m-%d", button:"img_form_onset_date"});
 <?php
+ }
 if (!$viewmode) { ?>
  function duplicateVisit(enc, datestr) {
      $.jAlert({'type': 'confirm', 'confirmQuestion': 'A visit already exists for this patient today. Click NO to open it, or YES to proceed with creating a new one.','!onConfirm': function(){
