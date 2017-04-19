@@ -18,7 +18,6 @@ select {
 	display: block;
 	white-space: nowrap;
 	overflow: hidden;
-	float: left;
 }
 #logout_link {
 	    padding: 5px;
