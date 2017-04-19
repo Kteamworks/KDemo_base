@@ -85,7 +85,7 @@ $res = sqlQuery("select * from users where username='".$_SESSION{"authUser"}."'"
 <?php if (acl_check('patients','demo','',array('write','addonly') )) { ?>
 <tr class="main-header"><td style="vertical-align:text-bottom;">
 <a  href='main_title.php' onclick="javascript:parent.left_nav.goHome();return false;" class="logo">
-      <span class="logo-lg"><b>Med</b>SMART</span>
+      <span class="logo-lg"><img src=" <?php echo $GLOBALS['webroot']?>/interface/pic/logo.png" /></span>
     </a>
 	<a href="#" class="sidebar-toggle"  href="main_title.php" id='showMenuLink' title="Hide Sidebar" onclick='javascript:showhideMenu();return false;'>
         <span class="sr-only"><?php xl('Hide Menu','e'); ?></span>
@@ -122,10 +122,6 @@ $res = sqlQuery("select * from users where username='".$_SESSION{"authUser"}."'"
             <span class='text'><?php xl('Selected Encounter','e'); ?>:&nbsp;</span><span class='title_bar_top' id="current_encounter"><b><?php xl('None','e'); ?></b></span> 
 		</div></td></tr></table>
 </td>
-<td>
-<img style="position:absolute;top:0;right:240;"src=" <?php echo $GLOBALS['webroot']?>/interface/pic/logo.png" />
-</td>
-
 <td align="right">
 	<table cellspacing="0" cellpadding="1" style="margin:0px 3px 0px 0px;"><tr class="dropdown user user-menu">
 <td>

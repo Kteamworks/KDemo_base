@@ -12,15 +12,18 @@ select {
 .dropdown.user.user-menu{
     display: block;
     padding: 10px 15px;
-	max-width: 242px;
 }
 .dropdown-toggle span {
 	display: block;
 	white-space: nowrap;
 	overflow: hidden;
+	float: left;
 }
 #logout_link {
 	    padding: 5px;
+}
+.main-header .logo {
+margin-top: 0px;
 }
 .logo-lg {
 	color: rgb(153,153,153) !important;
@@ -32,9 +35,7 @@ color: rgb(21,100,145);
 .dropdown.user.user-menu form {
     margin: 0px;
 }
-#OpenImgUpload {
-	float: left;
-	}
+
 .alink {
 	font-style: italic;
 	}
