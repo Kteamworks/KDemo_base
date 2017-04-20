@@ -262,6 +262,9 @@ $enrow = sqlQuery("SELECT p.fname, p.mname, p.lname, fe.date FROM " .
 ?>
 <html>
 <head>
+		<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+		<link rel="stylesheet" href="css/normalize.css">
+		<link rel="stylesheet" href="css/stylesheet.css">
 <?php html_header_show(); ?>
 <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css" />
 
@@ -279,6 +282,11 @@ td {
 </style>
 
 <style type="text/css">@import url(<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar.css);</style>
+
+		<!--[if IE 8]><script src="js/es5.js"></script><![endif]-->
+		<script src="js/jquery.min.js"></script>
+		<script src="js/selectize.js"></script>
+		<script src="js/index.js"></script>
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar.js"></script>
 <?php include_once("{$GLOBALS['srcdir']}/dynarch_calendar_en.inc.php"); ?>
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar_setup.js"></script>
@@ -438,6 +446,7 @@ function validate(f) {
 
 <center>
 
+
 <p>
 <table border='1' width='95%' id='proctable'>
 
@@ -543,7 +552,37 @@ generate_form_field(array('data_type'=>1,'field_id'=>'order_status',
     wrap='virtual' class='inputtext' /><?php echo $row['patient_instructions'] ?></textarea>
   </td>
  </tr>
+<tr>
+<td> Tests</td>
+<td>
+			<div class="demo">
+				<div class="control-group">
+					<label for="select-tools">Select Investigations:</label>
+					<select id="select-tools" multiple="multiple"  name="form_proc_type[]" placeholder="Search here..."></select>
+				</div>
+				<?php $sqry = sqlStatement("SELECT procedure_type_id, procedure_code, name FROM procedure_type WHERE procedure_type LIKE 'ord' AND activity = 1 ORDER BY seq, procedure_code LIMIT 280"); 
 
+					?>
+				
+<script>
+				// <select id="select-tools"></select>
+
+				$('#select-tools').selectize({
+					maxItems: null,
+					valueField: 'id',
+					labelField: 'title',
+					searchField: 'title',
+					options: [
+					<?php  while ($jarray = sqlFetchArray($sqry)) { ?>
+						{id: '<?php echo $jarray['procedure_type_id'] ?>', title: '<?php echo $jarray['name'] ?>'},
+					<?php } ?>
+					],
+					create: false
+				});
+				</script>
+			</div>
+			<td>
+</tr>
 <?php
 
   // This section merits some explanation. :)
