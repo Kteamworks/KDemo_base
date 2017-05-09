@@ -8,7 +8,7 @@
 <?php
 $q = $_GET['q'];
 
-$con = mysqli_connect('localhost','root','admin123','mangoo');
+$con = mysqli_connect('localhost','root','','mangoo');
 if (!$con) {
     die('Could not connect: ' . mysqli_error($con));
 }
