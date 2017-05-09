@@ -111,11 +111,19 @@ if ($_POST['bn_save'] || $_POST['bn_xmit']) {
     array($formid));
   sqlStatement("DELETE FROM procedure_order_code WHERE procedure_order_id = ?",
     array($formid));
-
-  for ($i = 0; isset($_POST['form_proc_type'][$i]); ++$i) {
-    $ptid = $_POST['form_proc_type'][$i] + 0;
+	$procedures=$_POST['form_proc_type'];
+  //for ($i = 0; isset($_POST['form_proc_type'][$i]); ++$i) {
+	  foreach($procedures as $procedure)
+	  {
+		  //var_dump($procedure);
+		  //exit;
+		  
+    $ptid = $procedure;
+	
     if ($ptid <= 0) continue;
-	$proc_desc=$_POST['form_proc_type_desc'][$i];
+	$sqry = sqlStatement("SELECT  name FROM procedure_type WHERE procedure_type_id='".$procedure."'");
+	$sqry1=sqlFetchArray($sqry);
+	$proc_desc=$sqry1['name'];
 	//$ptid=add_escape_custom($ptid);
 	//$try='FBS';
 	$patient=getPatientData($pid, "rateplan");
@@ -180,13 +188,13 @@ if ($_POST['bn_save'] || $_POST['bn_xmit']) {
       "provider_id = '" . add_escape_custom($provider_id) . "'");
     sqlQuery("Update billing_main_copy set total_charges=total_charges + ? where encounter=?",array($fee,$encounter));   
 	$prefix = "ans$i" . "_";
-
+  $diagnosis='';
     $poseq = sqlInsert("INSERT INTO procedure_order_code SET ".
       "procedure_order_id = ?, " .
       "diagnoses = ?, " .
       "procedure_code = (SELECT procedure_code FROM procedure_type WHERE procedure_type_id = ?), " .
       "procedure_name = (SELECT name FROM procedure_type WHERE procedure_type_id = ?)",
-      array($formid, strip_escape_custom($_POST['form_proc_type_diag'][$i]), $ptid, $ptid));
+      array($formid, $diagnosis, $ptid, $ptid));
 
     $qres = sqlStatement("SELECT " .
       "q.procedure_code, q.question_code, q.options, q.fldtype " .
@@ -626,7 +634,7 @@ generate_form_field(array('data_type'=>1,'field_id'=>'order_status',
       $ptid = $oprow['procedure_type_id'];
     }
 ?>
- <tr>
+ <!--<tr>
   <td width='1%' valign='top'><b><?php echo xl('Procedure') . ' ' . ($i + 1); ?>:</b></td>
   <td valign='top'>
    <input type='text' size='50' name='form_proc_type_desc[<?php echo $i; ?>]'
@@ -642,7 +650,6 @@ generate_form_field(array('data_type'=>1,'field_id'=>'order_status',
     title='<?php echo xla('Click to add a diagnosis'); ?>'
     onfocus='this.blur()'
     style='cursor:pointer;cursor:hand' readonly />
-   <!-- MSIE innerHTML property for a TABLE element is read-only, so using a DIV here. -->
    <div style='width:95%;' id='qoetable[<?php echo $i; ?>]'>
 <?php
 $qoe_init_javascript = '';
@@ -652,7 +659,7 @@ if ($qoe_init_javascript)
 ?>
    </div>
   </td>
- </tr>
+ </tr>-->
 <?php
     ++$i;
   }
