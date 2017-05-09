@@ -32,6 +32,9 @@ require_once("$srcdir/classes/Note.class.php");
 require_once("$srcdir/formatting.inc.php");
 
 $startdate = $enddate = "";
+if ($_POST['submit']) {
+    sqlStatement("UPDATE billing set subbillprint='1' where grpbill='1'");
+}
 if(empty($_POST['start']) || empty($_POST['end'])) {
     // set some default dates
     $startdate = date('Y-m-d', (time() - 10*24*60*60));
@@ -196,7 +199,7 @@ body
 </head>
 
 <body class="body_top">
-<img src=" <?php echo $GLOBALS['webroot']?>/interface/pic/medii.jpg" style="margin:0px 0px" align="top"/>
+<img src=" <?php echo $GLOBALS['webroot']?>/interface/pic/medii.jpg" />
 <hr>
 
 
@@ -205,7 +208,8 @@ body
 <div id="superbill_results">
 
 <?php
-if( !(empty($_POST['start']) || empty($_POST['end']))) {
+
+if(1) {
     $sql = "select * from facility where billing_location = 1";
     $db = $GLOBALS['adodb']['db'];
     $results = $db->Execute($sql);
@@ -282,7 +286,7 @@ $billing=sqlStatement("select * from billing  where encounter='".$encounter."'")
 $billid=sqlFetchArray($billing);
 
 
-$billingdate=sqlStatement("select max(date) as d from billing  where encounter='".$encounter."'");
+$billingdate=sqlStatement("select max(date) as d from billing  where encounter='".$encounter."' and activity=1");
 $billdate=sqlFetchArray($billingdate);
 
 
@@ -380,7 +384,7 @@ $test=$_POST['form_billlist'];
 
                 $ta = split(":",$patient);
                 $billing = getPatientBillingEncounter2($pids[$iCounter],$ta[1]);
-				sqlStatement("UPDATE billing set subbillprint='1' where grpbill='1'");
+				//sqlStatement("UPDATE billing set subbillprint='1' where grpbill='1'");
                 $billings[] = $billing;
 				
 				$item_code=null;
@@ -448,10 +452,10 @@ $test=$_POST['form_billlist'];
 
 
            
-//		   echo "<tr style='border-top: 1px solid #000;'><td colspan=6>&nbsp; </td></tr>";
+          echo "<tr style='border-top: 1px solid #000;'><td colspan=6>&nbsp; </td></tr>";
 	//	   echo "<tr style='border-bottom: 1px solid #000;'><td colspan=6>&nbsp; </td></tr>";
 			echo "<tr style='border-top: 1px solid #000;'><td>&nbsp; </td></tr>";
-            echo "<tr style='border-bottom: 1px solid #000;'><td class='bold' colspan=5 style='text-align:right'>".xlt('Bill Amount:')."&nbsp&nbsp"."</td><td class='text' align='right'>" . oeFormatMoney($total + abs($copays)) . "</td></tr>";
+            echo "<tr style='border-bottom: 1px solid #000;'><td class='bold' colspan=5 style='text-align:right'>".xlt('Total Bill Amount:')."&nbsp&nbsp"."</td><td class='text' align='right'>" . oeFormatMoney($total + abs($copays)) . "</td></tr>";
 
             //echo "<tr><td class='bold' colspan=5 style='text-align:right'>".xlt('Total:')."&nbsp&nbsp"."</td><td class='text'>" . oeFormatMoney($total) . "</td></tr>";
             echo "</table>";
@@ -459,7 +463,7 @@ $test=$_POST['form_billlist'];
 
             echo "</pre>";
 			 
-            echo "<table style='border-top: 1px solid #000;' width='100%'>";
+           /* echo "<table style='border-top: 1px solid #000;' width='100%'>";
             echo "<b><tr style='border-bottom: 1px solid #000;'>";
             echo "<td class='bold'  width='20%'>".xlt('Payments')."</td>";
             echo "<td class='bold' width='20%'>".xlt('Receipt No')."</td>";
@@ -495,13 +499,13 @@ $test=$_POST['form_billlist'];
 	 $nettotal += $amt;
 	
 
-    }
+    }*/
 	// echo "<tr style='border-bottom: 1px solid #000;'><td class='bold' colspan=6 style='text-align:right'>".xlt('Net Payments :')."&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp"."</td><td class='text'>" . oeFormatMoney($nettotal) . "</td></tr>";
-	echo "<tr style='border-top: 1px solid #000;' ><td></td><td></td><td></td><td></td><td class='bold' style='border-bottom: 1px solid #000;' style='text-align:right' nowrap>".xlt('Net Payments')."</td><td class='text' style='border-bottom: 1px solid #000;' align='right' >" ."". oeFormatMoney($nettotal) . "</td></tr>";
-     echo "<tr><td></td><td></td><td></td><td></td><td class='bold' style='border-bottom: 0px solid #000;'  style='text-align:right' nowrap>".xlt('Total Bill Amount')."</td><td class='text' style='border-bottom: 0px solid #000;' align='right'>" . oeFormatMoney($total) . "</td></tr>";
-     echo "<tr><td></td><td></td><td></td><td></td><td class='bold' style='border-bottom: 1px solid #000;'  style='align:right'>".xlt('Discount')."</td><td class='text' style='border-bottom: 1px solid #000;' align='right'>" . oeFormatMoney($totaldis) . "</td></tr>";
-    echo "<tr><td></td><td></td><td></td><td></td><td class='bold' style='border-bottom: 1px solid #000;'  style='align:right' nowrap>".xlt('Net Amount')."</td><td class='text' style='border-bottom: 1px solid #000;' align='right'>" . oeFormatMoney($total-$totaldis) . "</td></tr>";
-    echo "<tr><td></td><td></td><td></td><td></td><td class='bold' style='border-bottom: 1px solid #000;' style='text-align:right' nowrap>".xlt('Balance Due')."</td><td class='text' style='border-bottom: 1px solid #000;' align='right'>" . oeFormatMoney($total-$nettotal-$totaldis) . "</td></tr>";
+	//echo "<tr style='border-top: 1px solid #000;' ><td></td><td></td><td></td><td></td><td class='bold' style='border-bottom: 1px solid #000;' style='text-align:right' nowrap>".xlt('Net Payments')."</td><td class='text' style='border-bottom: 1px solid #000;' align='right' >" ."". oeFormatMoney($nettotal) . "</td></tr>";
+     //echo "<tr><td></td><td></td><td></td><td></td><td class='bold' style='border-bottom: 0px solid #000;'  style='text-align:right' nowrap>".xlt('Total Bill Amount')."</td><td class='text' style='border-bottom: 0px solid #000;' align='right'>" . oeFormatMoney($total) . "</td></tr>";
+    // echo "<tr><td></td><td></td><td></td><td></td><td class='bold' style='border-bottom: 1px solid #000;'  style='align:right'>".xlt('Discount')."</td><td class='text' style='border-bottom: 1px solid #000;' align='right'>" . oeFormatMoney($totaldis) . "</td></tr>";
+    //echo "<tr><td></td><td></td><td></td><td></td><td class='bold' style='border-bottom: 1px solid #000;'  style='align:right' nowrap>".xlt('Net Amount')."</td><td class='text' style='border-bottom: 1px solid #000;' align='right'>" . oeFormatMoney($total-$totaldis) . "</td></tr>";
+    //echo "<tr><td></td><td></td><td></td><td></td><td class='bold' style='border-bottom: 1px solid #000;' style='text-align:right' nowrap>".xlt('Balance Due')."</td><td class='text' style='border-bottom: 1px solid #000;' align='right'>" . oeFormatMoney($total-$nettotal-$totaldis) . "</td></tr>";
 	echo "</table>";
 	   }
         echo "</div>";
@@ -569,16 +573,16 @@ $test=$_POST['form_billlist'];
 		<tr>
 			<td>
 				<div style='margin-left:15px'>
-					<a href='#' class='css_button' onclick='$("#form_refresh").attr("value","true"); $("#theform").submit();'>
+					<!--<a href='#' class='css_button' onclick='$("#form_refresh").attr("value","true"); $("#theform").submit();'>
 					<span>
 						<?php echo xlt('View'); ?>
 					</span>
-					</a>
+					</a>-->
 
-					<?php if ($_POST['form_refresh']) { ?>
-					<a href='#' class='css_button' onclick='window.print()'>
+					<?php if (1) { ?>
+					<a href='#' class='button-css' onclick='window.print()'>
 						<span>
-							<?php echo xlt('Print'); ?>
+							<input type='submit'  id='submit' name='submit' value="Print">
 						</span>
 					</a>
 					<?php } ?>
