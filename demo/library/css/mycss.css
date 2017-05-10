@@ -42,3 +42,6 @@ color: rgb(21,100,145);
 	#form-id {
 		display:inline;
 	}
+	.info-box-icon i {
+    padding: 20px;
+	}

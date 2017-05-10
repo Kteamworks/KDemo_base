@@ -43,7 +43,12 @@ while ($row = sqlFetchArray($res)) {
 <?php html_header_show(); ?>
 
 <link rel="stylesheet" href="<?php echo $css_header; ?>" type="text/css">
-
+<link rel="stylesheet" href="../../../library/css/bootstrap.min.css">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="../../../library/dist/css/AdminLTE.css">
+<link rel="stylesheet" href="../../../library/css/mycss.css">
 <style type="text/css">
 @import "../../../library/js/datatables/media/css/demo_page.css";
 @import "../../../library/js/datatables/media/css/demo_table.css";
@@ -279,6 +284,85 @@ function openNewTopWindow(pid) {
 		 <li><a href="#">New Visit</a></li>
 	</ul>
 </div>
+<div class="col-md-12">
+<div class="col-md-3">
+          <!-- Info Boxes Style 2 -->
+          <div class="info-box bg-yellow">
+            <span class="info-box-icon"><i class="ion ion-ios-people-outline"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">New Registration</span>
+              <span class="info-box-number">10</span>
+
+              <div class="progress">
+                <div class="progress-bar" style="width: 50%"></div>
+              </div>
+                  <span class="progress-description">
+                    50% Increase in 30 Days
+                  </span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+		  </div>
+		  <div class="col-md-3">
+          <div class="info-box bg-green">
+            <span class="info-box-icon"><i class="ion ion-ios-heart-outline"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">Total Appointments</span>
+              <span class="info-box-number">28</span>
+
+              <div class="progress">
+                <div class="progress-bar" style="width: 20%"></div>
+              </div>
+                  <span class="progress-description">
+                    20% Increase in 30 Days
+                  </span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+		  </div>
+		  <div class="col-md-3">
+          <div class="info-box bg-red">
+            <span class="info-box-icon"><i class="ion ion-ios-cloud-download-outline"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">Total IPD Registration</span>
+              <span class="info-box-number">4</span>
+
+              <div class="progress">
+                <div class="progress-bar" style="width: 70%"></div>
+              </div>
+                  <span class="progress-description">
+                    70% Increase in 30 Days
+                  </span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+		  </div>
+          <!-- /.info-box -->
+		  <div class="col-md-3">
+          <div class="info-box bg-aqua">
+            <span class="info-box-icon"><i class="fa fa-stethoscope"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">Total Doctor</span>
+              <span class="info-box-number">14</span>
+
+              <div class="progress">
+                <div class="progress-bar" style="width: 40%"></div>
+              </div>
+                  <span class="progress-description">
+                    40% Increase in 30 Days
+                  </span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+</div>
+        </div>
 <div id="dynamic"><!-- TBD: id seems unused, is this div required? -->
 
 <!-- Class "display" is defined in demo_table.css -->
