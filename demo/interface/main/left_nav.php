@@ -1302,7 +1302,10 @@ if ($GLOBALS['athletic_team']) {
   <li><a class="collapsed" id="patimg" ><span><?php xl('Patient','e') ?></span></a>
     <ul>
       <?php genMiscLink('RTop','fin','0',xl('Patients'),'main/finder/dynamic_finder.php'); ?>
+	   <?php genMiscLink('RTop','fin','0',xl('Todays Patients'),'main/finder/p_tp_dynamic_finder.php'); ?>
+	   <?php if($newcrop_user_role['newcrop_user_role']=='erxdoctor') {?>
 	  <?php genMiscLink('RTop','fin','0',xl('Doctor Specific'),'main/finder/p_dynamic_finder.php'); ?>
+	   <?php }?>
 	  <?php genMiscLink('RTop','fin','0',xl('IP Specific'),'main/finder/p_dynamic_finder_ip.php'); ?>
       <?php genTreeLink('RTop','new',($GLOBALS['full_new_patient_form'] ? xl('New/Search') : xl('New'))); ?>
       <?php genTreeLink('RTop','dem',xl('Summary')); ?>
