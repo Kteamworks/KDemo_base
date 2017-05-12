@@ -43,11 +43,37 @@ while ($row = sqlFetchArray($res)) {
 <?php html_header_show(); ?>
 
 <link rel="stylesheet" href="<?php echo $css_header; ?>" type="text/css">
-
 <style type="text/css">
 @import "../../../library/js/datatables/media/css/demo_page.css";
 @import "../../../library/js/datatables/media/css/demo_table.css";
 .mytopdiv { float: left; margin-right: 1em; }
+.menu{
+			width: 100px;
+			background: #000;
+			color: #fff;
+			position:absolute;
+			z-index: 999999;
+			display: none;
+			box-shadow: 0 0 10px #713C3C;
+		}
+		.menu ul{
+			list-style: none;
+			padding: 0;
+			margin:0;
+		}
+		.menu ul a{
+			text-decoration: none;
+		}
+		.menu ul li{
+			width: 88%;
+			padding: 6%;
+			background-color: #C0C0C0;
+			color: #fff;
+		}
+		.menu ul li:hover{
+			background-color: #F7BA4B;
+	    		color: #444343;
+		}
 </style>
 
 <script type="text/javascript" src="../../../library/js/datatables/media/js/jquery.js"></script>
@@ -104,13 +130,70 @@ $(document).ready(function() {
  });
 
  // OnClick handler for the rows
- $('#pt_table tbody tr').live('click', function () {
+  $(document).delegate('#pt_table tbody tr', 'mousedown', function(e){
+ //$('#pt_table tbody tr').live('click', function (e) {
   // ID of a row element is pid_{value}
   var newpid = this.id.substring(4);
+  var enc=$(this).find('td').eq(2).html();
+  var encounter=enc.substring(4);
+  //alert(encounter);
   // If the pid is invalid, then don't attempt to set 
   // The row display for "No matching records found" has no valid ID, but is
   // otherwise clickable. (Matches this CSS selector).  This prevents an invalid
   // state for the PID to be set.
+if( e.button == 2 ) {
+	
+      if (newpid.length===0)
+      {
+        return;
+      }
+      
+		$("tr").on("contextmenu",function(e){
+		       //prevent default context menu for right click
+		       e.preventDefault();
+
+		       var menu = $(".menu"); 
+
+		       //hide menu if already shown
+		       menu.hide(); 
+		       
+		       //get x and y values of the click event
+		       var pageX = e.pageX;
+		       var pageY = e.pageY;
+
+		       //position menu div near mouse cliked area
+		       menu.css({top: pageY , left: pageX});
+
+		       var mwidth = menu.width();
+		       var mheight = menu.height();
+		       var screenWidth = $(window).width();
+		       var screenHeight = $(window).height();
+
+		       //if window is scrolled
+		       var scrTop = $(window).scrollTop();
+
+		       //if the menu is close to right edge of the window
+		       if(pageX+mwidth > screenWidth){
+		       	menu.css({left:pageX-mwidth});
+		       }
+
+		       //if the menu is close to bottom edge of the window
+		       if(pageY+mheight > screenHeight+scrTop){
+		       	menu.css({top:pageY-mheight});
+		       }
+
+		       //finally show the menu
+		       menu.show();
+		}); 
+		
+		$("html").on("click", function(){
+			$(".menu").hide();
+		});
+	
+         
+       } else { 
+         
+        
   if (newpid.length===0)
   {
       return;
@@ -121,11 +204,37 @@ $(document).ready(function() {
   else {
    top.restoreSession();
 <?php if ($GLOBALS['concurrent_layout']) { ?>
-   document.location.href = "../../patient_file/summary/demographics.php?set_pid=" + newpid;
+
+document.location.href = "../../patient_file/summary/demographics.php?set_pid=" + newpid;
+   
 <?php } else { ?>
-   top.location.href = "../../patient_file/patient_file.php?set_pid=" + newpid
+   top.location.href = "../../patient_file/patient_file.php?set_pid=" + newpid;
 <?php } ?>
-  };
+  }
+	   }
+ $(document).ready(function() {
+    $('ul.menu1 li').live("click", function() {
+		var name=$(this).text();
+		var formname='admit';
+		if(name=="Transfer")
+		{
+		//alert(newpid);
+		 top.restoreSession();
+		 //alert(encounter);
+		document.location.href="../../patient_file/encounter/transfer_form.php?set_pid=" + newpid+'&encounter='+encounter;
+		}else if(name=="Discharge")
+		{
+		top.restoreSession();
+		document.location.href="../../patient_file/encounter/discharge_form.php?set_pid=" + newpid+'&encounter='+encounter;
+		}else if(name=="Delete")
+		{
+		top.restoreSession();
+		document.location.href="../../forms/admit/delete.php?set_pid=" + newpid+'&encounter='+encounter+'&formname='+formname;
+		}
+    });
+
+
+});
  } );
 
 });
@@ -140,7 +249,13 @@ function openNewTopWindow(pid) {
 
 </head>
 <body class="body_top">
-
+<div class="menu">
+	<ul class="menu1">
+		<li><a href="#">Transfer</a></li>
+		<li><a href="#">Discharge</a></li>
+		<li><a href="#">Delete</a></li>
+	</ul>
+</div>
 <div id="dynamic"><!-- TBD: id seems unused, is this div required? -->
 
 <!-- Class "display" is defined in demo_table.css -->

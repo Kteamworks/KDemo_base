@@ -290,6 +290,12 @@ document.location.href = "../../patient_file/summary/demographics.php?set_pid=" 
  $('ul.menu1 li').live("click", function() {
 		var name=$(this).text();
 		var review=1;
+		if(name=="Provisional Bill")
+		{
+		//alert(encounter);
+		top.restoreSession();
+		document.location.href="../../reports/custom_report_range_test_right.php?encounter="+encounter+'&set_pid='+newpid;
+		}else
 		if(name=="Payments")
 		{
 		//alert(encounter);
@@ -315,7 +321,7 @@ function openNewTopWindow(pid) {
 <body class="body_top">
 <div class="menu">
 	<ul class="menu1">
-	    
+	    <li><a href="#">Provisional Bill</a></li>
 		<li><a href="#">Payments</a></li>
 		
 	</ul>

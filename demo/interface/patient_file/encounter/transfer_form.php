@@ -11,13 +11,15 @@ require_once("$srcdir/options.inc.php");
 require_once("$srcdir/formatting.inc.php");
 require_once("$srcdir/erx_javascript.inc.php");
 // when the Cancel button is pressed, where do we go?
- $e=$_GET["encounter"] ? $_GET["encounter"] : $GLOBALS['encounter'];
-$returnurl = $GLOBALS['concurrent_layout'] ? 'encounter_top.php' : 'patient_encounter.php';
- include_once("$srcdir/pid.inc");
+$e=$_GET["encounter"] ? $_GET["encounter"] : $GLOBALS['encounter'];
+ $encounter=$_GET["encounter"] ? $_GET["encounter"] : $GLOBALS['encounter'];
+  setencounter($encounter);
  if ($GLOBALS['concurrent_layout'] && isset($_GET['set_pid'])) {
   include_once("$srcdir/pid.inc");
   setpid($_GET['set_pid']);
  }
+$returnurl = $GLOBALS['concurrent_layout'] ? 'encounter_top.php' : 'patient_encounter.php';
+
 if ($_POST['confirm']) {
        // set the deleted flag of the indicated form
    sqlStatement("update list_options set is_default=0 where list_id='".$_POST['admit_to_ward']."' and option_id='".$_POST['admit_to_bed']."'");
