@@ -1298,7 +1298,9 @@ if ($GLOBALS['athletic_team']) {
     }
   ?>
     
-
+<?php  $newcrop_user_role=sqlQuery("select newcrop_user_role from users where username='".$_SESSION['authUser']."'");
+  if($newcrop_user_role['newcrop_user_role']!='erxlab'){
+  ?>
   <li><a class="collapsed" id="patimg" ><span><?php xl('Patient','e') ?></span></a>
     <ul>
       <?php genMiscLink('RTop','fin','0',xl('Patients'),'main/finder/dynamic_finder.php'); ?>
@@ -1370,6 +1372,7 @@ if (!empty($reg)) {
 
     </ul>
   </li>
+<?php }?>
   <?php  $newcrop_user_role=sqlQuery("select newcrop_user_role from users where username='".$_SESSION['authUser']."'");
   if($newcrop_user_role['newcrop_user_role']=='erxcash'||acl_check('admin', 'super')){
   ?>
@@ -1405,6 +1408,9 @@ if (!empty($reg)) {
     </li>
 		 <?php }?>
 	  </li>
+	  <?php  $newcrop_user_role=sqlQuery("select newcrop_user_role from users where username='".$_SESSION['authUser']."'");
+  if($newcrop_user_role['newcrop_user_role']!='erxlab'){
+  ?>
   <?php // TajEmo Work by CB 2012/06/21 10:41:15 AM hides fees if disabled in globals ?>
   <?php if(!isset($GLOBALS['enable_fees_in_left_menu']) || $GLOBALS['enable_fees_in_left_menu'] == 1){ ?>
   <li><a class="collapsed" id="feeimg" ><span><?php xl('Fees','e') ?></span></a>
@@ -1437,6 +1443,7 @@ if (!empty($reg)) {
 	  
     </ul>
   </li>
+  <?php } ?>
   <?php } ?>
   
   <!--
