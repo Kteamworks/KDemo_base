@@ -1430,6 +1430,7 @@ if (!empty($reg)) {
 	  <?php genTreeLink('RTop','npa',xl('Batch Payments'),false,2);?>
       <?php if ($GLOBALS['enable_edihistory_in_left_menu'] && acl_check('acct', 'eob')) genTreeLink('RTop','edi',xl('EDI History'),false,2);?>
 	  <?php genMiscLink('RTop','rep','0',xl('Provisional Bill'),'reports/custom_report_range_test.php'); ?>
+	   <?php genMiscLink('RTop','rep','0',xl('Duplicate Bill'),'reports/finalbillcopy.php'); ?>
 	  <?php//  genMiscLink('RBot','pb','0',xl('Print Bills'),'reports/multiple_bills.php?framed=1'); ?> 
 	  <?php genMiscLink('RTop','rep','0',xl('Generate Bills'),'reports/custom_report_range_bill.php'); ?>
 	   <?php }?>

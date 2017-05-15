@@ -295,7 +295,7 @@ document.location.href = "../../patient_file/summary/demographics.php?set_pid=" 
 		{
 		//alert(encounter);
 		top.restoreSession();
-		document.location.href="../../reports/custom_report_range_test_right.php?encounter="+encounter+'&set_pid='+newpid;
+		document.location.href="../../reports/finalbillcopy_right.php?encounter="+encounter+'&set_pid='+newpid;
 		}else
 		if(name=="Payments")
 		{

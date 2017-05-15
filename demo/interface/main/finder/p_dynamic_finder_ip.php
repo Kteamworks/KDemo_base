@@ -43,6 +43,12 @@ while ($row = sqlFetchArray($res)) {
 <?php html_header_show(); ?>
 
 <link rel="stylesheet" href="<?php echo $css_header; ?>" type="text/css">
+<link rel="stylesheet" href="../../../library/css/bootstrap.min.css">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="../../../library/dist/css/AdminLTE.css">
+<link rel="stylesheet" href="../../../library/css/mycss.css">
 <style type="text/css">
 @import "../../../library/js/datatables/media/css/demo_page.css";
 @import "../../../library/js/datatables/media/css/demo_table.css";
@@ -216,6 +222,7 @@ document.location.href = "../../patient_file/summary/demographics.php?set_pid=" 
     $('ul.menu1 li').live("click", function() {
 		var name=$(this).text();
 		var formname='admit';
+		var framed=1;
 		if(name=="Transfer")
 		{
 		//alert(newpid);
@@ -230,6 +237,31 @@ document.location.href = "../../patient_file/summary/demographics.php?set_pid=" 
 		{
 		top.restoreSession();
 		document.location.href="../../forms/admit/delete.php?set_pid=" + newpid+'&encounter='+encounter+'&formname='+formname;
+		}else
+		if(name=="Provisional Bill")
+		{
+		//alert(encounter);
+		top.restoreSession();
+		document.location.href="../../reports/custom_report_range_test_right.php?encounter="+encounter+'&set_pid='+newpid;
+		}else
+		if(name=="Payments")
+		{
+		//alert(encounter);
+		top.restoreSession();
+		document.location.href="../../patient_file/front_payment_right.php?encounter="+encounter+'&set_pid='+newpid;
+		}else
+		if(name=="Discounts")
+		{
+		//alert(encounter);
+		top.restoreSession();
+		document.location.href="../../patient_file/pos_checkout_right.php?encounter="+encounter+'&set_pid='+newpid+'&framed='+framed;
+		}
+		else
+		if(name=="Refunds")
+		{
+		//alert(encounter);
+		top.restoreSession();
+		document.location.href="../../patient_file/pos_checkout1_right.php?encounter="+encounter+'&set_pid='+newpid+'&framed='+framed;
 		}
     });
 
@@ -254,8 +286,73 @@ function openNewTopWindow(pid) {
 		<li><a href="#">Transfer</a></li>
 		<li><a href="#">Discharge</a></li>
 		<li><a href="#">Delete</a></li>
+		<li><a href="#">Provisional Bill</a></li>
+		<li><a href="#">Discounts</a></li>
+		 <li><a href="#">Refunds</a></li>
+		<li><a href="#">Payments</a></li>
 	</ul>
 </div>
+<div class="col-md-12">
+<div class="col-md-4">
+          <!-- Info Boxes Style 2 -->
+          <div class="info-box bg-yellow">
+            <span class="info-box-icon"><i class="ion ion-ios-people-outline"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">TOTAL IPD REGISTRATION</span>
+              <span class="info-box-number">4</span>
+
+              <div class="progress">
+                <div class="progress-bar" style="width: 50%"></div>
+              </div>
+                  <span class="progress-description">
+                    70% Increase in 30 Days
+                  </span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+		  </div>
+		  <div class="col-md-4">
+          <div class="info-box bg-green">
+            <span class="info-box-icon"><i class="ion ion-ios-heart-outline"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">TOTAL ADMISSION</span>
+              <span class="info-box-number">3</span>
+
+              <div class="progress">
+                <div class="progress-bar" style="width: 20%"></div>
+              </div>
+                  <span class="progress-description">
+                    60% Increase in 30 Days
+                  </span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+		  </div>
+		  <div class="col-md-4">
+          <div class="info-box bg-red">
+            <span class="info-box-icon"><i class="ion ion-ios-cloud-download-outline"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">Total IPD DISCHARGE</span>
+              <span class="info-box-number">3</span>
+
+              <div class="progress">
+                <div class="progress-bar" style="width: 70%"></div>
+              </div>
+                  <span class="progress-description">
+                    70% Increase in 30 Days
+                  </span>
+            </div>
+			            <!-- /.info-box-content -->
+          </div>
+		  </div>
+          <!-- /.info-box -->
+</div>
+        </div>
 <div id="dynamic"><!-- TBD: id seems unused, is this div required? -->
 
 <!-- Class "display" is defined in demo_table.css -->
