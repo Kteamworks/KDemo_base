@@ -532,7 +532,7 @@ $rateplan=$patdata['rateplan'];
  <tr>
   <td width='0px'>
 	<div style='float:left'>
-
+<?php if(1){?>
 	<table class='text'>
 		<tr>
 			<td class='label'>
@@ -567,7 +567,7 @@ $rateplan=$patdata['rateplan'];
 			<tr><td>
 		</tr>
 	</table>
-
+<?php }?>
 	</div>
 
   </td>

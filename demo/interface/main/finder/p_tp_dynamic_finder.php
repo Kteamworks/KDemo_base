@@ -291,7 +291,7 @@ document.location.href = "../../patient_file/summary/demographics.php?set_pid=" 
 		var name=$(this).text();
 		var review=1;
 		var framed=1;
-		if(name=="Provisional Bill")
+		if(name=="Bill")
 		{
 		//alert(encounter);
 		top.restoreSession();
@@ -335,10 +335,10 @@ function openNewTopWindow(pid) {
 <body class="body_top">
 <div class="menu">
 	<ul class="menu1">
-	    <li><a href="#">Provisional Bill</a></li>
 		<li><a href="#">Discounts</a></li>
 		 <li><a href="#">Refunds</a></li>
 		<li><a href="#">Payments</a></li>
+		<li><a href="#">Bill</a></li>
 		
 	</ul>
 </div>
