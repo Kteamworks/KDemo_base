@@ -147,7 +147,7 @@ $out = array(
   "aaData"               => array()
 );
 
-$query ="SELECT $sellist FROM form_encounter a,patient_data b,procedure_order c,procedure_order_code d $where where a.pid=b.pid and a.encounter=c.encounter_id and c.procedure_order_id=d.procedure_order_id and a.pid=b.pid and a.encounter=c.encounter_id and c.order_status IN ('pending','collected','received')  group by a.pid,a.encounter,c.procedure_order_id  order by $orderby, c.procedure_order_id,c.order_status ,a.encounter desc  $limit";
+$query ="SELECT $sellist FROM form_encounter a,patient_data b,procedure_order c,procedure_order_code d $where where a.pid=b.pid and a.encounter=c.encounter_id and c.procedure_order_id=d.procedure_order_id and a.pid=b.pid and a.encounter=c.encounter_id and c.order_status IN ('pending','collected','received')  group by a.pid,a.encounter,c.procedure_order_id  order by c.procedure_order_id desc  $limit";
 
 $res = sqlStatement($query);
 while ($row = sqlFetchArray($res)) {

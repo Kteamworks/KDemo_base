@@ -131,7 +131,7 @@ if ($_POST['confirm']) {
    }
   
 	// redirect back to the encounter
-    $address = "{$GLOBALS['rootdir']}/patient_file/encounter/$returnurl";
+    $address = "{$GLOBALS['rootdir']}/main/finder/p_dynamic_finder_ip.php";
     echo "\n<script language='Javascript'>top.restoreSession();window.location='$address';</script>\n";
     exit;
   

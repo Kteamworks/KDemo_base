@@ -48,7 +48,7 @@ if ($_POST['confirm']) {
     newEvent("discharge", $_SESSION['authUser'], $_SESSION['authProvider'], 1, "Form ".$_POST['formname']." discharged from Encounter ".$_POST['encounter']);
 
     // redirect back to the encounter
-    $address = "{$GLOBALS['rootdir']}/patient_file/encounter/$returnurl";
+   $address = "{$GLOBALS['rootdir']}/main/finder/p_dynamic_finder_ip.php";
     echo "\n<script language='Javascript'>top.restoreSession();window.location='$address';</script>\n";
     exit;
 }
