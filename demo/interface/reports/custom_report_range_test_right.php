@@ -186,59 +186,6 @@ body
 } 
 </style>
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dialog.js"></script>
-<script type="text/javascript">
-function setMyPatient() {
-<?php if ($GLOBALS['concurrent_layout']) { ?>
- // Avoid race conditions with loading of the left_nav or Title frame.
- if (!parent.allFramesLoaded()) {
-  setTimeout("setMyPatient()", 500);
-  return;
- }
-<?php 
- $result = getPatientData($pid, "*, DATE_FORMAT(DOB,'%Y-%m-%d') as DOB_YMD");
- if (isset($_GET['set_pid'])) { ?>
- parent.left_nav.setPatient(<?php echo "'" . htmlspecialchars(($result['fname']) . " " . ($result['lname']),ENT_QUOTES) .
-   "'," . htmlspecialchars($pid,ENT_QUOTES) . ",'" . htmlspecialchars(($result['genericname1']),ENT_QUOTES) .
-   "','', ' " . htmlspecialchars(xl('DOB') . ": " . oeFormatShortDate($result['DOB_YMD']) . " " . xl('Age') . ": " . getPatientAgeDisplay($result['DOB_YMD']), ENT_QUOTES) . "'"; ?>);
- var EncounterDateArray = new Array;
- var CalendarCategoryArray = new Array;
- var EncounterIdArray = new Array;
- var Count = 0;
-<?php
-  //Encounter details are stored to javacript as array.
-  $result4 = sqlStatement("SELECT fe.encounter,fe.encounter_ipop,fe.date,openemr_postcalendar_categories.pc_catname FROM form_encounter AS fe ".
-    " left join openemr_postcalendar_categories on fe.pc_catid=openemr_postcalendar_categories.pc_catid  WHERE fe.pid = ? order by fe.date desc", array($pid));
-  if(sqlNumRows($result4)>0) {
-    while($rowresult4 = sqlFetchArray($result4)) {
-?>
- EncounterIdArray[Count] = '<?php echo htmlspecialchars($rowresult4['encounter'], ENT_QUOTES); ?>';
- EncounterDateArray[Count] = '<?php echo htmlspecialchars(oeFormatShortDate(date("Y-m-d", strtotime($rowresult4['date']))), ENT_QUOTES); ?>';
- CalendarCategoryArray[Count] = '<?php echo htmlspecialchars(xl_appt_category($rowresult4['pc_catname']), ENT_QUOTES); ?>';
- Count++;
-<?php
-    }
-  }
-?>
-
- parent.left_nav.setPatientEncounter(EncounterIdArray,EncounterDateArray,CalendarCategoryArray);
-  <?php
-  $test = sqlStatement("SELECT fe.encounter,fe.encounter_ipop,fe.date,openemr_postcalendar_categories.pc_catname FROM form_encounter AS fe ".
-    " left join openemr_postcalendar_categories on fe.pc_catid=openemr_postcalendar_categories.pc_catid  WHERE fe.pid = ? and  fe.encounter=? order by fe.date desc", array($pid,$e));
-	 $test1=sqlFetchArray($test);
-?>
- EncounterIdArray1= '<?php echo htmlspecialchars($test1['encounter'], ENT_QUOTES); ?>';
- EncounterDateArray1 = '<?php echo htmlspecialchars(oeFormatShortDate(date("Y-m-d", strtotime($test1['date']))), ENT_QUOTES); ?>';
- CalendarCategoryArray1 = '<?php echo htmlspecialchars(xl_appt_category($test1['pc_catname']), ENT_QUOTES); ?>';
- parent.left_nav.setEncounter(EncounterDateArray1,EncounterIdArray1,CalendarCategoryArray1);
-<?php } // end setting new pid ?>
- parent.left_nav.setRadio(window.name, 'dem');
- parent.left_nav.syncRadios();
-<?php } // end concurrent layout ?>
-}
-$(window).load(function() {
- setMyPatient();
-});
-</script>
 <script language="Javascript">
 // CapMinds :: invokes  find-patient popup.
  function sel_patient() {
@@ -254,6 +201,7 @@ $(window).load(function() {
  }
 
 </script>
+
 </head>
 
 <body class="body_top">
@@ -332,7 +280,7 @@ if( 1) {
 		return 0;
 	}
 }
-
+$encounter=$_GET["encounter"] ? $_GET["encounter"] : $GLOBALS['encounter'];
 $dob =text($patdata['DOB']) ;
 $enc=sqlStatement("select * from form_encounter where encounter='".$encounter."'");
 $enc1=sqlFetchArray($enc);
@@ -657,8 +605,7 @@ $rateplan=$patdata['rateplan'];
 <script type="text/javascript" src="../../library/dynarch_calendar_setup.js"></script>
 <script type="text/javascript" src="../../library/js/jquery.1.3.2.js"></script>
 
-<script language="Javascript">
- <script type="text/javascript">
+<script type="text/javascript">
 function setMyPatient() {
 <?php if ($GLOBALS['concurrent_layout']) { ?>
  // Avoid race conditions with loading of the left_nav or Title frame.
@@ -691,13 +638,13 @@ function setMyPatient() {
     }
   }
 ?>
-
  parent.left_nav.setPatientEncounter(EncounterIdArray,EncounterDateArray,CalendarCategoryArray);
   <?php
   $test = sqlStatement("SELECT fe.encounter,fe.encounter_ipop,fe.date,openemr_postcalendar_categories.pc_catname FROM form_encounter AS fe ".
     " left join openemr_postcalendar_categories on fe.pc_catid=openemr_postcalendar_categories.pc_catid  WHERE fe.pid = ? and  fe.encounter=? order by fe.date desc", array($pid,$e));
 	 $test1=sqlFetchArray($test);
 ?>
+//alert($e);
  EncounterIdArray1= '<?php echo htmlspecialchars($test1['encounter'], ENT_QUOTES); ?>';
  EncounterDateArray1 = '<?php echo htmlspecialchars(oeFormatShortDate(date("Y-m-d", strtotime($test1['date']))), ENT_QUOTES); ?>';
  CalendarCategoryArray1 = '<?php echo htmlspecialchars(xl_appt_category($test1['pc_catname']), ENT_QUOTES); ?>';
@@ -710,6 +657,5 @@ function setMyPatient() {
 $(window).load(function() {
  setMyPatient();
 });
-</script>
 </script>
 </html>

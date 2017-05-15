@@ -49,8 +49,7 @@ if ($_POST['confirm']) {
 
     // redirect back to the encounter
     $address = "{$GLOBALS['rootdir']}/patient_file/encounter/$returnurl";
-	$message=$e;
-    echo "\n<script language='Javascript'>alert($message);top.restoreSession();window.location='$address';</script>\n";
+    echo "\n<script language='Javascript'>top.restoreSession();window.location='$address';</script>\n";
     exit;
 }
 ?>

@@ -290,6 +290,7 @@ document.location.href = "../../patient_file/summary/demographics.php?set_pid=" 
  $('ul.menu1 li').live("click", function() {
 		var name=$(this).text();
 		var review=1;
+		var framed=1;
 		if(name=="Provisional Bill")
 		{
 		//alert(encounter);
@@ -301,6 +302,19 @@ document.location.href = "../../patient_file/summary/demographics.php?set_pid=" 
 		//alert(encounter);
 		top.restoreSession();
 		document.location.href="../../patient_file/front_payment_right.php?encounter="+encounter+'&set_pid='+newpid;
+		}else
+		if(name=="Discounts")
+		{
+		//alert(encounter);
+		top.restoreSession();
+		document.location.href="../../patient_file/pos_checkout_right.php?encounter="+encounter+'&set_pid='+newpid+'&framed='+framed;
+		}
+		else
+		if(name=="Refunds")
+		{
+		//alert(encounter);
+		top.restoreSession();
+		document.location.href="../../patient_file/pos_checkout1_right.php?encounter="+encounter+'&set_pid='+newpid+'&framed='+framed;
 		}
     });
 });
@@ -322,6 +336,8 @@ function openNewTopWindow(pid) {
 <div class="menu">
 	<ul class="menu1">
 	    <li><a href="#">Provisional Bill</a></li>
+		<li><a href="#">Discounts</a></li>
+		 <li><a href="#">Refunds</a></li>
 		<li><a href="#">Payments</a></li>
 		
 	</ul>
