@@ -56,7 +56,7 @@ $newcrop_user_role=sqlQuery("select newcrop_user_role from users where username=
 	 $normalurl = "patient_file/encounter/load_form.php?formname=vitals";
  }
   if($newcrop_user_role['newcrop_user_role']=='erxrep') {
-	 $normalurl = "patient_file/front_payment.php";
+	 $normalurl = "main/finder/dynamic_finder.php";
  }
 /* if($pc_catid==10)
 {

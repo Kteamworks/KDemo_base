@@ -99,7 +99,10 @@ else if ($GLOBALS['concurrent_layout']) {
  if($newcrop_user_role['newcrop_user_role']=='erxdoctor')
  {
 	 $frame1url="../main/finder/p_dynamic_finder.php";
- } else
+ } else if($newcrop_user_role['newcrop_user_role']=='erxlab')
+ {
+	  $frame1url="../main/finder/p_dynamic_finder_lab.php";
+ }else
  {
     $frame1url=attr($GLOBALS['default_top_pane']);
  }
