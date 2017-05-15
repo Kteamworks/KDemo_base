@@ -307,7 +307,7 @@ function openNewTopWindow(pid) {
 		  </div>
 		  <div class="col-md-3">
           <div class="info-box bg-green">
-            <span class="info-box-icon"><i class="ion ion-ios-heart-outline"></i></span>
+            <span class="info-box-icon"><i class="ion ion-ios-calendar-outline"></i></span>
 
             <div class="info-box-content">
               <span class="info-box-text">Total Appointments</span>
