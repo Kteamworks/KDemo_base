@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.2, created on 2017-04-18 08:59:51
+<?php /* Smarty version 2.6.2, created on 2017-05-23 18:01:24
          compiled from C:%5Cxampp%5Chtdocs%5CKDemo_base%5Cdemo%5Cinterface%5Cforms%5Cros/templates/ros/general_new.html */ ?>
 <?php require_once(SMARTY_DIR . 'core' . DIRECTORY_SEPARATOR . 'core.load_plugins.php');
 smarty_core_load_plugins(array('plugins' => array(array('function', 'xl', 'C:\xampp\htdocs\KDemo_base\demo\interface\forms\ros/templates/ros/general_new.html', 77, false),array('function', 'html_radios', 'C:\xampp\htdocs\KDemo_base\demo\interface\forms\ros/templates/ros/general_new.html', 84, false),)), $this); ?>
@@ -921,7 +921,13 @@ a {
 	<a href="<?php echo $this->_tpl_vars['DONT_SAVE_LINK']; ?>
 " class="link" onclick="top.restoreSession()">[<?php  xl("Don't Save","e");  ?>]</a>
 </td>
+
+<td>
+	<a href="<?php echo $this->_tpl_vars['NEXT_LINK']; ?>
+" class="link" onclick="top.restoreSession()">[<?php  xl("NEXT","e");  ?>]</a>
+</td>
 </tr>
+
 </table>
 </body>
 </html>

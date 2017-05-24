@@ -38,7 +38,7 @@ function formSubmit ($tableName, $values, $id, $authorized = "0")
         // the variable escaping method.
         global $sanitize_all_escapes;
 
-	$sql = "insert into " . escape_table_name($tableName) . " set pid ='".add_escape_custom($_SESSION['pid'])."',groupname='".add_escape_custom($_SESSION['authProvider'])."',user='".add_escape_custom($_SESSION['authUser'])."',authorized='".add_escape_custom($authorized)."',activity=1, date = NOW(),";
+	$sql = "insert into " . escape_table_name($tableName) . " set pid ='".add_escape_custom($_SESSION['pid'])."',encounter ='".add_escape_custom($_SESSION['encounter'])."',groupname='".add_escape_custom($_SESSION['authProvider'])."',user='".add_escape_custom($_SESSION['authUser'])."',authorized='".add_escape_custom($authorized)."',activity=1, date = NOW(),";
 	foreach ($values as $key => $value)
 		if (strpos($key,"openemr_net_cpt") === 0) {
 			//code to auto add cpt code

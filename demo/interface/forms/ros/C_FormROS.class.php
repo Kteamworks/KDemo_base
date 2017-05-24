@@ -15,6 +15,7 @@ class C_FormROS extends Controller {
     	$this->template_dir = dirname(__FILE__) . "/templates/ros/";
     	$this->assign("FORM_ACTION", $GLOBALS['web_root']);
     	$this->assign("DONT_SAVE_LINK",$GLOBALS['webroot'] . "/interface/patient_file/encounter/$returnurl");
+		$this->assign("NEXT_LINK",$GLOBALS['webroot'] . "/interface/patient_file/encounter/load_form.php?formname=procedure_order");
     	$this->assign("STYLE", $GLOBALS['style']);
     }
     

@@ -13,10 +13,10 @@ if ($_GET["mode"] == "new"){
 $newid = formSubmit("form_dictation", $_POST, $_GET["id"], $userauthorized);
 addForm($encounter, "Speech Dictation", $newid, "dictation", $pid, $userauthorized);
 }elseif ($_GET["mode"] == "update") {
-sqlInsert("update form_dictation set pid = ?,groupname=?,user=?,authorized=?,activity=1, date = NOW(), dictation=?, additional_notes=? where id=?",array($_SESSION["pid"],$_SESSION["authProvider"],$_SESSION["authUser"],$userauthorized,$_POST["dictation"],$_POST["additional_notes"],$_GET["id"]));
+sqlInsert("update form_dictation set pid = ?,groupname=?,user=?,authorized=?,activity=1, date = NOW(), dictation=?, additional_notes=?,form_date_collected=? where id=?",array($_SESSION["pid"],$_SESSION["authProvider"],$_SESSION["authUser"],$userauthorized,$_POST["dictation"],$_POST["additional_notes"],$_POST["form_date_collected"],$_GET["id"]));
 }
 $_SESSION["encounter"] = $encounter;
 formHeader("Redirecting....");
-formJump();
+formJump("../../patient_file/transaction/add_transaction.php");
 formFooter();
 ?>

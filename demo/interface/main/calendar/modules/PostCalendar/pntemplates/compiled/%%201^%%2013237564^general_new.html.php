@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.2, created on 2017-04-18 08:59:32
+<?php /* Smarty version 2.6.2, created on 2017-05-23 17:58:25
          compiled from C:%5Cxampp%5Chtdocs%5CKDemo_base%5Cdemo%5Cinterface%5Cforms%5Cvitals/templates/vitals/general_new.html */ ?>
 <?php require_once(SMARTY_DIR . 'core' . DIRECTORY_SEPARATOR . 'core.load_plugins.php');
 smarty_core_load_plugins(array('plugins' => array(array('function', 'xl', 'C:\xampp\htdocs\KDemo_base\demo\interface\forms\vitals/templates/vitals/general_new.html', 29, false),array('function', 'math', 'C:\xampp\htdocs\KDemo_base\demo\interface\forms\vitals/templates/vitals/general_new.html', 152, false),array('modifier', 'date_format', 'C:\xampp\htdocs\KDemo_base\demo\interface\forms\vitals/templates/vitals/general_new.html', 129, false),)), $this); ?>
@@ -276,6 +276,8 @@ td,th {
 ">
         <input type="button" class="editonly" id="cancel" value="<?php echo smarty_function_xl(array('t' => "Don't Save"), $this);?>
 ">
+		<input type="button" class="editonly" id="next" value="<?php echo smarty_function_xl(array('t' => 'Next'), $this);?>
+">
         </td>
 </tr>
 </table>
@@ -320,6 +322,8 @@ var webroot = '<?php echo $this->_tpl_vars['FORM_ACTION']; ?>
 var pid = '<?php echo $this->_tpl_vars['vitals']->get_pid(); ?>
 ';
 var cancellink = '<?php echo $this->_tpl_vars['DONT_SAVE_LINK']; ?>
+';
+var nextlink = '<?php echo $this->_tpl_vars['NEXT_LINK']; ?>
 ';
 var birth_xl='<?php echo smarty_function_xl(array('t' => "Birth-24 months"), $this);?>
 '
@@ -371,6 +375,8 @@ $(document).ready(function(){
     $("#pdfchart").click(function() { ShowGrowthchart(1); });
     $("#htmlchart").click(function() { ShowGrowthchart(2); });
     $("#cancel").click(function() { location.href=cancellink; });
+	  $("#next").click(function() { location.href=nextlink; });
+	
     addGCSelector();
 });
 

@@ -84,9 +84,9 @@ if ($mode) {
   }
 
   if ($GLOBALS['concurrent_layout'])
-    $body_onload_code = "javascript:location.href='transactions.php';";
+    $body_onload_code = "javascript:location.href='../../forms/admit/new.php';";
   else
-    $body_onload_code = "javascript:parent.Transactions.location.href='transactions.php';";
+    $body_onload_code = "javascript:parent.Transactions.location.href='../../forms/admit/new.php;";
 }
 
 /************************************
@@ -287,6 +287,11 @@ div.tab {
                     <span><?php echo htmlspecialchars( xl('Save'), ENT_NOQUOTES); ?></span>
                  </a>
              </td>
+			 <td>
+                <a href="../../forms/admit/new.php"  <?php if (!$GLOBALS['concurrent_layout']) echo "target='Main'"; ?> class="css_button" onclick="top.restoreSession()">
+                    <span><?php echo htmlspecialchars( xl('NEXT'), ENT_NOQUOTES); ?></span>
+                </a>
+            </td>
              <td>
                 <a href="transactions.php"  <?php if (!$GLOBALS['concurrent_layout']) echo "target='Main'"; ?> class="css_button" onclick="top.restoreSession()">
                     <span><?php echo htmlspecialchars( xl('Cancel'), ENT_NOQUOTES); ?></span>

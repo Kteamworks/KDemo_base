@@ -212,6 +212,7 @@ td,th {
 	<td colspan='3' style='text-align:center'>
         <input type="submit" class="editonly" name="Submit" value="{xl t="Save Form"}">
         <input type="button" class="editonly" id="cancel" value="{xl t="Don't Save"}">
+		<input type="button" class="editonly" id="next" value="{xl t="Next"}">
         </td>
 </tr>
 </table>
@@ -239,6 +240,7 @@ var patient_dob='{$patient_dob}';
 var webroot = '{$FORM_ACTION}';
 var pid = '{$vitals->get_pid()}';
 var cancellink = '{$DONT_SAVE_LINK}';
+var nextlink = '{$NEXT_LINK}';
 var birth_xl='{xl t="Birth-24 months"}'
 var older_xl='{xl t="2-20 years"}';
 {literal}
@@ -287,6 +289,8 @@ $(document).ready(function(){
     $("#pdfchart").click(function() { ShowGrowthchart(1); });
     $("#htmlchart").click(function() { ShowGrowthchart(2); });
     $("#cancel").click(function() { location.href=cancellink; });
+	  $("#next").click(function() { location.href=nextlink; });
+	
     addGCSelector();
 });
 

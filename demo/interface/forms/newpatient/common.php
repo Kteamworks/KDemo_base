@@ -187,6 +187,12 @@ function getRatePlan(plan)
       <span><?php echo xlt('Cancel'); ?></span></a>
   <?php } // end not $viewmode ?>
     </div>
+	<div style="float:left; margin-top:-3px">
+  <a href='<?php echo "$rootdir/patient_file/encounter/load_form.php?formname=vitals"; ?>' class='css_button' id='next'><span><?php echo htmlspecialchars( xl('Next'), ENT_NOQUOTES); ?></span></a>
+</div>
+	
+	
+	
  </div>
 
 <br> <br>

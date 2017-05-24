@@ -250,7 +250,7 @@ if ($_POST['bn_save'] || $_POST['bn_xmit']) {
     echo addslashes(xl('Transmit failed') . ': ' . $alertmsg);
     echo "')</script>\n";
   }
-  formJump();
+  formJump("../../../controller.php?prescription&edit&id=&pid=$pid");
   formFooter();
   exit;
 }
@@ -672,9 +672,13 @@ if ($qoe_init_javascript)
 &nbsp;
 <input type='submit' name='bn_save' value='<?php echo xla('Save'); ?>' onclick='transmitting = false;' />
 &nbsp;
-<input type='submit' name='bn_xmit' value='<?php echo xla('Save and Transmit'); ?>' onclick='transmitting = true;' />
+<?php 
+$pid=$_SESSION['pid'];
+?>
+<input type='button' value='<?php echo xla('NEXT'); ?>' onclick="top.restoreSession();location='../../../controller.php?prescription&edit&id=&pid=$pid'" />
+<!--<input type='submit' name='bn_xmit' value='<?php echo xla('Save and Transmit'); ?>' onclick='transmitting = true;' />-->
 &nbsp;
-<input type='button' value='<?php echo xla('Cancel'); ?>' onclick="top.restoreSession();location='<?php echo $GLOBALS['form_exit_url']; ?>'" />
+<input type='button' value='<?php echo xla('Cancel'); ?>' onclick="top.restoreSession();location='<?php echo $GLOBALS['form_next_url']; ?>'" />
 </p>
 
 </center>
