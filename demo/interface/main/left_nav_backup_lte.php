@@ -203,7 +203,7 @@ use ESign\Api;
   if (empty($disallowed[$name])) {
    $id = $name . $primary_docs[$name][1];
    
-   echo "<li class='treeview'><a href='' id='' onclick=\"";
+   echo "<li><a href='' id='' onclick=\"";
    
    if ($mono) {
     if ($frame == 'RTop')
@@ -307,7 +307,7 @@ use ESign\Api;
 function genPopupsList($style='') {
   global $disallowed, $webserver_root;
 ?>
-<!-- <select name='popups' onchange='selpopup(this)' style='background-color:transparent;font-size:9pt;<?php echo $style; ?>'>
+<select name='popups' onchange='selpopup(this)' style='background-color:transparent;font-size:9pt;<?php echo $style; ?>'>
  <option value=''><?php xl('Popups','e'); ?></option>
 <?php if (!$disallowed['iss']) { ?>
  <option value='../patient_file/problem_encounter.php'><?php xl('Issues','e'); ?></option>
@@ -344,13 +344,13 @@ function genPopupsList($style='') {
 <?php if ($GLOBALS['addr_label_type']) { ?>
 <option value='../patient_file/addr_label.php'><?php xl('Address Label','e'); ?></option>
 <?php } ?>
-</select> -->
+</select>
 <?php
 }
 
 function genFindBlock() {
 ?>
-<!-- <table cellpadding='0' cellspacing='0' border='0'>
+<table cellpadding='0' cellspacing='0' border='0'>
  <tr>
   <td class='smalltext'><?php xl('Find','e') ?>:&nbsp;</td>
   <td class='smalltext' colspan='2'>
@@ -384,7 +384,7 @@ function genFindBlock() {
    <a href="javascript:initFilter();"  class="navitem"><?php xl('Filter', 'e'); ?></a>
   </td>
  </tr>
-</table> -->
+</table>
 <?php
 } // End function genFindBlock()
 
@@ -430,7 +430,9 @@ function genFindBlock() {
 #navigation-slide ul {
  background-color:transparent;
 }
-
+#navigation-slide a{
+ width: 92%;
+}
 .nav-menu-img{
   width:25px;
   height:25px;
@@ -448,7 +450,10 @@ function genFindBlock() {
 <script src="../../library/js/jquery.treeview-1.4.1/jquery.treeview.js" type="text/javascript"></script>
 
 <script type="text/javascript" src="../../library/dialog.js"></script>
-
+<script src="jquery.js" type="text/javascript"></script>
+<script src="jquery.ui.draggable.js" type="text/javascript"></script>
+<script src="jquery.alerts.js" type="text/javascript"></script>
+<link href="jquery.alerts.css" rel="stylesheet" type="text/css" media="screen" />
 <script language='JavaScript'>
  
  // tajemo work by CB 2012/01/31 12:32:57 PM dated reminders counter
@@ -671,7 +676,7 @@ function genFindBlock() {
    }
   }
 <?php } ?>
-//  f.popups.disabled = (active_pid == 0);
+  f.popups.disabled = (active_pid == 0);
  }
 
 function goHome() {
@@ -1129,7 +1134,7 @@ if ($GLOBALS['athletic_team']) {
 
 <?php if ( ( $GLOBALS['concurrent_layout'] == 2) || ($GLOBALS['concurrent_layout'] == 3) ) { ?>
 
- <table cellpadding='0' cellspacing='0' border='0' width='100%'>
+<!-- <table cellpadding='0' cellspacing='0' border='0' width='100%'>
  <tr>
   <td class='smalltext' nowrap>
    <input type='checkbox' name='cb_top' onclick='toggleFrame(1)' checked />
@@ -1140,7 +1145,7 @@ if ($GLOBALS['athletic_team']) {
    <input type='checkbox' name='cb_bot' onclick='toggleFrame(2)' />
   </td>
  </tr>
-</table> 
+</table> -->
 
 <?php if ( $GLOBALS['concurrent_layout'] == 3) { ?>
 <section class="sidebar">
@@ -1150,7 +1155,7 @@ if ($GLOBALS['athletic_team']) {
           <img src="../../library/dist/img/avatar5.png" class="img-circle" alt="User Image">
         </div>
         <div class="pull-left info">
-          <p>Sadashiva</p>
+          <p>Alexander Pierce</p>
           <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
         </div>
       </div>
@@ -1368,7 +1373,7 @@ if ($GLOBALS['athletic_team']) {
 <?php  $newcrop_user_role=sqlQuery("select newcrop_user_role from users where username='".$_SESSION['authUser']."'");
   if($newcrop_user_role['newcrop_user_role']!='erxlab'){
   ?>
-  <li class="treeview active"><a href="#"><i class="fa fa-wheelchair" aria-hidden="true"></i>
+  <li class="treeview"><a href="#"><i class="fa fa-wheelchair" aria-hidden="true"></i>
 <span><?php xl('Patient','e') ?></span><span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span></a>
@@ -1987,6 +1992,7 @@ $newcrop_user_role=sqlQuery("select newcrop_user_role from users where username=
 
 <?php } ?>
 
+<br /><hr />
 
 <?php
  // To use RelayHealth, see comments and parameters in includes/config.php.
@@ -2007,14 +2013,14 @@ $newcrop_user_role=sqlQuery("select newcrop_user_role from users where username=
 <?php
 if (!$GLOBALS['athletic_team']) {
   genPopupsList();
-
+  echo "<hr />\n";
   genFindBlock();
-
+  echo "<hr />\n";
 }
 ?>
 
 <?php if (!empty($GLOBALS['online_support_link'])) { ?>
-<!-- <a href='<?php echo $GLOBALS["online_support_link"]; ?>' id="support_link" class='css_button' onClick="top.restoreSession()"><span><?php xl('Online Support','e'); ?></span></a> -->
+<a href='<?php echo $GLOBALS["online_support_link"]; ?>' id="support_link" class='css_button' onClick="top.restoreSession()"><span><?php xl('Online Support','e'); ?></span></a>
 <?php } ?>
 
 <input type='hidden' name='findBy' value='Last' />
@@ -2026,25 +2032,216 @@ if (!$GLOBALS['athletic_team']) {
 <script language='JavaScript'>
 syncRadios();
 </script>
-<script type="text/javascript">
-$.noConflict();
-jQuery(document).ready(function($) {
-var selector = '.sidebar-menu li';
-$(selector).on('click', function(){
-	
-    $(selector).removeClass('active');
-    $(this).addClass('active');
-});
-});
-</script>
+<div class="wrapper">
+<aside class="main-sidebar">
+<section class="sidebar">
+      <!-- Sidebar user panel -->
+      <div class="user-panel">
+        <div class="pull-left image">
+          <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+        </div>
+        <div class="pull-left info">
+          <p>Alexander Pierce</p>
+          <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+        </div>
+      </div>
+      <!-- search form -->
+      <form action="#" method="get" class="sidebar-form">
+        <div class="input-group">
+          <input type="text" name="q" class="form-control" placeholder="Search...">
+              <span class="input-group-btn">
+                <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
+                </button>
+              </span>
+        </div>
+      </form>
+      <!-- /.search form -->
+      <!-- sidebar menu: : style can be found in sidebar.less -->
+      <ul class="sidebar-menu">
+        <li class="header">MAIN NAVIGATION</li>
+        <li class="active treeview">
+          <a href="#">
+            <i class="fa fa-dashboard"></i> <span>Dashboard</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="index.html"><i class="fa fa-circle-o"></i> Dashboard v1</a></li>
+            <li class="active"><a href="index2.html"><i class="fa fa-circle-o"></i> Dashboard v2</a></li>
+          </ul>
+        </li>
+        <li class="treeview">
+          <a href="#">
+            <i class="fa fa-files-o"></i>
+            <span>Layout Options</span>
+            <span class="pull-right-container">
+              <span class="label label-primary pull-right">4</span>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="pages/layout/top-nav.html"><i class="fa fa-circle-o"></i> Top Navigation</a></li>
+            <li><a href="pages/layout/boxed.html"><i class="fa fa-circle-o"></i> Boxed</a></li>
+            <li><a href="pages/layout/fixed.html"><i class="fa fa-circle-o"></i> Fixed</a></li>
+            <li><a href="pages/layout/collapsed-sidebar.html"><i class="fa fa-circle-o"></i> Collapsed Sidebar</a></li>
+          </ul>
+        </li>
+        <li>
+          <a href="pages/widgets.html">
+            <i class="fa fa-th"></i> <span>Widgets</span>
+            <span class="pull-right-container">
+              <small class="label pull-right bg-green">new</small>
+            </span>
+          </a>
+        </li>
+        <li class="treeview">
+          <a href="#">
+            <i class="fa fa-pie-chart"></i>
+            <span>Charts</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="pages/charts/chartjs.html"><i class="fa fa-circle-o"></i> ChartJS</a></li>
+            <li><a href="pages/charts/morris.html"><i class="fa fa-circle-o"></i> Morris</a></li>
+            <li><a href="pages/charts/flot.html"><i class="fa fa-circle-o"></i> Flot</a></li>
+            <li><a href="pages/charts/inline.html"><i class="fa fa-circle-o"></i> Inline charts</a></li>
+          </ul>
+        </li>
+        <li class="treeview">
+          <a href="#">
+            <i class="fa fa-laptop"></i>
+            <span>UI Elements</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="pages/UI/general.html"><i class="fa fa-circle-o"></i> General</a></li>
+            <li><a href="pages/UI/icons.html"><i class="fa fa-circle-o"></i> Icons</a></li>
+            <li><a href="pages/UI/buttons.html"><i class="fa fa-circle-o"></i> Buttons</a></li>
+            <li><a href="pages/UI/sliders.html"><i class="fa fa-circle-o"></i> Sliders</a></li>
+            <li><a href="pages/UI/timeline.html"><i class="fa fa-circle-o"></i> Timeline</a></li>
+            <li><a href="pages/UI/modals.html"><i class="fa fa-circle-o"></i> Modals</a></li>
+          </ul>
+        </li>
+        <li class="treeview">
+          <a href="#">
+            <i class="fa fa-edit"></i> <span>Forms</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="pages/forms/general.html"><i class="fa fa-circle-o"></i> General Elements</a></li>
+            <li><a href="pages/forms/advanced.html"><i class="fa fa-circle-o"></i> Advanced Elements</a></li>
+            <li><a href="pages/forms/editors.html"><i class="fa fa-circle-o"></i> Editors</a></li>
+          </ul>
+        </li>
+        <li class="treeview">
+          <a href="#">
+            <i class="fa fa-table"></i> <span>Tables</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="pages/tables/simple.html"><i class="fa fa-circle-o"></i> Simple tables</a></li>
+            <li><a href="pages/tables/data.html"><i class="fa fa-circle-o"></i> Data tables</a></li>
+          </ul>
+        </li>
+        <li>
+          <a href="pages/calendar.html">
+            <i class="fa fa-calendar"></i> <span>Calendar</span>
+            <span class="pull-right-container">
+              <small class="label pull-right bg-red">3</small>
+              <small class="label pull-right bg-blue">17</small>
+            </span>
+          </a>
+        </li>
+        <li>
+          <a href="pages/mailbox/mailbox.html">
+            <i class="fa fa-envelope"></i> <span>Mailbox</span>
+            <span class="pull-right-container">
+              <small class="label pull-right bg-yellow">12</small>
+              <small class="label pull-right bg-green">16</small>
+              <small class="label pull-right bg-red">5</small>
+            </span>
+          </a>
+        </li>
+        <li class="treeview">
+          <a href="#">
+            <i class="fa fa-folder"></i> <span>Examples</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="pages/examples/invoice.html"><i class="fa fa-circle-o"></i> Invoice</a></li>
+            <li><a href="pages/examples/profile.html"><i class="fa fa-circle-o"></i> Profile</a></li>
+            <li><a href="pages/examples/login.html"><i class="fa fa-circle-o"></i> Login</a></li>
+            <li><a href="pages/examples/register.html"><i class="fa fa-circle-o"></i> Register</a></li>
+            <li><a href="pages/examples/lockscreen.html"><i class="fa fa-circle-o"></i> Lockscreen</a></li>
+            <li><a href="pages/examples/404.html"><i class="fa fa-circle-o"></i> 404 Error</a></li>
+            <li><a href="pages/examples/500.html"><i class="fa fa-circle-o"></i> 500 Error</a></li>
+            <li><a href="pages/examples/blank.html"><i class="fa fa-circle-o"></i> Blank Page</a></li>
+            <li><a href="pages/examples/pace.html"><i class="fa fa-circle-o"></i> Pace Page</a></li>
+          </ul>
+        </li>
+        <li class="treeview">
+          <a href="#">
+            <i class="fa fa-share"></i> <span>Multilevel</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="#"><i class="fa fa-circle-o"></i> Level One</a></li>
+            <li>
+              <a href="#"><i class="fa fa-circle-o"></i> Level One
+                <span class="pull-right-container">
+                  <i class="fa fa-angle-left pull-right"></i>
+                </span>
+              </a>
+              <ul class="treeview-menu">
+                <li><a href="#"><i class="fa fa-circle-o"></i> Level Two</a></li>
+                <li>
+                  <a href="#"><i class="fa fa-circle-o"></i> Level Two
+                    <span class="pull-right-container">
+                      <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                  </a>
+                  <ul class="treeview-menu">
+                    <li><a href="#"><i class="fa fa-circle-o"></i> Level Three</a></li>
+                    <li><a href="#"><i class="fa fa-circle-o"></i> Level Three</a></li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+            <li><a href="#"><i class="fa fa-circle-o"></i> Level One</a></li>
+          </ul>
+        </li>
+        <li><a href="documentation/index.html"><i class="fa fa-book"></i> <span>Documentation</span></a></li>
+        <li class="header">LABELS</li>
+        <li><a href="#"><i class="fa fa-circle-o text-red"></i> <span>Important</span></a></li>
+        <li><a href="#"><i class="fa fa-circle-o text-yellow"></i> <span>Warning</span></a></li>
+        <li><a href="#"><i class="fa fa-circle-o text-aqua"></i> <span>Information</span></a></li>
+      </ul>
+    </section>
+	</aside>
+	 <div class="control-sidebar-bg"></div>
+
+</div>
+<!-- ./wrapper -->
+
 <!-- jQuery 2.2.3 -->
-<script src="../../library/dist/jQuery/jquery-2.2.3.min.js"></script>
+<script src="../../plugins/jQuery/jquery-2.2.3.min.js"></script>
 <!-- Bootstrap 3.3.6 -->
 <script src="../../library/js/bootstrap.min.js"></script>
 <!-- FastClick -->
 <script src="../../plugins/fastclick/fastclick.js"></script>
 <!-- AdminLTE App -->
 <script src="../../library/dist/js/app.min.js"></script>
-
 </body>
 </html>

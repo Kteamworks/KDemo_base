@@ -66,10 +66,16 @@ class C_Prescription extends Controller {
 					$row['quantity']   . ","   . //  8
 					$row['refills']    . ","   . //  9
 					$row['quantity']   . "]";    // 10 quantity per_refill
+										$drug_names .=    "['"  .
+					$row['name']      . "']";
+						$drug_id .=    "['"  .
+					$row['drug_id']      . "']";
 			}
 			$this->assign("DRUG_ARRAY_VALUES", $drug_array_values);
 			$this->assign("DRUG_ARRAY_OUTPUT", $drug_array_output);
 			$this->assign("DRUG_ATTRIBUTES", $drug_attributes);
+									$this->assign("DRUG_NAMES", $drug_names);
+			$this->assign("DRUG_ID", $drug_id);
 		}
 	}
 

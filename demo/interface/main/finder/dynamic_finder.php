@@ -289,16 +289,30 @@ function openNewTopWindow(pid) {
           <!-- Info Boxes Style 2 -->
           <div class="info-box bg-yellow">
             <span class="info-box-icon"><i class="ion ion-ios-people-outline"></i></span>
+<?php $registration_qry = sqlStatement("Select count(pid)last_month from patient_Data
+where date between  date_sub(now(), interval 30 day ) and now()");
+
+$progress_reg = sqlQuery("SELECT a.last_month,b.two_months,b.two_months-a.last_month change_value,
+coalesce(if (round(((a.last_month-b.two_months)*100)/b.two_months ,0)<0,0,round(((a.last_month-b.two_months)*100)/b.two_months ,0)),0)change_percentage
+FROM 
+(
+Select count(pid)last_month from patient_Data
+where date between  date_sub(now(), interval 30 day ) and now())a,
+(select count(pid)two_months
+from patient_data
+where date between date_sub(date_sub(now(), interval 30 day ),interval 30 day) and
+date_sub(now(), interval 30 day ))b"); ?>
 
             <div class="info-box-content">
               <span class="info-box-text">New Registration</span>
-              <span class="info-box-number">10</span>
-
+			  <?php while($registration = sqlFetchArray($registration_qry)) {  ?>
+              <span class="info-box-number"><?php echo $registration['last_month']; ?></span>
+<?php } ?> 
               <div class="progress">
-                <div class="progress-bar" style="width: 50%"></div>
+                <div class="progress-bar" style="width: <?php echo $progress_reg['change_percentage']; ?>%"></div>
               </div>
                   <span class="progress-description">
-                    50% Increase in 30 Days
+                    <?php echo $progress_reg['change_percentage']; ?>% Increase in 30 Days
                   </span>
             </div>
             <!-- /.info-box-content -->
@@ -326,7 +340,7 @@ function openNewTopWindow(pid) {
 		  </div>
 		  <div class="col-md-3">
           <div class="info-box bg-red">
-            <span class="info-box-icon"><i class="ion ion-ios-cloud-download-outline"></i></span>
+            <span class="info-box-icon"><i class="ion ion-ios-pulse"></i></span>
 
             <div class="info-box-content">
               <span class="info-box-text">Total IPD Registration</span>
@@ -345,7 +359,7 @@ function openNewTopWindow(pid) {
           <!-- /.info-box -->
 		  <div class="col-md-3">
           <div class="info-box bg-aqua">
-            <span class="info-box-icon"><i class="fa fa-stethoscope"></i></span>
+            <span class="info-box-icon"><i class="ion-ios-heart-outline"></i></span>
 
             <div class="info-box-content">
               <span class="info-box-text">Total Doctor</span>

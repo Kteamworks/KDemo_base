@@ -993,7 +993,7 @@ div.notab-right {
   width: 40%;
   border: 1px solid Black;
   background-color: #ffffff; }
-
+ /*
 #navigation-slide, #navigation-slide * {
   padding-left: 0;
   margin-left: 0; }
@@ -1018,9 +1018,9 @@ div.notab-right {
   padding: 5px 2px 5px 10px;
   width: 150px;
   text-transform: uppercase; }
-  #navigation-slide a:hover {
+ #navigation-slide a:hover {
     background: #e7eaef; }
-
+*/
 #sddm li {
   margin: 0;
   padding: 0;

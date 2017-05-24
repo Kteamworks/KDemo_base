@@ -24,6 +24,7 @@ select {
 }
 .main-header .logo {
 margin-top: 0px;
+margin-left: 30px;
 }
 .logo-lg {
 	color: rgb(153,153,153) !important;
@@ -45,3 +46,83 @@ color: rgb(21,100,145);
 	.info-box-icon i {
     padding: 20px;
 	}
+	.nav_new {
+	background-color: #222d32;
+color: #fff;
+	}
+	.main-header .sidebar-toggle {
+    margin-left: 30px;
+}
+	.nav_new a {
+	color: #fff;
+	}
+	.nav_new .sidebar-form .btn {
+    color: #999;
+    border-top-left-radius: 0;
+    border-top-right-radius: 2px;
+    border-bottom-right-radius: 2px;
+    border-bottom-left-radius: 0;
+}
+.nav_new .sidebar-form .btn {
+    box-shadow: none;
+    background-color: #374850;
+    border: 1px solid transparent;
+    height: 35px;
+}
+.nav_new .sidebar-form {
+    border-radius: 3px;
+    border: 1px solid #374850;
+    margin: 10px 10px;
+}
+.nav_new .sidebar-form input[type="text"] {
+    color: #666;
+    border-top-left-radius: 2px;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 2px;
+}
+.nav_new .sidebar-form .btn {
+    box-shadow: none;
+    background-color: #374850;
+    border: 1px solid transparent;
+    height: 35px;
+}
+.nav_new .sidebar-menu > li.header {
+    color: #4b646f;
+    background: #1a2226;
+}
+.nav_new .sidebar-menu > li > a {
+    border-left: 3px solid transparent;
+}
+.nav_new .sidebar a {
+    color: #b8c7ce;
+}
+.nav_new .sidebar-menu > li > .treeview-menu {
+    margin: 0 1px;
+    background: #2c3b41;
+}
+ul ul {
+    list-style: none;
+}
+body::-webkit-scrollbar {
+    width: 0.5em;
+}
+ 
+body::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+}
+ 
+body::-webkit-scrollbar-thumb {
+  background-color: darkgrey;
+  outline: 1px solid slategrey;
+}
+.nav_new .sidebar-menu>li.active>a {
+    border-left-color: #3c8dbc;
+}
+.nav_new .sidebar-menu>li:hover>a, .nav_new .sidebar-menu>li.active>a, .nav_new .sidebar-menu>li.menu-open>a {
+    color: #fff;
+    background: #1e282c;
+}
+.nav_new .sidebar-menu>li>a {
+    border-left: 3px solid transparent;
+}

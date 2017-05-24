@@ -448,7 +448,10 @@ function genFindBlock() {
 <script src="../../library/js/jquery.treeview-1.4.1/jquery.treeview.js" type="text/javascript"></script>
 
 <script type="text/javascript" src="../../library/dialog.js"></script>
-
+<script src="jquery.js" type="text/javascript"></script>
+<script src="jquery.ui.draggable.js" type="text/javascript"></script>
+<script src="jquery.alerts.js" type="text/javascript"></script>
+<link href="jquery.alerts.css" rel="stylesheet" type="text/css" media="screen" />
 <script language='JavaScript'>
  
  // tajemo work by CB 2012/01/31 12:32:57 PM dated reminders counter
@@ -2045,6 +2048,5 @@ $(selector).on('click', function(){
 <script src="../../plugins/fastclick/fastclick.js"></script>
 <!-- AdminLTE App -->
 <script src="../../library/dist/js/app.min.js"></script>
-
 </body>
 </html>
