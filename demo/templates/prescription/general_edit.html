@@ -47,6 +47,7 @@
 
  var drug_id1 = [{$DRUG_ID}];
  drug_id=drug_id1.toString().split(",");
+console.log(drug_id);
 {literal}
 
  // Helper to choose an option from its value.
@@ -101,7 +102,9 @@
 {/literal}
 </head>
 <body class="body_top">
-
+<div class="pull-right">
+<a href='{$rootdir}/patient_file/encounter/load_form.php?formname=dictation' class='css_button' id='next'><span>{xl t='Next'}</span></a>
+</div>
 <form name="prescribe" id="prescribe" method="post" action="{$FORM_ACTION}">
 <table>
     <tr><td class="title"><font><b>{xl t='Add Prescription'}</b></font>&nbsp;</td>

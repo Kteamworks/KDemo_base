@@ -54,6 +54,8 @@ class C_Prescription extends Controller {
 				$drug_array_values[] = $row['drug_id'];
 				$drug_array_output[] = $tmp_output;
 				if ($drug_attributes) $drug_attributes .= ',';
+												if ($drug_names) $drug_names .= ',';
+				if ($drug_id) $drug_id .= ',';
 				$drug_attributes .=    "['"  .
 					$row['name']       . "',"  . //  0
 					$row['form']       . ",'"  . //  1
