@@ -64,7 +64,7 @@ $issue = empty($_GET['issue']) ? 0 : 0 + $_GET['issue'];
 
  if (!($auth_notes_a || $auth_notes || $auth_coding_a || $auth_coding || $auth_med || $auth_relaxed)) {
   echo "<body>\n<html>\n";
-  echo "<p>(".htmlspecialchars( xl('Encounters not authorized'), ENT_NOQUOTES).")</p>\n";
+  echo "<p>(".htmlspecialchars( xl('Visit not authorized'), ENT_NOQUOTES).")</p>\n";
   echo "</body>\n</html>\n";
   exit();
  }
@@ -265,12 +265,12 @@ function efmouseover(elem, ptid, encid, formname, formid) {
 <font class='title'>
 <?php
 if ($issue) {
-  echo htmlspecialchars(xl('Past Encounters for'), ENT_NOQUOTES) . ' ';
+  echo htmlspecialchars(xl('Past Visit for'), ENT_NOQUOTES) . ' ';
   $tmp = sqlQuery("SELECT title FROM lists WHERE id = ?", array($issue));
   echo htmlspecialchars($tmp['title'], ENT_NOQUOTES);
 }
 else {
-  echo htmlspecialchars(xl('Past Encounters and Documents'), ENT_NOQUOTES);
+  echo htmlspecialchars(xl('Past Visit and Documents'), ENT_NOQUOTES);
 }
 ?>
 </font>

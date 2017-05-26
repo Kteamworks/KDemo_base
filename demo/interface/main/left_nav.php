@@ -520,11 +520,11 @@ function genFindBlock() {
    return false;
   }
   if (active_encounter == 0 && usage > '1') {
-   alert('<?php xl('You must first select or create an encounter.','e') ?>');
+   alert('<?php xl('You must first select or create an visit.','e') ?>');
    return false;
   }
   if (encounter_locked && usage > '1') {
-   alert('<?php echo xls('This encounter is locked. No new forms can be added.') ?>');
+   alert('<?php echo xls('This visit is locked. No new forms can be added.') ?>');
    return false;
   }
   var f = document.forms[0];
@@ -586,11 +586,11 @@ function genFindBlock() {
    return false;
   }
   if (active_encounter == 0 && (topusage > '1' || botusage > '1')) {
-   alert('<?php xl('You must first select or create an encounter.','e') ?>');
+   alert('<?php xl('You must first select or create an visit.','e') ?>');
    return false;
   }
   if (encounter_locked  && (topusage > '1' || botusage > '1')) {
-   alert('<?php echo xls('This encounter is locked. No new forms can be added.') ?>');
+   alert('<?php echo xls('This visit is locked. No new forms can be added.') ?>');
    return false;
   }
   var f = document.forms[0];

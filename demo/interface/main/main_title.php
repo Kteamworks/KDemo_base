@@ -119,7 +119,7 @@ $res = sqlQuery("select * from users where username='".$_SESSION{"authUser"}."'"
 		</div></td></tr>
 	<tr><td valign="baseline" align="center">	
         <div style='display:none' class='text' id="current_encounter_block" >
-            <span class='text'><?php xl('Selected Encounter','e'); ?>:&nbsp;</span><span class='title_bar_top' id="current_encounter"><b><?php xl('None','e'); ?></b></span> 
+            <span class='text'><?php xl('Selected Visit','e'); ?>:&nbsp;</span><span class='title_bar_top' id="current_encounter"><b><?php xl('None','e'); ?></b></span> 
 		</div></td></tr></table>
 </td>
 <td align="right">
