@@ -1,5 +1,4 @@
 <?php
-include_once('function.php');
 require_once("../../globals.php");
  require_once("$srcdir/patient.inc");
 $result_patient = getPatientData($pid, "*, DATE_FORMAT(DOB,'%Y-%m-%d') as DOB_YMD");
