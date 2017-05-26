@@ -1,7 +1,7 @@
-<?php /* Smarty version 2.6.2, created on 2017-05-23 15:10:37
+<?php /* Smarty version 2.6.2, created on 2017-05-24 11:30:50
          compiled from C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html */ ?>
 <?php require_once(SMARTY_DIR . 'core' . DIRECTORY_SEPARATOR . 'core.load_plugins.php');
-smarty_core_load_plugins(array('plugins' => array(array('function', 'xl', 'C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html', 95, false),array('function', 'amcCollect', 'C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html', 115, false),array('function', 'html_select_date', 'C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html', 136, false),array('function', 'html_options', 'C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html', 142, false),array('function', 'html_radios', 'C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html', 227, false),)), $this); ?>
+smarty_core_load_plugins(array('plugins' => array(array('function', 'xl', 'C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html', 107, false),array('function', 'amcCollect', 'C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html', 131, false),array('function', 'html_select_date', 'C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html', 152, false),array('function', 'html_options', 'C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html', 158, false),array('function', 'html_radios', 'C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html', 246, false),)), $this); ?>
 <html>
 <head>
 <?php html_header_show(); ?>
@@ -18,6 +18,13 @@ smarty_core_load_plugins(array('plugins' => array(array('function', 'xl', 'C:/xa
 </style>
 '; ?>
 
+    <link data-require="bootstrap-css@*" data-semver="2.3.2" rel="stylesheet" href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.7/css/bootstrap-dialog.min.css" rel="stylesheet" />
+	<script src="http://code.angularjs.org/1.2.6/angular.js"></script>
+    <script data-require="jquery@*" data-semver="2.0.1" src="http://code.jquery.com/jquery-2.0.1.min.js"></script>
+    <script data-require="bootstrap@2.3.2" data-semver="2.3.2" src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
+			<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.7/js/bootstrap-dialog.min.js" type="text/javascript"></script>
+    <script data-require="ui-bootstrap@0.3.0" data-semver="0.3.0" src="http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.9.0.min.js"></script>
 <script language="Javascript">
 <?php echo '
 		function my_process () {
@@ -51,6 +58,13 @@ smarty_core_load_plugins(array('plugins' => array(array('function', 'xl', 'C:/xa
 
  var drugopts = [<?php echo $this->_tpl_vars['DRUG_ATTRIBUTES']; ?>
 ];
+ var drug_name  = [<?php echo $this->_tpl_vars['DRUG_NAMES']; ?>
+];
+  drug_names=drug_name.toString().split(",");
+
+ var drug_id1 = [<?php echo $this->_tpl_vars['DRUG_ID']; ?>
+];
+ drug_id=drug_id1.toString().split(",");
 <?php echo '
 
  // Helper to choose an option from its value.
@@ -112,6 +126,11 @@ smarty_core_load_plugins(array('plugins' => array(array('function', 'xl', 'C:/xa
 <form name="prescribe" id="prescribe" method="post" action="<?php echo $this->_tpl_vars['FORM_ACTION']; ?>
 ">
 <table>
+    <tr><td class="title"><font><b><?php echo smarty_function_xl(array('t' => 'Add Prescription'), $this);?>
+</b></font>&nbsp;</td>
+	</tr>
+	</table>
+<table class="displaynone">
     <tr><td class="title"><font><b><?php echo smarty_function_xl(array('t' => 'Add'), $this);?>
 /<?php echo smarty_function_xl(array('t' => 'Edit'), $this);?>
 </b></font>&nbsp;</td>
@@ -141,12 +160,12 @@ smarty_core_load_plugins(array('plugins' => array(array('function', 'xl', 'C:/xa
 </table>
 
 <?php  if ($GLOBALS['enable_amc_prompting']) {  ?>
-  <div style='float:right;margin-right:25px;border-style:solid;border-width:1px;'>
+  <div  class="displaynone" style='float:right;margin-right:25px;border-style:solid;border-width:1px;'>
     <div style='float:left;margin:5px 5px 5px 5px;'>
       <?php echo smarty_function_amcCollect(array('amc_id' => 'e_prescribe_amc','patient_id' => $this->_tpl_vars['prescription']->patient->id,'object_category' => 'prescriptions','object_id' => $this->_tpl_vars['prescription']->id), $this);?>
 
       <?php if (! $this->_tpl_vars['amcCollectReturn']): ?>
-        <input type="h" id="escribe_flag" name="escribe_flag">
+        <input type="checkbox" id="escribe_flag" name="escribe_flag">
       <?php else: ?>
         <input type="checkbox" id="escribe_flag" name="escribe_flag" checked>
       <?php endif; ?>
@@ -157,14 +176,14 @@ smarty_core_load_plugins(array('plugins' => array(array('function', 'xl', 'C:/xa
 <?php  }  ?>
 
 <table CELLSPACING="0" CELLPADDING="3" BORDER="0">
-<tr>
+<tr class="displaynone">
   <td COLSPAN="1" class="text" ALIGN="right" VALIGN="MIDDLE" ><?php echo smarty_function_xl(array('t' => 'Currently Active'), $this);?>
 </td>
   <td COLSPAN="2" ALIGN="LEFT" VALIGN="MIDDLE" >
     <input type="checkbox" name="active" value="1"<?php if ($this->_tpl_vars['prescription']->get_active() > 0): ?> checked<?php endif; ?> />
   </td>
 </tr>
-<tr>
+<!-- <tr class="displaynone">
 	<td COLSPAN="1" class="text" ALIGN="right" VALIGN="MIDDLE" ><?php echo smarty_function_xl(array('t' => 'Starting Date'), $this);?>
 </td>
 	<td COLSPAN="2" ALIGN="LEFT" VALIGN="MIDDLE" >
@@ -172,7 +191,7 @@ smarty_core_load_plugins(array('plugins' => array(array('function', 'xl', 'C:/xa
 
 	</td>
 </tr>
-<tr>
+<tr class="displaynone">
 	<td COLSPAN="1" class="text" ALIGN="right" VALIGN="MIDDLE" ><?php echo smarty_function_xl(array('t' => 'Provider'), $this);?>
 </td>
 	<td COLSPAN="2" ALIGN="LEFT" VALIGN="MIDDLE" >
@@ -181,8 +200,8 @@ smarty_core_load_plugins(array('plugins' => array(array('function', 'xl', 'C:/xa
 		<input type="hidden" name="patient_id" value="<?php echo $this->_tpl_vars['prescription']->patient->id; ?>
 " />
 	</td>
-</tr>
-<tr>
+</tr> -->
+<tr class="displaynone">
 	<td COLSPAN="1" class="text" ALIGN="right" VALIGN="MIDDLE" ><?php echo smarty_function_xl(array('t' => 'Drug'), $this);?>
 </td>
 	<td COLSPAN="2" ALIGN="LEFT" VALIGN="MIDDLE" >
@@ -195,18 +214,20 @@ smarty_core_load_plugins(array('plugins' => array(array('function', 'xl', 'C:/xa
 	</td>
 </tr>
 <?php if ($this->_tpl_vars['DRUG_ARRAY_VALUES']): ?>
-<tr>
+<tr ng-controller="Main" ng-click="showAlert(dessert)" class="displayblock">
 	<td COLSPAN="1" class="text" ALIGN="right" VALIGN="MIDDLE" >&nbsp; <?php echo smarty_function_xl(array('t' => 'in-house'), $this);?>
-</td>
+ </td>
 	<td COLSPAN="2" ALIGN="LEFT" VALIGN="MIDDLE" >
-		<select name="drug_id" onchange="drugselected(this)">
-    <?php echo smarty_function_html_options(array('values' => $this->_tpl_vars['DRUG_ARRAY_VALUES'],'output' => $this->_tpl_vars['DRUG_ARRAY_OUTPUT'],'selected' => $this->_tpl_vars['prescription']->get_drug_id()), $this);?>
-
+	<input type = "text" ng-model = "yourName" placeholder = "Search by drug name...">
+		<select name="drug_id" onchange="drugselected(this)" multiple ng-model="selectedValues" ng-change="search2()">
+		<option  ng-repeat="cust in customers | filter: yourName" value="<% cust.id %>"><% cust.name %></option>
+     
 		</select>
-	</td>
+	</td><br>
+	<!-- <td><% selectedValues %></td> -->
 </tr>
 <?php endif; ?>
-<tr>
+<tr class="displaynone">
 	<td COLSPAN="1" class="text" ALIGN="right" VALIGN="MIDDLE" ><?php echo smarty_function_xl(array('t' => 'Quantity'), $this);?>
 </td>
 	<td COLSPAN="2" ALIGN="LEFT" VALIGN="MIDDLE" >
@@ -219,7 +240,7 @@ smarty_core_load_plugins(array('plugins' => array(array('function', 'xl', 'C:/xa
 <?php if ($this->_tpl_vars['SIMPLIFIED_PRESCRIPTIONS'] && ! $this->_tpl_vars['prescription']->size): ?>
 <tr style='display:none;'>
 <?php else: ?>
-<tr>
+<tr class="displaynone">
 <?php endif; ?>
 	<td COLSPAN="1" class="text" ALIGN="right" VALIGN="MIDDLE" ><?php echo smarty_function_xl(array('t' => 'Medicine Units'), $this);?>
 </td>
@@ -230,7 +251,7 @@ smarty_core_load_plugins(array('plugins' => array(array('function', 'xl', 'C:/xa
 </select>
 	</td>
 </tr>
-<tr>
+<tr class="displaynone">
 	<td COLSPAN="1" class="text" ALIGN="right" VALIGN="MIDDLE" ><?php echo smarty_function_xl(array('t' => 'Take'), $this);?>
 </td>
 	<td COLSPAN="2" class="text" ALIGN="LEFT" VALIGN="MIDDLE" >
@@ -253,7 +274,7 @@ smarty_core_load_plugins(array('plugins' => array(array('function', 'xl', 'C:/xa
 <?php endif; ?>
 	</td>
 </tr>
-<tr>
+<!-- <tr>
 	<td COLSPAN="1" class="text" ALIGN="right" VALIGN="MIDDLE" ><?php echo smarty_function_xl(array('t' => 'Refills'), $this);?>
 </td>
 	<td COLSPAN="2" class="text" ALIGN="LEFT" VALIGN="MIDDLE" >
@@ -269,8 +290,8 @@ smarty_core_load_plugins(array('plugins' => array(array('function', 'xl', 'C:/xa
 " />
 <?php endif; ?>
 	</td>
-</tr>
-<tr>
+</tr> -->
+<tr class="displaynone">
 	<td COLSPAN="1" class="text" ALIGN="right" VALIGN="MIDDLE" ><?php echo smarty_function_xl(array('t' => 'Notes'), $this);?>
 </td>
 	<td COLSPAN="2" class="text" ALIGN="LEFT" VALIGN="MIDDLE" >
@@ -278,7 +299,7 @@ smarty_core_load_plugins(array('plugins' => array(array('function', 'xl', 'C:/xa
 </textarea>
 	</td>
 </tr>
-<tr>
+<!-- <tr>
 <?php if ($this->_tpl_vars['WEIGHT_LOSS_CLINIC']): ?>
   <td COLSPAN="1" class="text" ALIGN="right" VALIGN="MIDDLE" ><?php echo smarty_function_xl(array('t' => 'Substitution'), $this);?>
 </td>
@@ -297,8 +318,10 @@ smarty_core_load_plugins(array('plugins' => array(array('function', 'xl', 'C:/xa
 
   </td>
 <?php endif; ?>
-</tr>
+
+</tr>-->
 </table>
+
 <input type="hidden" name="id" value="<?php echo $this->_tpl_vars['prescription']->id; ?>
 " />
 <input type="hidden" name="process" value="<?php echo $this->_tpl_vars['PROCESS']; ?>
@@ -310,6 +333,123 @@ smarty_core_load_plugins(array('plugins' => array(array('function', 'xl', 'C:/xa
 </form>
 <?php echo '
 <!-- for the fancy jQuery stuff -->
+<script>
+
+var fiddleApp = angular.module(\'fiddleApp\', [\'ui.bootstrap\'], function($interpolateProvider) {
+        $interpolateProvider.startSymbol(\'<%\');
+        $interpolateProvider.endSymbol(\'%>\');
+    });
+
+fiddleApp.controller(\'Main\', [\'$scope\', \'$http\', \'$modal\', \'$log\', function($scope, $http, $modal, $log) {
+    // is angular loaded and working?
+    // (reduce future debugging)
+ $scope.greeting = \'hello\';
+    $scope.selectedValues = [];
+	
+	  var customer = [];
+	 
+		for (var i = 0, len = drug_id.length; i < len; i++) {
+		for (var j = 0, lens = drug_names.length; j <= lens; j++) {
+	if (i == j ) {
+		
+    customer.push(\'{ \' + \'"id"\' + \' : \' + \'"\' + drug_id[i] + \'"\' + \', \' + \'"name"\' + \' : \' + \'"\' + drug_names[j] + \'"\' + \' } \');
+	}
+  }
+  }
+$scope.customers = JSON.parse(\'[ \' + customer + \' ]\') ;
+
+    $scope.$watch(\'selected\', function(nowSelected){
+        $scope.selectedValues = [];
+                			
+        if( ! nowSelected ){
+            // here we\'ve initialized selected already
+            // but sometimes that\'s not the case
+            // then we get null or undefined
+            return;
+        }
+        angular.forEach(nowSelected, function(val){
+
+            $scope.selectedValues.push( val.id );
+        });
+
+    });
+
+$scope.search2 = function () {
+
+var datas = $scope.selectedValues;
+var req = {
+ method: \'POST\',
+ url: \'templates/prescription/angularpost.php\',
+ headers: {
+   \'Content-Type\': \'application/x-www-form-urlencoded\'
+ },
+ data: datas
+}
+ var modalInstance = $modal.open({
+                templateUrl: \'templates/prescription/modal-form.php?id=\'+datas,
+		 controller: ModalInstanceCtrl,
+                scope: $scope,
+                resolve: {
+                    userForm: function () {
+                        return $scope.userForm;
+                    }
+                }
+            });
+			            modalInstance.result.then(function (selectedItem) {
+                $scope.selected = selectedItem;
+            }, function () {
+                $log.info(\'Modal dismissed at: \' + new Date());
+            });
+    
+}
+
+}]);
+var ModalInstanceCtrl = function ($scope,$http, $modalInstance, userForm) {
+    $scope.form = {}
+
+    $scope.submitForm = function () {
+        if ($scope.form.userForm.$valid) {
+			var FormData = {
+			\'drugId\' : $scope.selectedValues,
+			\'dosagetype\' : this.form.userForm.dosagetype.$modelValue,
+      \'quantity\' : this.form.userForm.name.$modelValue,
+      \'units\' : this.form.userForm.username.$modelValue,
+	  \'take1\' : this.form.userForm.take1.$modelValue,
+	  \'take2\' : this.form.userForm.take2.$modelValue,
+	  \'take3\' : this.form.userForm.take3.$modelValue,
+	  \'duration\' : this.form.userForm.duration.$modelValue,
+	  \'note\' : this.form.userForm.note.$modelValue,
+	  \'take\' : this.form.userForm.email.$modelValue
+    };
+	var req = {
+ method: \'POST\',
+ url: \'templates/prescription/angularpost.php\',
+ headers: {
+   \'Content-Type\': \'application/x-www-form-urlencoded\'
+ },
+ data: FormData
+}
+            $http(req).success(function(data){
+                    console.log(data);
+					BootstrapDialog.alert(\'The Drug has been saved as prescription!\');
+                    }).error(function(error){
+                    console.log(error);
+               });
+ 
+            $modalInstance.close(\'closed\');
+        } else {
+            console.log(\'userform is not in scope\');
+        }
+    };
+
+    $scope.cancel = function () {
+        $modalInstance.dismiss(\'cancel\');
+    };
+	};
+
+// http://docs.angularjs.org/guide/bootstrap Manual Initialization
+angular.bootstrap(document, [\'fiddleApp\']);
+</script>
 <script type="text/javascript">
 
 function submitfun() {
@@ -396,7 +536,39 @@ function CheckRequired(objID) {
 
     return true;
 }
+var QueryString = function () {
+  // This function is anonymous, is executed immediately and 
+  // the return value is assigned to QueryString!
+  var query_string = {};
+  var query = window.location.search.substring(1);
+  var vars = query.split("&");
+  for (var i=0;i<vars.length;i++) {
+    var pair = vars[i].split("=");
+        // If first entry with this name
+    if (typeof query_string[pair[0]] === "undefined") {
+      query_string[pair[0]] = decodeURIComponent(pair[1]);
+        // If second entry with this name
+    } else if (typeof query_string[pair[0]] === "string") {
+      var arr = [ query_string[pair[0]],decodeURIComponent(pair[1]) ];
+      query_string[pair[0]] = arr;
+        // If third or later entry with this name
+    } else {
+      query_string[pair[0]].push(decodeURIComponent(pair[1]));
+    }
+  } 
 
+  if(!query_string.id) {
+var elems = document.getElementsByClassName("displaynone");
+  for (i = 0; i < elems.length; i++) {
+    elems[i].style.display = \'none\';
+    elems[i].style.top = \'100%\';
+  }
+  }
+  else {
+  document.getElementsByClassName("displayblock").style.display = \'none\';
+  }
+  return query_string;
+}();
 </script>
 '; ?>
 

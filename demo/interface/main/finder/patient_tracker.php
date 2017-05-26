@@ -163,7 +163,7 @@ function openNewTopWindow(newpid,newencounterid) {
    <?php  echo xlt('Patient'); ?>
   </td>
   <td class="dehead" align="center">
-   <?php  echo xlt('Encounter'); ?>
+   <?php  echo xlt('Visit'); ?>
   </td>
   <td class="dehead" align="center">
    <?php  echo xlt('Exam Room #'); ?>
