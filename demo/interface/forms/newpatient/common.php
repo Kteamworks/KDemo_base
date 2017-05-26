@@ -189,10 +189,14 @@ function getRatePlan(plan)
       <span><?php echo xlt('Cancel'); ?></span></a>
   <?php } // end not $viewmode ?>
     </div>
+	<?php
+     $newcrop_user_role=sqlQuery("select newcrop_user_role from users where username='".$_SESSION['authUser']."'");
+     if($newcrop_user_role['newcrop_user_role']=='erxdoctor'){
+	?>
 	<div style="float:left; margin-top:-3px">
   <a href='<?php echo "$rootdir/patient_file/encounter/load_form.php?formname=vitals"; ?>' class='css_button' id='next'><span><?php echo htmlspecialchars( xl('Next'), ENT_NOQUOTES); ?></span></a>
 </div>
-	
+	 <?php }?>
 	
 	
  </div>
