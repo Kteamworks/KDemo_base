@@ -46,18 +46,18 @@ $pstreet = $result_patient['street'];
 				<div class="body">
 <div class="table-title">
 <div class="row auo-mar">
-<p style="display:inline"><b>Serial No:</b>&nbsp;</th><td><?php$pserial?></p>
-<p class="pull-right"><b>Date:</b>&nbsp;</th><td><?php$strip?></p>
+<p style="display:inline"><b>Serial No:</b>&nbsp;</th><td><?php echo $pserial ?></p>
+<p class="pull-right"><b>Date:</b>&nbsp;</th><td><?php echo $strip ?></p>
 </div>
 <div style="text-align: center">
-<p class="doc-head"><?php $doctor ?>, MBBS;DPM;MD; FRCPsych</p>
+<p class="doc-head"><?php echo $doctor ?>, MBBS;DPM;MD; FRCPsych</p>
 <p>Registration No: 13954 (T C Medical Council)</p>
 </div>
 <div class="row pdata">
-<p>Patient Full Name: <?php$pfname?>&nbsp<?php$plname?>&nbsp<?php$pmname?></p><p class="pull-right">Gender: <?php$pgender?></p>
+<p>Patient Full Name: <?php echo $pfname; ?>&nbsp<?php echo $plname ?>&nbsp<?php echo $pmname ?></p><p class="pull-right">Gender: <?php echo $pgender ?></p>
 </div>
 <div class="row pdata">
-<p>Patient’s Address and Phone number: <?php$pstreet?>, <?php$pmob?></p><p class="pull-right">Age: <?php$page?> Years</p>
+<p>Patient’s Address and Phone number: <?php echo $pstreet ?>, <?php echo $pmob ?></p><p class="pull-right">Age: <?php echo $page ?> Years</p>
 </div>
 </div>
 <table class="table-fill">
@@ -81,8 +81,8 @@ AND encounter = ?";
 			else if($pres['form'] == 3) { $drug_form = 'INJ'; }
 			$qtyz = str_replace(".00", "", (string)number_format ($pres['dosage'], 2, ".", "")); ?>
 <tr>
-<td class="text-left"><?php$pres['drug']?>&nbsp;<sub>(<?php $drug_form?>)</sub> <?php$qtyz?> mg</td>
-<td class="text-left"><?php$pres['drug_intervals']?> (<?php $pres['drug_meal_time'] ?>) for <?php$pres['duration']?> Weeks</td>
+<td class="text-left"><?phpecho $pres['drug']?>&nbsp;<sub>(<?php echo $drug_form?>)</sub> <?phpecho $qtyz?> mg</td>
+<td class="text-left"><?phpecho $pres['drug_intervals']?> (<?php echo $pres['drug_meal_time'] ?>) for <?phpecho $pres['duration']?> Weeks</td>
 </tr>
 <?php
 		  }
