@@ -24,7 +24,12 @@ $returnurl = $GLOBALS['concurrent_layout'] ? 'encounter_top.php' : 'patient_enco
 </head>
 <body class="body_top">
 <form method=post action="<?php echo $rootdir;?>/forms/dictation/save.php?mode=new" name="my_form">
-<span class="title"><?php echo xlt('Plan Details'); ?></span><br><br>
+<span class="title"><?php echo xlt('Plan Details'); ?></span>
+<div style="float:right;margin-right:900px">
+ <a href="<?php echo "$rootdir/patient_file/transaction/add_transaction.php";?>" class='css_button'
+ onclick="top.restoreSession()"><?php echo xlt('Next'); ?></a>
+ </div>
+<br><br>
 <span class=text><?php echo xlt('Plan: '); ?></span><br><textarea cols=80 rows=24 wrap=virtual name="dictation" ></textarea><br>
 <span class=text><?php echo xlt('Additional Notes:'); ?> </span><br><textarea cols=80 rows=8 wrap=virtual name="additional_notes" ></textarea><br><br><br>
  Review After: <!--<input type="text" name="reviewafter"><br><br>-->
@@ -48,8 +53,6 @@ $returnurl = $GLOBALS['concurrent_layout'] ? 'encounter_top.php' : 'patient_enco
 <br>
 <a href="<?php echo "$rootdir/patient_file/encounter/$returnurl";?>" class="link"
  onclick="top.restoreSession()">[<?php echo xlt('Don\'t Save'); ?>]</a>
- <a href="<?php echo "$rootdir/patient_file/transaction/add_transaction.php";?>" class="link"
- onclick="top.restoreSession()">[<?php echo xlt('Next'); ?>]</a>
  <script language='JavaScript'>
 Calendar.setup({inputField:'form_date_collected', ifFormat:'%Y-%m-%d %H:%M',
  button:'img_date_collected', showsTime:true});

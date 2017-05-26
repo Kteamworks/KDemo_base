@@ -119,7 +119,9 @@ td,th {
 
 </head>
 <body bgcolor="{$STYLE.BGCOLOR2}">
-<p><table><tr><td><span class="title">{xl t="Vitals"}</span></td><td>&nbsp;&nbsp;&nbsp;<a href="../summary/demographics.php" class="readonly css_button_small" onclick="top.restoreSession()"> <span>{xl t="View Patient"}</span></a></td></tr></table></p>
+<p><table><tr><td><span class="title">{xl t="Vitals"}</span></td><td>&nbsp;&nbsp;&nbsp;<a href="../summary/demographics.php" class="readonly css_button_small" onclick="top.restoreSession()"> <span>{xl t="View Patient"}</span></a></td><td><input type="button" class="editonly" id="next" value="{xl t="Next"}">
+
+</td></tr></table></p>
 <form name="vitals" method="post" action="{$FORM_ACTION}/interface/forms/vitals/save.php" onSubmit="return vitalsFormSubmitted()">
 <div id="chart"></div>
 <table>
@@ -212,7 +214,6 @@ td,th {
 	<td colspan='3' style='text-align:center'>
         <input type="submit" class="editonly" name="Submit" value="{xl t="Save Form"}">
         <input type="button" class="editonly" id="cancel" value="{xl t="Don't Save"}">
-		<input type="button" class="editonly" id="next" value="{xl t="Next"}">
         </td>
 </tr>
 </table>

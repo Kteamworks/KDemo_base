@@ -75,7 +75,11 @@ a {
  onsubmit="return top.restoreSession()">
 <table><tr><td colspan='10'>
 <p><span class="main_title">{xl t="Review Of Systems"}</span></p>
-</td></tr>
+</td>
+<td>
+	<a href="{$NEXT_LINK}" class="button" onclick="top.restoreSession()">[{php} xl("NEXT","e"); {/php}]</a>
+</td>
+</tr>
 
 <tr>
 	<td><table><td class ="responsetd"><span class="section_title">{xl t="Constitutional"}</span><table>
@@ -611,9 +615,7 @@ a {
 	<a href="{$DONT_SAVE_LINK}" class="link" onclick="top.restoreSession()">[{php} xl("Don't Save","e"); {/php}]</a>
 </td>
 
-<td>
-	<a href="{$NEXT_LINK}" class="link" onclick="top.restoreSession()">[{php} xl("NEXT","e"); {/php}]</a>
-</td>
+
 </tr>
 
 </table>

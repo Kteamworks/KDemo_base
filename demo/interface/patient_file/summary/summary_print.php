@@ -81,8 +81,8 @@ AND encounter = ?";
 			else if($pres['form'] == 3) { $drug_form = 'INJ'; }
 			$qtyz = str_replace(".00", "", (string)number_format ($pres['dosage'], 2, ".", "")); ?>
 <tr>
-<td class="text-left"><?phpecho $pres['drug']?>&nbsp;<sub>(<?php echo $drug_form?>)</sub> <?phpecho $qtyz?> mg</td>
-<td class="text-left"><?phpecho $pres['drug_intervals']?> (<?php echo $pres['drug_meal_time'] ?>) for <?phpecho $pres['duration']?> Weeks</td>
+<td class="text-left"><?php echo $pres['drug']; ?>&nbsp;<sub>(<?php echo $drug_form ?>)</sub> <?php echo $qtyz ?> mg</td>
+<td class="text-left"><?php echo $pres['drug_intervals']?> (<?php echo $pres['drug_meal_time'] ?>) for <?php echo $pres['duration']?> Weeks</td>
 </tr>
 <?php
 		  }
