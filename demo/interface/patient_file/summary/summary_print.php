@@ -2,6 +2,9 @@
 require_once("../../globals.php");
  require_once("$srcdir/patient.inc");
 $result_patient = getPatientData($pid, "*, DATE_FORMAT(DOB,'%Y-%m-%d') as DOB_YMD");
+$result_visit="SELECT * from form_encounter where pid=? and encounter=?";
+$result_visit1 = sqlStatement($result_visit, array($pid,$encounter)); 
+$result_visit2=sqlFetchArray($result_visit1);
 $pserial = $result_patient['genericname1'];
 $pfname = $result_patient['fname'];
 $plname = $result_patient['lname'];
@@ -11,15 +14,7 @@ $pmob = $result_patient['phone_cell'];
 $plocality = $result_patient['locality'];
 $pcity = $result_patient['city'];
 $pstate = $result_patient['state'];
-if($result_patient['sex'] == 1) { 
-$pgender = 'Male';
-}
-elseif($result_patient['sex'] == 2) { 
-$pgender = 'Female';
-}
-else {
-	$pgender = 'Unknown';
-}
+$pgender=$result_patient['sex'];
 $pstreet = $result_patient['street'];
 ?> 
 <html>
@@ -49,12 +44,12 @@ $pstreet = $result_patient['street'];
 <div class="table-title">
 <div class="row auo-mar">
 <p style="display:inline"><b>Serial No:</b>&nbsp;</th><td><?php echo $pserial ?></p>
-<p class="pull-right"><b>Date:</b>&nbsp;</th><td><?php echo $strip ?></p>
+<p class="pull-right"><b>Date:</b>&nbsp;</th><td><?php echo date("d-M-y",strtotime($result_visit2['date'])) ?></p>
 </div>
-<div style="text-align: center">
-<p class="doc-head"><?php echo $doctor ?>, MBBS;DPM;MD; FRCPsych</p>
+<!--<div style="text-align: center">
+<p class="doc-head"><?php //echo $doctor ?>, MBBS;DPM;MD; FRCPsych</p>
 <p>Registration No: 13954 (T C Medical Council)</p>
-</div>
+</div>-->
 <div class="row pdata">
 <p style='display: inline;'>Patient Full Name: <?php echo $pfname; ?>&nbsp<?php echo $plname ?>&nbsp<?php echo $pmname ?></p><p class="pull-right">Gender: <?php echo $pgender ?></p>
 </div>
@@ -62,6 +57,12 @@ $pstreet = $result_patient['street'];
 <p style='display: inline;'>Patient’s Address and Phone number: <?php echo $pstreet ?>, <?php echo $pmob ?></p><p class="pull-right">Age: <?php echo $page ?> Years</p>
 </div>
 </div>
+<?php $qry2 = "SELECT * FROM lists WHERE pid = ? AND encounter = ?";
+   $issues = sqlStatement($qry2, array($pid,$encounter));
+$issues1=sqlFetchArray($issues);
+   
+   $i=1;
+   if($issues1!=null){?>
 <div class="table-title">
 <h2>Patient History</h2>
 
@@ -74,35 +75,39 @@ $pstreet = $result_patient['street'];
       <th>Description</th>
     </tr>
   </thead>
-  <tbody>
-    <tr>
-      <th scope="row">1</th>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-      <td>@fat</td>
-    </tr>
-    <tr>
-      <th scope="row">3</th>
-      <td>Larry</td>
-      <td>the Bird</td>
-      <td>@twitter</td>
-    </tr>
-  </tbody>
+		 
+<tbody class="table-hover">
+<?php foreach($issues as $issue) {?>
+<tr>
+<td class="text-left"><?php echo $i?></td>
+<td class="text-left"><?php echo date("d-M-Y",strtotime($issue['date'])) ?></td>
+<td class="text-left"><?php echo $issue['type']?> </td>
+<td class="text-left"><?php echo $issue['title']?> </td>
+</tr>
+<?php $i++;
+}?>
+</tbody>
 </table>
 
 </div>
+   <?php }?>
 <div class="table-title">
+<?php $qry2 = "SELECT reason FROM form_encounter WHERE pid = ? AND encounter = ?";
+   $notes= sqlStatement($qry2, array($pid,$encounter));
+   $note=sqlFetchArray($notes);
+   if($note!=null){
+   ?>
+   
 <h2>Notes –</h2>
 <blockquote>
-Patient has fever and complaints on pain in joints.
+<?php echo $note['reason']?>
 </blockquote>
 </div>
+   <?php }?>
+  <?php $qry2 = "SELECT * FROM  form_ros WHERE pid = ? AND encounter = ?";
+   $ros = sqlStatement($qry2, array($pid,$encounter));
+$ros1=sqlFetchArray($ros);
+if($ros1!=null){   ?>
 <div class="table-title">
 <h2>Review of systems</h2>
 
@@ -115,29 +120,30 @@ Patient has fever and complaints on pain in joints.
       <th>Current status</th>
     </tr>
   </thead>
-  <tbody>
-    <tr>
-      <th scope="row">1</th>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-      <td>@fat</td>
-    </tr>
-    <tr>
-      <th scope="row">3</th>
-      <td>Larry</td>
-      <td>the Bird</td>
-      <td>@twitter</td>
-    </tr>
-  </tbody>
+		 
+<tbody class="table-hover">
+<?php 
+$i=1;
+foreach($ros as $ros1) {
+	
+	?>
+<tr>
+<td class="text-left"><?php echo $i ?></td>
+<td class="text-left"><?php echo date("d-M-Y",strtotime($ros['date'])) ?></td>
+<td class="text-left"><?php echo $ros['type']?> </td>
+<td class="text-left"><?php echo $ros['title']?> </td>
+</tr>
+<?php $i++;} ?>
+</tbody>
 </table>
 
 </div>
+<?php }?>
+ <?php $qry2 = "SELECT * FROM  procedure_order a,procedure_order_code b WHERE a.procedure_order_id=b.procedure_order_id and a.patient_id = ? AND a.encounter_id = ?";
+   $lab = sqlStatement($qry2, array($pid,$encounter)); 
+   $lab2=sqlFetchArray($lab);
+   if($lab2!=null){
+   ?>
 <div class="table-title">
 <h2>Lab Investigations</h2>
 
@@ -147,32 +153,34 @@ Patient has fever and complaints on pain in joints.
       <th>#</th>
       <th>Date</th>
       <th>Test Name</th>
-      <th>Current status</th>
     </tr>
   </thead>
-  <tbody>
-    <tr>
-      <th scope="row">1</th>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-      <td>@fat</td>
-    </tr>
-    <tr>
-      <th scope="row">3</th>
-      <td>Larry</td>
-      <td>the Bird</td>
-      <td>@twitter</td>
-    </tr>
-  </tbody>
+		 
+<tbody class="table-hover">
+<?php 
+$i=1;
+foreach($lab as $lab1) {
+	
+	?>
+<tr>
+<td class="text-left"><?php echo $i ?></td>
+<td class="text-left"><?php echo date("d-M-Y",strtotime($lab1['date_ordered'])) ?></td>
+<td class="text-left"><?php echo $lab1['procedure_name']?> </td>
+</tr>
+<?php $i++;} ?>
+</tbody>
 </table>
 
 </div>
+<?php }?>
+<?php $qry2 = "SELECT *
+FROM prescriptions
+WHERE patient_id = ?
+AND encounter = ?";
+          $prescription = sqlStatement($qry2, array($pid,$encounter));
+           $pres=sqlFetchArray($prescription);
+          if($pres!=null){		   
+  ?>
 <div class="table-title">
 <h2>Prescription</h2>
 
@@ -183,11 +191,6 @@ Patient has fever and complaints on pain in joints.
 <th class="text-left">Prescription</th>
 </tr>
 </thead>
-<?php $qry2 = "SELECT *
-FROM prescriptions
-WHERE patient_id = ?
-AND encounter = ?";
-          $prescription = sqlStatement($qry2, array($pid,$encounter)); ?>
 		 
 <tbody class="table-hover">
  		<?php  foreach($prescription as $pres) {
@@ -205,27 +208,31 @@ AND encounter = ?";
 		  ?>
 </tbody>
 </table>
+</div>
+		  <?php }?>
+		  <?php 
+$qry2 = "SELECT *,datediff( form_date_collected,CURDATE()) days
+FROM form_dictation
+WHERE pid = ?
+AND encounter = ?";
+ $plan = sqlStatement($qry2, array($pid,$encounter));
+ $plan1 = sqlFetchArray($plan);	
+if($plan1[dictation]!=null){
+ ?>
+ 
 <div class="table-title">
 <h2>Plan –</h2>
 <blockquote>
-   Your plan for the patient based on the problems you’ve identified
-Develop a diagno
-stic and treatment plan for each differential diagnosis.
-Your diagnostic plan may include tests, procedures, other laboratory studies, 
-consultations, etc.
-Your treatment plan should include: patient education, pharmacotherapy if any, 
-other therapeutic proc
-edures. You must also address plans for follow
--up (next 
-scheduled visit, etc.).
-Also see your Bates Guide to Physical Examination for excellent examples of 
-complete H & P and SOAP note formats
+  <?php echo $plan1[dictation]; ?>
 </blockquote>
 </div>
+<?php }?>
+<?php if($plan1['days']!=null){?>
 <div class="table-title">
 <h2>Review After</h2>
-Patient is advised to visit after 20 Days
+Patient is advised to visit after <?php echo $plan1['days']?> Days
 </div>
+<?php } ?>
   </div>
   </div>
 </div>

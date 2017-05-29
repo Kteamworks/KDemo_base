@@ -28,6 +28,7 @@ class FormROS extends ORDataObject {
 	var $id;
 	var $date;
 	var $pid;
+	var $encounter;
 	var $weight_change = "N/A";
 	var $weakness = "N/A";
 	var $fatigue = "N/A";
@@ -183,6 +184,7 @@ class FormROS extends ORDataObject {
 		$this->_table = "form_ros";
 		
 		$this->pid = $GLOBALS['pid'];
+		$this->encounter = $GLOBALS['encounter'];
 		if ($id != "") {
 		
 			$this->populate();
@@ -205,10 +207,17 @@ class FormROS extends ORDataObject {
 			$this->pid = $pid;
 		}
 	}
+	function set_encounter($encounter) {
+		if (!empty($encounter) && is_numeric($encounter)) {
+			$this->encounter = $encounter;
+		}
+	}
 	function get_pid() {
 		return $this->pid;
 	}
-
+function get_encounter() {
+		return $this->encounter;
+	}
 	function get_date() {
 		return $this->date;
 	}
