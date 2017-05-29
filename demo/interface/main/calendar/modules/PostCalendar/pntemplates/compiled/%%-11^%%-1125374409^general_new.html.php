@@ -1,7 +1,7 @@
-<?php /* Smarty version 2.6.2, created on 2017-05-23 18:01:24
+<?php /* Smarty version 2.6.2, created on 2017-05-29 08:32:54
          compiled from C:%5Cxampp%5Chtdocs%5CKDemo_base%5Cdemo%5Cinterface%5Cforms%5Cros/templates/ros/general_new.html */ ?>
 <?php require_once(SMARTY_DIR . 'core' . DIRECTORY_SEPARATOR . 'core.load_plugins.php');
-smarty_core_load_plugins(array('plugins' => array(array('function', 'xl', 'C:\xampp\htdocs\KDemo_base\demo\interface\forms\ros/templates/ros/general_new.html', 77, false),array('function', 'html_radios', 'C:\xampp\htdocs\KDemo_base\demo\interface\forms\ros/templates/ros/general_new.html', 84, false),)), $this); ?>
+smarty_core_load_plugins(array('plugins' => array(array('function', 'xl', 'C:\xampp\htdocs\KDemo_base\demo\interface\forms\ros/templates/ros/general_new.html', 77, false),array('function', 'html_radios', 'C:\xampp\htdocs\KDemo_base\demo\interface\forms\ros/templates/ros/general_new.html', 88, false),)), $this); ?>
 <html>
 <head>
 <?php html_header_show(); ?>
@@ -83,7 +83,12 @@ a {
 <table><tr><td colspan='10'>
 <p><span class="main_title"><?php echo smarty_function_xl(array('t' => 'Review Of Systems'), $this);?>
 </span></p>
-</td></tr>
+</td>
+<td>
+	<a href="<?php echo $this->_tpl_vars['NEXT_LINK']; ?>
+" class="button" onclick="top.restoreSession()">[<?php  xl("NEXT","e");  ?>]</a>
+</td>
+</tr>
 
 <tr>
 	<td><table><td class ="responsetd"><span class="section_title"><?php echo smarty_function_xl(array('t' => 'Constitutional'), $this);?>
@@ -922,10 +927,7 @@ a {
 " class="link" onclick="top.restoreSession()">[<?php  xl("Don't Save","e");  ?>]</a>
 </td>
 
-<td>
-	<a href="<?php echo $this->_tpl_vars['NEXT_LINK']; ?>
-" class="link" onclick="top.restoreSession()">[<?php  xl("NEXT","e");  ?>]</a>
-</td>
+
 </tr>
 
 </table>

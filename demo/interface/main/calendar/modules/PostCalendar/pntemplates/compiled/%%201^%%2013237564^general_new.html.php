@@ -1,7 +1,7 @@
-<?php /* Smarty version 2.6.2, created on 2017-05-23 17:58:25
+<?php /* Smarty version 2.6.2, created on 2017-05-29 08:31:32
          compiled from C:%5Cxampp%5Chtdocs%5CKDemo_base%5Cdemo%5Cinterface%5Cforms%5Cvitals/templates/vitals/general_new.html */ ?>
 <?php require_once(SMARTY_DIR . 'core' . DIRECTORY_SEPARATOR . 'core.load_plugins.php');
-smarty_core_load_plugins(array('plugins' => array(array('function', 'xl', 'C:\xampp\htdocs\KDemo_base\demo\interface\forms\vitals/templates/vitals/general_new.html', 29, false),array('function', 'math', 'C:\xampp\htdocs\KDemo_base\demo\interface\forms\vitals/templates/vitals/general_new.html', 152, false),array('modifier', 'date_format', 'C:\xampp\htdocs\KDemo_base\demo\interface\forms\vitals/templates/vitals/general_new.html', 129, false),)), $this); ?>
+smarty_core_load_plugins(array('plugins' => array(array('function', 'xl', 'C:\xampp\htdocs\KDemo_base\demo\interface\forms\vitals/templates/vitals/general_new.html', 29, false),array('function', 'math', 'C:\xampp\htdocs\KDemo_base\demo\interface\forms\vitals/templates/vitals/general_new.html', 154, false),array('modifier', 'date_format', 'C:\xampp\htdocs\KDemo_base\demo\interface\forms\vitals/templates/vitals/general_new.html', 131, false),)), $this); ?>
 <html>
 <head>
 <?php html_header_show(); ?>
@@ -132,7 +132,10 @@ td,th {
 ">
 <p><table><tr><td><span class="title"><?php echo smarty_function_xl(array('t' => 'Vitals'), $this);?>
 </span></td><td>&nbsp;&nbsp;&nbsp;<a href="../summary/demographics.php" class="readonly css_button_small" onclick="top.restoreSession()"> <span><?php echo smarty_function_xl(array('t' => 'View Patient'), $this);?>
-</span></a></td></tr></table></p>
+</span></a></td><td><input type="button" class="editonly" id="next" value="<?php echo smarty_function_xl(array('t' => 'Next'), $this);?>
+">
+
+</td></tr></table></p>
 <form name="vitals" method="post" action="<?php echo $this->_tpl_vars['FORM_ACTION']; ?>
 /interface/forms/vitals/save.php" onSubmit="return vitalsFormSubmitted()">
 <div id="chart"></div>
@@ -275,8 +278,6 @@ td,th {
         <input type="submit" class="editonly" name="Submit" value="<?php echo smarty_function_xl(array('t' => 'Save Form'), $this);?>
 ">
         <input type="button" class="editonly" id="cancel" value="<?php echo smarty_function_xl(array('t' => "Don't Save"), $this);?>
-">
-		<input type="button" class="editonly" id="next" value="<?php echo smarty_function_xl(array('t' => 'Next'), $this);?>
 ">
         </td>
 </tr>

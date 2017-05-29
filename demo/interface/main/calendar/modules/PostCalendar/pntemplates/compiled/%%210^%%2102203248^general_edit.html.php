@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.2, created on 2017-05-26 11:20:57
+<?php /* Smarty version 2.6.2, created on 2017-05-29 08:33:12
          compiled from C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html */ ?>
 <?php require_once(SMARTY_DIR . 'core' . DIRECTORY_SEPARATOR . 'core.load_plugins.php');
 smarty_core_load_plugins(array('plugins' => array(array('function', 'xl', 'C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html', 106, false),array('function', 'amcCollect', 'C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html', 134, false),array('function', 'html_select_date', 'C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html', 155, false),array('function', 'html_options', 'C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html', 161, false),array('function', 'html_radios', 'C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html', 249, false),)), $this); ?>
@@ -124,8 +124,8 @@ console.log(drug_id);
 </head>
 <body class="body_top">
 <div class="pull-right">
-<a href='<?php echo $this->_tpl_vars['rootdir']; ?>
-/patient_file/encounter/load_form.php?formname=dictation' class='css_button' id='next'><span><?php echo smarty_function_xl(array('t' => 'Next'), $this);?>
+<a href='<?php echo $this->_tpl_vars['WEBROOT']; ?>
+/interface/patient_file/encounter/load_form.php?formname=dictation' class='css_button' id='next'><span><?php echo smarty_function_xl(array('t' => 'Next'), $this);?>
 </span></a>
 </div>
 <form name="prescribe" id="prescribe" method="post" action="<?php echo $this->_tpl_vars['FORM_ACTION']; ?>
