@@ -229,11 +229,7 @@ use ESign\Api;
   }
       elseif($id == 'msg0')  {
 	  echo "return loadFrame2('$id','$frame','" .
-        $primary_docs[$name][2] . "')\"><i class='fa fa-envelope'></i>" . $title . ($name == 'msg' ? ' <span id="reminderCountSpan" class="bold"></span>' : '')."<span class='pull-right-container'>
-              <small class='label pull-right bg-yellow'>12</small>
-              <small class='label pull-right bg-green'>16</small>
-              <small class='label pull-right bg-red'>5</small>
-            </span></a></li>";
+        $primary_docs[$name][2] . "')\"><i class='fa fa-envelope'></i>" . $title . ($name == 'msg' ? ' <span id="reminderCountSpan" class="pull-right-container"></span>' : '')."</a></li>";
  
   }
         elseif($id == 'ddb0')  {
@@ -459,7 +455,9 @@ function genFindBlock() {
    $.post("<?php echo $GLOBALS['webroot']; ?>/library/ajax/dated_reminders_counter.php",
      { skip_timeout_reset: "1" }, 
      function(data) {
-       $("#reminderCountSpan").html(data);
+		 datax = data.replace(/[{()}]/g, '');
+		 $("#reminderCountSpan").addClass('pull-right-container');
+       $("#reminderCountSpan").html('<small class="label pull-right bg-yellow">12</small><small class="label pull-right bg-green">16</small><small class="label pull-right bg-red">'+datax+'</small>');
     // run updater every 60 seconds 
      var repeater = setTimeout("getReminderCount()", 60000); 
    });

@@ -1,5 +1,5 @@
 <?php
-
+require_once($GLOBALS['fileroot'] . "/interface/globals.php");
 require_once ($GLOBALS['fileroot'] . "/library/classes/Controller.class.php");
 require_once ($GLOBALS['fileroot'] . "/library/forms.inc");
 require_once ($GLOBALS['fileroot'] . "/library/patient.inc");
@@ -11,12 +11,18 @@ class C_FormVitals extends Controller {
 
     function C_FormVitals($template_mod = "general") {
     	parent::Controller();
+		$id=sqlStatement("SELECT id from form_encounter where encounter='".$_SESSION['encounter']."'");
+
+		$id1=sqlFetchArray($id);
+
+	$id2=$id1['id'];
     	$returnurl = $GLOBALS['concurrent_layout'] ? 'encounter_top.php' : 'patient_encounter.php';
     	$this->template_mod = $template_mod;
     	$this->template_dir = dirname(__FILE__) . "/templates/vitals/";
     	$this->assign("FORM_ACTION", $GLOBALS['web_root']);
     	$this->assign("DONT_SAVE_LINK",$GLOBALS['webroot'] . "/interface/patient_file/encounter/$returnurl");
 		$this->assign("NEXT_LINK",$GLOBALS['webroot'] . "/interface/patient_file/encounter/load_form.php?formname=ros");
+				$this->assign("BACK_LINK",$GLOBALS['webroot'] . "/interface/patient_file/encounter/view_form.php?formname=newpatient&id=". $id2);
     	$this->assign("STYLE", $GLOBALS['style']);
 
       // Options for units of measurement and things to omit.

@@ -119,7 +119,7 @@ td,th {
 
 </head>
 <body bgcolor="{$STYLE.BGCOLOR2}">
-<p><table><tr><td><span class="title">{xl t="Vitals"}</span></td><td>&nbsp;&nbsp;&nbsp;<a href="../summary/demographics.php" class="readonly css_button_small" onclick="top.restoreSession()"> <span>{xl t="View Patient"}</span></a></td><td><input type="button" class="editonly" id="next" value="{xl t="Next"}">
+<p><table><tr><td><span class="title">{xl t="Vitals"}</span></td><td>&nbsp;&nbsp;&nbsp;<a href="../summary/demographics.php" class="readonly css_button_small" onclick="top.restoreSession()"> <span>{xl t="View Patient"}</span></a></td><td class='float:right'><input type="button" class="editonly" id="back" value="{xl t="Back"}"><input type="button" class="editonly" id="next" value="{xl t="Next"}">
 
 </td></tr></table></p>
 <form name="vitals" method="post" action="{$FORM_ACTION}/interface/forms/vitals/save.php" onSubmit="return vitalsFormSubmitted()">
@@ -242,6 +242,7 @@ var webroot = '{$FORM_ACTION}';
 var pid = '{$vitals->get_pid()}';
 var cancellink = '{$DONT_SAVE_LINK}';
 var nextlink = '{$NEXT_LINK}';
+var backlink = '{$BACK_LINK}';
 var birth_xl='{xl t="Birth-24 months"}'
 var older_xl='{xl t="2-20 years"}';
 {literal}
@@ -290,6 +291,7 @@ $(document).ready(function(){
     $("#pdfchart").click(function() { ShowGrowthchart(1); });
     $("#htmlchart").click(function() { ShowGrowthchart(2); });
     $("#cancel").click(function() { location.href=cancellink; });
+	$("#back").click(function() { location.href=backlink; });
 	  $("#next").click(function() { location.href=nextlink; });
 	
     addGCSelector();

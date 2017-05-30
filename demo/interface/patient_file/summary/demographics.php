@@ -603,7 +603,7 @@ $(window).load(function() {
   }
   if (!($portalUserSetting)) {
     // Show that the patient has not authorized portal access
-    echo "<td>" . htmlspecialchars( xl('This patient is not authorized to the Patient Portal '), ENT_NOQUOTES) . "<form id='form-id' action='' method='post'><input type='hidden' name='pt_portal' value='".$_SESSION['pid']."'><button class='css_button_small' type='submit' value='submit'>click here</button></form> to authorize</td>";
+    echo "<td style='display: inline-flex;'>" . htmlspecialchars( xl('This patient is not authorized to the Patient Portal '), ENT_NOQUOTES) . "<form id='form-id' action='' method='post'><input type='hidden' name='pt_portal' value='".$_SESSION['pid']."'><button class='css_button_small' type='submit' value='submit'>click here</button></form> to authorize</td>";
   }
   //Patient Portal
 

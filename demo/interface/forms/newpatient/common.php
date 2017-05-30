@@ -57,7 +57,7 @@ $ires = sqlStatement("SELECT id, type, title, begdate FROM lists WHERE " .
 <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
 <link rel="stylesheet" href="<?php echo $GLOBALS['webroot'] ?>/library/js/jAlert-master/src/jAlert-v3.css" />
 <link rel="stylesheet" href="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery.treeview-1.4.1/jquery.treeview.css" />
-<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link href="<?php echo $GLOBALS['webroot'] ?>/library/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <link href="<?php echo $GLOBALS['webroot'] ?>/library/css/bootstrap-datetimepicker4.7.14.min.css" rel="stylesheet" />
 <script src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-1.7.2.min.js"></script>
 <script src="<?php echo $GLOBALS['webroot'] ?>/library/js/jAlert-master/src/jAlert-v3.js"></script>
@@ -158,7 +158,9 @@ function getRatePlan(plan)
 <form method='post' action="<?php echo $rootdir ?>/forms/newpatient/save.php" name='new_encounter'
  <?php if (!$GLOBALS['concurrent_layout']) echo "target='Main'"; ?>>
 
-<div style = 'float:left'>
+
+<div class='container'>
+
 <?php if ($viewmode) { ?>
 <input type=hidden name='mode' value='update'>
 <input type=hidden name='id' value='<?php echo (isset($_GET["id"])) ? attr($_GET["id"]) : '' ?>'>
@@ -167,39 +169,20 @@ function getRatePlan(plan)
 <input type='hidden' name='mode' value='new'>
 <span class='title'><?php echo xlt('New Visit Form'); ?></span>
 <?php } ?>
-</div>
 
-<div>
-    <div style = 'float:left; margin-left:8px;margin-top:-3px'>
-      <a href="javascript:saveClicked();" class="css_button link_submit"><span><?php echo xlt('Save'); ?></span></a>
-      <?php if ($viewmode || !isset($_GET["autoloaded"]) || $_GET["autoloaded"] != "1") { ?>
-    </div>
 
-    <div style = 'float:left; margin-top:-3px'>
-  <?php if ($GLOBALS['concurrent_layout']) { ?>
-      <a href="<?php echo "$rootdir/patient_file/encounter/encounter_top.php"; ?>"
-        class="css_button link_submit" onClick="top.restoreSession()"><span><?php echo xlt('Cancel'); ?></span></a>
-  <?php } else { ?>
-      <a href="<?php echo "$rootdir/patient_file/encounter/patient_encounter.php"; ?>"
-        class="css_button link_submit" target='Main' onClick="top.restoreSession()">
-      <span><?php echo xlt('Cancel'); ?>]</span></a>
-  <?php } // end not concurrent layout ?>
-  <?php } else if ($GLOBALS['concurrent_layout']) { // not $viewmode ?>
-      <a href="" class="css_button link_submit" onClick="return cancelClicked()">
-      <span><?php echo xlt('Cancel'); ?></span></a>
-  <?php } // end not $viewmode ?>
-    </div>
 	<?php
      $newcrop_user_role=sqlQuery("select newcrop_user_role from users where username='".$_SESSION['authUser']."'");
      if($newcrop_user_role['newcrop_user_role']=='erxdoctor'){
 	?>
-	<div style="float:left; margin-top:-3px">
-  <a href='<?php echo "$rootdir/patient_file/encounter/load_form.php?formname=vitals"; ?>' class='css_button' id='next'><span><?php echo htmlspecialchars( xl('Next'), ENT_NOQUOTES); ?></span></a>
+	<div style="float:right; margin-top:-3px">
+ <a href='<?php echo "$rootdir/patient_file/summary/stats_full.php"; ?>' class='css_button' id='back'><span><?php echo htmlspecialchars( xl('Back'), ENT_NOQUOTES); ?></span></a>
+ <a href='<?php echo "$rootdir/patient_file/encounter/load_form.php?formname=vitals"; ?>' class='css_button' id='next'><span><?php echo htmlspecialchars( xl('Next'), ENT_NOQUOTES); ?></span></a>
 </div>
 	 <?php }?>
 	
 	
- </div>
+
 
 <br> <br>
 <?php $newcrop_user_role=sqlQuery("select newcrop_user_role from users where username='".$_SESSION['authUser']."'"); ?>
@@ -209,16 +192,17 @@ function getRatePlan(plan)
 
   <td width='33%' nowrap class='bold' 
    <?php if($newcrop_user_role['newcrop_user_role']!='erxdoctor') { ?>
-  style="visibility:hidden;position: absolute"
+  style="display:none"
    <?php  } ?>><?php echo xlt('Consultation Brief Description'); ?>:</td>
 
   <td width='34%' rowspan='2' align='center' valign='center' class='text' <?php  if($newcrop_user_role['newcrop_user_role']=='erxdoctor') { ?> style="visibility:hidden;position:absolute" <?php } ?>>
    <table>
 
     <tr<?php if ($GLOBALS['athletic_team']) echo " style='visibility:hidden;'"; ?>>
-     <td class='bold' nowrap><?php echo xlt('Visit Category:'); ?></td>
-     <td class='text'>
-      <select name='pc_catid' id='pc_catid'>
+	<div class="form-group">
+     <label class="pull-left"><?php echo xlt('Visit Category:'); ?></label>
+   
+      <select name='pc_catid'class="form-control" id='pc_catid'>
 	<option value='_blank'>-- <?php echo xlt('Select One'); ?> --</option>
 <?php
  $cres = sqlStatement("SELECT pc_catid, pc_catname " .
@@ -238,20 +222,21 @@ function getRatePlan(plan)
  }
 ?>
       </select>
-     </td>
+     </div>
     </tr>
 	
 	
 	
 	<tr>
-     <td class='bold' nowrap><?php echo xlt('Package:'); ?></td>
-	 <td class='text'>
+   <div class='form-group'>
+   <label class='pull-left'><?php echo xlt('Package:'); ?></label>
+	 
   
 <?php
 
 
   $ures = sqlStatement("select * from procedure_type where parent=283");
-   echo "<select name='package' style='width:100%' />  <option value='0'></option>";
+   echo "<select name='package' class='form-control' />  <option value='0'></option>";
     while ($urow = sqlFetchArray($ures)) {
       echo "    <option value='" . attr($urow['name']) . "'";
      if ($urow['id'] == $defaultProvider);
@@ -261,21 +246,21 @@ function getRatePlan(plan)
     }
     echo "</select>";
 ?>
-     </td>
+     </div>
 	</tr>
 	
 	
 	
 	<tr>
-     <td class='bold' nowrap><?php echo xlt('Rate Plan:'); ?></td>
-	 <td class='text'>
-  
+		<div class="form-group">
+     <label class="pull-left"><?php echo xlt('Rate Plan:'); ?></label>
+	 
 <?php
 //get default insurance data
 	$getdefins = sqlStatement("select provider,name from insurance_data a, insurance_companies b where pid='$pid' and a.provider = b.id");
 	$getins = sqlFetchArray($getdefins);
   $ures = sqlStatement("select * from list_options where list_id='RatePlan' ");
-   echo "<select name='rateplan' id='rateplan' style='width:100%' onChange='getRatePlan(this.value)' />";
+   echo "<select name='rateplan' class='form-control' id='rateplan' onChange='getRatePlan(this.value)' />";
    
     while ($urow = sqlFetchArray($ures)) {
 	  /*if($getins['provider']>0  & $urow['title']=="TPA Insurance") { 
@@ -294,18 +279,18 @@ function getRatePlan(plan)
 	}		
     echo "</select>";
 ?>
-     </td>
+</div>
 	</tr>
 	
 
    <tr style='display:none' id='instpa'>
-     <td class='bold' nowrap><?php echo xlt('TPA:'); ?></td>
-	 <td class='text'>
-  
+  	<div class="form-group">
+     <label class="pull-left"><?php echo xlt('TPA:'); ?></label>
+	 
 <?php
 
 	$ures = sqlStatement("select distinct name, id from insurance_companies ");
-	echo "<select name='instpa'/>";
+	echo "<select name='instpa'/ class='form-control'>";
 	 if($getins['provider']>0){
      echo "<option value='".attr($getins['provider'])."'";
 	 echo ">" . attr($getins['name']);
@@ -328,18 +313,18 @@ function getRatePlan(plan)
     }
     echo "</select>";
 	?>
-	</td>
+	</div>
 	</tr>
 
 	
 	<tr>
-     <td class='bold' nowrap><?php echo xlt('Doctor:'); ?></td>
-     <td class='text'>
-  
+     	<div class="form-group">
+     <label class="pull-left"><?php echo xlt('Doctor:'); ?></label>
+     
 <?php
   $ures = sqlStatement("SELECT id, username, fname, lname FROM users WHERE " .
   "authorized != 0 AND active = 1 ORDER BY lname, fname");
-   echo "<select name='form_provider' style='width:100%' />";
+   echo "<select name='form_provider' class='form-control' />";
     while ($urow = sqlFetchArray($ures)) {
       echo "    <option value='" . attr($urow['id']) . "'";
       if ($urow['id'] == $defaultProvider) echo " selected";
@@ -349,13 +334,14 @@ function getRatePlan(plan)
     }
     echo "</select>";
 ?>
-     </td>
+     </div>
     </tr>
 
     <tr>
-     <td class='bold' nowrap><?php echo xlt('Facility:'); ?></td>
-     <td class='text'>
-      <select name='facility_id' onChange="bill_loc()">
+     	<div class="form-group">
+     <label class="pull-left"><?php echo xlt('Facility:'); ?></label>
+
+      <select name='facility_id' class='form-control' onChange="bill_loc()">
 <?php
 
 if ($viewmode) {
@@ -378,17 +364,18 @@ if ($fres) {
  }
 ?>
       </select>
-     </td>
+     </div>
     </tr>
 	<tr>
-		<td class='bold' nowrap><?php echo xlt('Billing Facility'); ?>:</td>
-		<td class='text'>
+			<div class="form-group">
+     <label class="pull-left"><?php echo xlt('Billing Facility'); ?>:</label>
+	
 			<div id="ajaxdiv">
 			<?php
 			billing_facility('billing_facility',$result['billing_facility']);
 			?>
 			</div>
-		</td>
+		</div>
      </tr>
     <tr>
 <?php
@@ -396,9 +383,10 @@ if ($fres) {
  if ($sensitivities && count($sensitivities)) {
   usort($sensitivities, "sensitivity_compare");
 ?>
-     <td class='bold' nowrap><?php echo xlt('Sensitivity:'); ?></td>
-     <td class='text'>
-      <select name='form_sensitivity'>
+    	<div class="form-group">
+     <label class="pull-left"><?php echo xlt('Sensitivity:'); ?></label>
+     
+      <select name='form_sensitivity' class='form-control'>
 <?php
   foreach ($sensitivities as $value) {
    // Omit sensitivities to which this user does not have access.
@@ -413,7 +401,7 @@ if ($fres) {
   echo ">" . xlt('None'). "</option>\n";
 ?>
       </select>
-     </td>
+     </div>
 <?php
  } else {
 ?>
@@ -424,20 +412,23 @@ if ($fres) {
     </tr>
 
     <tr<?php if (!$GLOBALS['gbl_visit_referral_source']) echo " style='visibility:hidden;'"; ?>>
-     <td class='bold' nowrap><?php echo xlt('Referral Source'); ?>:</td>
-     <td class='text'>
+    	<div class="form-group">
+     <label class="pull-left"><?php echo xlt('Referral Source'); ?>:</label>
+     
 <?php
   echo generate_select_list('form_referral_source', 'refsource', $viewmode ? $result['referral_source'] : '', '');
 ?>
-     </td>
+     </div>
     </tr>
 
     <tr>
-     <td class='bold' nowrap><?php echo xlt('Date of Service:'); ?></td>
-     <td class='text' nowrap>
-	                 <div class='input-group date'  id='datetimepicker1' >
+     	<div class="form-group">
+     <label class="pull-left"><?php echo xlt('Date of Service:'); ?></label>
+  <br>
+  <br>
+	                 <div class='input-group date'  id='datetimepicker' >
                     
-      <input type='text' size='10' name='form_date' id='form_date' <?php echo $disabled ?>
+      <input type='text' size='10' class='form-control' name='form_date' id='form_date' <?php echo $disabled ?>
        value='<?php echo $viewmode ? substr($result['date'], 0, 10) : date('Y-m-d'); ?>'
        title='<?php echo xla('yyyy-mm-dd Date of service'); ?>'
        onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' />
@@ -445,23 +436,32 @@ if ($fres) {
                         <span class="glyphicon glyphicon-calendar"></span>
                     </span>
                 </div>
-        <img src='../../pic/show_calendar.gif' align='absbottom' width='24' height='22'
+       <!-- <img src='../../pic/show_calendar.gif' align='absbottom' width='24' height='22'
         id='img_form_date' border='0' alt='[?]' style='cursor:pointer;cursor:hand'
-        title='<?php echo xla('Click here to choose a date'); ?>'>
-     </td>
+        title='<?php echo xla('Click here to choose a date'); ?>'> -->
+     </div>
     </tr>
 
     <tr<?php if ($GLOBALS['ippf_specific'] || $GLOBALS['athletic_team']) echo " style='visibility:hidden;'"; ?>>
-     <td class='bold' nowrap><?php echo xlt('Onset/hosp. date:'); ?></td>
-     <td class='text' nowrap><!-- default is blank so that while generating claim the date is blank. -->
-      <input type='text' size='10' name='form_onset_date' id='form_onset_date'
+   	<div class="form-group">
+     <label class="pull-left"><?php echo xlt('Onset/hosp. date:'); ?></label>
+   <!-- default is blank so that while generating claim the date is blank. -->
+     <br>
+  <br>
+   <div class='input-group date'  id='datetimepicker1' >
+                    
+      <input type='text' size='10' class='form-control' name='form_onset_date' id='form_onset_date'
        value='<?php echo $viewmode && $result['onset_date']!='0000-00-00 00:00:00' ? substr($result['onset_date'], 0, 10) : ''; ?>' 
        title='<?php echo xla('yyyy-mm-dd Date of onset or hospitalization'); ?>'
        onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' />
-        <img src='../../pic/show_calendar.gif' align='absbottom' width='24' height='22'
+	      <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+       <!-- <img src='../../pic/show_calendar.gif' align='absbottom' width='24' height='22'
         id='img_form_onset_date' border='0' alt='[?]' style='cursor:pointer;cursor:hand'
-        title='<?php echo xla('Click here to choose a date'); ?>'>
-     </td>
+        title='<?php echo xla('Click here to choose a date'); ?>'> -->
+     </div>
     </tr>
 
     <tr>
@@ -533,7 +533,26 @@ while ($irow = sqlFetchArray($ires)) {
  </tr>
 
 </table>
+    <div>
+      <a href="javascript:saveClicked();" class="css_button link_submit"><span><?php echo xlt('Save'); ?></span></a>
+      <?php if ($viewmode || !isset($_GET["autoloaded"]) || $_GET["autoloaded"] != "1") { ?>
+    </div>
 
+    <div>
+  <?php if ($GLOBALS['concurrent_layout']) { ?>
+      <a href="<?php echo "$rootdir/patient_file/encounter/encounter_top.php"; ?>"
+        class="css_button link_submit" onClick="top.restoreSession()"><span><?php echo xlt('Cancel'); ?></span></a>
+  <?php } else { ?>
+      <a href="<?php echo "$rootdir/patient_file/encounter/patient_encounter.php"; ?>"
+        class="css_button link_submit" target='Main' onClick="top.restoreSession()">
+      <span><?php echo xlt('Cancel'); ?>]</span></a>
+  <?php } // end not concurrent layout ?>
+  <?php } else if ($GLOBALS['concurrent_layout']) { // not $viewmode ?>
+      <a href="" class="css_button link_submit" onClick="return cancelClicked()">
+      <span><?php echo xlt('Cancel'); ?></span></a>
+  <?php } // end not $viewmode ?>
+    </div>
+</div>
 </form>
 		<script
   src="https://code.jquery.com/jquery-2.2.4.min.js"
@@ -546,7 +565,9 @@ while ($irow = sqlFetchArray($ires)) {
                 j('#datetimepicker1').datetimepicker({
                     format: 'YYYY-MM-DD HH:mm:ss'
                 });
-				
+				                j('#datetimepicker').datetimepicker({
+                    format: 'YYYY-MM-DD HH:mm:ss'
+                });
             });
         </script>
 
@@ -556,9 +577,10 @@ while ($irow = sqlFetchArray($ires)) {
 </body>
 
 <script language="javascript">
-/* required for popup calendar */
+/* required for popup calendar 
 Calendar.setup({inputField:"form_date", ifFormat:"%Y-%m-%d", button:"img_form_date"});
 Calendar.setup({inputField:"form_onset_date", ifFormat:"%Y-%m-%d", button:"img_form_onset_date"});
+*/
 <?php
 if (!$viewmode) { ?>
  function duplicateVisit(enc, datestr) {
@@ -600,6 +622,9 @@ if (!$viewmode) { ?>
   }
 }
 ?>
+$('#billing_facility').addClass('form-control');
+$('#form_referral_source').addClass('form-control');
+
 </script>
 
 </html>

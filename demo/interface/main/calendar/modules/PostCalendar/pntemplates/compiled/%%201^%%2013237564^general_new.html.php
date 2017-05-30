@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.2, created on 2017-05-29 08:31:32
+<?php /* Smarty version 2.6.2, created on 2017-05-30 13:33:26
          compiled from C:%5Cxampp%5Chtdocs%5CKDemo_base%5Cdemo%5Cinterface%5Cforms%5Cvitals/templates/vitals/general_new.html */ ?>
 <?php require_once(SMARTY_DIR . 'core' . DIRECTORY_SEPARATOR . 'core.load_plugins.php');
 smarty_core_load_plugins(array('plugins' => array(array('function', 'xl', 'C:\xampp\htdocs\KDemo_base\demo\interface\forms\vitals/templates/vitals/general_new.html', 29, false),array('function', 'math', 'C:\xampp\htdocs\KDemo_base\demo\interface\forms\vitals/templates/vitals/general_new.html', 154, false),array('modifier', 'date_format', 'C:\xampp\htdocs\KDemo_base\demo\interface\forms\vitals/templates/vitals/general_new.html', 131, false),)), $this); ?>
@@ -132,7 +132,8 @@ td,th {
 ">
 <p><table><tr><td><span class="title"><?php echo smarty_function_xl(array('t' => 'Vitals'), $this);?>
 </span></td><td>&nbsp;&nbsp;&nbsp;<a href="../summary/demographics.php" class="readonly css_button_small" onclick="top.restoreSession()"> <span><?php echo smarty_function_xl(array('t' => 'View Patient'), $this);?>
-</span></a></td><td><input type="button" class="editonly" id="next" value="<?php echo smarty_function_xl(array('t' => 'Next'), $this);?>
+</span></a></td><td class='float:right'><input type="button" class="editonly" id="back" value="<?php echo smarty_function_xl(array('t' => 'Back'), $this);?>
+"><input type="button" class="editonly" id="next" value="<?php echo smarty_function_xl(array('t' => 'Next'), $this);?>
 ">
 
 </td></tr></table></p>
@@ -326,6 +327,8 @@ var cancellink = '<?php echo $this->_tpl_vars['DONT_SAVE_LINK']; ?>
 ';
 var nextlink = '<?php echo $this->_tpl_vars['NEXT_LINK']; ?>
 ';
+var backlink = '<?php echo $this->_tpl_vars['BACK_LINK']; ?>
+';
 var birth_xl='<?php echo smarty_function_xl(array('t' => "Birth-24 months"), $this);?>
 '
 var older_xl='<?php echo smarty_function_xl(array('t' => "2-20 years"), $this);?>
@@ -376,6 +379,7 @@ $(document).ready(function(){
     $("#pdfchart").click(function() { ShowGrowthchart(1); });
     $("#htmlchart").click(function() { ShowGrowthchart(2); });
     $("#cancel").click(function() { location.href=cancellink; });
+	$("#back").click(function() { location.href=backlink; });
 	  $("#next").click(function() { location.href=nextlink; });
 	
     addGCSelector();
