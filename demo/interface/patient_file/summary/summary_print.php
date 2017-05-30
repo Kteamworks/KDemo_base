@@ -125,15 +125,982 @@ if($ros1!=null){   ?>
 <?php 
 $i=1;
 foreach($ros as $ros1) {
-	
+	if($ros1['weight_change']=="YES"){
 	?>
 <tr>
 <td class="text-left"><?php echo $i ?></td>
-<td class="text-left"><?php echo date("d-M-Y",strtotime($ros['date'])) ?></td>
-<td class="text-left"><?php echo $ros['type']?> </td>
-<td class="text-left"><?php echo $ros['title']?> </td>
+<td class="text-left"><?php echo date("d-M-Y",strtotime($ros1['date'])) ?></td>
+<td class="text-left"><?php echo WeightChange?> </td>
+<td class="text-left"><?php echo YES?> </td>
 </tr>
-<?php $i++;} ?>
+	<?php $i++; }?>
+	<?php
+	if($ros1['weakness']=="YES"){
+	?>
+<tr>
+<td class="text-left"><?php echo $i ?></td>
+<td class="text-left"><?php echo date("d-M-Y",strtotime($ros1['date'])) ?></td>
+<td class="text-left"><?php echo Weakness?> </td>
+<td class="text-left"><?php echo YES?> </td>
+</tr>
+	<?php $i++;}?>
+	<?php
+	if($ros1['fatigue']=="YES"){
+	?>
+<tr>
+<td class="text-left"><?php echo $i ?></td>
+<td class="text-left"><?php echo date("d-M-Y",strtotime($ros1['date'])) ?></td>
+<td class="text-left"><?php echo Fatigue?> </td>
+<td class="text-left"><?php echo YES ?> </td>
+</tr>
+	<?php $i++;}?>
+	<?php
+	if($ros1['anorexia']=="YES"){
+	?>
+<tr>
+<td class="text-left"><?php echo $i ?></td>
+<td class="text-left"><?php echo date("d-M-Y",strtotime($ros1['date'])) ?></td>
+<td class="text-left"><?php echo Anorexia?> </td>
+<td class="text-left"><?php echo YES ?> </td>
+</tr>
+	<?php $i++;}?>
+	<?php
+	if($ros1['fever']=="YES"){
+	?>
+<tr>
+<td class="text-left"><?php echo $i ?></td>
+<td class="text-left"><?php echo date("d-M-Y",strtotime($ros1['date'])) ?></td>
+<td class="text-left"><?php echo Fever?> </td>
+<td class="text-left"><?php echo YES ?> </td>
+</tr>
+	<?php $i++; }?>
+	<?php
+	if($ros1['chills']=="YES"){
+	?>
+<tr>
+<td class="text-left"><?php echo $i ?></td>
+<td class="text-left"><?php echo date("d-M-Y",strtotime($ros1['date'])) ?></td>
+<td class="text-left"><?php echo Chills?> </td>
+<td class="text-left"><?php echo YES ?> </td>
+</tr>
+	<?php $i++; }?>
+	<?php
+	if($ros1['night_sweats']=="YES"){
+	?>
+<tr>
+<td class="text-left"><?php echo $i ?></td>
+<td class="text-left"><?php echo date("d-M-Y",strtotime($ros1['date'])) ?></td>
+<td class="text-left"><?php echo NightSweats?> </td>
+<td class="text-left"><?php echo YES ?> </td>
+</tr>
+	<?php $i++;}?>
+	<?php
+	if($ros1['insomnia']=="YES"){
+	?>
+<tr>
+<td class="text-left"><?php echo $i ?></td>
+<td class="text-left"><?php echo date("d-M-Y",strtotime($ros1['date'])) ?></td>
+<td class="text-left"><?php echo Insomnia ?> </td>
+<td class="text-left"><?php echo YES ?> </td>
+</tr>
+	<?php $i++;}?>
+	<?php
+	if($ros1['irritability']=="YES"){
+	?>
+<tr>
+<td class="text-left"><?php echo $i ?></td>
+<td class="text-left"><?php echo date("d-M-Y",strtotime($ros1['date'])) ?></td>
+<td class="text-left"><?php echo Irritability ?> </td>
+<td class="text-left"><?php echo YES ?> </td>
+</tr>
+	<?php $i++;}?>
+	<?php
+	if($ros1['heat_or_cold']=="YES"){
+	?>
+<tr>
+<td class="text-left"><?php echo $i ?></td>
+<td class="text-left"><?php echo date("d-M-Y",strtotime($ros1['date'])) ?></td>
+<td class="text-left"><?php echo xlt('Heat Or Cold') ?> </td>
+<td class="text-left"><?php echo YES ?> </td>
+</tr>
+	<?php $i++;}?>
+	<?php
+	if($ros1['intolerance']=="YES"){
+	?>
+<tr>
+<td class="text-left"><?php echo $i ?></td>
+<td class="text-left"><?php echo date("d-M-Y",strtotime($ros1['date'])) ?></td>
+<td class="text-left"><?php echo xlt('Intolerance') ?> </td>
+<td class="text-left"><?php echo YES ?> </td>
+</tr>
+	<?php $i++;}?><?php
+	if($ros1['change_in_vision']=="YES"){
+	?>
+<tr>
+<td class="text-left"><?php echo $i ?></td>
+<td class="text-left"><?php echo date("d-M-Y",strtotime($ros1['date'])) ?></td>
+<td class="text-left"><?php echo xlt('Change in Vision') ?> </td>
+<td class="text-left"><?php echo YES ?> </td>
+</tr>
+	<?php $i++;}?><?php
+	if($ros1['glaucoma_history']=="YES"){
+	?>
+<tr>
+<td class="text-left"><?php echo $i ?></td>
+<td class="text-left"><?php echo date("d-M-Y",strtotime($ros1['date'])) ?></td>
+<td class="text-left"><?php echo xlt('Glaucoma History') ?> </td>
+<td class="text-left"><?php echo YES ?> </td>
+</tr>
+	<?php $i++;}?><?php
+	if($ros1['eye_pain']=="YES"){
+	?>
+<tr>
+<td class="text-left"><?php echo $i ?></td>
+<td class="text-left"><?php echo date("d-M-Y",strtotime($ros1['date'])) ?></td>
+<td class="text-left"><?php echo xlt('Eye Pain') ?> </td>
+<td class="text-left"><?php echo YES ?> </td>
+</tr>
+	<?php $i++;}?><?php
+	if($ros1['irritation']=="YES"){
+	?>
+<tr>
+<td class="text-left"><?php echo $i ?></td>
+<td class="text-left"><?php echo date("d-M-Y",strtotime($ros1['date'])) ?></td>
+<td class="text-left"><?php echo xlt('Irritation') ?> </td>
+<td class="text-left"><?php echo YES ?> </td>
+</tr>
+	<?php $i++;}?><?php
+	if($ros1['redness']=="YES"){
+	?>
+<tr>
+<td class="text-left"><?php echo $i ?></td>
+<td class="text-left"><?php echo date("d-M-Y",strtotime($ros1['date'])) ?></td>
+<td class="text-left"><?php echo xlt('Redness') ?> </td>
+<td class="text-left"><?php echo YES ?> </td>
+</tr>
+	<?php $i++;}?><?php
+	if($ros1['excessive_tearing']=="YES"){
+	?>
+<tr>
+<td class="text-left"><?php echo $i ?></td>
+<td class="text-left"><?php echo date("d-M-Y",strtotime($ros1['date'])) ?></td>
+<td class="text-left"><?php echo xlt('Excessive Tearing') ?> </td>
+<td class="text-left"><?php echo YES ?> </td>
+</tr>
+	<?php $i++;}?><?php
+	if($ros1['double_vision']=="YES"){
+	?>
+<tr>
+<td class="text-left"><?php echo $i ?></td>
+<td class="text-left"><?php echo date("d-M-Y",strtotime($ros1['date'])) ?></td>
+<td class="text-left"><?php echo xlt('Double Vision') ?> </td>
+<td class="text-left"><?php echo YES ?> </td>
+</tr>
+	<?php $i++;}?>
+	<?php
+	if($ros1['blind_spots']=="YES"){
+	?>
+<tr>
+<td class="text-left"><?php echo $i ?></td>
+<td class="text-left"><?php echo date("d-M-Y",strtotime($ros1['date'])) ?></td>
+<td class="text-left"><?php echo xlt('Blind Spots') ?> </td>
+<td class="text-left"><?php echo YES ?> </td>
+</tr>
+	<?php $i++;}?>
+	<?php
+	if($ros1['photophobia']=="YES"){
+	?>
+<tr>
+<td class="text-left"><?php echo $i ?></td>
+<td class="text-left"><?php echo date("d-M-Y",strtotime($ros1['date'])) ?></td>
+<td class="text-left"><?php echo xlt('Photophobia') ?> </td>
+<td class="text-left"><?php echo YES ?> </td>
+</tr>
+	<?php $i++;}?>
+	<?php
+	if($ros1['hearing_loss']=="YES"){
+	?>
+<tr>
+<td class="text-left"><?php echo $i ?></td>
+<td class="text-left"><?php echo date("d-M-Y",strtotime($ros1['date'])) ?></td>
+<td class="text-left"><?php echo xlt('Hearing Loss') ?> </td>
+<td class="text-left"><?php echo YES ?> </td>
+</tr>
+	<?php $i++;}?>
+	<?php
+	if($ros1['discharge']=="YES"){
+	?>
+<tr>
+<td class="text-left"><?php echo $i ?></td>
+<td class="text-left"><?php echo date("d-M-Y",strtotime($ros1['date'])) ?></td>
+<td class="text-left"><?php echo xlt('Discharge') ?> </td>
+<td class="text-left"><?php echo YES ?> </td>
+</tr>
+	<?php $i++;}?>
+	<?php
+	if($ros1['pain']=="YES"){
+	?>
+<tr>
+<td class="text-left"><?php echo $i ?></td>
+<td class="text-left"><?php echo date("d-M-Y",strtotime($ros1['date'])) ?></td>
+<td class="text-left"><?php echo xlt('Pain') ?> </td>
+<td class="text-left"><?php echo YES ?> </td>
+</tr>
+	<?php $i++;}?>
+	<?php
+	if($ros1['blind_spots']=="YES"){
+	?>
+<tr>
+<td class="text-left"><?php echo $i ?></td>
+<td class="text-left"><?php echo date("d-M-Y",strtotime($ros1['date'])) ?></td>
+<td class="text-left"><?php echo xlt('Blind Spots') ?> </td>
+<td class="text-left"><?php echo YES ?> </td>
+</tr>
+	<?php $i++;}?>
+	<?php
+	if($ros1['vertigo']=="YES"){
+	?>
+<tr>
+<td class="text-left"><?php echo $i ?></td>
+<td class="text-left"><?php echo date("d-M-Y",strtotime($ros1['date'])) ?></td>
+<td class="text-left"><?php echo xlt('Vertigo') ?> </td>
+<td class="text-left"><?php echo YES ?> </td>
+</tr>
+	<?php $i++;}?>
+	<?php
+	if($ros1['tinnitus']=="YES"){
+	?>
+<tr>
+<td class="text-left"><?php echo $i ?></td>
+<td class="text-left"><?php echo date("d-M-Y",strtotime($ros1['date'])) ?></td>
+<td class="text-left"><?php echo xlt('Tinnitus') ?> </td>
+<td class="text-left"><?php echo YES ?> </td>
+</tr>
+	<?php $i++;}?>
+	<?php
+	if($ros1['frequent_colds']=="YES"){
+	?>
+<tr>
+<td class="text-left"><?php echo $i ?></td>
+<td class="text-left"><?php echo date("d-M-Y",strtotime($ros1['date'])) ?></td>
+<td class="text-left"><?php echo xlt('Frequent Colds') ?> </td>
+<td class="text-left"><?php echo YES ?> </td>
+</tr>
+	<?php $i++;}?>
+	<?php
+	if($ros1['sore_throat']=="YES"){
+	?>
+<tr>
+<td class="text-left"><?php echo $i ?></td>
+<td class="text-left"><?php echo date("d-M-Y",strtotime($ros1['date'])) ?></td>
+<td class="text-left"><?php echo xlt('Sore Throat') ?> </td>
+<td class="text-left"><?php echo YES ?> </td>
+</tr>
+	<?php $i++;}?>
+	<?php
+	if($ros1['sinus_problems']=="YES"){
+	?>
+<tr>
+<td class="text-left"><?php echo $i ?></td>
+<td class="text-left"><?php echo date("d-M-Y",strtotime($ros1['date'])) ?></td>
+<td class="text-left"><?php echo xlt('Sinus Problems') ?> </td>
+<td class="text-left"><?php echo YES ?> </td>
+</tr>
+	<?php $i++;}?>
+	<?php
+	if($ros1['post_nasal_drip']=="YES"){
+	?>
+<tr>
+<td class="text-left"><?php echo $i ?></td>
+<td class="text-left"><?php echo date("d-M-Y",strtotime($ros1['date'])) ?></td>
+<td class="text-left"><?php echo xlt('Post Nasal Drip') ?> </td>
+<td class="text-left"><?php echo YES ?> </td>
+</tr>
+	<?php $i++;}?>
+	<?php
+	if($ros1['nosebleed']=="YES"){
+	?>
+<tr>
+<td class="text-left"><?php echo $i ?></td>
+<td class="text-left"><?php echo date("d-M-Y",strtotime($ros1['date'])) ?></td>
+<td class="text-left"><?php echo xlt('Nose Bleed') ?> </td>
+<td class="text-left"><?php echo YES ?> </td>
+</tr>
+	<?php $i++;}?>
+	<?php
+	if($ros1['snoring']=="YES"){
+	?>
+<tr>
+<td class="text-left"><?php echo $i ?></td>
+<td class="text-left"><?php echo date("d-M-Y",strtotime($ros1['date'])) ?></td>
+<td class="text-left"><?php echo xlt('Snoring') ?> </td>
+<td class="text-left"><?php echo YES ?> </td>
+</tr>
+	<?php $i++;}?><?php
+	if($ros1['apnea']=="YES"){
+	?>
+<tr>
+<td class="text-left"><?php echo $i ?></td>
+<td class="text-left"><?php echo date("d-M-Y",strtotime($ros1['date'])) ?></td>
+<td class="text-left"><?php echo xlt('Apnea') ?> </td>
+<td class="text-left"><?php echo YES ?> </td>
+</tr>
+	<?php $i++;}?><?php
+	if($ros1['breast_discharge']=="YES"){
+	?>
+<tr>
+<td class="text-left"><?php echo $i ?></td>
+<td class="text-left"><?php echo date("d-M-Y",strtotime($ros1['date'])) ?></td>
+<td class="text-left"><?php echo xlt('Breast Discharge') ?> </td>
+<td class="text-left"><?php echo YES ?> </td>
+</tr>
+	<?php $i++;}?><?php
+	if($ros1['breast_mass']=="YES"){
+	?>
+<tr>
+<td class="text-left"><?php echo $i ?></td>
+<td class="text-left"><?php echo date("d-M-Y",strtotime($ros1['date'])) ?></td>
+<td class="text-left"><?php echo xlt('Breast Mass') ?> </td>
+<td class="text-left"><?php echo YES ?> </td>
+</tr>
+	<?php $i++;}?><?php
+	if($ros1['biopsy']=="YES"){
+	?>
+<tr>
+<td class="text-left"><?php echo $i ?></td>
+<td class="text-left"><?php echo date("d-M-Y",strtotime($ros1['date'])) ?></td>
+<td class="text-left"><?php echo xlt('Biopsy') ?> </td>
+<td class="text-left"><?php echo YES ?> </td>
+</tr>
+	<?php $i++;}?><?php
+	if($ros1['abnormal_mammogram']=="YES"){
+	?>
+<tr>
+<td class="text-left"><?php echo $i ?></td>
+<td class="text-left"><?php echo date("d-M-Y",strtotime($ros1['date'])) ?></td>
+<td class="text-left"><?php echo xlt('Abnormal Mammogram') ?> </td>
+<td class="text-left"><?php echo YES ?> </td>
+</tr>
+	<?php $i++;}?><?php
+	if($ros1['cough']=="YES"){
+	?>
+<tr>
+<td class="text-left"><?php echo $i ?></td>
+<td class="text-left"><?php echo date("d-M-Y",strtotime($ros1['date'])) ?></td>
+<td class="text-left"><?php echo xlt('Cough') ?> </td>
+<td class="text-left"><?php echo YES ?> </td>
+</tr>
+	<?php $i++;}?><?php
+	if($ros1['nosebleed']=="YES"){
+	?>
+<tr>
+<td class="text-left"><?php echo $i ?></td>
+<td class="text-left"><?php echo date("d-M-Y",strtotime($ros1['date'])) ?></td>
+<td class="text-left"><?php echo xlt('Nose Bleed') ?> </td>
+<td class="text-left"><?php echo YES ?> </td>
+</tr>
+	<?php $i++;}?><?php
+	if($ros1['sputum']=="YES"){
+	?>
+<tr>
+<td class="text-left"><?php echo $i ?></td>
+<td class="text-left"><?php echo date("d-M-Y",strtotime($ros1['date'])) ?></td>
+<td class="text-left"><?php echo xlt('Sputum') ?> </td>
+<td class="text-left"><?php echo YES ?> </td>
+</tr>
+	<?php $i++;}?><?php
+	if($ros1['shortness_of_breath']=="YES"){
+	?>
+<tr>
+<td class="text-left"><?php echo $i ?></td>
+<td class="text-left"><?php echo date("d-M-Y",strtotime($ros1['date'])) ?></td>
+<td class="text-left"><?php echo xlt('Shortness of Breath') ?> </td>
+<td class="text-left"><?php echo YES ?> </td>
+</tr>
+	<?php $i++;}?><?php
+	if($ros1['wheezing']=="YES"){
+	?>
+<tr>
+<td class="text-left"><?php echo $i ?></td>
+<td class="text-left"><?php echo date("d-M-Y",strtotime($ros1['date'])) ?></td>
+<td class="text-left"><?php echo xlt('Wheezing') ?> </td>
+<td class="text-left"><?php echo YES ?> </td>
+</tr>
+	<?php $i++;}?><?php
+	if($ros1['hemoptsyis']=="YES"){
+	?>
+<tr>
+<td class="text-left"><?php echo $i ?></td>
+<td class="text-left"><?php echo date("d-M-Y",strtotime($ros1['date'])) ?></td>
+<td class="text-left"><?php echo xlt('Hemoptsyis') ?> </td>
+<td class="text-left"><?php echo YES ?> </td>
+</tr>
+	<?php $i++;}?><?php
+	if($ros1['asthma']=="YES"){
+	?>
+<tr>
+<td class="text-left"><?php echo $i ?></td>
+<td class="text-left"><?php echo date("d-M-Y",strtotime($ros1['date'])) ?></td>
+<td class="text-left"><?php echo xlt('Asthma') ?> </td>
+<td class="text-left"><?php echo YES ?> </td>
+</tr>
+	<?php $i++;}?><?php
+	if($ros1['copd']=="YES"){
+	?>
+<tr>
+<td class="text-left"><?php echo $i ?></td>
+<td class="text-left"><?php echo date("d-M-Y",strtotime($ros1['date'])) ?></td>
+<td class="text-left"><?php echo xlt('Copd') ?> </td>
+<td class="text-left"><?php echo YES ?> </td>
+</tr>
+	<?php $i++;}?><?php
+	if($ros1['chest_pain']=="YES"){
+	?>
+<tr>
+<td class="text-left"><?php echo $i ?></td>
+<td class="text-left"><?php echo date("d-M-Y",strtotime($ros1['date'])) ?></td>
+<td class="text-left"><?php echo xlt('Chest Pain') ?> </td>
+<td class="text-left"><?php echo YES ?> </td>
+</tr>
+	<?php $i++;}?><?php
+	if($ros1['syncope']=="YES"){
+	?>
+<tr>
+<td class="text-left"><?php echo $i ?></td>
+<td class="text-left"><?php echo date("d-M-Y",strtotime($ros1['date'])) ?></td>
+<td class="text-left"><?php echo xlt('Syncope') ?> </td>
+<td class="text-left"><?php echo YES ?> </td>
+</tr>
+	<?php $i++;}?><?php
+	if($ros1['palpitation']=="YES"){
+	?>
+<tr>
+<td class="text-left"><?php echo $i ?></td>
+<td class="text-left"><?php echo date("d-M-Y",strtotime($ros1['date'])) ?></td>
+<td class="text-left"><?php echo xlt('Palpitation') ?> </td>
+<td class="text-left"><?php echo YES ?> </td>
+</tr>
+	<?php $i++;}?><?php
+	if($ros1['pnd']=="YES"){
+	?>
+<tr>
+<td class="text-left"><?php echo $i ?></td>
+<td class="text-left"><?php echo date("d-M-Y",strtotime($ros1['date'])) ?></td>
+<td class="text-left"><?php echo xlt('PND') ?> </td>
+<td class="text-left"><?php echo YES ?> </td>
+</tr>
+	<?php $i++;}?><?php
+	if($ros1['doe']=="YES"){
+	?>
+<tr>
+<td class="text-left"><?php echo $i ?></td>
+<td class="text-left"><?php echo date("d-M-Y",strtotime($ros1['date'])) ?></td>
+<td class="text-left"><?php echo xlt('DOE') ?> </td>
+<td class="text-left"><?php echo YES ?> </td>
+</tr>
+	<?php $i++;}?><?php
+	if($ros1['orthopnea']=="YES"){
+	?>
+<tr>
+<td class="text-left"><?php echo $i ?></td>
+<td class="text-left"><?php echo date("d-M-Y",strtotime($ros1['date'])) ?></td>
+<td class="text-left"><?php echo xlt('Orthopnea') ?> </td>
+<td class="text-left"><?php echo YES ?> </td>
+</tr>
+	<?php $i++;}?><?php
+	if($ros1['peripheal']=="YES"){
+	?>
+<tr>
+<td class="text-left"><?php echo $i ?></td>
+<td class="text-left"><?php echo date("d-M-Y",strtotime($ros1['date'])) ?></td>
+<td class="text-left"><?php echo xlt('Peripheal') ?> </td>
+<td class="text-left"><?php echo YES ?> </td>
+</tr>
+	<?php $i++;}?>
+	
+	<?php
+	if($ros1['edema']=="YES"){
+	?>
+<tr>
+<td class="text-left"><?php echo $i ?></td>
+<td class="text-left"><?php echo date("d-M-Y",strtotime($ros1['date'])) ?></td>
+<td class="text-left"><?php echo xlt('Edema') ?> </td>
+<td class="text-left"><?php echo YES ?> </td>
+</tr>
+	<?php $i++;}?>
+	<?php
+	if($ros1['legpain_cramping']=="YES"){
+	?>
+<tr>
+<td class="text-left"><?php echo $i ?></td>
+<td class="text-left"><?php echo date("d-M-Y",strtotime($ros1['date'])) ?></td>
+<td class="text-left"><?php echo xlt('Leg Pain Cramping') ?> </td>
+<td class="text-left"><?php echo YES ?> </td>
+</tr>
+	<?php $i++;}?>
+	<?php
+	if($ros1['history_murmur']=="YES"){
+	?>
+<tr>
+<td class="text-left"><?php echo $i ?></td>
+<td class="text-left"><?php echo date("d-M-Y",strtotime($ros1['date'])) ?></td>
+<td class="text-left"><?php echo xlt('History Murmur') ?> </td>
+<td class="text-left"><?php echo YES ?> </td>
+</tr>
+	<?php $i++;}?>
+	<?php
+	if($ros1['arrythmia']=="YES"){
+	?>
+<tr>
+<td class="text-left"><?php echo $i ?></td>
+<td class="text-left"><?php echo date("d-M-Y",strtotime($ros1['date'])) ?></td>
+<td class="text-left"><?php echo xlt('Arrythmia') ?> </td>
+<td class="text-left"><?php echo YES ?> </td>
+</tr>
+	<?php $i++;}?>
+	<?php
+	if($ros1['heart_problem']=="YES"){
+	?>
+<tr>
+<td class="text-left"><?php echo $i ?></td>
+<td class="text-left"><?php echo date("d-M-Y",strtotime($ros1['date'])) ?></td>
+<td class="text-left"><?php echo xlt('Heart Problem') ?> </td>
+<td class="text-left"><?php echo YES ?> </td>
+</tr>
+	<?php $i++;}?>
+	<?php
+	if($ros1['dysphagia']=="YES"){
+	?>
+<tr>
+<td class="text-left"><?php echo $i ?></td>
+<td class="text-left"><?php echo date("d-M-Y",strtotime($ros1['date'])) ?></td>
+<td class="text-left"><?php echo xlt('Dysphagia') ?> </td>
+<td class="text-left"><?php echo YES ?> </td>
+</tr>
+	<?php $i++;}?>
+	<?php
+	if($ros1['heartburn']=="YES"){
+	?>
+<tr>
+<td class="text-left"><?php echo $i ?></td>
+<td class="text-left"><?php echo date("d-M-Y",strtotime($ros1['date'])) ?></td>
+<td class="text-left"><?php echo xlt('Heart Burn') ?> </td>
+<td class="text-left"><?php echo YES ?> </td>
+</tr>
+	<?php $i++;}?>
+	<?php
+	if($ros1['bloating']=="YES"){
+	?>
+<tr>
+<td class="text-left"><?php echo $i ?></td>
+<td class="text-left"><?php echo date("d-M-Y",strtotime($ros1['date'])) ?></td>
+<td class="text-left"><?php echo xlt('Bloating') ?> </td>
+<td class="text-left"><?php echo YES ?> </td>
+</tr>
+	<?php $i++;}?>
+	<?php
+	if($ros1['belching']=="YES"){
+	?>
+<tr>
+<td class="text-left"><?php echo $i ?></td>
+<td class="text-left"><?php echo date("d-M-Y",strtotime($ros1['date'])) ?></td>
+<td class="text-left"><?php echo xlt('Belching') ?> </td>
+<td class="text-left"><?php echo YES ?> </td>
+</tr>
+	<?php $i++;}?>
+	<?php
+	if($ros1['flatulence']=="YES"){
+	?>
+<tr>
+<td class="text-left"><?php echo $i ?></td>
+<td class="text-left"><?php echo date("d-M-Y",strtotime($ros1['date'])) ?></td>
+<td class="text-left"><?php echo xlt('Flatulence') ?> </td>
+<td class="text-left"><?php echo YES ?> </td>
+</tr>
+	<?php $i++;}?>
+	<?php
+	if($ros1['nausea']=="YES"){
+	?>
+<tr>
+<td class="text-left"><?php echo $i ?></td>
+<td class="text-left"><?php echo date("d-M-Y",strtotime($ros1['date'])) ?></td>
+<td class="text-left"><?php echo xlt('Nausea') ?> </td>
+<td class="text-left"><?php echo YES ?> </td>
+</tr>
+	<?php $i++;}?>
+	<?php
+	if($ros1['vomiting']=="YES"){
+	?>
+<tr>
+<td class="text-left"><?php echo $i ?></td>
+<td class="text-left"><?php echo date("d-M-Y",strtotime($ros1['date'])) ?></td>
+<td class="text-left"><?php echo xlt('Vomiting') ?> </td>
+<td class="text-left"><?php echo YES ?> </td>
+</tr>
+	<?php $i++;}?>
+	<?php
+	if($ros1['hematemesis']=="YES"){
+	?>
+<tr>
+<td class="text-left"><?php echo $i ?></td>
+<td class="text-left"><?php echo date("d-M-Y",strtotime($ros1['date'])) ?></td>
+<td class="text-left"><?php echo xlt('Hematemesis') ?> </td>
+<td class="text-left"><?php echo YES ?> </td>
+</tr>
+	<?php $i++;}?>
+	<?php
+	if($ros1['gastro_pain']=="YES"){
+	?>
+<tr>
+<td class="text-left"><?php echo $i ?></td>
+<td class="text-left"><?php echo date("d-M-Y",strtotime($ros1['date'])) ?></td>
+<td class="text-left"><?php echo xlt('Gastro Pain') ?> </td>
+<td class="text-left"><?php echo YES ?> </td>
+</tr>
+	<?php $i++;}?>
+	<?php
+	if($ros1['food_intolerance']=="YES"){
+	?>
+<tr>
+<td class="text-left"><?php echo $i ?></td>
+<td class="text-left"><?php echo date("d-M-Y",strtotime($ros1['date'])) ?></td>
+<td class="text-left"><?php echo xlt('Food Intolerance') ?> </td>
+<td class="text-left"><?php echo YES ?> </td>
+</tr>
+	<?php $i++;}?>
+	<?php
+	if($ros1['hepatitis']=="YES"){
+	?>
+<tr>
+<td class="text-left"><?php echo $i ?></td>
+<td class="text-left"><?php echo date("d-M-Y",strtotime($ros1['date'])) ?></td>
+<td class="text-left"><?php echo xlt('Hepatitis') ?> </td>
+<td class="text-left"><?php echo YES ?> </td>
+</tr>
+	<?php $i++;}?>
+	<?php
+	if($ros1['jaundice']=="YES"){
+	?>
+<tr>
+<td class="text-left"><?php echo $i ?></td>
+<td class="text-left"><?php echo date("d-M-Y",strtotime($ros1['date'])) ?></td>
+<td class="text-left"><?php echo xlt('Jaundice') ?> </td>
+<td class="text-left"><?php echo YES ?> </td>
+</tr>
+	<?php $i++;}?>
+	<?php
+	if($ros1['hematochezia']=="YES"){
+	?>
+<tr>
+<td class="text-left"><?php echo $i ?></td>
+<td class="text-left"><?php echo date("d-M-Y",strtotime($ros1['date'])) ?></td>
+<td class="text-left"><?php echo xlt('Hematochezia') ?> </td>
+<td class="text-left"><?php echo YES ?> </td>
+</tr>
+	<?php $i++;}?>
+	<?php
+	if($ros1['changed_bowel']=="YES"){
+	?>
+<tr>
+<td class="text-left"><?php echo $i ?></td>
+<td class="text-left"><?php echo date("d-M-Y",strtotime($ros1['date'])) ?></td>
+<td class="text-left"><?php echo xlt('Changed Bowel') ?> </td>
+<td class="text-left"><?php echo YES ?> </td>
+</tr>
+	<?php $i++;}?>
+	<?php
+	if($ros1['diarrhea']=="YES"){
+	?>
+<tr>
+<td class="text-left"><?php echo $i ?></td>
+<td class="text-left"><?php echo date("d-M-Y",strtotime($ros1['date'])) ?></td>
+<td class="text-left"><?php echo xlt('Diarrhea') ?> </td>
+<td class="text-left"><?php echo YES ?> </td>
+</tr>
+	<?php $i++;}?>
+	<?php
+	if($ros1['constipation']=="YES"){
+	?>
+<tr>
+<td class="text-left"><?php echo $i ?></td>
+<td class="text-left"><?php echo date("d-M-Y",strtotime($ros1['date'])) ?></td>
+<td class="text-left"><?php echo xlt('Constipation') ?> </td>
+<td class="text-left"><?php echo YES ?> </td>
+</tr>
+	<?php $i++;}?>
+	<?php
+	if($ros1['polyuria']=="YES"){
+	?>
+<tr>
+<td class="text-left"><?php echo $i ?></td>
+<td class="text-left"><?php echo date("d-M-Y",strtotime($ros1['date'])) ?></td>
+<td class="text-left"><?php echo xlt('Polyuria') ?> </td>
+<td class="text-left"><?php echo YES ?> </td>
+</tr>
+	<?php $i++;}?>
+	<?php
+	if($ros1['polydypsia']=="YES"){
+	?>
+<tr>
+<td class="text-left"><?php echo $i ?></td>
+<td class="text-left"><?php echo date("d-M-Y",strtotime($ros1['date'])) ?></td>
+<td class="text-left"><?php echo xlt('Polydypsia') ?> </td>
+<td class="text-left"><?php echo YES ?> </td>
+</tr>
+	<?php $i++;}?>
+	<?php
+	if($ros1['dysuria']=="YES"){
+	?>
+<tr>
+<td class="text-left"><?php echo $i ?></td>
+<td class="text-left"><?php echo date("d-M-Y",strtotime($ros1['date'])) ?></td>
+<td class="text-left"><?php echo xlt('Dysuria') ?> </td>
+<td class="text-left"><?php echo YES ?> </td>
+</tr>
+	<?php $i++;}?>
+	<?php
+	if($ros1['hematuria']=="YES"){
+	?>
+<tr>
+<td class="text-left"><?php echo $i ?></td>
+<td class="text-left"><?php echo date("d-M-Y",strtotime($ros1['date'])) ?></td>
+<td class="text-left"><?php echo xlt('Hematuria') ?> </td>
+<td class="text-left"><?php echo YES ?> </td>
+</tr>
+	<?php $i++;}?>
+	<?php
+	if($ros1['frequency']=="YES"){
+	?>
+<tr>
+<td class="text-left"><?php echo $i ?></td>
+<td class="text-left"><?php echo date("d-M-Y",strtotime($ros1['date'])) ?></td>
+<td class="text-left"><?php echo xlt('Frequency') ?> </td>
+<td class="text-left"><?php echo YES ?> </td>
+</tr>
+	<?php $i++;}?>
+	<?php
+	if($ros1['urgency']=="YES"){
+	?>
+<tr>
+<td class="text-left"><?php echo $i ?></td>
+<td class="text-left"><?php echo date("d-M-Y",strtotime($ros1['date'])) ?></td>
+<td class="text-left"><?php echo xlt('Urgency') ?> </td>
+<td class="text-left"><?php echo YES ?> </td>
+</tr>
+	<?php $i++;}?>
+	<?php
+	if($ros1['incontinence']=="YES"){
+	?>
+<tr>
+<td class="text-left"><?php echo $i ?></td>
+<td class="text-left"><?php echo date("d-M-Y",strtotime($ros1['date'])) ?></td>
+<td class="text-left"><?php echo xlt('Incontinence') ?> </td>
+<td class="text-left"><?php echo YES ?> </td>
+</tr>
+	<?php $i++;}?>
+	<?php
+	if($ros1['renal_stones']=="YES"){
+	?>
+<tr>
+<td class="text-left"><?php echo $i ?></td>
+<td class="text-left"><?php echo date("d-M-Y",strtotime($ros1['date'])) ?></td>
+<td class="text-left"><?php echo xlt('Renal Stones') ?> </td>
+<td class="text-left"><?php echo YES ?> </td>
+</tr>
+	<?php $i++;}?>
+	<?php
+	if($ros1['utis']=="YES"){
+	?>
+<tr>
+<td class="text-left"><?php echo $i ?></td>
+<td class="text-left"><?php echo date("d-M-Y",strtotime($ros1['date'])) ?></td>
+<td class="text-left"><?php echo xlt('UTIS') ?> </td>
+<td class="text-left"><?php echo YES ?> </td>
+</tr>
+	<?php $i++;}?>
+	<?php
+	if($ros1['hesitancy']=="YES"){
+	?>
+<tr>
+<td class="text-left"><?php echo $i ?></td>
+<td class="text-left"><?php echo date("d-M-Y",strtotime($ros1['date'])) ?></td>
+<td class="text-left"><?php echo xlt('Hesitancy') ?> </td>
+<td class="text-left"><?php echo YES ?> </td>
+</tr>
+	<?php $i++;}?>
+	<?php
+	if($ros1['dribbling']=="YES"){
+	?>
+<tr>
+<td class="text-left"><?php echo $i ?></td>
+<td class="text-left"><?php echo date("d-M-Y",strtotime($ros1['date'])) ?></td>
+<td class="text-left"><?php echo xlt('Dribbling') ?> </td>
+<td class="text-left"><?php echo YES ?> </td>
+</tr>
+	<?php $i++;}?>
+	<?php
+	if($ros1['stream']=="YES"){
+	?>
+<tr>
+<td class="text-left"><?php echo $i ?></td>
+<td class="text-left"><?php echo date("d-M-Y",strtotime($ros1['date'])) ?></td>
+<td class="text-left"><?php echo xlt('Stream') ?> </td>
+<td class="text-left"><?php echo YES ?> </td>
+</tr>
+	<?php $i++;}?>
+	<?php
+	if($ros1['nocturia']=="YES"){
+	?>
+<tr>
+<td class="text-left"><?php echo $i ?></td>
+<td class="text-left"><?php echo date("d-M-Y",strtotime($ros1['date'])) ?></td>
+<td class="text-left"><?php echo xlt('Nocturia') ?> </td>
+<td class="text-left"><?php echo YES ?> </td>
+</tr>
+	<?php $i++;}?>
+	<?php
+	if($ros1['erections']=="YES"){
+	?>
+<tr>
+<td class="text-left"><?php echo $i ?></td>
+<td class="text-left"><?php echo date("d-M-Y",strtotime($ros1['date'])) ?></td>
+<td class="text-left"><?php echo xlt('Erections') ?> </td>
+<td class="text-left"><?php echo YES ?> </td>
+</tr>
+	<?php $i++;}?>
+	<?php
+	if($ros1['ejaculations']=="YES"){
+	?>
+<tr>
+<td class="text-left"><?php echo $i ?></td>
+<td class="text-left"><?php echo date("d-M-Y",strtotime($ros1['date'])) ?></td>
+<td class="text-left"><?php echo xlt('Ejaculations') ?> </td>
+<td class="text-left"><?php echo YES ?> </td>
+</tr>
+	<?php $i++;}?>
+	<?php
+	if($ros1['mearche']=="YES"){
+	?>
+<tr>
+<td class="text-left"><?php echo $i ?></td>
+<td class="text-left"><?php echo date("d-M-Y",strtotime($ros1['date'])) ?></td>
+<td class="text-left"><?php echo xlt('Mearche') ?> </td>
+<td class="text-left"><?php echo YES ?> </td>
+</tr>
+	<?php $i++;}?>
+	<?php
+	if($ros1['menopause']=="YES"){
+	?>
+<tr>
+<td class="text-left"><?php echo $i ?></td>
+<td class="text-left"><?php echo date("d-M-Y",strtotime($ros1['date'])) ?></td>
+<td class="text-left"><?php echo xlt('Menopause') ?> </td>
+<td class="text-left"><?php echo YES ?> </td>
+</tr>
+	<?php $i++;}?>
+	<?php
+	if($ros1['lmp']=="YES"){
+	?>
+<tr>
+<td class="text-left"><?php echo $i ?></td>
+<td class="text-left"><?php echo date("d-M-Y",strtotime($ros1['date'])) ?></td>
+<td class="text-left"><?php echo xlt('LMP') ?> </td>
+<td class="text-left"><?php echo YES ?> </td>
+</tr>
+	<?php $i++;}?>
+	<?php
+	if($ros1['f_frequency']=="YES"){
+	?>
+<tr>
+<td class="text-left"><?php echo $i ?></td>
+<td class="text-left"><?php echo date("d-M-Y",strtotime($ros1['date'])) ?></td>
+<td class="text-left"><?php echo xlt('Frequency') ?> </td>
+<td class="text-left"><?php echo YES ?> </td>
+</tr>
+	<?php $i++;}?>
+	<?php
+	if($ros1['f_flow']=="YES"){
+	?>
+<tr>
+<td class="text-left"><?php echo $i ?></td>
+<td class="text-left"><?php echo date("d-M-Y",strtotime($ros1['date'])) ?></td>
+<td class="text-left"><?php echo xlt('Flow') ?> </td>
+<td class="text-left"><?php echo YES ?> </td>
+</tr>
+	<?php $i++;}?>
+	<?php
+	if($ros1['f_symptoms']=="YES"){
+	?>
+<tr>
+<td class="text-left"><?php echo $i ?></td>
+<td class="text-left"><?php echo date("d-M-Y",strtotime($ros1['date'])) ?></td>
+<td class="text-left"><?php echo xlt('Symptoms') ?> </td>
+<td class="text-left"><?php echo YES ?> </td>
+</tr>
+	<?php $i++;}?>
+	<?php
+	if($ros1['abnormal_hair_growth']=="YES"){
+	?>
+<tr>
+<td class="text-left"><?php echo $i ?></td>
+<td class="text-left"><?php echo date("d-M-Y",strtotime($ros1['date'])) ?></td>
+<td class="text-left"><?php echo xlt('Abnormal Hair Growth') ?> </td>
+<td class="text-left"><?php echo YES ?> </td>
+</tr>
+	<?php $i++;}?>
+	<?php
+	if($ros1['f_hirsutism']=="YES"){
+	?>
+<tr>
+<td class="text-left"><?php echo $i ?></td>
+<td class="text-left"><?php echo date("d-M-Y",strtotime($ros1['date'])) ?></td>
+<td class="text-left"><?php echo xlt('Hirsutism') ?> </td>
+<td class="text-left"><?php echo YES ?> </td>
+</tr>
+	<?php $i++;}?>
+	<?php
+	if($ros1['joint_pain']=="YES"){
+	?>
+<tr>
+<td class="text-left"><?php echo $i ?></td>
+<td class="text-left"><?php echo date("d-M-Y",strtotime($ros1['date'])) ?></td>
+<td class="text-left"><?php echo xlt('Joint Pain') ?> </td>
+<td class="text-left"><?php echo YES ?> </td>
+</tr>
+	<?php $i++;}?>
+	<?php
+	if($ros1['swelling']=="YES"){
+	?>
+<tr>
+<td class="text-left"><?php echo $i ?></td>
+<td class="text-left"><?php echo date("d-M-Y",strtotime($ros1['date'])) ?></td>
+<td class="text-left"><?php echo xlt('Swelling') ?> </td>
+<td class="text-left"><?php echo YES ?> </td>
+</tr>
+	<?php $i++;}?>
+	<?php
+	if($ros1['m_redness']=="YES"){
+	?>
+<tr>
+<td class="text-left"><?php echo $i ?></td>
+<td class="text-left"><?php echo date("d-M-Y",strtotime($ros1['date'])) ?></td>
+<td class="text-left"><?php echo xlt('Redness') ?> </td>
+<td class="text-left"><?php echo YES ?> </td>
+</tr>
+	<?php $i++;}?>
+	<?php
+	if($ros1['m_warm']=="YES"){
+	?>
+<tr>
+<td class="text-left"><?php echo $i ?></td>
+<td class="text-left"><?php echo date("d-M-Y",strtotime($ros1['date'])) ?></td>
+<td class="text-left"><?php echo xlt('Warm') ?> </td>
+<td class="text-left"><?php echo YES ?> </td>
+</tr>
+	<?php $i++;}?>
+	
+	
+<?php } ?>
 </tbody>
 </table>
 
