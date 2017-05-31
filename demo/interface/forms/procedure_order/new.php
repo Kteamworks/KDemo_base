@@ -450,6 +450,11 @@ function validate(f) {
   echo $enrow['fname'] . ' ' . $enrow['mname'] . ' ' . $enrow['lname'];
   echo ' ' . xl('on') . ' ' . oeFormatShortDate(substr($enrow['date'], 0, 10));
 ?>
+<input action="action" onclick="history.go(-1);" class=" pull-right" style='float: right;height: 32px;border:none' type="button" value="Back" />
+
+<input type='button' value='<?php echo xla('NEXT'); ?>'  style='float: right;
+margin-bottom: 10px;' class="pull-right" onclick="top.restoreSession();location='../../../controller.php?prescription&edit&id=&pid=$pid'" />
+
 </p>
 
 <center>
@@ -675,7 +680,6 @@ if ($qoe_init_javascript)
 <?php 
 $pid=$_SESSION['pid'];
 ?>
-<input type='button' value='<?php echo xla('NEXT'); ?>' onclick="top.restoreSession();location='../../../controller.php?prescription&edit&id=&pid=$pid'" />
 <!--<input type='submit' name='bn_xmit' value='<?php echo xla('Save and Transmit'); ?>' onclick='transmitting = true;' />-->
 &nbsp;
 <input type='button' value='<?php echo xla('Cancel'); ?>' onclick="top.restoreSession();location='<?php echo $GLOBALS['form_next_url']; ?>'" />

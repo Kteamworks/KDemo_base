@@ -384,6 +384,7 @@ function genFindBlock() {
 <?php
 } // End function genFindBlock()
 
+$res = sqlQuery("select * from users where username='".$_SESSION{"authUser"}."'");
 ?>
 <html>
 <head>
@@ -1145,10 +1146,29 @@ if ($GLOBALS['athletic_team']) {
       <!-- Sidebar user panel -->
       <div class="user-panel">
         <div class="pull-left image">
-          <img src="../../library/dist/img/avatar5.png" class="img-circle" alt="User Image">
+		  <form action="upload.php" method="post" id="form" enctype="multipart/form-data">
+<input type="file" id="imgupload" name="fileToUpload" style="visibility:hidden;position:absolute;opacity:0"/> 
+</form>
+            <a href="#" class="dropdown-toggle" title="Upload Image" id="OpenImgUpload" data-toggle="dropdown">
+			<?php if($res['user_image']) { ?>
+              <img src="<?php echo $res['user_image']; ?>" class="img-circle" alt="User Image">
+			<?php } elseif($res['newcrop_user_role'] == 'erxdoctor') { ?>
+			<img src="../../library/dist/img/doctor.png" class="img-circle" alt="User Image">
+			<?php } elseif($res['newcrop_user_role'] == 'erxrep') { ?>
+			<img src="../../library/dist/img/receptionist.png" class="img-circle" alt="User Image">
+			<?php } elseif($res['newcrop_user_role'] == 'erxcash') { ?>
+			<img src="../../library/dist/img/cashier.png" class="img-circle" alt="User Image">
+			<?php } elseif($res['newcrop_user_role'] == 'erxnurse') { ?>
+			<img src="../../library/dist/img/nurse.png" class="img-circle" alt="User Image">
+			<?php } elseif($res['newcrop_user_role'] == 'erxlab') { ?>
+			<img src="../../library/dist/img/lab.png" class="img-circle" alt="User Image">
+			<?php } else { ?>
+			<img src="../../library/dist/img/user.jpg" class="img-circle" alt="User Image">
+			<?php } ?>
+            </a>
         </div>
         <div class="pull-left info">
-          <p>Sadashiva</p>
+          <p><?php echo htmlspecialchars($res{"fname"}.' '.$res{"lname"},ENT_NOQUOTES); ?></p>
           <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
         </div>
       </div>
