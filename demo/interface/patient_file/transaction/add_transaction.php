@@ -288,6 +288,9 @@ div.tab {
                  </a>
              </td>
 			 <td>
+			 <input action="action" onclick="history.go(-1);" class="css_button_small" style='height: 24px;border:none' type="button" value="Back" />
+</td>
+			 <td>
                 <a href="../../forms/admit/new.php"  <?php if (!$GLOBALS['concurrent_layout']) echo "target='Main'"; ?> class="css_button" onclick="top.restoreSession()">
                     <span><?php echo htmlspecialchars( xl('NEXT'), ENT_NOQUOTES); ?></span>
                 </a>

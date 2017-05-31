@@ -25,8 +25,10 @@ $returnurl = $GLOBALS['concurrent_layout'] ? 'encounter_top.php' : 'patient_enco
 <body class="body_top">
 <form method=post action="<?php echo $rootdir;?>/forms/dictation/save.php?mode=new" name="my_form">
 <span class="title"><?php echo xlt('Plan Details'); ?></span>
-<div style="float:right;margin-right:900px">
- <a href="<?php echo "$rootdir/patient_file/transaction/add_transaction.php";?>" class='css_button'
+<div style="float:right;">
+<input action="action" onclick="history.go(-1);" class="css_button_small" style='height: 24px;border:none' type="button" value="Back" />
+
+ <a href="<?php echo "$rootdir/patient_file/transaction/add_transaction.php";?>" style='height: 24px;border:none' class='css_button_small'
  onclick="top.restoreSession()"><?php echo xlt('Next'); ?></a>
  </div>
 <br><br>

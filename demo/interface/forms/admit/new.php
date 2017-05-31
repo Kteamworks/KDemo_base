@@ -69,7 +69,9 @@ function validateForm() {
 </head>
 
 <body class="body_top">
-<p><span class="forms-title"><?php echo xlt('Admission Details'); ?></span></p>
+<p><span class="forms-title"><?php echo xlt('Admission Details'); ?></span>
+<input action="action" onclick="history.go(-1);" class="css_button_small" style='height: 24px;border:none;float:right' type="button" value="Back" />
+</p>
 </br>
 <?php
 echo "<form method='post' name='my_form' " .
