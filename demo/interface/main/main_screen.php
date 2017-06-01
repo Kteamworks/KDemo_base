@@ -102,7 +102,10 @@ else if ($GLOBALS['concurrent_layout']) {
  } else if($newcrop_user_role['newcrop_user_role']=='erxlab')
  {
 	  $frame1url="../main/finder/p_dynamic_finder_lab.php";
- }else
+ }else if($newcrop_user_role['newcrop_user_role']=='erxcash')
+ {
+	 $frame1url="../main/finder/p_tp_dynamic_finder.php";
+ } else
  {
     $frame1url=attr($GLOBALS['default_top_pane']);
  }
