@@ -22,7 +22,7 @@ class C_FormVitals extends Controller {
     	$this->assign("FORM_ACTION", $GLOBALS['web_root']);
     	$this->assign("DONT_SAVE_LINK",$GLOBALS['webroot'] . "/interface/patient_file/encounter/$returnurl");
 		$this->assign("NEXT_LINK",$GLOBALS['webroot'] . "/interface/patient_file/encounter/load_form.php?formname=ros");
-				$this->assign("BACK_LINK",$GLOBALS['webroot'] . "/interface/patient_file/encounter/view_form.php?formname=newpatient&id=". $id2);
+		$this->assign("BACK_LINK",$GLOBALS['webroot'] . "/interface/patient_file/encounter/view_form.php?formname=newpatient&id=". $id2);
     	$this->assign("STYLE", $GLOBALS['style']);
 
       // Options for units of measurement and things to omit.

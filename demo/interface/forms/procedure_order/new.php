@@ -449,11 +449,14 @@ function validate(f) {
   echo xl('Lab Investigation for') . ' ';
   echo $enrow['fname'] . ' ' . $enrow['mname'] . ' ' . $enrow['lname'];
   echo ' ' . xl('on') . ' ' . oeFormatShortDate(substr($enrow['date'], 0, 10));
+  $id=sqlStatement("SELECT form_id from forms where encounter='".$_SESSION['encounter']."' and formdir='ros' order by form_id desc limit 1 ");
+		$id1=sqlFetchArray($id);
+		$id2=$id1['form_id'];
 ?>
-<input action="action" onclick="history.go(-1);" class=" pull-right" style='float: right;height: 32px;border:none' type="button" value="Back" />
-
+<input type='button' value='<?php echo xla('BACK'); ?>'  style='float: right;
+margin-bottom: 10px;' class="pull-right" onclick="top.restoreSession();location='../../patient_file/encounter/view_form.php?formname=ros&id=<?php echo $id2 ?>'" />
 <input type='button' value='<?php echo xla('NEXT'); ?>'  style='float: right;
-margin-bottom: 10px;' class="pull-right" onclick="top.restoreSession();location='../../../controller.php?prescription&edit&id=&pid=$pid'" />
+margin-bottom: 10px;' class="pull-right" onclick="top.restoreSession();location='../../../controller.php?prescription&edit&id=&pid=<?php echo $pid ?>'" />
 
 </p>
 

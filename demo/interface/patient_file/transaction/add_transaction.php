@@ -281,6 +281,7 @@ div.tab {
 
 	<table>
 	    <tr>
+		
             <td>
                 <b><?php echo htmlspecialchars( xl('Add/Edit Patient Transaction'), ENT_NOQUOTES); ?></b>&nbsp;</td><td>
                  <a href="javascript:;"  <?php if (!$GLOBALS['concurrent_layout']) echo "target='Main'"; ?> class="css_button" onclick="submitme();">
@@ -288,7 +289,15 @@ div.tab {
                  </a>
              </td>
 			 <td>
-			 <input action="action" onclick="history.go(-1);" class="css_button_small" style='height: 24px;border:none' type="button" value="Back" />
+			 <?php
+			  $id=sqlStatement("SELECT form_id from forms where encounter='".$_SESSION['encounter']."' and formdir='dictation' order by form_id desc limit 1 ");
+		$id1=sqlFetchArray($id);
+		$id2=$id1['form_id'];
+		
+			 ?>
+			 <a href="../../patient_file/encounter/view_form.php?formname=dictation&id=<?php echo $id2 ?>"  <?php if (!$GLOBALS['concurrent_layout']) echo "target='Main'"; ?> class="css_button" onclick="top.restoreSession()">
+                    <span><?php echo htmlspecialchars( xl('BACK'), ENT_NOQUOTES); ?></span>
+                </a>
 </td>
 			 <td>
                 <a href="../../forms/admit/new.php"  <?php if (!$GLOBALS['concurrent_layout']) echo "target='Main'"; ?> class="css_button" onclick="top.restoreSession()">
