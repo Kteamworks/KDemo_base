@@ -52,7 +52,15 @@ $language = $tmp['language'];
 <link rel="stylesheet" href='<?php echo $css_header ?>' type='text/css'>
 
 <title><?php echo xlt('Patient Issues'); ?></title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 
+	<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700' rel='stylesheet' type='text/css'>
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="<?php echo $GLOBALS['webroot']; ?>/library/breadcrumbs/css/reset.css"> <!-- CSS reset -->
+	<link rel="stylesheet" href="<?php echo $GLOBALS['webroot']; ?>/library/breadcrumbs/css/style.css"> <!-- Resource style -->
+	<script src="<?php echo $GLOBALS['webroot']; ?>/library/breadcrumbs/js/modernizr.js"></script> <!-- Modernizr -->
+  	
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot']; ?>/library/dialog.js"></script>
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot']; ?>/library/js/jquery.js"></script>
 
@@ -156,12 +164,26 @@ $(window).load(function() {
 </head>
 
 <body class="body_top">
-
-<br>
-<div style="text-align:center" class="buttons">
+<section>
+	<nav>
+		<ol class="cd-breadcrumb triangle custom-icons">
+			<li class="current"></i><em>Medical Issues</em></li>
+			<li><a href="#0"><i class="fa fa-note" style="margin-right: 8px;"></i>Visit Notes</a></li>
+			<li><a href="#0"><i class="fa fa-note" style="margin-right: 8px;"></i>Vitals</a></li>
+			<li><a href="#0"><i class="fa fa-note" style="margin-right: 8px;"></i>Review of systems</a></li>
+			<li><a href="#0"><i class="fa fa-note" style="margin-right: 8px;"></i>Lab Tests</a></li>
+			<li><a href="#0"><i class="fa fa-note" style="margin-right: 8px;"></i>Prescription</a></li>
+			<li><a href="#0"><i class="fa fa-note" style="margin-right: 8px;"></i>Plan</a></li>
+			<li><a href="#0"><i class="fa fa-note" style="margin-right: 8px;"></i>Referal</a></li>
+			<li><a href="#0"><i class="fa fa-note" style="margin-right: 8px;"></i>Admission</a></li>
+			<li><em>Summary</em></li>
+		</ol>
+	</nav>
+</section>
+<div style="float:right" class="buttons">
   <a href='javascript:;' class='css_button' id='back'><span><?php echo htmlspecialchars( xl('Back'), ENT_NOQUOTES); ?></span></a>
 </div>
-<div style="text-align:center;align:right" class="buttons">
+<div style="float:right;align:right" class="buttons">
   <a href='javascript:;' class='css_button' id='next'><span><?php echo htmlspecialchars( xl('Next'), ENT_NOQUOTES); ?></span></a>
 </div>
 <br>
