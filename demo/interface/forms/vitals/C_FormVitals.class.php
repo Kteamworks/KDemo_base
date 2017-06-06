@@ -16,6 +16,21 @@ class C_FormVitals extends Controller {
 		$id1=sqlFetchArray($id);
 
 	$id2=$id1['id'];
+	$pid=$_SESSION['pid'];
+	$rid=sqlStatement("SELECT form_id from forms where encounter='".$_SESSION['encounter']."' and formdir='ros' order by form_id desc limit 1 ");
+		$rid1=sqlFetchArray($rid);
+		$rid2=$rid1['form_id'];
+$vid=sqlStatement("SELECT form_id from forms where encounter='".$_SESSION['encounter']."' and formdir='vitals' order by form_id desc limit 1 ");
+		$vid1=sqlFetchArray($vid);
+		$vid2=$vid1['form_id'];
+		$plid=sqlStatement("SELECT form_id from forms where encounter='".$_SESSION['encounter']."' and formdir='dictation' order by form_id desc limit 1 ");
+		$plid1=sqlFetchArray($plid);
+		$plid2=$plid1['form_id'];
+		$nvid=sqlStatement("SELECT id from form_encounter where encounter='".$_SESSION['encounter']."'");
+
+  $nvid1=sqlFetchArray($nvid);
+
+ $nvid2=$nvid1['id'];
     	$returnurl = $GLOBALS['concurrent_layout'] ? 'encounter_top.php' : 'patient_encounter.php';
     	$this->template_mod = $template_mod;
     	$this->template_dir = dirname(__FILE__) . "/templates/vitals/";
@@ -23,6 +38,27 @@ class C_FormVitals extends Controller {
     	$this->assign("DONT_SAVE_LINK",$GLOBALS['webroot'] . "/interface/patient_file/encounter/$returnurl");
 		$this->assign("NEXT_LINK",$GLOBALS['webroot'] . "/interface/patient_file/encounter/load_form.php?formname=ros");
 		$this->assign("BACK_LINK",$GLOBALS['webroot'] . "/interface/patient_file/encounter/view_form.php?formname=newpatient&id=". $id2);
+	    $this->assign("VISIT_LINK",$GLOBALS['webroot'] . "/interface/patient_file/encounter/view_form.php?formname=newpatient&id=". $id2);
+		 if($vid2 == null) {
+		    $this->assign("VITALS_LINK",$GLOBALS['webroot'] . "/interface/patient_file/encounter/load_form.php?formname=vitals");
+			} else { 
+			 $this->assign("VITALS_LINK",$GLOBALS['webroot'] . "/interface/patient_file/encounter/view_form.php?formname=vitals&id=".$vid2);
+		} 
+		if($rid2 == null) {
+		    $this->assign("ROS_LINK",$GLOBALS['webroot'] . "/interface/patient_file/encounter/load_form.php?formname=ros");
+			} else { 
+			 $this->assign("ROS_LINK",$GLOBALS['webroot'] . "/interface/patient_file/encounter/view_form.php?formname=ros&id=".$rid2);
+		}
+		$this->assign("LAB_LINK",$GLOBALS['webroot'] . "/interface/patient_file/encounter/load_form.php?formname=procedure_order");
+		$this->assign("prescription_LINK",$GLOBALS['webroot'] . "/controller.php?prescription&edit&id=&pid=".$pid);
+		if($plid2 == null) {
+			$this->assign("plan_LINK",$GLOBALS['webroot'] . "/interface/patient_file/encounter/load_form.php?formname=dictation");
+		}else{
+			$this->assign("plan_LINK",$GLOBALS['webroot'] . "/interface/patient_file/encounter/view_form.php?formname=formname=dictation&id=".$plid2);
+		}
+		$this->assign("referral_LINK",$GLOBALS['webroot'] . "/interface/patient_file/transaction/add_transaction.php");
+		$this->assign("admission_LINK",$GLOBALS['webroot'] . "/interface/forms/admit/new.php");
+		$this->assign("summary_LINK",$GLOBALS['webroot'] . "/interface/patient_file/summary/summary_print.php");
     	$this->assign("STYLE", $GLOBALS['style']);
 
       // Options for units of measurement and things to omit.

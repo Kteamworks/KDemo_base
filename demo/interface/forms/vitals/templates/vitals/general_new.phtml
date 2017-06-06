@@ -129,15 +129,15 @@ td,th {
 	<nav>
 		<ol class="cd-breadcrumb triangle custom-icons">
 			<li class="current"></i><em>Medical Issues</em></li>
-			<li id="visit"><a><i class="fa fa-note" style="margin-right: 8px;"></i>Visit Notes</a></li>
-			<li id="vitals"><a><i class="fa fa-note" style="margin-right: 8px;"></i>Vitals</a></li>
-			<li id="ros"><a><i class="fa fa-note" style="margin-right: 8px;"></i>Review of systems</a></li>
-			<li id="lab"><a><i class="fa fa-note" style="margin-right: 8px;"></i>Lab Tests</a></li>
-			<li id="prescription"><a><i class="fa fa-note" style="margin-right: 8px;"></i>Prescription</a></li>
-			<li id="plan"><a><i class="fa fa-note" style="margin-right: 8px;"></i>Plan</a></li>
-			<li id="referral"><a><i class="fa fa-note" style="margin-right: 8px;"></i>Referal</a></li>
-			<li id="admission"><a><i class="fa fa-note" style="margin-right: 8px;"></i>Admission</a></li>
-			<li id="summary" ><a>Summary</a></li>
+			<li><a href="#0"><i class="fa fa-note" style="margin-right: 8px;"></i>Visit Notes</a></li>
+			<li><a href="#0"><i class="fa fa-note" style="margin-right: 8px;"></i>Vitals</a></li>
+			<li><a href="#0"><i class="fa fa-note" style="margin-right: 8px;"></i>Review of systems</a></li>
+			<li><a href="#0"><i class="fa fa-note" style="margin-right: 8px;"></i>Lab Tests</a></li>
+			<li><a href="#0"><i class="fa fa-note" style="margin-right: 8px;"></i>Prescription</a></li>
+			<li><a href="#0"><i class="fa fa-note" style="margin-right: 8px;"></i>Plan</a></li>
+			<li><a href="#0"><i class="fa fa-note" style="margin-right: 8px;"></i>Referal</a></li>
+			<li><a href="#0"><i class="fa fa-note" style="margin-right: 8px;"></i>Admission</a></li>
+			<li><em>Summary</em></li>
 		</ol>
 	</nav>
 </section>
@@ -265,15 +265,6 @@ var pid = '{$vitals->get_pid()}';
 var cancellink = '{$DONT_SAVE_LINK}';
 var nextlink = '{$NEXT_LINK}';
 var backlink = '{$BACK_LINK}';
-var visitlink = '{$VISIT_LINK}';
-var vitalslink = '{$VITALS_LINK}';
-var roslink = '{$ROS_LINK}';
-var lablink = '{$LAB_LINK}';
-var prescriptionlink = '{$prescription_LINK}';
-var planlink = '{$plan_LINK}';
-var referrallink = '{$referral_LINK}';
-var admissionlink = '{$admission_LINK}';
-var summarylink = '{$summary_LINK}';
 var birth_xl='{xl t="Birth-24 months"}'
 var older_xl='{xl t="2-20 years"}';
 {literal}
@@ -324,15 +315,6 @@ $(document).ready(function(){
     $("#cancel").click(function() { location.href=cancellink; });
 	$("#back").click(function() { location.href=backlink; });
 	  $("#next").click(function() { location.href=nextlink; });
-	  	$("#visit").click(function() { location.href=visitlink; });
-	  $("#vitals").click(function() { location.href=vitalslink; });
-	  	$("#ros").click(function() { location.href=roslink; });
-	  $("#lab").click(function() { location.href=lablink; });
-	  	$("#prescription").click(function() { location.href=prescriptionlink; });
-	  $("#plan").click(function() { location.href=planlink; });
-	  	$("#referral").click(function() { location.href=referrallink; });
-	  $("#admission").click(function() { location.href=admissionlink; });
-	  	$("#summary").click(function() { location.href=summarylink; });
 	
     addGCSelector();
 });

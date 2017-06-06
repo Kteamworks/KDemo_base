@@ -1,11 +1,18 @@
-<?php /* Smarty version 2.6.2, created on 2017-06-01 12:38:25
+<?php /* Smarty version 2.6.2, created on 2017-06-06 12:28:07
          compiled from C:%5Cxampp%5Chtdocs%5CKDemo_base%5Cdemo%5Cinterface%5Cforms%5Cros/templates/ros/general_new.html */ ?>
 <?php require_once(SMARTY_DIR . 'core' . DIRECTORY_SEPARATOR . 'core.load_plugins.php');
-smarty_core_load_plugins(array('plugins' => array(array('function', 'xl', 'C:\xampp\htdocs\KDemo_base\demo\interface\forms\ros/templates/ros/general_new.html', 77, false),array('function', 'html_radios', 'C:\xampp\htdocs\KDemo_base\demo\interface\forms\ros/templates/ros/general_new.html', 90, false),)), $this); ?>
+smarty_core_load_plugins(array('plugins' => array(array('function', 'xl', 'C:\xampp\htdocs\KDemo_base\demo\interface\forms\ros/templates/ros/general_new.html', 100, false),array('function', 'html_radios', 'C:\xampp\htdocs\KDemo_base\demo\interface\forms\ros/templates/ros/general_new.html', 113, false),)), $this); ?>
 <html>
 <head>
 <?php html_header_show(); ?>
 <?php echo '
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link href=\'http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700\' rel=\'stylesheet\' type=\'text/css\'>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="{$FORM_ACTION}/library/breadcrumbs/css/reset.css"> <!-- CSS reset -->
+	<link rel="stylesheet" href="{$FORM_ACTION}/library/breadcrumbs/css/style.css"> <!-- Resource style -->
+	<script src="{$FORM_ACTION}/library/breadcrumbs/js/modernizr.js"></script> <!-- Modernizr -->
  <style type="text/css" title="mystyles" media="all">
 <!--
 ttd {
@@ -77,6 +84,31 @@ a {
 </head>
 <body bgcolor="<?php echo $this->_tpl_vars['STYLE']['BGCOLOR2']; ?>
 ">
+<section>
+	<nav>
+		<ol class="cd-breadcrumb triangle custom-icons">
+			<li class="current"></i><em>Medical Issues</em></li>
+			<li id="visit"><a href="<?php echo $this->_tpl_vars['VISIT_LINK']; ?>
+"><i class="fa fa-note" style="margin-right: 8px;"></i>Visit Notes</a></li>
+			<li id="vitals"><a href="<?php echo $this->_tpl_vars['VITALS_LINK']; ?>
+"><i class="fa fa-note" style="margin-right: 8px;"></i>Vitals</a></li>
+			<li id="ros"><a href="<?php echo $this->_tpl_vars['ROS_LINK']; ?>
+"><i class="fa fa-note" style="margin-right: 8px;"></i>Review of systems</a></li>
+			<li id="lab"><a href="<?php echo $this->_tpl_vars['LAB_LINK']; ?>
+"><i class="fa fa-note" style="margin-right: 8px;"></i>Lab Tests</a></li>
+			<li id="prescription"><a href="<?php echo $this->_tpl_vars['prescription_LINK']; ?>
+"><i class="fa fa-note" style="margin-right: 8px;"></i>Prescription</a></li>
+			<li id="plan"><a href="<?php echo $this->_tpl_vars['plan_LINK']; ?>
+"><i class="fa fa-note" style="margin-right: 8px;"></i>Plan</a></li>
+			<li id="referral"><a href="<?php echo $this->_tpl_vars['referral_LINK']; ?>
+"><i class="fa fa-note" style="margin-right: 8px;"></i>Referal</a></li>
+			<li id="admission"><a href="<?php echo $this->_tpl_vars['admission_LINK']; ?>
+"><i class="fa fa-note" style="margin-right: 8px;"></i>Admission</a></li>
+			<li id="summary" ><a href="<?php echo $this->_tpl_vars['summary_LINK']; ?>
+">Summary</a></li>
+		</ol>
+	</nav>
+</section>
 <form name="ros" method="post" action="<?php echo $this->_tpl_vars['FORM_ACTION']; ?>
 /interface/forms/ros/save.php"
  onsubmit="return top.restoreSession()">

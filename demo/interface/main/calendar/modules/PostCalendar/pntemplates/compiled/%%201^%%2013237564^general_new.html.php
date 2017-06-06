@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.2, created on 2017-06-06 11:00:44
+<?php /* Smarty version 2.6.2, created on 2017-06-06 11:56:03
          compiled from C:%5Cxampp%5Chtdocs%5CKDemo_base%5Cdemo%5Cinterface%5Cforms%5Cvitals/templates/vitals/general_new.html */ ?>
 <?php require_once(SMARTY_DIR . 'core' . DIRECTORY_SEPARATOR . 'core.load_plugins.php');
 smarty_core_load_plugins(array('plugins' => array(array('function', 'xl', 'C:\xampp\htdocs\KDemo_base\demo\interface\forms\vitals/templates/vitals/general_new.html', 35, false),array('function', 'math', 'C:\xampp\htdocs\KDemo_base\demo\interface\forms\vitals/templates/vitals/general_new.html', 176, false),array('modifier', 'date_format', 'C:\xampp\htdocs\KDemo_base\demo\interface\forms\vitals/templates/vitals/general_new.html', 153, false),)), $this); ?>
@@ -143,15 +143,15 @@ td,th {
 	<nav>
 		<ol class="cd-breadcrumb triangle custom-icons">
 			<li class="current"></i><em>Medical Issues</em></li>
-			<li><a href="#0"><i class="fa fa-note" style="margin-right: 8px;"></i>Visit Notes</a></li>
-			<li><a href="#0"><i class="fa fa-note" style="margin-right: 8px;"></i>Vitals</a></li>
-			<li><a href="#0"><i class="fa fa-note" style="margin-right: 8px;"></i>Review of systems</a></li>
-			<li><a href="#0"><i class="fa fa-note" style="margin-right: 8px;"></i>Lab Tests</a></li>
-			<li><a href="#0"><i class="fa fa-note" style="margin-right: 8px;"></i>Prescription</a></li>
-			<li><a href="#0"><i class="fa fa-note" style="margin-right: 8px;"></i>Plan</a></li>
-			<li><a href="#0"><i class="fa fa-note" style="margin-right: 8px;"></i>Referal</a></li>
-			<li><a href="#0"><i class="fa fa-note" style="margin-right: 8px;"></i>Admission</a></li>
-			<li><em>Summary</em></li>
+			<li id="visit"><a><i class="fa fa-note" style="margin-right: 8px;"></i>Visit Notes</a></li>
+			<li id="vitals"><a><i class="fa fa-note" style="margin-right: 8px;"></i>Vitals</a></li>
+			<li id="ros"><a><i class="fa fa-note" style="margin-right: 8px;"></i>Review of systems</a></li>
+			<li id="lab"><a><i class="fa fa-note" style="margin-right: 8px;"></i>Lab Tests</a></li>
+			<li id="prescription"><a><i class="fa fa-note" style="margin-right: 8px;"></i>Prescription</a></li>
+			<li id="plan"><a><i class="fa fa-note" style="margin-right: 8px;"></i>Plan</a></li>
+			<li id="referral"><a><i class="fa fa-note" style="margin-right: 8px;"></i>Referal</a></li>
+			<li id="admission"><a><i class="fa fa-note" style="margin-right: 8px;"></i>Admission</a></li>
+			<li id="summary" ><a>Summary</a></li>
 		</ol>
 	</nav>
 </section>
@@ -354,6 +354,24 @@ var nextlink = '<?php echo $this->_tpl_vars['NEXT_LINK']; ?>
 ';
 var backlink = '<?php echo $this->_tpl_vars['BACK_LINK']; ?>
 ';
+var visitlink = '<?php echo $this->_tpl_vars['VISIT_LINK']; ?>
+';
+var vitalslink = '<?php echo $this->_tpl_vars['VITALS_LINK']; ?>
+';
+var roslink = '<?php echo $this->_tpl_vars['ROS_LINK']; ?>
+';
+var lablink = '<?php echo $this->_tpl_vars['LAB_LINK']; ?>
+';
+var prescriptionlink = '<?php echo $this->_tpl_vars['prescription_LINK']; ?>
+';
+var planlink = '<?php echo $this->_tpl_vars['plan_LINK']; ?>
+';
+var referrallink = '<?php echo $this->_tpl_vars['referral_LINK']; ?>
+';
+var admissionlink = '<?php echo $this->_tpl_vars['admission_LINK']; ?>
+';
+var summarylink = '<?php echo $this->_tpl_vars['summary_LINK']; ?>
+';
 var birth_xl='<?php echo smarty_function_xl(array('t' => "Birth-24 months"), $this);?>
 '
 var older_xl='<?php echo smarty_function_xl(array('t' => "2-20 years"), $this);?>
@@ -406,6 +424,15 @@ $(document).ready(function(){
     $("#cancel").click(function() { location.href=cancellink; });
 	$("#back").click(function() { location.href=backlink; });
 	  $("#next").click(function() { location.href=nextlink; });
+	  	$("#visit").click(function() { location.href=visitlink; });
+	  $("#vitals").click(function() { location.href=vitalslink; });
+	  	$("#ros").click(function() { location.href=roslink; });
+	  $("#lab").click(function() { location.href=lablink; });
+	  	$("#prescription").click(function() { location.href=prescriptionlink; });
+	  $("#plan").click(function() { location.href=planlink; });
+	  	$("#referral").click(function() { location.href=referrallink; });
+	  $("#admission").click(function() { location.href=admissionlink; });
+	  	$("#summary").click(function() { location.href=summarylink; });
 	
     addGCSelector();
 });

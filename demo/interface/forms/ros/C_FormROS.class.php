@@ -20,7 +20,27 @@ class C_FormROS extends Controller {
     	$this->assign("DONT_SAVE_LINK",$GLOBALS['webroot'] . "/interface/patient_file/encounter/$returnurl");
 		$this->assign("NEXT_LINK",$GLOBALS['webroot'] . "/interface/patient_file/encounter/load_form.php?formname=procedure_order");
     	$this->assign("BACK_LINK",$GLOBALS['webroot'] . "/interface/patient_file/encounter/view_form.php?formname=vitals&id=$id2");
-    	
+    	    $this->assign("VISIT_LINK",$GLOBALS['webroot'] . "/interface/patient_file/encounter/view_form.php?formname=newpatient&id=". $id2);
+		 if($vid2 == null) {
+		    $this->assign("VITALS_LINK",$GLOBALS['webroot'] . "/interface/patient_file/encounter/load_form.php?formname=vitals");
+			} else { 
+			 $this->assign("VITALS_LINK",$GLOBALS['webroot'] . "/interface/patient_file/encounter/view_form.php?formname=vitals&id=".$vid2);
+		} 
+		if($rid2 == null) {
+		    $this->assign("ROS_LINK",$GLOBALS['webroot'] . "/interface/patient_file/encounter/load_form.php?formname=ros");
+			} else { 
+			 $this->assign("ROS_LINK",$GLOBALS['webroot'] . "/interface/patient_file/encounter/view_form.php?formname=ros&id=".$rid2);
+		}
+		$this->assign("LAB_LINK",$GLOBALS['webroot'] . "/interface/patient_file/encounter/load_form.php?formname=procedure_order");
+		$this->assign("prescription_LINK",$GLOBALS['webroot'] . "/controller.php?prescription&edit&id=&pid=".$pid);
+		if($plid2 == null) {
+			$this->assign("plan_LINK",$GLOBALS['webroot'] . "/interface/patient_file/encounter/load_form.php?formname=dictation");
+		}else{
+			$this->assign("plan_LINK",$GLOBALS['webroot'] . "/interface/patient_file/encounter/view_form.php?formname=formname=dictation&id=".$plid2);
+		}
+		$this->assign("referral_LINK",$GLOBALS['webroot'] . "/interface/patient_file/transaction/add_transaction.php");
+		$this->assign("admission_LINK",$GLOBALS['webroot'] . "/interface/forms/admit/new.php");
+		$this->assign("summary_LINK",$GLOBALS['webroot'] . "/interface/patient_file/summary/summary_print.php");
 		$this->assign("STYLE", $GLOBALS['style']);
     }
     
