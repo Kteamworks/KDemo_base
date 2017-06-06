@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.2, created on 2017-05-31 11:20:09
+<?php /* Smarty version 2.6.2, created on 2017-06-01 12:38:25
          compiled from C:%5Cxampp%5Chtdocs%5CKDemo_base%5Cdemo%5Cinterface%5Cforms%5Cros/templates/ros/general_new.html */ ?>
 <?php require_once(SMARTY_DIR . 'core' . DIRECTORY_SEPARATOR . 'core.load_plugins.php');
 smarty_core_load_plugins(array('plugins' => array(array('function', 'xl', 'C:\xampp\htdocs\KDemo_base\demo\interface\forms\ros/templates/ros/general_new.html', 77, false),array('function', 'html_radios', 'C:\xampp\htdocs\KDemo_base\demo\interface\forms\ros/templates/ros/general_new.html', 90, false),)), $this); ?>
@@ -85,10 +85,10 @@ a {
 </span></p>
 </td>
 <td>
-<input action="action" onclick="history.go(-1);" class="css_button_small" style='height: 24px;border:none' type="button" value="Back" />
-<!-- <a href="<?php echo $this->_tpl_vars['BACK_LINK']; ?>
-" class="button" onclick="top.restoreSession()">[<?php  xl("BACK","e");  ?>]</a> -->
-	<a href="<?php echo $this->_tpl_vars['NEXT_LINK']; ?>
+<!--<input action="action" onclick="history.go(-1);" class="css_button_small" style='height: 24px;border:none' type="button" value="Back" />-->
+<a href="<?php echo $this->_tpl_vars['BACK_LINK']; ?>
+" class="css_button_small" style='padding: 4px 10px 0px 10px;' onclick="top.restoreSession()"><?php  xl("BACK","e");  ?></a> 
+<a href="<?php echo $this->_tpl_vars['NEXT_LINK']; ?>
 " class="css_button_small" style='padding: 4px 10px 0px 10px;' onclick="top.restoreSession()"><?php  xl("NEXT","e");  ?></a>
 	</td>
 </tr>
