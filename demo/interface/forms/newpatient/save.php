@@ -51,12 +51,15 @@ if ($GLOBALS['concurrent_layout'])
   $normalurl = "patient_file/encounter/encounter_top.php";
 else
   $normalurl = "$rootdir/patient_file/encounter/patient_encounter.php";
+
 $newcrop_user_role=sqlQuery("select newcrop_user_role from users where username='".$_SESSION['authUser']."'");
  if($newcrop_user_role['newcrop_user_role']=='erxdoctor') {
 	 $normalurl = "patient_file/encounter/load_form.php?formname=vitals";
  }
   if($newcrop_user_role['newcrop_user_role']=='erxrep') {
+	  
 	 $normalurl = "main/finder/dynamic_finder.php";
+	 
  }
 /* if($pc_catid==10)
 {
@@ -98,8 +101,6 @@ if ($mode == 'new')
 	  "package = '" . add_escape_custom($package) . "', " .
       "provider_id = '" . add_escape_custom($provider_id) . "'"),
       "newpatient", $pid, $userauthorized, $date);
-	
-	
 	$p=sqlQuery("select date from patient_data where pid='$pid'");
 	sqlFetchArray($p);
 	$regdate=$p['date'];
@@ -310,6 +311,7 @@ if ($mode == 'new' && $GLOBALS['default_new_encounter_form'] == 'football_injury
          "forms.encounter = issue_encounter.encounter AND " .
          "forms.formdir = ?", array($lrow['list_id'],$GLOBALS['default_new_encounter_form']));
       if ($frow['count']) $nexturl = $normalurl;
+    
     }
   }
 }
