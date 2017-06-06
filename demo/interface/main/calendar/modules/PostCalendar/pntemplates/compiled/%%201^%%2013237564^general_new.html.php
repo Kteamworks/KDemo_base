@@ -1,11 +1,20 @@
-<?php /* Smarty version 2.6.2, created on 2017-05-30 13:33:26
+<?php /* Smarty version 2.6.2, created on 2017-06-06 11:00:44
          compiled from C:%5Cxampp%5Chtdocs%5CKDemo_base%5Cdemo%5Cinterface%5Cforms%5Cvitals/templates/vitals/general_new.html */ ?>
 <?php require_once(SMARTY_DIR . 'core' . DIRECTORY_SEPARATOR . 'core.load_plugins.php');
-smarty_core_load_plugins(array('plugins' => array(array('function', 'xl', 'C:\xampp\htdocs\KDemo_base\demo\interface\forms\vitals/templates/vitals/general_new.html', 29, false),array('function', 'math', 'C:\xampp\htdocs\KDemo_base\demo\interface\forms\vitals/templates/vitals/general_new.html', 154, false),array('modifier', 'date_format', 'C:\xampp\htdocs\KDemo_base\demo\interface\forms\vitals/templates/vitals/general_new.html', 131, false),)), $this); ?>
+smarty_core_load_plugins(array('plugins' => array(array('function', 'xl', 'C:\xampp\htdocs\KDemo_base\demo\interface\forms\vitals/templates/vitals/general_new.html', 35, false),array('function', 'math', 'C:\xampp\htdocs\KDemo_base\demo\interface\forms\vitals/templates/vitals/general_new.html', 176, false),array('modifier', 'date_format', 'C:\xampp\htdocs\KDemo_base\demo\interface\forms\vitals/templates/vitals/general_new.html', 153, false),)), $this); ?>
 <html>
 <head>
 <?php html_header_show(); ?>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
+	<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="<?php echo $this->_tpl_vars['FORM_ACTION']; ?>
+/library/breadcrumbs/css/reset.css"> <!-- CSS reset -->
+	<link rel="stylesheet" href="<?php echo $this->_tpl_vars['FORM_ACTION']; ?>
+/library/breadcrumbs/css/style.css"> <!-- Resource style -->
+	<script src="<?php echo $this->_tpl_vars['FORM_ACTION']; ?>
+/library/breadcrumbs/js/modernizr.js"></script> <!-- Modernizr -->
 <style type="text/css">@import url(<?php echo $this->_tpl_vars['FORM_ACTION']; ?>
 /library/dynarch_calendar.css);</style>
 <script type="text/javascript" src="<?php echo $this->_tpl_vars['FORM_ACTION']; ?>
@@ -130,6 +139,22 @@ td,th {
 </head>
 <body bgcolor="<?php echo $this->_tpl_vars['STYLE']['BGCOLOR2']; ?>
 ">
+<section>
+	<nav>
+		<ol class="cd-breadcrumb triangle custom-icons">
+			<li class="current"></i><em>Medical Issues</em></li>
+			<li><a href="#0"><i class="fa fa-note" style="margin-right: 8px;"></i>Visit Notes</a></li>
+			<li><a href="#0"><i class="fa fa-note" style="margin-right: 8px;"></i>Vitals</a></li>
+			<li><a href="#0"><i class="fa fa-note" style="margin-right: 8px;"></i>Review of systems</a></li>
+			<li><a href="#0"><i class="fa fa-note" style="margin-right: 8px;"></i>Lab Tests</a></li>
+			<li><a href="#0"><i class="fa fa-note" style="margin-right: 8px;"></i>Prescription</a></li>
+			<li><a href="#0"><i class="fa fa-note" style="margin-right: 8px;"></i>Plan</a></li>
+			<li><a href="#0"><i class="fa fa-note" style="margin-right: 8px;"></i>Referal</a></li>
+			<li><a href="#0"><i class="fa fa-note" style="margin-right: 8px;"></i>Admission</a></li>
+			<li><em>Summary</em></li>
+		</ol>
+	</nav>
+</section>
 <p><table><tr><td><span class="title"><?php echo smarty_function_xl(array('t' => 'Vitals'), $this);?>
 </span></td><td>&nbsp;&nbsp;&nbsp;<a href="../summary/demographics.php" class="readonly css_button_small" onclick="top.restoreSession()"> <span><?php echo smarty_function_xl(array('t' => 'View Patient'), $this);?>
 </span></a></td><td class='float:right'><input type="button" class="editonly" id="back" value="<?php echo smarty_function_xl(array('t' => 'Back'), $this);?>

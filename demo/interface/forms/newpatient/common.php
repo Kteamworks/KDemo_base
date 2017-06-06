@@ -76,7 +76,15 @@ $ires = sqlStatement("SELECT id, type, title, begdate FROM lists WHERE " .
 <?php include_once("{$GLOBALS['srcdir']}/dynarch_calendar_en.inc.php"); ?>
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar_setup.js"></script>
 <?php include_once("{$GLOBALS['srcdir']}/ajax/facility_ajax_jav.inc.php"); ?>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="<?php echo $GLOBALS['webroot']; ?>/library/breadcrumbs/css/reset.css"> <!-- CSS reset -->
+	<link rel="stylesheet" href="<?php echo $GLOBALS['webroot']; ?>/library/breadcrumbs/css/style.css"> <!-- Resource style -->
+	<script src="<?php echo $GLOBALS['webroot']; ?>/library/breadcrumbs/js/modernizr.js"></script> <!-- Modernizr -->
 <script language="JavaScript">
+
 
  var mypcc = '<?php echo $GLOBALS['phone_country_code'] ?>';
 
@@ -151,10 +159,28 @@ function getRatePlan(plan)
 <?php } else { ?>
 <body class="body_top" onload="javascript:document.new_encounter.reason.focus();">
 <?php } ?>
-
 <!-- Required for the popup date selectors -->
 <div id="overDiv" style="position:absolute; visibility:hidden; z-index:1000;"></div>
-
+<?php $newcrop_user_role=sqlQuery("select newcrop_user_role from users where username='".$_SESSION['authUser']."'");
+ ?>
+  <?php if($newcrop_user_role['newcrop_user_role']=='erxdoctor') { ?>
+<section>
+	<nav>
+		<ol class="cd-breadcrumb triangle custom-icons">
+			<li class="current"></i><em>Medical Issues</em></li>
+			<li><a href="#0"><i class="fa fa-note" style="margin-right: 8px;"></i>Visit Notes</a></li>
+			<li><a href="#0"><i class="fa fa-note" style="margin-right: 8px;"></i>Vitals</a></li>
+			<li><a href="#0"><i class="fa fa-note" style="margin-right: 8px;"></i>Review of systems</a></li>
+			<li><a href="#0"><i class="fa fa-note" style="margin-right: 8px;"></i>Lab Tests</a></li>
+			<li><a href="#0"><i class="fa fa-note" style="margin-right: 8px;"></i>Prescription</a></li>
+			<li><a href="#0"><i class="fa fa-note" style="margin-right: 8px;"></i>Plan</a></li>
+			<li><a href="#0"><i class="fa fa-note" style="margin-right: 8px;"></i>Referal</a></li>
+			<li><a href="#0"><i class="fa fa-note" style="margin-right: 8px;"></i>Admission</a></li>
+			<li><em>Summary</em></li>
+		</ol>
+	</nav>
+</section>
+  <?php }?>
 <form method='post' action="<?php echo $rootdir ?>/forms/newpatient/save.php" name='new_encounter'
  <?php if (!$GLOBALS['concurrent_layout']) echo "target='Main'"; ?>>
 
