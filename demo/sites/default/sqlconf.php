@@ -6,7 +6,7 @@ $host	= 'localhost';
 $port	= '3306';
 $login	= 'root';
 $pass	= '';
-$dbase	= 'mangoo';
+$dbase	= 'mangoo_new';
 
 //Added ability to disable
 //utf8 encoding - bm 05-2009

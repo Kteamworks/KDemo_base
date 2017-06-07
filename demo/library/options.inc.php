@@ -241,7 +241,7 @@ function generate_form_field($frow, $currvalue) {
    }
   }
   else {
-   $empty_title = "Unassigned";   
+   $empty_title = " ";   
   }
 
   $disabled = strpos($frow['edit_options'], '0') === FALSE ? '' : 'disabled';
