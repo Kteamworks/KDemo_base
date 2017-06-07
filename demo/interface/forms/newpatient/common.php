@@ -215,9 +215,9 @@ $vid=sqlStatement("SELECT form_id from forms where encounter='".$_SESSION['encou
 <div class='container'>
 
 <?php if ($viewmode) { ?>
-<input type=hidden name='mode' value='update'>
-<input type=hidden name='id' value='<?php echo (isset($_GET["id"])) ? attr($_GET["id"]) : '' ?>'>
-<span class=title><?php echo xlt('Patient Visit Form'); ?></span>
+<input type='hidden' name='mode' value='update'>
+<input type='hidden' name='id' value='<?php echo (isset($_GET["id"])) ? attr($_GET["id"]) : '' ?>'>
+<span class='title'><?php echo xlt('Patient Visit Form'); ?></span>
 <?php } else { ?>
 <input type='hidden' name='mode' value='new'>
 <span class='title'><?php echo xlt('New Visit Form'); ?></span>
@@ -228,10 +228,10 @@ $vid=sqlStatement("SELECT form_id from forms where encounter='".$_SESSION['encou
      $newcrop_user_role=sqlQuery("select newcrop_user_role from users where username='".$_SESSION['authUser']."'");
      if($newcrop_user_role['newcrop_user_role']=='erxdoctor'){
 	?>
-	<div style="float:right; margin-top:-3px">
+	<!--<div style="float:right; margin-top:-3px">
  <a href='<?php echo "$rootdir/patient_file/summary/stats_full.php"; ?>' class='css_button' id='back'><span><?php echo htmlspecialchars( xl('Back'), ENT_NOQUOTES); ?></span></a>
  <a href='<?php echo "$rootdir/patient_file/encounter/load_form.php?formname=vitals"; ?>' class='css_button' id='next'><span><?php echo htmlspecialchars( xl('Next'), ENT_NOQUOTES); ?></span></a>
-</div>
+</div>-->
 	 <?php }?>
 	
 	
@@ -278,7 +278,26 @@ $vid=sqlStatement("SELECT form_id from forms where encounter='".$_SESSION['encou
      </div>
     </tr>
 	
-	
+		<tr>
+     	<div class="form-group">
+     <label class="pull-left"><?php echo xlt('Doctor:'); ?></label>
+     
+<?php
+  $ures = sqlStatement("SELECT id, username, fname, lname FROM users WHERE " .
+  "authorized != 0 AND active = 1 ORDER BY lname, fname");
+   echo "<select name='form_provider' class='form-control' />";
+    while ($urow = sqlFetchArray($ures)) {
+      echo "    <option value='" . attr($urow['id']) . "'";
+      if ($urow['id'] == $defaultProvider) echo " selected";
+      echo ">" . "Dr. ".text($urow['fname']);
+      if ($urow['lname']) echo " " . text($urow['lname']);
+      echo "</option>\n";
+    }
+    echo "</select>";
+?>
+     </div>
+    </tr>
+
 	
 	<tr>
    <div class='form-group'>
@@ -369,27 +388,6 @@ $vid=sqlStatement("SELECT form_id from forms where encounter='".$_SESSION['encou
 	</div>
 	</tr>
 
-	
-	<tr>
-     	<div class="form-group">
-     <label class="pull-left"><?php echo xlt('Doctor:'); ?></label>
-     
-<?php
-  $ures = sqlStatement("SELECT id, username, fname, lname FROM users WHERE " .
-  "authorized != 0 AND active = 1 ORDER BY lname, fname");
-   echo "<select name='form_provider' class='form-control' />";
-    while ($urow = sqlFetchArray($ures)) {
-      echo "    <option value='" . attr($urow['id']) . "'";
-      if ($urow['id'] == $defaultProvider) echo " selected";
-      echo ">" . "Dr. ".text($urow['fname']);
-      if ($urow['lname']) echo " " . text($urow['lname']);
-      echo "</option>\n";
-    }
-    echo "</select>";
-?>
-     </div>
-    </tr>
-
     <tr>
      	<div class="form-group">
      <label class="pull-left"><?php echo xlt('Facility:'); ?></label>
@@ -464,7 +462,7 @@ if ($fres) {
 ?>
     </tr>
 
-    <tr<?php if (!$GLOBALS['gbl_visit_referral_source']) echo " style='visibility:hidden;'"; ?>>
+ <!--   <tr<?php if (!$GLOBALS['gbl_visit_referral_source']) echo " style='visibility:hidden;'"; ?>>
     	<div class="form-group">
      <label class="pull-left"><?php echo xlt('Referral Source'); ?>:</label>
      
@@ -472,7 +470,7 @@ if ($fres) {
   echo generate_select_list('form_referral_source', 'refsource', $viewmode ? $result['referral_source'] : '', '');
 ?>
      </div>
-    </tr>
+    </tr> -->
 
     <tr>
      	<div class="form-group">
@@ -586,12 +584,14 @@ while ($irow = sqlFetchArray($ires)) {
  </tr>
 
 </table>
-    <div>
+    <div style="position: fixed;
+top: 10px;
+right: 20px;">
       <a href="javascript:saveClicked();" class="css_button link_submit"><span><?php echo xlt('Save'); ?></span></a>
       <?php if ($viewmode || !isset($_GET["autoloaded"]) || $_GET["autoloaded"] != "1") { ?>
     </div>
 
-    <div>
+    <div >
   <?php if ($GLOBALS['concurrent_layout']) { ?>
       <a href="<?php echo "$rootdir/patient_file/encounter/encounter_top.php"; ?>"
         class="css_button link_submit" onClick="top.restoreSession()"><span><?php echo xlt('Cancel'); ?></span></a>
