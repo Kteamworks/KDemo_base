@@ -26,6 +26,16 @@ $returnurl = $GLOBALS['concurrent_layout'] ? 'encounter_top.php' : 'patient_enco
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar.js"></script>
 <?php include_once("{$GLOBALS['srcdir']}/dynarch_calendar_en.inc.php"); ?>
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar_setup.js"></script>
+<style>
+.cd-breadcrumb.triangle li {
+	font-size: 1.6rem;
+}
+body {
+    font-size: 1.6rem !important;
+    font-family: "Source Sans Pro", sans-serif !important;
+	margin-left: 15px !important;
+}
+</style>
 </head>
 <body class="body_top">
 <?php $newcrop_user_role=sqlQuery("select newcrop_user_role from users where username='".$_SESSION['authUser']."'");

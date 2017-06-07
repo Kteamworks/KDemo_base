@@ -57,6 +57,14 @@ $obj = $formid ? formFetch("t_form_admit", $formid) : array();
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar_setup.js"></script>
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/textformat.js"></script>
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dialog.js"></script>
+<style>
+.cd-breadcrumb.triangle li {
+	font-size: 1.6rem !important;
+}
+.cd-breadcrumb.triangle li > * {
+    padding: 1em 0em 1em 1.5em !important;
+}
+</style>
 <script>
 function validateForm() {
     var x = document.forms["my_form"]["admit_to_ward"].value;

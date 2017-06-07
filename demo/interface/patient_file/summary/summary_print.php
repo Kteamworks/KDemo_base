@@ -34,7 +34,14 @@ $pstreet = $result_patient['street'];
   <link rel="stylesheet" href="../../../dist/css/AdminLTE.min.css">
   	<link rel="stylesheet" href="style.css"  />
 		<link rel="stylesheet" href="../../../library/css/mycss.css"  />
-	
+	<style>
+	.cd-breadcrumb li > *, .cd-multi-steps li > * {
+    font-size: 1.4rem !important;
+	}
+	section {
+		margin-left: 20px;
+	}
+	</style>
 <script type="text/javascript" src="../../../library/textformat.js"></script>
 <script type="text/javascript" src="../../../library/dynarch_calendar.js"></script>
 <?php include_once("{$GLOBALS['srcdir']}/dynarch_calendar_en.inc.php"); ?>

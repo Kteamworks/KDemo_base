@@ -1,7 +1,7 @@
-<?php /* Smarty version 2.6.2, created on 2017-06-07 08:13:36
+<?php /* Smarty version 2.6.2, created on 2017-06-07 12:19:04
          compiled from C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html */ ?>
 <?php require_once(SMARTY_DIR . 'core' . DIRECTORY_SEPARATOR . 'core.load_plugins.php');
-smarty_core_load_plugins(array('plugins' => array(array('function', 'xl', 'C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html', 161, false),array('function', 'amcCollect', 'C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html', 189, false),array('function', 'html_select_date', 'C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html', 210, false),array('function', 'html_options', 'C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html', 216, false),array('function', 'html_radios', 'C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html', 304, false),)), $this); ?>
+smarty_core_load_plugins(array('plugins' => array(array('function', 'xl', 'C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html', 170, false),array('function', 'amcCollect', 'C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html', 198, false),array('function', 'html_select_date', 'C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html', 219, false),array('function', 'html_options', 'C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html', 225, false),array('function', 'html_radios', 'C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html', 313, false),)), $this); ?>
 <html>
 <head>
 <?php html_header_show(); ?>
@@ -16,6 +16,15 @@ smarty_core_load_plugins(array('plugins' => array(array('function', 'xl', 'C:/xa
     .text {
         font-size: 9pt;
     }
+	html {
+    font-size: 62.5% !important;
+}
+	body {
+	font-size: 1.6rem !important; 
+	}
+	.cd-breadcrumb li > * {
+    font-size: 1.5rem !important;
+}
 </style>
 '; ?>
 
