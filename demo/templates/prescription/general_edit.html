@@ -165,10 +165,10 @@ $vid=sqlStatement("SELECT form_id from forms where encounter='".$_SESSION['encou
 	</nav>
 </section>
 {php} } {/php}
-<div class="pull-right">
+<!--<div class="pull-right">
 <input action="action" onclick="history.go(-1);" class="css_button_small" style='height: 24px;border:none' type="button" value="Back" />
 <a href='{$WEBROOT}/interface/patient_file/encounter/load_form.php?formname=dictation' class='css_button' id='next'><span>{xl t='Next'}</span></a>
-</div>
+</div> -->
 <form name="prescribe" id="prescribe" method="post" action="{$FORM_ACTION}">
 <table>
     <tr><td class="title"><font><b>{xl t='Add Prescription'}</b></font>&nbsp;</td>

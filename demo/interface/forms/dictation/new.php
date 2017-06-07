@@ -83,12 +83,12 @@ $vid=sqlStatement("SELECT form_id from forms where encounter='".$_SESSION['encou
   <?php }?>
 <form method=post action="<?php echo $rootdir;?>/forms/dictation/save.php?mode=new" name="my_form">
 <span class="title"><?php echo xlt('Plan Details'); ?></span>
-<div style="float:right;">
+<!-- <div style="float:right;">
 <input action="action" onclick="history.go(-1);" class="css_button_small" style='height: 24px;border:none' type="button" value="Back" />
 
  <a href="<?php echo "$rootdir/patient_file/transaction/add_transaction.php";?>" style='height: 24px;border:none' class='css_button_small'
  onclick="top.restoreSession()"><?php echo xlt('Next'); ?></a>
- </div>
+ </div> -->
 <br><br>
 <span class=text><?php echo xlt('Plan: '); ?></span><br><textarea cols=80 rows=24 wrap=virtual name="dictation" ></textarea><br>
 <span class=text><?php echo xlt('Additional Notes:'); ?> </span><br><textarea cols=80 rows=8 wrap=virtual name="additional_notes" ></textarea><br><br><br>

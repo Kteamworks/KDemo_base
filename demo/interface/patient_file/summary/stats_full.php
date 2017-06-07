@@ -206,12 +206,12 @@ $vid=sqlStatement("SELECT form_id from forms where encounter='".$_SESSION['encou
 		</ol>
 	</nav>
 </section>
-<div style="float:right" class="buttons">
+<!-- <div style="float:right" class="buttons">
   <a href='javascript:;' class='css_button' id='back'><span><?php echo htmlspecialchars( xl('Back'), ENT_NOQUOTES); ?></span></a>
 </div>
 <div style="float:right;align:right" class="buttons">
   <a href='javascript:;' class='css_button' id='next'><span><?php echo htmlspecialchars( xl('Next'), ENT_NOQUOTES); ?></span></a>
-</div>
+</div> -->
 <br>
 <br>
 
