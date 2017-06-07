@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.2, created on 2017-06-06 11:56:03
+<?php /* Smarty version 2.6.2, created on 2017-06-07 07:34:16
          compiled from C:%5Cxampp%5Chtdocs%5CKDemo_base%5Cdemo%5Cinterface%5Cforms%5Cvitals/templates/vitals/general_new.html */ ?>
 <?php require_once(SMARTY_DIR . 'core' . DIRECTORY_SEPARATOR . 'core.load_plugins.php');
 smarty_core_load_plugins(array('plugins' => array(array('function', 'xl', 'C:\xampp\htdocs\KDemo_base\demo\interface\forms\vitals/templates/vitals/general_new.html', 35, false),array('function', 'math', 'C:\xampp\htdocs\KDemo_base\demo\interface\forms\vitals/templates/vitals/general_new.html', 176, false),array('modifier', 'date_format', 'C:\xampp\htdocs\KDemo_base\demo\interface\forms\vitals/templates/vitals/general_new.html', 153, false),)), $this); ?>
@@ -142,9 +142,9 @@ td,th {
 <section>
 	<nav>
 		<ol class="cd-breadcrumb triangle custom-icons">
-			<li class="current"></i><em>Medical Issues</em></li>
+		<li id="vitals"><a><i class="fa fa-note" style="margin-right: 8px;"></i>Medical Issues</a></li>
 			<li id="visit"><a><i class="fa fa-note" style="margin-right: 8px;"></i>Visit Notes</a></li>
-			<li id="vitals"><a><i class="fa fa-note" style="margin-right: 8px;"></i>Vitals</a></li>
+			<li class="current"></i><em>Vitals</em></li>
 			<li id="ros"><a><i class="fa fa-note" style="margin-right: 8px;"></i>Review of systems</a></li>
 			<li id="lab"><a><i class="fa fa-note" style="margin-right: 8px;"></i>Lab Tests</a></li>
 			<li id="prescription"><a><i class="fa fa-note" style="margin-right: 8px;"></i>Prescription</a></li>

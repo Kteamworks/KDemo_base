@@ -183,8 +183,8 @@ $vid=sqlStatement("SELECT form_id from forms where encounter='".$_SESSION['encou
 <section>
 	<nav>
 		<ol class="cd-breadcrumb triangle custom-icons">
-			<li class="current"></i><em>Medical Issues</em></li>
-			<li><a href="../encounter/view_form.php?formname=newpatient&id=<?php echo $nvid2; ?>"><i class="fa fa-note" style="margin-right: 8px;"></i>Visit Notes</a></li>
+			<li><a href="../../patient_file/summary/stats_full.php"><i class="fa fa-note" style="margin-right: 8px;"></i>Medical Issues</a></li>
+			<li class="current"></i><em>Visit Notes</em></li>
 			<?php if($vid2 == null) { ?>
 			<li><a href="../encounter/load_form.php?formname=vitals"><i class="fa fa-note" style="margin-right: 8px;"></i>Vitals</a></li>
 			<?php } else { ?>

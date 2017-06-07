@@ -39,11 +39,8 @@ $vid=sqlStatement("SELECT form_id from forms where encounter='".$_SESSION['encou
 		$this->assign("NEXT_LINK",$GLOBALS['webroot'] . "/interface/patient_file/encounter/load_form.php?formname=ros");
 		$this->assign("BACK_LINK",$GLOBALS['webroot'] . "/interface/patient_file/encounter/view_form.php?formname=newpatient&id=". $id2);
 	    $this->assign("VISIT_LINK",$GLOBALS['webroot'] . "/interface/patient_file/encounter/view_form.php?formname=newpatient&id=". $id2);
-		 if($vid2 == null) {
-		    $this->assign("VITALS_LINK",$GLOBALS['webroot'] . "/interface/patient_file/encounter/load_form.php?formname=vitals");
-			} else { 
-			 $this->assign("VITALS_LINK",$GLOBALS['webroot'] . "/interface/patient_file/encounter/view_form.php?formname=vitals&id=".$vid2);
-		} 
+		    $this->assign("VITALS_LINK",$GLOBALS['webroot'] . "/interface/patient_file/summary/stats_full.php");
+			
 		if($rid2 == null) {
 		    $this->assign("ROS_LINK",$GLOBALS['webroot'] . "/interface/patient_file/encounter/load_form.php?formname=ros");
 			} else { 

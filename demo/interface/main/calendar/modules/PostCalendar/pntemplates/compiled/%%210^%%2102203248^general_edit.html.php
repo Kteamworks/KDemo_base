@@ -1,7 +1,7 @@
-<?php /* Smarty version 2.6.2, created on 2017-05-31 13:57:55
+<?php /* Smarty version 2.6.2, created on 2017-06-07 08:13:36
          compiled from C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html */ ?>
 <?php require_once(SMARTY_DIR . 'core' . DIRECTORY_SEPARATOR . 'core.load_plugins.php');
-smarty_core_load_plugins(array('plugins' => array(array('function', 'xl', 'C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html', 107, false),array('function', 'amcCollect', 'C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html', 135, false),array('function', 'html_select_date', 'C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html', 156, false),array('function', 'html_options', 'C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html', 162, false),array('function', 'html_radios', 'C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html', 250, false),)), $this); ?>
+smarty_core_load_plugins(array('plugins' => array(array('function', 'xl', 'C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html', 161, false),array('function', 'amcCollect', 'C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html', 189, false),array('function', 'html_select_date', 'C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html', 210, false),array('function', 'html_options', 'C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html', 216, false),array('function', 'html_radios', 'C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html', 304, false),)), $this); ?>
 <html>
 <head>
 <?php html_header_show(); ?>
@@ -10,6 +10,7 @@ smarty_core_load_plugins(array('plugins' => array(array('function', 'xl', 'C:/xa
 " type="text/css">
 <link rel="stylesheet" href="<?php echo $this->_tpl_vars['WEBROOT']; ?>
 /interface/themes/jquery.autocomplete.css" type="text/css">
+
 <?php echo '
 <style type="text/css">
     .text {
@@ -18,6 +19,16 @@ smarty_core_load_plugins(array('plugins' => array(array('function', 'xl', 'C:/xa
 </style>
 '; ?>
 
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="<?php echo $this->_tpl_vars['WEBROOT']; ?>
+/library/breadcrumbs/css/reset.css"> <!-- CSS reset -->
+	<link rel="stylesheet" href="<?php echo $this->_tpl_vars['WEBROOT']; ?>
+/library/breadcrumbs/css/style.css"> <!-- Resource style -->
+	<script src="<?php echo $this->_tpl_vars['WEBROOT']; ?>
+/library/breadcrumbs/js/modernizr.js"></script> <!-- Modernizr -->
     <link data-require="bootstrap-css@*" data-semver="2.3.2" rel="stylesheet" href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.7/css/bootstrap-dialog.min.css" rel="stylesheet" />
 	<script src="http://code.angularjs.org/1.2.6/angular.js"></script>
@@ -123,6 +134,64 @@ console.log(drug_id);
 
 </head>
 <body class="body_top">
+<?php  $newcrop_user_role=sqlQuery("select newcrop_user_role from users where username='".$_SESSION['authUser']."'"); ?>
+  <?php  if($newcrop_user_role['newcrop_user_role']=='erxdoctor') {  ?>
+<?php  
+$rid=sqlStatement("SELECT form_id from forms where encounter='".$_SESSION['encounter']."' and formdir='ros' order by form_id desc limit 1 ");
+		$rid1=sqlFetchArray($rid);
+		$rid2=$rid1['form_id'];
+$vid=sqlStatement("SELECT form_id from forms where encounter='".$_SESSION['encounter']."' and formdir='vitals' order by form_id desc limit 1 ");
+		$vid1=sqlFetchArray($vid);
+		$vid2=$vid1['form_id'];
+		$plid=sqlStatement("SELECT form_id from forms where encounter='".$_SESSION['encounter']."' and formdir='dictation' order by form_id desc limit 1 ");
+		$plid1=sqlFetchArray($plid);
+		$plid2=$plid1['form_id'];
+		$nvid=sqlStatement("SELECT id from form_encounter where encounter='".$_SESSION['encounter']."'");
+
+  $nvid1=sqlFetchArray($nvid);
+
+ $nvid2=$nvid1['id'];
+		 ?>
+<section>
+	<nav>
+		<ol class="cd-breadcrumb triangle custom-icons">
+		   <li><a href="<?php echo $this->_tpl_vars['WEBROOT']; ?>
+/interface/patient_file/summary/stats_full.php"><i class="fa fa-note" style="margin-right: 8px;"></i>Medical Issues</a></li>
+			<li><a href="<?php echo $this->_tpl_vars['WEBROOT']; ?>
+/interface/patient_file/encounter/view_form.php?formname=newpatient&id=<?php  echo $nvid2;  ?>"><i class="fa fa-note" style="margin-right: 8px;"></i>Visit Notes</a></li>
+			<?php  if($vid2 == null) {  ?>
+			<li><a href="<?php echo $this->_tpl_vars['WEBROOT']; ?>
+/interface/patient_file/encounter/load_form.php?formname=vitals"><i class="fa fa-note" style="margin-right: 8px;"></i>Vitals</a></li>
+			<?php  } else {  ?>
+			<li><a href="<?php echo $this->_tpl_vars['WEBROOT']; ?>
+/interface/patient_file/encounter/view_form.php?formname=vitals&id=<?php  echo $vid2;  ?>"><i class="fa fa-note" style="margin-right: 8px;"></i>Vitals</a></li>
+			<?php  } if($rid2 == null) {  ?>
+			<li><a href="<?php echo $this->_tpl_vars['WEBROOT']; ?>
+/interface/patient_file/encounter/load_form.php?formname=ros"><i class="fa fa-note" style="margin-right: 8px;"></i>Review of systems</a></li>
+						<?php } else {  ?>
+			<li><a href="<?php echo $this->_tpl_vars['WEBROOT']; ?>
+/interface/patient_file/encounter/view_form.php?formname=ros&id=<?php  echo $rid2  ?>"><i class="fa fa-note" style="margin-right: 8px;"></i>Review of systems</a></li>
+			<?php  }  ?>
+			<li><a href="<?php echo $this->_tpl_vars['WEBROOT']; ?>
+/interface/encounter/load_form.php?formname=procedure_order"><i class="fa fa-note" style="margin-right: 8px;"></i>Lab Tests</a></li>
+			<li class="current"></i><em>Prescription</em></li>
+						<?php  if($plid2 == null) {  ?>
+			<li><a href="<?php echo $this->_tpl_vars['WEBROOT']; ?>
+/interface/encounter/load_form.php?formname=dictation"><i class="fa fa-note" style="margin-right: 8px;"></i>Plan</a></li>
+									<?php  } else {  ?>
+									<li><a href="<?php echo $this->_tpl_vars['WEBROOT']; ?>
+/interface/encounter/view_form.php?formname=dictation&id=<?php  echo $plid2  ?>"><i class="fa fa-note" style="margin-right: 8px;"></i>Plan</a></li>
+									<?php  }  ?>
+			<li><a href="<?php echo $this->_tpl_vars['WEBROOT']; ?>
+/interface/patient_file/transaction/add_transaction.php"><i class="fa fa-note" style="margin-right: 8px;"></i>Referal</a></li>
+			<li><a href="<?php echo $this->_tpl_vars['WEBROOT']; ?>
+/interface/forms/admit/new.php"><i class="fa fa-note" style="margin-right: 8px;"></i>Admission</a></li>
+			<li><a href="<?php echo $this->_tpl_vars['WEBROOT']; ?>
+/interface/patient_file/summary/summary_print.php">Summary</a></li>
+		</ol>
+	</nav>
+</section>
+<?php  }  ?>
 <div class="pull-right">
 <input action="action" onclick="history.go(-1);" class="css_button_small" style='height: 24px;border:none' type="button" value="Back" />
 <a href='<?php echo $this->_tpl_vars['WEBROOT']; ?>

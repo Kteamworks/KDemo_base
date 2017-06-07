@@ -26,11 +26,9 @@ class C_FormROS extends Controller {
 			} else { 
 			 $this->assign("VITALS_LINK",$GLOBALS['webroot'] . "/interface/patient_file/encounter/view_form.php?formname=vitals&id=".$vid2);
 		} 
-		if($rid2 == null) {
-		    $this->assign("ROS_LINK",$GLOBALS['webroot'] . "/interface/patient_file/encounter/load_form.php?formname=ros");
-			} else { 
-			 $this->assign("ROS_LINK",$GLOBALS['webroot'] . "/interface/patient_file/encounter/view_form.php?formname=ros&id=".$rid2);
-		}
+		
+		    $this->assign("ROS_LINK",$GLOBALS['webroot'] . "/interface/patient_file/summary/stats_full.php");
+			
 		$this->assign("LAB_LINK",$GLOBALS['webroot'] . "/interface/patient_file/encounter/load_form.php?formname=procedure_order");
 		$this->assign("prescription_LINK",$GLOBALS['webroot'] . "/controller.php?prescription&edit&id=&pid=".$pid);
 		if($plid2 == null) {
