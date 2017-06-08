@@ -286,7 +286,7 @@ else
 			
 	<tr>
 	
-	<td><a href='emptybeds.php'> <img src="bed.png" align='center' height='42', width='40',name="nothing" readonly></img></a><b><?php echo xlt('Ward/Bed'); ?>:
+	<td><a href='../../../interface/patient_file/encounter/emptybeds.php'> <img src="bed.png" align='center' height='42', width='40',name="nothing" readonly></img></a><b><?php echo xlt('Ward/Bed'); ?>:
 	
 	<input type=hidden name ="adm_to" value=<?php echo $_POST['adm_to']; ?> > </input>
 	<?
@@ -297,12 +297,13 @@ else
 	$result23 = sqlFetchArray($res23);
 	$admwdd=$result23['list_id'];
 	$admbd=$result23['option_id'];
-	
-	echo "<td>"."<input type=\"text\" name=\"admit_to_ward\" size=\"10\" value=\"$admwdd\" readonly>"."</input>";
-	
-	echo ""."<input type=\"text\" name=\"admit_to_bed\" size=\"10\"  value=\"$admbd\" readonly></input>"."</td>"; 
-	
 	?>
+<?php echo "Hi" .$admbd  ?>
+<?php echo $admwdd?>
+	<td><input type="text" name="admit_to_ward" size="10" value="<?php echo $admwdd?>" readonly>
+	
+	<input type="text" name="admit_to_bed" size="10"  value="<?php echo $admbd ?>" readonly></td> 
+	
 	</tr>		<tr>
 		<td align="left colspan="3" style="padding-bottom:7px;"></td>
 	</tr>
