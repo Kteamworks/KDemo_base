@@ -298,7 +298,7 @@ else
 	$admwdd=$result23['list_id'];
 	$admbd=$result23['option_id'];
 	?>
-<?php echo "Hi" .$admbd  ?>
+<?php echo $admbd  ?>
 <?php echo $admwdd?>
 	<td><input type="text" name="admit_to_ward" size="10" value="<?php echo $admwdd?>" readonly>
 	
