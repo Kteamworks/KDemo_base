@@ -212,10 +212,21 @@ use ESign\Api;
      echo "forceSpec(false,true);";
    }
    if($id == 'cal0') {
+	   $appointments = sqlQuery("SELECT a.todays, b.future FROM
+(SELECT count(pc_eid)todays
+FROM openemr_postcalendar_events
+WHERE pc_pid is not null AND pc_eventDate=date(NOW()))a,
+(
+SELECT count(pc_eid)future
+FROM openemr_postcalendar_events
+WHERE pc_pid is not null AND pc_eventDate>date(NOW()))b;");
+$todays_app = $appointments['todays'];
+$future_app = $appointments['future'];
+
    echo "return loadFrame2('$id','$frame','" .
         $primary_docs[$name][2] . "')\"><i class='fa fa-calendar'></i>" . $title . ($name == 'msg' ? ' <span id="reminderCountSpan" class="bold"></span>' : '')."<span class='pull-right-container'>
-              <small class='label pull-right bg-red'>3</small>
-              <small class='label pull-right bg-blue'>17</small>
+              <small class='label pull-right bg-red'>$todays_app</small>
+              <small class='label pull-right bg-blue'>$future_app</small>
             </span></a></li>";
   }
   
@@ -458,7 +469,7 @@ $res = sqlQuery("select * from users where username='".$_SESSION{"authUser"}."'"
      function(data) {
 		 datax = data.replace(/[{()}]/g, '');
 		 $("#reminderCountSpan").addClass('pull-right-container');
-       $("#reminderCountSpan").html('<small class="label pull-right bg-yellow">12</small><small class="label pull-right bg-green">16</small><small class="label pull-right bg-red">'+datax+'</small>');
+       $("#reminderCountSpan").html('<small class="label pull-right bg-red">'+datax+'</small>');
     // run updater every 60 seconds 
      var repeater = setTimeout("getReminderCount()", 60000); 
    });

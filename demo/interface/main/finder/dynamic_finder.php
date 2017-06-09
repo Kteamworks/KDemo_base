@@ -292,8 +292,7 @@ function openNewTopWindow(pid) {
 <?php $registration_qry = sqlStatement("Select count(pid)last_month from patient_Data
 where date between  date_sub(now(), interval 30 day ) and now()");
 
-$progress_reg = sqlQuery("SELECT a.last_month,b.two_months,b.two_months-a.last_month change_value,
-coalesce(if (round(((a.last_month-b.two_months)*100)/b.two_months ,0)<0,0,round(((a.last_month-b.two_months)*100)/b.two_months ,0)),0)change_percentage
+$progress_reg = sqlQuery("SELECT a.last_month,b.two_months,b.two_months-a.last_month change_value,round(((a.last_month-b.two_months)*100)/b.two_months ,0)change_percentage
 FROM 
 (
 Select count(pid)last_month from patient_Data
@@ -301,7 +300,42 @@ where date between  date_sub(now(), interval 30 day ) and now())a,
 (select count(pid)two_months
 from patient_data
 where date between date_sub(date_sub(now(), interval 30 day ),interval 30 day) and
-date_sub(now(), interval 30 day ))b"); ?>
+date_sub(now(), interval 30 day ))b");
+
+$progress_app = sqlQuery("SELECT a.last_month,b.two_months,b.two_months-a.last_month change_value,
+round(((a.last_month-b.two_months)*100)/b.two_months ,2)change_percentage
+FROM 
+(
+Select count(pc_eid)last_month from openemr_postcalendar_events
+where pc_time between  date_sub(now(), interval 30 day) and now()
+and pc_eventstatus=1)a,
+(select count(pc_eid)two_months
+from openemr_postcalendar_events
+where pc_time between date_sub(date_sub(now(), interval 30 day ),interval 30 day) and
+date_sub(now(), interval 30 day)  and pc_eventstatus=1 )b");
+
+$progress_ipd = sqlQuery("SELECT a.last_month,b.two_months,b.two_months-a.last_month change_value,
+round(((a.last_month-b.two_months)*100)/b.two_months ,2)change_percentage
+FROM 
+(
+Select count(id)last_month from form_encounter
+where date between  date_sub(now(), interval 30 day) and now()
+and pc_catid=12)a,
+(select count(id)two_months
+from form_encounter
+where date between date_sub(date_sub(now(), interval 30 day ),interval 30 day) and
+date_sub(now(), interval 30 day)  and pc_catid=12)b"); 
+$progress_bed = sqlQuery("SELECT a.last_month,b.two_months,b.two_months-a.last_month change_value,
+round(((a.last_month-b.two_months)*100)/b.two_months ,2)change_percentage
+FROM 
+(
+Select count(id)last_month from t_form_admit
+where date(admit_date) between  date_sub(now(), interval 30 day) and now()
+and activity=1)a,
+(select count(id)two_months
+from t_form_admit
+where date(admit_date) between date_sub(date_sub(now(), interval 30 day ),interval 30 day) and
+date_sub(now(), interval 30 day)  and activity=1 )b"); ?>
 
             <div class="info-box-content">
               <span class="info-box-text">New Registration</span>
@@ -325,13 +359,13 @@ date_sub(now(), interval 30 day ))b"); ?>
 
             <div class="info-box-content">
               <span class="info-box-text">Total Appointments</span>
-              <span class="info-box-number">28</span>
+              <span class="info-box-number"><?php echo $progress_app['last_month']; ?></span>
 
               <div class="progress">
-                <div class="progress-bar" style="width: 20%"></div>
+                <div class="progress-bar" style="width: <?php echo $progress_app['change_percentage']; ?>%"></div>
               </div>
                   <span class="progress-description">
-                    20% Increase in 30 Days
+                    <?php echo $progress_app['change_percentage']; ?>% Increase in 30 Days
                   </span>
             </div>
             <!-- /.info-box-content -->
@@ -344,13 +378,13 @@ date_sub(now(), interval 30 day ))b"); ?>
 
             <div class="info-box-content">
               <span class="info-box-text">Total IPD Registration</span>
-              <span class="info-box-number">4</span>
+              <span class="info-box-number"><?php echo $progress_ipd['last_month']; ?></span>
 
               <div class="progress">
                 <div class="progress-bar" style="width: 70%"></div>
               </div>
                   <span class="progress-description">
-                    70% Increase in 30 Days
+                    <?php echo $progress_ipd['change_percentage']; ?>% Increase in 30 Days
                   </span>
             </div>
             <!-- /.info-box-content -->
@@ -359,17 +393,17 @@ date_sub(now(), interval 30 day ))b"); ?>
           <!-- /.info-box -->
 		  <div class="col-md-3">
           <div class="info-box bg-aqua">
-            <span class="info-box-icon"><i class="ion-ios-heart-outline"></i></span>
+            <span class="info-box-icon"><i class="fa fa-bed"></i></span>
 
             <div class="info-box-content">
-              <span class="info-box-text">Total Doctor</span>
-              <span class="info-box-number">14</span>
+              <span class="info-box-text">Total Bed Occupancy</span>
+              <span class="info-box-number"><?php echo $progress_bed['last_month']; ?></span>
 
               <div class="progress">
                 <div class="progress-bar" style="width: 40%"></div>
               </div>
                   <span class="progress-description">
-                    40% Increase in 30 Days
+                    <?php echo $progress_bed['change_percentage']; ?>% Increase in 30 Days
                   </span>
             </div>
             <!-- /.info-box-content -->
