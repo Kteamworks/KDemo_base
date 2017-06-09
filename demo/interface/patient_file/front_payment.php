@@ -74,6 +74,8 @@ function echoLine($iname,$date, $charges, $ptpaid, $inspaid,$discount, $duept,$e
    $patdata = getPatientData($pid, 'phone_cell,title,age,age_days,age_months,rateplan,date,sex,DOB,genericname1,fname,mname,lname,pubpid,street,city,state,postal_code,providerID');
   $rate_plan=$patdata['rateplan'];
   //$patcopay = getPatientInsuranceData($pid, $enc);
+  if($duept>0)
+  {
   echo " <tr id='tr_".attr($var_index)."' >\n";
   echo "  <td class='detail'>" . text(oeFormatShortDate($date)) . "</td>\n";
   echo "  <td class='detail' id='".attr($date)."' align='center'>" . htmlspecialchars($encounter, ENT_QUOTES) . "</td>\n";
@@ -92,7 +94,7 @@ function echoLine($iname,$date, $charges, $ptpaid, $inspaid,$discount, $duept,$e
     "onkeyup='calctotal()'  style='width:50px'/></td>\n";
   echo " </tr>\n";
 }
-
+}
 // We use this to put dashes, colons, etc. back into a timestamp.
 //
 function decorateString($fmt, $str) {
