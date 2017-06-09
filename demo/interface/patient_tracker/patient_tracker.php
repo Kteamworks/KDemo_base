@@ -215,9 +215,9 @@ $appointments = sortAppointments( $appointments, 'time' );
                 $date_appt = $appointment['pc_eventDate'];
                 $date_squash = str_replace("-","",$date_appt);
                 # Collect variables and do some processing
-                $docname  = $appointment['ulname'] . ', ' . $appointment['ufname'] . ' ' . $appointment['umname'];
+                $docname  = $appointment['ufname'] . ' ' . $appointment['umname'] . ' ' . $appointment['ulname'];
                 if (strlen($docname)<= 3 ) continue;
-                $ptname = $appointment['lname'] . ', ' . $appointment['fname'] . ' ' . $appointment['mname'];
+                $ptname = $appointment['fname'] . ' ' . $appointment['mname'] . ' ' . $appointment['lname'];
                 $appt_enc = $appointment['encounter'];
                 $appt_eid = (!empty($appointment['eid'])) ? $appointment['eid'] : $appointment['pc_eid'];
                 $appt_pid = (!empty($appointment['pid'])) ? $appointment['pid'] : $appointment['pc_pid'];

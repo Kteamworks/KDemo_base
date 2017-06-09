@@ -65,6 +65,7 @@ $obj = $formid ? formFetch("t_form_admit", $formid) : array();
     padding: 1em 0em 1em 1.5em !important;
 }
 </style>
+
 <script>
 function validateForm() {
     var x = document.forms["my_form"]["admit_to_ward"].value;
@@ -81,6 +82,7 @@ function validateForm() {
 </script>
 <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
 </head>
+
 
 <body class="body_top">
 <?php $newcrop_user_role=sqlQuery("select newcrop_user_role from users where username='".$_SESSION['authUser']."'");
@@ -130,9 +132,7 @@ $vid=sqlStatement("SELECT form_id from forms where encounter='".$_SESSION['encou
 	</nav>
 </section>
   <?php }?>
-<p><span class="forms-title"><?php echo xlt('Admission Details'); ?></span>
-<input action="action" onclick="history.go(-1);" class="css_button_small" style='height: 24px;border:none;float:right' type="button" value="Back" />
-</p>
+<p><span class="forms-title"><?php echo xlt('Admission Details'); ?></span></p>
 </br>
 <?php
 echo "<form method='post' name='my_form' " .
@@ -286,7 +286,7 @@ else
 			
 	<tr>
 	
-	<td><a href='../../../interface/patient_file/encounter/emptybeds.php'> <img src="bed.png" align='center' height='42', width='40',name="nothing" readonly></img></a><b><?php echo xlt('Ward/Bed'); ?>:
+	<td><a href='emptybeds.php'> <img src="bed.png" align='center' height='42', width='40',name="nothing" readonly></img></a><b><?php echo xlt('Ward/Bed'); ?>:
 	
 	<input type=hidden name ="adm_to" value=<?php echo $_POST['adm_to']; ?> > </input>
 	<?
@@ -297,13 +297,9 @@ else
 	$result23 = sqlFetchArray($res23);
 	$admwdd=$result23['list_id'];
 	$admbd=$result23['option_id'];
+	echo "<td>"."<input type=\"text\" name=\"admit_to_ward\" value=\"$admwdd\" readonly>"."</input></td>";
+	echo "<td>"."<input type=\"text\" name=\"admit_to_bed\" value=\"$admbd\" readonly></input>"."</td>"; 
 	?>
-<?php echo $admbd  ?>
-<?php echo $admwdd?>
-	<td><input type="text" name="admit_to_ward" size="10" value="<?php echo $admwdd?>" readonly>
-	
-	<input type="text" name="admit_to_bed" size="10"  value="<?php echo $admbd ?>" readonly></td> 
-	
 	</tr>		<tr>
 		<td align="left colspan="3" style="padding-bottom:7px;"></td>
 	</tr>
@@ -319,8 +315,6 @@ else
 		<td></td>
     <td><input type='submit'  value='<?php echo xlt('Save');?>' class="button-css">&nbsp;
 	 <input type='button'  value="Print" onclick="window.print()" class="button-css">&nbsp;
-	 <input type='button' class="button-css" value='<?php echo xlt('Finish');?>'
- onclick="top.restoreSession();location='<?php echo "$rootdir/patient_file/summary/summary_print.php" ?>'" />
 	<input type='button' class="button-css" value='<?php echo xlt('Cancel');?>'
  onclick="top.restoreSession();location='<?php echo "$rootdir/patient_file/encounter/$returnurl" ?>'" />
 

@@ -70,15 +70,19 @@ function echoLine($iname,$date, $charges, $ptpaid, $inspaid,$discount, $duept,$e
   $balance = bucks($charges - $ptpaid - $inspaid);
   $balance = (round($duept,2) != 0) ? 0 : $balance;//if balance is due from patient, then insurance balance is displayed as zero
   $encounter = $encounter ? $encounter : '';
+   $pid=$_SESSION['pid'];
+   $patdata = getPatientData($pid, 'phone_cell,title,age,age_days,age_months,rateplan,date,sex,DOB,genericname1,fname,mname,lname,pubpid,street,city,state,postal_code,providerID');
+  $rate_plan=$patdata['rateplan'];
   //$patcopay = getPatientInsuranceData($pid, $enc);
   echo " <tr id='tr_".attr($var_index)."' >\n";
   echo "  <td class='detail'>" . text(oeFormatShortDate($date)) . "</td>\n";
   echo "  <td class='detail' id='".attr($date)."' align='center'>" . htmlspecialchars($encounter, ENT_QUOTES) . "</td>\n";
   echo "  <td class='detail' align='center' id='td_charges_$var_index' >" . htmlspecialchars(bucks($charges), ENT_QUOTES) . "</td>\n";
-  //
+  if($rate_plan=="TPAInsurance"){ 
   echo "  <td class='detail' align='center' id='td_patient_copay_$var_index' >" . htmlspecialchars(bucks($patcopay), ENT_QUOTES) . "</td>\n";
   //echo "  <td class='detail' align='center' id='td_copay_$var_index' >" . htmlspecialchars(bucks($copay), ENT_QUOTES) . "</td>\n";
   echo "  <td class='detail' align='center' id='td_inspaid_$var_index' >" . htmlspecialchars(bucks($inspaid*-1), ENT_QUOTES) . "</td>\n";
+  }
   echo "  <td class='detail' align='center' id='td_ptpaid_$var_index' >" . htmlspecialchars(bucks($ptpaid*-1), ENT_QUOTES) . "</td>\n";
   echo "  <td class='detail' align='center' id='dis_charges_$var_index' >" . htmlspecialchars(bucks($discount), ENT_QUOTES) . "</td>\n";
   //echo "  <td class='detail' align='center' id='balance_$var_index'>" . htmlspecialchars(bucks($balance), ENT_QUOTES) . "</td>\n"; //This was Insurance Balance
@@ -739,7 +743,7 @@ if($age!=0)
   <td><?php echo generate_display_field(array('data_type'=>'1','list_id'=>'payment_method'),$payrow['method']); ?></td>
  </tr>
  <tr>
-  <td><?php echo xlt('Cheque/Ref Number'); ?>:</td>
+  <td><?php echo xlt('Cheque No./RRN'); ?>:</td>
   <td><?php echo text($payrow['source']) ?></td>
  </tr>
  <tr>
@@ -965,12 +969,12 @@ $age_days=$patdata['age_days'];
 			echo "<td class='bold' width='10%'>".xlt('')."</td>";
             echo "<td class='bold' width='10%' align='right'>".xlt('Amount')."</td></b></tr>\n";
               if($form_towards==2){
-			  $inres = sqlStatement("SELECT dtime,amount1,amount2,receipt_id,method FROM payments WHERE " .
+			  $inres = sqlStatement("SELECT dtime,amount1,amount2,receipt_id,method,source FROM payments WHERE " .
           "pid = ? AND encounter = ? AND activity=1  " .
 			  "ORDER BY dtime", array($form_pid,$encounter) );
 			  }else
 			  {
-				  $inres = sqlStatement("SELECT dtime,amount1,amount2,receipt_id,method FROM payments WHERE " .
+				  $inres = sqlStatement("SELECT dtime,amount1,amount2,receipt_id,method,source FROM payments WHERE " .
           "pid = ? AND encounter = ? AND activity=1  " .
 			  "ORDER BY dtime desc limit 1", array($form_pid,$encounter) );
 			  }
@@ -1220,7 +1224,7 @@ function coloring()
 function CheckVisible(MakeBlank)
  {//Displays and hides the check number text box.
    if(document.getElementById('form_method').options[document.getElementById('form_method').selectedIndex].value=='check_payment' ||
-   	  document.getElementById('form_method').options[document.getElementById('form_method').selectedIndex].value=='NEFT_payment'  )
+     document.getElementById('form_method').options[document.getElementById('form_method').selectedIndex].value=='card_payment'  )
    {
 	document.getElementById('check_number').disabled=false;
    }
@@ -1236,7 +1240,7 @@ function validate()
   top.restoreSession();
   issue='no';
    if(((document.getElementById('form_method').options[document.getElementById('form_method').selectedIndex].value=='check_payment' ||
-   	  document.getElementById('form_method').options[document.getElementById('form_method').selectedIndex].value=='NEFT_payment') &&
+   	  document.getElementById('form_method').options[document.getElementById('form_method').selectedIndex].value=='card_payment') &&
 	   document.getElementById('check_number').value=='' ))
    {
     alert("<?php echo addslashes( xl('Please Fill the Check/Ref Number')) ?>");
@@ -1629,7 +1633,7 @@ function make_insurance()
 <table border='0' id="table_display" cellpadding='0' cellspacing='0' width='635'>
  <tr bgcolor="#cccccc" id="tr_head">
   <td class="dehead" width="70">
-   <?php echo htmlspecialchars( xl('DOS'), ENT_QUOTES) ?>
+   <?php echo htmlspecialchars( xl('Date of Service'), ENT_QUOTES) ?>
   </td>
   <td class="dehead" width="65">
    <?php echo htmlspecialchars( xl('Visit Id'), ENT_QUOTES) ?>
@@ -1649,12 +1653,19 @@ function make_insurance()
   <!--<td class="dehead" align="center" width="80" id="td_head_total_charge" >
    <?php echo htmlspecialchars( xl(''), ENT_QUOTES) ?>
   </td>-->
+  <?php
+  $pid=$_SESSION['pid'];
+   $patdata = getPatientData($pid, 'phone_cell,title,age,age_days,age_months,rateplan,date,sex,DOB,genericname1,fname,mname,lname,pubpid,street,city,state,postal_code,providerID');
+  $rate_plan=$patdata['rateplan'];
+  if($rate_plan=="TPAInsurance"){ 
+  ?>
   <td class="dehead" align="center" width="55" id="td_head_patient_co_pay" >
    <?php echo htmlspecialchars( xl('Primary Sponsor Amount'), ENT_QUOTES) ?>
   </td>
 	<td class="dehead" align="center" width="55" id="td_head_co_pay" >
    <?php echo htmlspecialchars( xl('Primary Sponsor Paid'), ENT_QUOTES) ?>
   </td>
+  <?php }?>
   <td class="dehead" align="center" width="80" id="td_head_patient_payment" >
    <?php echo htmlspecialchars( xl('Patient Payment'), ENT_QUOTES) ?>
   </td>
@@ -1891,8 +1902,15 @@ $discount=0;
   <td class="dehead" id='td_total_1'></td>
   <td class="dehead" id='td_total_2'></td>
   <td class="dehead" id='td_total_3'></td>
+  <?php
+  $pid=$_SESSION['pid'];
+   $patdata = getPatientData($pid, 'phone_cell,title,age,age_days,age_months,rateplan,date,sex,DOB,genericname1,fname,mname,lname,pubpid,street,city,state,postal_code,providerID');
+  $rate_plan=$patdata['rateplan'];
+  if($rate_plan=="TPAInsurance"){ 
+  ?> 
   <td class="dehead" id='td_total_4'></td>
   <td class="dehead" id='td_total_5'></td>
+  <?php }?>
   <td class="dehead" id='td_total_6'></td>
   <td class="dehead" id='td_total_7'></td>
 <!--<td class="dehead" id='td_total_8'></td>-->

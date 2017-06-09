@@ -42,7 +42,6 @@ require_once($GLOBALS['srcdir'].'/formdata.inc.php');
 require_once($GLOBALS['srcdir'].'/options.inc.php');
 require_once($GLOBALS['srcdir'].'/encounter_events.inc.php');
 require_once($GLOBALS['srcdir'].'/acl.inc');
-require_once($GLOBALS['srcdir'].'/patient_tracker.inc.php');
 
  //Check access control
  if (!acl_check('patients','appt','',array('write','wsome') ))
@@ -82,40 +81,6 @@ require_once($GLOBALS['srcdir'].'/patient_tracker.inc.php');
 
  <?php
 
- 
-function SendSMS()
-{
-	                     $user = 'kavaii';
-						 $password = '12345';
-						 $sender_id = 'KAVAII';//helloz welcom FAPcop abhiii'hiiiii
-						 $sender = '7976345602';//9673776599 9320491970
-						 $msg = 'City Hospital- Appointment Confirmed with Dr. Anikethan at ';
-						 //$msg.=$starttime;
-						 $msg.=' hrs on ';
-						 //$msg.=$event_date;
-						 $priority = 'sdnd';
-						 $sms_type = 'normal';
-						 //$data = array('user'=>$user, 'pass'=>$password, 'sender'=>$sender_id, 'phone'=>$sender, 'text'=>$msg,  'stype'=>$sms_type);//'priority'=>$priority,
-						 $data='user='.$user.'&pass='.$password.'&sender='.$sender_id.'&phone='.$sender.'&text='.$msg.'&stype='.$sms_type.'&priority=sdnd'; 
-						 
-						 //http://bhashsms.com/api/sendmsg.php?user='kavaii'&pass='12345'&sender='KAVAII'&phone='9782364064'&text='Hii'&stype='normal'&priority='sdnd'
-						 
-						 //http://bhashsms.com/api/sendmsg.php?user=kavaii&pass=12345&sender=kavaii%20&phone=9731960662%20&text=hii%20&priority=sdnd&stype=normal
-						 $ch = curl_init('http://bhashsms.com/api/sendmsg.php?'.$data);
-						 curl_setopt($ch, CURLOPT_POST, true);
-						 curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-						 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-						 echo var_dump($ch);
-						 try {
-						  $response = curl_exec($ch);
-						  echo var_dump($ch);
-						  curl_close($ch);
-						  echo var_dump($response);
-						  echo 'Message has been sent.';
-						 }catch(Exception $e){
-						  echo 'Message: ' .$e->getMessage();
-						 }
-}
 function InsertEventFull()
  {
 	global $new_multiple_value,$provider,$event_date,$duration,$recurrspec,$starttime,$endtime,$locationspec;
@@ -141,7 +106,6 @@ function InsertEventFull()
                 $args['endtime'] = $endtime;
                 $args['locationspec'] = $locationspec;
                 InsertEvent($args);
-				SendSMS();
             }
 
         // ====================================
@@ -158,7 +122,6 @@ function InsertEventFull()
             $args['endtime'] = $endtime;
             $args['locationspec'] = $locationspec;
             InsertEvent($args);
-			SendSMS();
         }
  }
 function DOBandEncounter()
@@ -166,50 +129,23 @@ function DOBandEncounter()
    global $event_date,$info_msg;
 	 // Save new DOB if it's there.
 	 $patient_dob = trim($_POST['form_dob']);
-	 $tmph = $_POST['form_hour'] + 0;
-     $tmpm = $_POST['form_minute'] + 0;
-     if ($_POST['form_ampm'] == '2' && $tmph < 12) $tmph += 12;
-     $appttime = "$tmph:$tmpm:00";
-
 	 if ($patient_dob && $_POST['form_pid']) {
 			 sqlStatement("UPDATE patient_data SET DOB = ? WHERE " .
 									 "pid = ?", array($patient_dob,$_POST['form_pid']) );
 	 }
-	 
-	 // Auto-create a new encounter if appropriate.
-	 //	 
 
-	 
-	 
-	 
-	//(is_checkin($_POST['form_apptstatus']) == '1') &&		 
-    if ($GLOBALS['auto_create_new_encounters']  && $_POST['form_apptstatus'] == '@' && $event_date == date('Y-m-d') &&  !is_tracker_encounter_exist($event_date,$appttime,$_POST['form_pid'],$_GET['eid']))
-    	
+	 // Auto-create a new encounter if appropriate.
+	 //
+	 if ($GLOBALS['auto_create_new_encounters'] && $_POST['form_apptstatus'] == '@' && $event_date == date('Y-m-d'))
 	 {
 		 $encounter = todaysEncounterCheck($_POST['form_pid'], $event_date, $_POST['form_comments'], $_POST['facility'], $_POST['billing_facility'], $_POST['form_provider'], $_POST['form_category'], false);
 		 if($encounter){
+			 //$provider=$_POST['form_provider'];
 				 $info_msg .= xl("New encounter created with id"); 
 				 $info_msg .= " $encounter";
-				 $pc_catid=$_POST['form_category'];
-		 }
-             # Capture the appt status and room number for patient tracker. This will map the encounter to it also.
-                 if ( isset($GLOBALS['temporary-eid-for-manage-tracker']) || !empty($_GET['eid']) ) {
-                    // Note that the temporary-eid-for-manage-tracker is used to capture the eid for new appointments and when separate a recurring
-                    // appointment. It is set in the InsertEvent() function. Note that in the case of spearating a recurrent appointment, the get eid
-                    // parameter is actually erroneous(is eid of the recurrent appt and not the new separated appt), so need to use the
-                    // temporary-eid-for-manage-tracker global instead.
-                    $temp_eid = (isset($GLOBALS['temporary-eid-for-manage-tracker'])) ? $GLOBALS['temporary-eid-for-manage-tracker'] : $_GET['eid'];
-	 	    manage_tracker_status($event_date,$appttime,$temp_eid,$_POST['form_pid'],$_SESSION["authUser"],$_POST['form_apptstatus'],$_POST['form_room'],$encounter);
+			}
+		$cid=$_POST['form_category'];
 	 }
-	 }
-    else 
-     {
-             # Capture the appt status and room number for patient tracker. 
-             if (!empty($_GET['eid'])) {
-                manage_tracker_status($event_date,$appttime,$_GET['eid'],$_POST['form_pid'],$_SESSION["authUser"],$_POST['form_apptstatus'],$_POST['form_room']);
-             }
-     }
-
  }
 //================================================================================================================
 
@@ -408,43 +344,7 @@ if ($_POST['form_action'] == "save") {
                     $args['endtime'] = $endtime;
                     $args['locationspec'] = $locationspec;
                     InsertEvent($args);
-					SendSMS();
-					
-					
-						 /* $user = 'kavaii';
-						 $password = '12345';
-						 $sender_id = 'KAVAII';//helloz welcom FAPcop abhiii'hiiiii
-						 $sender = '8951216452';//9673776599 9320491970
-						 $msg = 'City Hospital- Appointment Confirmed with Dr. Anikethan at ';
-						 $msg.=$starttime;
-						 $msg.=' hrs on ';
-						 $msg.=$event_date;
-						 $priority = 'sdnd';
-						 $sms_type = 'normal';
-						 //$data = array('user'=>$user, 'pass'=>$password, 'sender'=>$sender_id, 'phone'=>$sender, 'text'=>$msg,  'stype'=>$sms_type);//'priority'=>$priority,
-						 $data='user='.$user.'&pass='.$password.'&sender='.$sender_id.'&phone='.$sender.'&text='.$msg.'&stype='.$sms_type.'&priority=sdnd'; 
-						 
-						 //http://bhashsms.com/api/sendmsg.php?user='kavaii'&pass='12345'&sender='KAVAII'&phone='9782364064'&text='Hii'&stype='normal'&priority='sdnd'
-						 
-						 //http://bhashsms.com/api/sendmsg.php?user=kavaii&pass=12345&sender=kavaii%20&phone=9731960662%20&text=hii%20&priority=sdnd&stype=normal
-						 $ch = curl_init('http://bhashsms.com/api/sendmsg.php?'.$data);
-						 echo var_dump($data);
-						 curl_setopt($ch, CURLOPT_POST, true);
-						 curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-						 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-						 echo var_dump($ch);
-						 try {
-						  $response = curl_exec($ch);
-						  echo var_dump($ch);
-						  curl_close($ch);
-						  echo var_dump($response);
-						  echo 'Message has been sent.';
-						 }catch(Exception $e){
-						  echo 'Message: ' .$e->getMessage();
-						 } */
-		 
-		 
-						}
+                }
             }
 
             // ===== Future Recurring events of a repeating series =====
@@ -478,7 +378,6 @@ if ($_POST['form_action'] == "save") {
                     $args['endtime'] = $endtime;
                     $args['locationspec'] = $locationspec;
                     InsertEvent($args);
-					SendSMS();
                 }
             }
 
@@ -520,7 +419,6 @@ if ($_POST['form_action'] == "save") {
                         $args['endtime'] = $endtime;
                         $args['locationspec'] = $locationspec;
                         InsertEvent($args);
-						SendSMS();
                     } 
                 } 
 
@@ -533,7 +431,6 @@ if ($_POST['form_action'] == "save") {
                         "pc_title = '" . add_escape_custom($_POST['form_title']) . "', " .
                         "pc_time = NOW(), " .
                         "pc_hometext = '" . add_escape_custom($_POST['form_comments']) . "', " .
-                        "pc_room = '" . add_escape_custom($_POST['form_room']) . "', " .
                         "pc_informant = '" . add_escape_custom($_SESSION['authUserID']) . "', " .
                         "pc_eventDate = '" . add_escape_custom($event_date) . "', " .
                         "pc_endDate = '" . add_escape_custom(fixDate($_POST['form_enddate'])) . "', " .
@@ -587,7 +484,6 @@ if ($_POST['form_action'] == "save") {
                 $args['endtime'] = $endtime;
                 $args['locationspec'] = $locationspec;
                 InsertEvent($args);
-				SendSMS();
             }
             else if ($_POST['recurr_affect'] == 'future') {
                 // mod original event to stop recurring on this date-1
@@ -606,7 +502,6 @@ if ($_POST['form_action'] == "save") {
                 $args['endtime'] = $endtime;
                 $args['locationspec'] = $locationspec;
                 InsertEvent($args);
-				SendSMS();
             }
             else {
 
@@ -627,7 +522,6 @@ if ($_POST['form_action'] == "save") {
                     "pc_title = '" . add_escape_custom($_POST['form_title']) . "', " .
                     "pc_time = NOW(), " .
                     "pc_hometext = '" . add_escape_custom($_POST['form_comments']) . "', " .
-                    "pc_room = '" . add_escape_custom($_POST['form_room']) . "', " .
                     "pc_informant = '" . add_escape_custom($_SESSION['authUserID']) . "', " .
                     "pc_eventDate = '" . add_escape_custom($event_date) . "', " .
                     "pc_endDate = '" . add_escape_custom(fixDate($_POST['form_enddate'])) . "', " .
@@ -666,9 +560,7 @@ if ($_POST['form_action'] == "save") {
 
 		DOBandEncounter();
 		
-	   
-}		
-			
+ }
 
 // =======================================
 //    DELETE EVENT(s)
@@ -760,14 +652,10 @@ if ($_POST['form_action'] == "save") {
  }
 
  if ($_POST['form_action'] != "") {
-  // Close this window and refresh the calendar (or the patient_tracker) display.
+  // Close this window and refresh the calendar display.
   echo "<html>\n<body>\n<script language='JavaScript'>\n";
   if ($info_msg) echo " alert('" . addslashes($info_msg) . "');\n";
-  echo " if (opener && !opener.closed && opener.refreshme) {\n " .
-       "  opener.refreshme();\n " . // This is for standard calendar page refresh
-       " } else {\n " .
-       "  window.opener.pattrk.submit()\n " . // This is for patient flow board page refresh
-       " };\n";
+  echo " if (opener && !opener.closed && opener.refreshme) opener.refreshme();\n";
   echo " window.close();\n";
   echo "</script>\n</body>\n</html>\n";
   exit();
@@ -803,7 +691,6 @@ if ($_POST['form_action'] == "save") {
  if ($_REQUEST['patientid']) $patientid = $_REQUEST['patientid'];
  $patientname = xl('Click to select');
  $patienttitle = "";
- $pcroom = "";
  $hometext = "";
  $row = array();
  $informant = "";
@@ -845,7 +732,7 @@ if ($_POST['form_action'] == "save") {
       $repeattype = 6;
     }
   }
-  $pcroom = $row['pc_room'];
+
   $hometext = $row['pc_hometext'];
   if (substr($hometext, 0, 6) == ':text:') $hometext = substr($hometext, 6);
  }
@@ -896,7 +783,7 @@ if ($_POST['form_action'] == "save") {
 
  // Get the providers list.
  $ures = sqlStatement("SELECT id, username, fname, lname FROM users WHERE " .
-  "authorized != 0 AND active = 1 ORDER BY lname, fname");
+  "authorized != 0 AND active = 1 ORDER BY fname, lname");
 
  // Get event categories.
  $cres = sqlStatement("SELECT pc_catid, pc_catname, pc_recurrtype, pc_duration, pc_end_all_day " .
@@ -919,11 +806,7 @@ if ($_POST['form_action'] == "save") {
 <style>
 td { font-size:0.8em; }
 </style>
-<link rel="stylesheet" href="<?php echo $GLOBALS['webroot'] ?>/library/js/jAlert-master/src/jAlert-v3.css" />
-<link rel="stylesheet" href="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery.treeview-1.4.1/jquery.treeview.css" />
-<script src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-1.7.2.min.js"></script>
-<script src="<?php echo $GLOBALS['webroot'] ?>/library/js/jAlert-master/src/jAlert-v3.js"></script>
-<script src="<?php echo $GLOBALS['webroot'] ?>/library/js/jAlert-master/src/jAlert-functions.js"> //optional!!</script>
+
 <style type="text/css">@import url(../../../library/dynarch_calendar.css);</style>
 <script type="text/javascript" src="../../../library/topdialog.js"></script>
 <script type="text/javascript" src="../../../library/dialog.js"></script>
@@ -959,16 +842,12 @@ td { font-size:0.8em; }
   if ($crow['pc_end_all_day']) $duration = 1440;
 
   // This section is to build the list of preferred categories:
-  
   if ($duration) {
-	  
    $prefcat_options .= "    <option value='" . attr($crow['pc_catid']) . "'";
    if ($eid) {
     if ($crow['pc_catid'] == $row['pc_prefcatid']) $prefcat_options .= " selected";
    }
-   
-$prefcat_options .= ">" . text(xl_appt_category($crow['pc_catname'])) . "</option>\n";
-   
+   $prefcat_options .= ">" . text(xl_appt_category($crow['pc_catname'])) . "</option>\n";
   }
 
   if ($crow['pc_cattype'] != $cattype) continue;
@@ -993,7 +872,7 @@ $prefcat_options .= ">" . text(xl_appt_category($crow['pc_catname'])) . "</optio
  // This is for callback by the find-patient popup.
  function setpatient(pid, lname, fname, dob) {
   var f = document.forms[0];
-  f.form_patient.value = lname + ', ' + fname;
+  f.form_patient.value = fname + ' ' + lname;
   f.form_pid.value = pid;
   dobstyle = (dob == '' || dob.substr(5, 10) == '00-00') ? '' : 'none';
   document.getElementById('dob_row').style.display = dobstyle;
@@ -1446,8 +1325,8 @@ if  ($GLOBALS['select_multi_providers']) {
     while ($urow = sqlFetchArray($ures)) {
         echo "    <option value='" . $urow['id'] . "'";
         if ($urow['id'] == $defaultProvider) echo " selected";
-        echo ">" . $urow['lname'];
-        if ($urow['fname']) echo ", " . $urow['fname'];
+        echo ">" . $urow['fname'];
+        if ($urow['lname']) echo " " . $urow['lname'];
         echo "</option>\n";
     }
     echo "</select>";
@@ -1470,7 +1349,7 @@ if  ($GLOBALS['select_multi_providers']) {
       echo "    <option value='" . attr($urow['id']) . "'";
       if ($urow['id'] == $defaultProvider) echo " selected";
       echo ">" . text($urow['fname']);
-      if ($urow['lname']) echo " " . text($urow['lname']);
+      if ($urow['lname']) echo ", " . text($urow['lname']);
       echo "</option>\n";
     }
     echo "</select>";
@@ -1526,10 +1405,6 @@ if  ($GLOBALS['select_multi_providers']) {
   <td nowrap>
 
 <?php
-if($row['pc_apptstatus']==null)
-{
-	$row['pc_apptstatus']="@";
-}
 generate_form_field(array('data_type'=>1,'field_id'=>'apptstatus','list_id'=>'apptstat','empty_title'=>'SKIP'), $row['pc_apptstatus']);
 ?>
    <!--
@@ -1565,20 +1440,7 @@ if ($repeatexdate != "") {
 ?>
   </td>
  </tr>
- <?php
- if($_GET['prov']!=true){
- ?>
- <tr>
-  <td nowrap>
-   <b><?php echo xlt('Room Number'); ?>:</b>
-  </td>
-  <td colspan='4' nowrap>
-<?php
-	echo generate_select_list('form_room', 'patient_flow_board_rooms',$pcroom, xl('Room Number'));
-?>
-  </td>
- </tr>
-<?php } ?>
+
  <tr>
   <td nowrap>
    <b><?php echo xlt('Comments'); ?>:</b>
@@ -1588,7 +1450,6 @@ if ($repeatexdate != "") {
   </td>
  </tr>
 
- 
 <?php
  // DOB is important for the clinic, so if it's missing give them a chance
  // to enter it right here.  We must display or hide this row dynamically
@@ -1722,7 +1583,7 @@ function HideRecurrPopup() {
 }
 
 function deleteEvent() {
-    /*if (confirm("<?php echo addslashes(xl('Deleting this event cannot be undone. It cannot be recovered once it is gone. Are you sure you wish to delete this event?')); ?>")) {
+    if (confirm("<?php echo addslashes(xl('Deleting this event cannot be undone. It cannot be recovered once it is gone. Are you sure you wish to delete this event?')); ?>")) {
         $('#form_action').val("delete");
 
         <?php if ($repeats): ?>
@@ -1736,25 +1597,8 @@ function deleteEvent() {
         <?php endif; ?>
 
         return SubmitForm();
-    }*/
-	$.jAlert({'type': 'confirm','confirmQuestion':'Are you sure you wish to Delete? ', 'onConfirm': function(){
-         $('#form_action').val("delete");
-
-        <?php if ($repeats): ?>
-        // existing repeating events need additional prompt
-        if ($("#recurr_affect").val() == "") {
-            DisableForm();
-            // show the current/future/all DIV for the user to choose one
-            $("#recurr_popup").css("visibility", "visible");
-            return false;
-        }
-        <?php endif; ?>
-
-        return SubmitForm();   
-  }, 'onDeny': function(){
-    return false;    
-  } });
-    //return false;
+    }
+    return false;
 }
 
 function SubmitForm() {

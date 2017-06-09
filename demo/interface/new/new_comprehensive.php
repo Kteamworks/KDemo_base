@@ -373,6 +373,7 @@ while ($lrow = sqlFetchArray($lres)) {
 <script type="text/javascript">
 
 jQuery(document).ready(function(){
+	document.getElementById("form_pubpid").disabled = true
 jQuery('#form_postal_code').blur(function(){ //.postcode class of zipcode text field
 var s = jQuery(this).val();
 jQuery.ajax({

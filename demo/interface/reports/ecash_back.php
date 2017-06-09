@@ -29,7 +29,7 @@ $fake_register_globals = false;
 
 require_once("../globals.php");
 require_once("$srcdir/acl.inc");
-
+$returnurl = $GLOBALS['concurrent_layout'] ? 'encounter_top.php' : 'patient_encounter.php';
 // This array is an important reference for the supported labs and their NPI
 // numbers as known to this program.  The clinic must define at least one
 // procedure provider entry for a lab that has a supported NPI number.
@@ -82,7 +82,7 @@ $sec = "10";
 <head>
 <meta http-equiv="refresh" content="<?php echo $sec?>; URL='<?php echo $page?>'">
 <link rel="stylesheet" href='<?php echo $css_header ?>' type='text/css'>
-<title><?php echo xlt('Load Lab Configuration'); ?></title>
+<title><?php echo xlt('Provide Cash Handover Details'); ?></title>
 </head>
 
 <body class="body_top">
@@ -118,7 +118,8 @@ $sec = "10";
  
  else if($gresult['id'])
  {
-	 echo "You have a Handover Request to approve \n";
+	 $tamt=$_POST['tamt'];
+	 echo "You have a Handover Request to approve for Rs.".$tamt."\n";
 	 echo " \n <td><input type='submit' name='handover' value='Approve' onclick='top.restoreSession();'/></td>\n";
  }
 else
@@ -179,6 +180,12 @@ else
   echo "</select></td>\n";
   echo " </tr>\n";
 
+  
+  echo " <tr>\n";
+  echo "  <td nowrap>" . xlt('Transferring Amount') . "</td>\n";
+  echo "<td><input name='tamt'></input></td>";
+ 
+  echo " </tr>\n";
   echo " <tr>\n";
   echo "  <td nowrap>" . xlt('Comments') . "</td>\n";
   echo "<td><textarea name='comment'>Enter your comments here...</textarea></td>";
@@ -193,7 +200,7 @@ else
   
   
  
-  echo "  <td><input type='submit' name='handover' value='Handover Request' onclick='top.restoreSession();location='$rootdir/reports/ecash.php' '/></td>\n";
+  echo "  <td><input type='submit' name='handover' value='Handover Request' onclick='window.close()' '/></td>\n";
   
   
   // onclick="top.restoreSession();location='<?php echo "$rootdir/reports/custom_report_range_bill.php" 
@@ -236,11 +243,11 @@ $type=$_POST['type'];
 $comments=$_POST['comment'];
 $handover=$_POST['group'];	
 //$level=$_POST[''];
-//$signed=$_POST[''];
+$tamt=$_POST['tamt'];
 	
 $fundid = sqlInsert("INSERT INTO funds SET " .
-                  "date = now(), collectionamt = ?,  user= ?, type = ?,level=1, status='null',comments = ?,handover_to=?,sending_time=now()",
-                  array($camt, $user, $type, $comments, $handover));
+                  "date = now(), collectionamt = ?,  user= ?, reqtransamt=?,type = ?,level=1, status='null',comments = ?,handover_to=?,sending_time=now()",
+                  array($camt, $user, $tamt,$type, $comments, $handover));
 
 
 sqlStatement("UPDATE payments SET " .
