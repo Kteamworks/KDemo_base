@@ -74,6 +74,28 @@ function echoLine($iname,$date, $charges, $ptpaid, $inspaid,$discount, $duept,$e
    $patdata = getPatientData($pid, 'phone_cell,title,age,age_days,age_months,rateplan,date,sex,DOB,genericname1,fname,mname,lname,pubpid,street,city,state,postal_code,providerID');
   $rate_plan=$patdata['rateplan'];
   //$patcopay = getPatientInsuranceData($pid, $enc);
+  if($rate_plan=="TPAInsurance")
+  {
+	  
+	  echo " <tr id='tr_".attr($var_index)."' >\n";
+  echo "  <td class='detail'>" . text(oeFormatShortDate($date)) . "</td>\n";
+  echo "  <td class='detail' id='".attr($date)."' align='center'>" . htmlspecialchars($encounter, ENT_QUOTES) . "</td>\n";
+  echo "  <td class='detail' align='center' id='td_charges_$var_index' >" . htmlspecialchars(bucks($charges), ENT_QUOTES) . "</td>\n";
+  if($rate_plan=="TPAInsurance"){ 
+  echo "  <td class='detail' align='center' id='td_patient_copay_$var_index' >" . htmlspecialchars(bucks($patcopay), ENT_QUOTES) . "</td>\n";
+  //echo "  <td class='detail' align='center' id='td_copay_$var_index' >" . htmlspecialchars(bucks($copay), ENT_QUOTES) . "</td>\n";
+  echo "  <td class='detail' align='center' id='td_inspaid_$var_index' >" . htmlspecialchars(bucks($inspaid*-1), ENT_QUOTES) . "</td>\n";
+  }
+  echo "  <td class='detail' align='center' id='td_ptpaid_$var_index' >" . htmlspecialchars(bucks($ptpaid*-1), ENT_QUOTES) . "</td>\n";
+  echo "  <td class='detail' align='center' id='dis_charges_$var_index' >" . htmlspecialchars(bucks($discount), ENT_QUOTES) . "</td>\n";
+  //echo "  <td class='detail' align='center' id='balance_$var_index'>" . htmlspecialchars(bucks($balance), ENT_QUOTES) . "</td>\n"; //This was Insurance Balance
+  echo "  <td class='detail' align='center' id='duept_$var_index'>" . htmlspecialchars(bucks(round($duept,2)*1), ENT_QUOTES) . "</td>\n"; //Patient Balance
+  echo "  <td class='detail' align='right'><input type='text' name='".attr($iname)."'  id='paying_".attr($var_index)."' " .
+    " value='" .  $duept . "' onchange='coloring();calctotal()'  autocomplete='off' " .
+    "onkeyup='calctotal()'  style='width:50px'/></td>\n";
+  echo " </tr>\n";
+	  
+  }else{
   if($duept>0)
   {
   echo " <tr id='tr_".attr($var_index)."' >\n";
@@ -93,6 +115,7 @@ function echoLine($iname,$date, $charges, $ptpaid, $inspaid,$discount, $duept,$e
     " value='" .  $duept . "' onchange='coloring();calctotal()'  autocomplete='off' " .
     "onkeyup='calctotal()'  style='width:50px'/></td>\n";
   echo " </tr>\n";
+  }
 }
 }
 // We use this to put dashes, colons, etc. back into a timestamp.
