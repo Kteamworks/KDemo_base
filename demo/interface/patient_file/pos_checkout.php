@@ -806,11 +806,13 @@ if ($_POST['form_save']) {
     }
     $memo = xl('Discount');
 	$reason_code=$_POST['reason_code'];
+	$approved_by=$_POST['approved_by'];
+	
     if ($INTEGRATED_AR) {
       $time = date('Y-m-d H:i:s');
       $query = "INSERT INTO ar_activity ( " .
         "pid, encounter, code, modifier, payer_type, post_user, post_time, " .
-        "session_id, memo, adj_amount,reason_code " .
+        "session_id, memo, adj_amount,reason_code,approved_by " .
         ") VALUES ( " .
         "?, " .
         "?, " .
@@ -822,9 +824,10 @@ if ($_POST['form_save']) {
         "'0', " .
         "?, " .
 		"?, " .
+		"?, " .
         "? " .
         ")";
-      sqlStatement($query, array($form_pid,$form_encounter,$_SESSION['authUserID'],$time,$memo,$amount,$reason_code) );
+      sqlStatement($query, array($form_pid,$form_encounter,$_SESSION['authUserID'],$time,$memo,$amount,$reason_code,$approved_by) );
 	  sqlQuery("Update billing_main_copy set dis_amt=? where encounter=?",array($amount,$encounter));   
     }
     else {
@@ -1226,6 +1229,27 @@ if ($inv_encounter) {
                                         echo "    <option value='" . attr($provid) ."'";
                                         //if ($provid == $_POST['form_provider']) echo " selected";
                                         echo ">" . text($urow['title'])  . "\n";
+                                }
+                                echo "   </select>\n";
+                                ?>
+				</td>
+  </tr>
+   <tr>
+  <td>
+   <?php echo xlt('Discount Approved By'); ?>:
+  </td>
+  <td><?php
+                        // Build a drop-down list of providers.
+                                //
+                                $query = "SELECT username FROM users  WHERE ".
+                                  "authorized=1 "; 
+                                $ures = sqlStatement($query);
+                                echo "   <select name='approved_by'>\n";
+                                while ($urow = sqlFetchArray($ures)) {
+                                        $provid = $urow['username'];
+                                        echo "    <option value='" . attr($provid) ."'";
+                                        //if ($provid == $_POST['form_provider']) echo " selected";
+                                        echo ">" . text($urow['username'])  . "\n";
                                 }
                                 echo "   </select>\n";
                                 ?>
