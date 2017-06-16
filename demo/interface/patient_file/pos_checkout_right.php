@@ -370,7 +370,12 @@ function generate_receipt($patient_id, $encounter=0) {
   $encrow = sqlQuery("SELECT invoice_refno FROM form_encounter WHERE " .
     "pid = ? AND encounter = ? LIMIT 1", array($patient_id,$encounter) );
   $invoice_refno = $encrow['invoice_refno'];
+    // redirect back to the encounter
+   $address = "{$GLOBALS['rootdir']}/main/finder/p_tp_dynamic_finder.php";
+    echo "\n<script language='Javascript'>top.restoreSession();window.location='$address';</script>\n";
+    exit;
 ?>
+<!--
 <html>
 <head>
 <?php html_header_show(); ?>
@@ -615,7 +620,7 @@ $row2=  sqlFetchArray($row1);
 </p>
 </div>
 </body>
-</html>
+</html>-->
 <?php
   if (!$INTEGRATED_AR) SLClose();
 } // end function generate_receipt()
@@ -1103,7 +1108,7 @@ $(window).load(function() {
 
 <body class="body_top">
 
-<form method='post' action='pos_checkout.php'>
+<form method='post' action='pos_checkout_right.php'>
 <input type='hidden' name='form_pid' value='<?php echo attr($patient_id) ?>' />
 
 <center>

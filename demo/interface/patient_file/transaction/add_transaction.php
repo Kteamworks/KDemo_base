@@ -340,7 +340,7 @@ $vid=sqlStatement("SELECT form_id from forms where encounter='".$_SESSION['encou
                     <span><?php echo htmlspecialchars( xl('Save'), ENT_NOQUOTES); ?></span>
                  </a>
              </td>
-			 <td>
+			<!-- <td>
 			 <?php
 			  $id=sqlStatement("SELECT form_id from forms where encounter='".$_SESSION['encounter']."' and formdir='dictation' order by form_id desc limit 1 ");
 		$id1=sqlFetchArray($id);
@@ -355,7 +355,7 @@ $vid=sqlStatement("SELECT form_id from forms where encounter='".$_SESSION['encou
                 <a href="../../forms/admit/new.php"  <?php if (!$GLOBALS['concurrent_layout']) echo "target='Main'"; ?> class="css_button" onclick="top.restoreSession()">
                     <span><?php echo htmlspecialchars( xl('NEXT'), ENT_NOQUOTES); ?></span>
                 </a>
-            </td>
+            </td>-->
              <td>
                 <a href="transactions.php"  <?php if (!$GLOBALS['concurrent_layout']) echo "target='Main'"; ?> class="css_button" onclick="top.restoreSession()">
                     <span><?php echo htmlspecialchars( xl('Cancel'), ENT_NOQUOTES); ?></span>

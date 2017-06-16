@@ -485,7 +485,7 @@ $vid=sqlStatement("SELECT form_id from forms where encounter='".$_SESSION['encou
 									<?php } else { ?>
 									<li><a href="../encounter/view_form.php?formname=dictation&id=<?php echo $plid2 ?>"><i class="fa fa-note" style="margin-right: 8px;"></i>Plan</a></li>
 									<?php } ?>
-			<li><a href="../transaction/add_transaction.php"><i class="fa fa-note" style="margin-right: 8px;"></i>Referal</a></li>
+			<li><a href="../transaction/add_transaction.php"><i class="fa fa-note" style="margin-right: 8px;"></i>Referral</a></li>
 			<li><a href="../../forms/admit/new.php"><i class="fa fa-note" style="margin-right: 8px;"></i>Admission</a></li>
 			<li><a href="../../patient_file/summary/summary_print.php">Summary</a></li>
 		</ol>
@@ -504,10 +504,10 @@ $vid=sqlStatement("SELECT form_id from forms where encounter='".$_SESSION['encou
 		$id1=sqlFetchArray($id);
 		$id2=$id1['form_id'];
 ?>
-<input type='button' value='<?php echo xla('BACK'); ?>'  style='float: right;
+<!--<input type='button' value='<?php echo xla('BACK'); ?>'  style='float: right;
 margin-bottom: 10px;' class="pull-right" onclick="top.restoreSession();location='../../patient_file/encounter/view_form.php?formname=ros&id=<?php echo $id2 ?>'" />
 <input type='button' value='<?php echo xla('NEXT'); ?>'  style='float: right;
-margin-bottom: 10px;' class="pull-right" onclick="top.restoreSession();location='../../../controller.php?prescription&edit&id=&pid=<?php echo $pid ?>'" />
+margin-bottom: 10px;' class="pull-right" onclick="top.restoreSession();location='../../../controller.php?prescription&edit&id=&pid=<?php echo $pid ?>'" />-->
 
 </p>
 

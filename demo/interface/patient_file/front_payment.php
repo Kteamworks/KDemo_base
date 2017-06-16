@@ -177,6 +177,7 @@ $alertmsg = ''; // anything here pops up in an alert box
 // If the Save button was clicked...
 if ($_POST['form_save']) {
   $form_pid = $_POST['form_pid'];
+  $dop=$_POST['dop'];
   $form_method = trim($_POST['form_method']);
    $form_towards = trim($_POST['form_towards']);
   $form_source = trim($_POST['form_source']);
@@ -441,8 +442,8 @@ if ($_POST['form_save']) {
 				$r1=sqlStatement("select rec_amt from billing_activity_final where encounter='$enc'");
 					$r2=sqlFetchArray($r1);
 					$recamt=$r2['rec_amt']+$pay_total;
-					sqlStatement("update billing_activity_final set rec_amt=?, status= 1, rec_date=now() where encounter=? and pid=? ",
-							array($recamt,$enc,$form_pid));
+					sqlStatement("update billing_activity_final set dop=?,rec_amt=?, status= 1, rec_date=now() where encounter=? and pid=? ",
+							array($dop,$recamt,$enc,$form_pid));
 							
 				sqlStatement("insert into ar_activity set "    .
 							"pid = ?"       .
@@ -1111,8 +1112,9 @@ $age_days=$patdata['age_days'];
 <!-- supporting javascript code -->
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery.js"></script>
 
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dialog.js"></script>
-
+<script type="text/javascript" src="../../library/dialog.js"></script>
+<!-- pop up calendar -->
+<script type="text/javascript" src="../../library/textformat.js"></script>
 
 
 <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
@@ -1278,6 +1280,14 @@ function validate()
 	  alert("<?php echo addslashes( xl('Please Select Type Of Payment.')) ?>");
 	  return false;
    }
+   if( document.getElementById('dop').value=='' && document.getElementById('radio_type_of_coverag2').checked==true  )
+   {
+	   alert("<?php echo addslashes( xl('Please Enter the Date of Payment.')) ?>");
+	  return false;
+	   
+   }
+   
+  
   if(document.getElementById('radio_type_of_payment_self1').checked==true || document.getElementById('radio_type_of_payment_self2').checked==true || document.getElementById('radio_type_of_payment1').checked==true || document.getElementById('radio_type_of_payment5').checked==true)
    {
 	 for (var i = 0; i < f.elements.length; ++i) 
@@ -1533,8 +1543,8 @@ function make_insurance()
  {
   make_visible_row();
   make_it_hide();
+  document.getElementById('radio_type_of_payment5').checked=true;
   cursor_pointer();
-  document.getElementById('radio_type_of_payment1').checked=true;
  }
 </script>
 
@@ -1614,10 +1624,29 @@ function make_insurance()
  <tr height="5"><td colspan='3'></td></tr>
  <tr>
   <td class='text' >
-   <?php echo xla('Cheque/NEFT Number'); ?>:
+   <?php echo xla('Cheque/RR Number'); ?>:
   </td>
   <td colspan='2' ><div id="ajax_div_patient" style="display:none;"></div>
    <input type='text'  id="check_number" name='form_source' style="width:120px" value='<?php echo htmlspecialchars($payrow['source'], ENT_QUOTES); ?>'>
+  </td>
+ </tr>
+ <tr height="5"><td colspan='3'></td></tr>
+ <?php 
+ $today = date('Y-m-d H:i:s',strtotime("+0 days"));
+ ?>
+ 
+ <tr>
+  <td class='text' >
+   <?php echo xla('Date of Payment'); ?>:
+  </td>
+  <td colspan='2' ><div id="ajax_div_patient" style="display:none;"></div>
+   <input type='text' size='10' name='dop' id='dop' <?php echo attr ($disabled)?>;
+       value='<?php echo attr($today); ?>' 
+       title='<?php echo xla('yyyy-mm-dd Date of Payment'); ?>'
+       onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' />
+        <img src='../pic/show_calendar.gif' align='absbottom' width='24' height='22'
+        id='img_end_date' border='0' alt='[?]' style='cursor:pointer;cursor:hand'
+        title='<?php echo xla('Click here to choose a date'); ?>'>
   </td>
  </tr>
  <tr height="5"><td colspan='3'></td></tr>
@@ -1626,7 +1655,11 @@ function make_insurance()
   <td class='text' valign="middle" >
    <?php echo htmlspecialchars(xl('Patient Coverage'), ENT_QUOTES); ?>:
   </td>
-  <td class='text' colspan="2" ><input type="radio" name="radio_type_of_coverage" id="radio_type_of_coverage1" value="self" checked="checked" onClick="make_visible_radio();make_self();"/><?php echo htmlspecialchars(xl('Self'), ENT_QUOTES); ?><input type="radio" name="radio_type_of_coverage" id="radio_type_of_coverag2" value="insurance"   onClick="make_hide_radio();make_insurance();"/><?php echo htmlspecialchars(xl('Insurance'), ENT_QUOTES); ?>  </td>
+  <td class='text' colspan="2" >
+  <input type="radio" name="radio_type_of_coverage" id="radio_type_of_coverage1" value="self" checked="checked" 
+  onClick="make_visible_radio();make_self();"/><?php echo htmlspecialchars(xl('Self'), ENT_QUOTES); ?>
+  <input type="radio" name="radio_type_of_coverage" id="radio_type_of_coverag2" value="insurance"   onClick="make_hide_radio()
+  ;"/><?php echo htmlspecialchars(xl('Insurance'), ENT_QUOTES); ?>  </td>
  </tr>
 
  <tr height="5"><td colspan='3'></td></tr>
@@ -1635,14 +1668,20 @@ function make_insurance()
   <td class='text' valign="top"  >
    <?php echo htmlspecialchars(xl('Payment against'), ENT_QUOTES); ?>:
   </td>
-    <td class='text' colspan="2" ><input type="radio" name="radio_type_of_payment" id="radio_type_of_payment_self1" value="cash" checked="checked" onClick="make_visible_row();make_it_hide_enc_pay();cursor_pointer();"/><?php echo htmlspecialchars(xl('Visit Payment'), ENT_QUOTES); ?><input type="radio" name="radio_type_of_payment" id="radio_type_of_payment4" value="pre_payment" onClick="make_hide_row();"/><?php echo htmlspecialchars(xl('Pre Pay'), ENT_QUOTES); ?></td>
+    <td class='text' colspan="2" ><input type="radio" name="radio_type_of_payment" id="radio_type_of_payment_self1" value="cash" 
+	checked="checked" onClick="make_visible_row();make_it_hide_enc_pay();cursor_pointer();"/><?php echo htmlspecialchars(xl('Visit Payment'), ENT_QUOTES); ?>
+	<input type="radio" name="radio_type_of_payment" id="radio_type_of_payment4" value="pre_payment" onClick="make_hide_row();"/><?php echo htmlspecialchars(xl('Pre Pay'), ENT_QUOTES); ?></td>
   <!--<td class='text' colspan="2" ><input type="radio" name="radio_type_of_payment" id="radio_type_of_payment_self1" value="cash" checked="checked" onClick="make_visible_row();make_it_hide_enc_pay();cursor_pointer();"/><?php echo htmlspecialchars(xl('Encounter Payment'), ENT_QUOTES); ?></td>-->
  </tr>
  <tr id="tr_radio2" style="display:none"><!-- For radio self -->
   <td class='text' valign="top" >
    <?php echo htmlspecialchars(xl('Payment against'), ENT_QUOTES); ?>:
   </td>
-  <td class='text' colspan="3" ><input type="radio" name="radio_type_of_payment" id="radio_type_of_payment1" value="copay"  onClick="make_visible_row();cursor_pointer();"/><?php echo htmlspecialchars(xl('Co Pay'), ENT_QUOTES); ?><input type="radio" name="radio_type_of_payment" id="radio_type_of_payment5" value="claim"  onClick="make_visible_row();cursor_pointer();"/><?php echo htmlspecialchars(xl('Claim'), ENT_QUOTES); ?><input type="radio" name="radio_type_of_payment" id="radio_type_of_payment2" value="invoice_balance"  onClick="make_visible_row();"/><?php echo htmlspecialchars(xl('Invoice Balance'), ENT_QUOTES); ?><br/><input type="radio" name="radio_type_of_payment" id="radio_type_of_payment4" value="pre_payment" onClick="make_hide_row();"/><?php echo htmlspecialchars(xl('Pre Pay'), ENT_QUOTES); ?></td>
+  <td class='text' colspan="3" ><input type="radio" name="radio_type_of_payment" id="radio_type_of_payment1" 
+  value="copay"  onClick="make_visible_row();"/><?php echo htmlspecialchars(xl('Co Pay'), ENT_QUOTES); ?>
+  <input type="radio" name="radio_type_of_payment" id="radio_type_of_payment5" value="claim"  onClick="make_visible_row();cursor_pointer();"/><?php echo htmlspecialchars(xl('Claim'), ENT_QUOTES); ?>
+  <input type="radio" name="radio_type_of_payment" id="radio_type_of_payment2" value="invoice_balance"  onClick="make_visible_row();"/><?php echo htmlspecialchars(xl('Invoice Balance'), ENT_QUOTES); ?><br/>
+  <input type="radio" name="radio_type_of_payment" id="radio_type_of_payment4" value="pre_payment" onClick="make_hide_row();"/><?php echo htmlspecialchars(xl('Pre Pay'), ENT_QUOTES); ?></td>
  </tr>
 
  <tr height="15"><td colspan='3'></td></tr>
@@ -1981,6 +2020,11 @@ if($FP==1 && $ins1==0)
 <input type='hidden' name='ajax_mode' id='ajax_mode' value='' />
 <input type='hidden' name='mode' id='mode' value='' />
 </form>
+<script language="javascript">
+/* required for popup calendar */
+//Calendar.setup({inputField:"admit_date", ifFormat:"%Y-%m-%d", button:"img_transfer_date"});
+Calendar.setup({inputField:"dop", ifFormat:"%Y-%m-%d %H:%M:%S", button:"img_end_date",showsTime:'true'});
+</script>
 <script language="JavaScript">
  calctotal();
 </script>

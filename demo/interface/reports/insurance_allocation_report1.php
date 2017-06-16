@@ -65,8 +65,10 @@ if ($_POST['form_csvexport']) {
 	if($st=='R')
 	{
 		echo '"Received Amount ",';
-		echo '"Days ",';
-		echo '" Insurance Disallowances"' . "\n";
+		echo '"Received Date ",';
+		echo '"TDS ",';
+		echo '"Insurance Disallowance ",';
+		echo '"Days"' . "\n";
 	}
     if($st=='O')
 	{
@@ -225,13 +227,13 @@ else {
 		<tr>
 			<td>
 				<div style='margin-left:15px'>
-					<a href='#' class='css_button' onclick='$("#form_refresh").attr("value","true"); $("#theform").submit();'>
+					<a href='#' class='css_button' onclick='$("#form_refresh").attr("value","true"); $("#form_csvexport").attr("value",""); $("#theform").submit();'>
 					<span>
 						<?php xl('Submit','e'); ?>
 					</span>
 					</a>
 
-					<?php if ($_POST['form_refresh']) { ?>
+					<?php if ($_POST['form_refresh']|| $_POST['form_csvexport']) { ?>
 					<a href='#' class='css_button' onclick='window.print()'>
 						<span>
 							<?php xl('Print','e'); ?>
@@ -469,9 +471,9 @@ $days=-($days);
 } */
 //$date2Timestamp=now();
 //$date2Timestamp = strtotime($date2Timestamp);
-$diff = $date2Timestamp - $date1Timestamp;
+$diff = ($date2Timestamp - $date1Timestamp);
 $days = floor($diff / (60*60*24) );
-$days=($days);
+$days=($days+1);
     $date=$claim_date;
     if ($_POST['form_csvexport']) {
     echo '"' . oeFormatShortDate(substr($billdate, 0, 10)) . '",';
@@ -489,7 +491,8 @@ $days=($days);
 	echo '"' . oeFormatMoney($rec_amt) . '",';
 	
 	//echo '"' . oeFormatMoney($disallw). '",';
-    echo '"' . oeFormatShortDate(substr($recdate, 0, 10)) . '",';
+    echo '"' . oeFormatShortDate(substr($rec_date, 0, 10)) . '",';
+	echo '"' . oeFormatMoney($tds) . '",';
 	echo '"' . oeFormatMoney($disa) . '",'; 
     echo '"' . qescape($days) . '",';
 	}

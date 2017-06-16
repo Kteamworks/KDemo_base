@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.2, created on 2017-06-07 12:19:04
+<?php /* Smarty version 2.6.2, created on 2017-06-13 09:38:01
          compiled from C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html */ ?>
 <?php require_once(SMARTY_DIR . 'core' . DIRECTORY_SEPARATOR . 'core.load_plugins.php');
 smarty_core_load_plugins(array('plugins' => array(array('function', 'xl', 'C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html', 170, false),array('function', 'amcCollect', 'C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html', 198, false),array('function', 'html_select_date', 'C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html', 219, false),array('function', 'html_options', 'C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html', 225, false),array('function', 'html_radios', 'C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html', 313, false),)), $this); ?>
@@ -186,13 +186,13 @@ $vid=sqlStatement("SELECT form_id from forms where encounter='".$_SESSION['encou
 			<li class="current"></i><em>Prescription</em></li>
 						<?php  if($plid2 == null) {  ?>
 			<li><a href="<?php echo $this->_tpl_vars['WEBROOT']; ?>
-/interface/encounter/load_form.php?formname=dictation"><i class="fa fa-note" style="margin-right: 8px;"></i>Plan</a></li>
+/interface/patient_file/encounter/load_form.php?formname=dictation"><i class="fa fa-note" style="margin-right: 8px;"></i>Plan</a></li>
 									<?php  } else {  ?>
 									<li><a href="<?php echo $this->_tpl_vars['WEBROOT']; ?>
-/interface/encounter/view_form.php?formname=dictation&id=<?php  echo $plid2  ?>"><i class="fa fa-note" style="margin-right: 8px;"></i>Plan</a></li>
+/interface/patient_file/encounter/view_form.php?formname=dictation&id=<?php  echo $plid2  ?>"><i class="fa fa-note" style="margin-right: 8px;"></i>Plan</a></li>
 									<?php  }  ?>
 			<li><a href="<?php echo $this->_tpl_vars['WEBROOT']; ?>
-/interface/patient_file/transaction/add_transaction.php"><i class="fa fa-note" style="margin-right: 8px;"></i>Referal</a></li>
+/interface/patient_file/transaction/add_transaction.php"><i class="fa fa-note" style="margin-right: 8px;"></i>Referral</a></li>
 			<li><a href="<?php echo $this->_tpl_vars['WEBROOT']; ?>
 /interface/forms/admit/new.php"><i class="fa fa-note" style="margin-right: 8px;"></i>Admission</a></li>
 			<li><a href="<?php echo $this->_tpl_vars['WEBROOT']; ?>
@@ -201,12 +201,12 @@ $vid=sqlStatement("SELECT form_id from forms where encounter='".$_SESSION['encou
 	</nav>
 </section>
 <?php  }  ?>
-<div class="pull-right">
+<!--<div class="pull-right">
 <input action="action" onclick="history.go(-1);" class="css_button_small" style='height: 24px;border:none' type="button" value="Back" />
 <a href='<?php echo $this->_tpl_vars['WEBROOT']; ?>
 /interface/patient_file/encounter/load_form.php?formname=dictation' class='css_button' id='next'><span><?php echo smarty_function_xl(array('t' => 'Next'), $this);?>
 </span></a>
-</div>
+</div> -->
 <form name="prescribe" id="prescribe" method="post" action="<?php echo $this->_tpl_vars['FORM_ACTION']; ?>
 ">
 <table>

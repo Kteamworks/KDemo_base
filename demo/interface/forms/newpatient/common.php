@@ -201,7 +201,7 @@ $vid=sqlStatement("SELECT form_id from forms where encounter='".$_SESSION['encou
 									<?php } else { ?>
 									<li><a href="../encounter/view_form.php?formname=dictation&id=<?php echo $plid2 ?>"><i class="fa fa-note" style="margin-right: 8px;"></i>Plan</a></li>
 									<?php } ?>
-			<li><a href="../transaction/add_transaction.php"><i class="fa fa-note" style="margin-right: 8px;"></i>Referal</a></li>
+			<li><a href="../transaction/add_transaction.php"><i class="fa fa-note" style="margin-right: 8px;"></i>Referral</a></li>
 			<li><a href="../../forms/admit/new.php"><i class="fa fa-note" style="margin-right: 8px;"></i>Admission</a></li>
 			<li><a href="../../patient_file/summary/summary_print.php">Summary</a></li>
 		</ol>
@@ -584,13 +584,20 @@ while ($irow = sqlFetchArray($ires)) {
  </tr>
 
 </table>
+<?php $newcrop_user_role=sqlQuery("select newcrop_user_role from users where username='".$_SESSION['authUser']."'");
+ ?>
+  <?php if($newcrop_user_role['newcrop_user_role']=='erxdoctor') { ?>
+  <div style = 'float:left; margin-left:8px;margin-top:0px'>
+      <a href="javascript:saveClicked();" class="css_button link_submit"><span><?php echo xlt('Save'); ?></span></a>
+    </div>
+	  <?php }else{?>
     <div style="position: fixed;
 top: 10px;
 right: 20px;">
       <a href="javascript:saveClicked();" class="css_button link_submit"><span><?php echo xlt('Save'); ?></span></a>
-      <?php if ($viewmode || !isset($_GET["autoloaded"]) || $_GET["autoloaded"] != "1") { ?>
     </div>
-
+	  <?php } ?>
+	   <?php if ($viewmode || !isset($_GET["autoloaded"]) || $_GET["autoloaded"] != "1") { ?>
     <div >
   <?php if ($GLOBALS['concurrent_layout']) { ?>
       <a href="<?php echo "$rootdir/patient_file/encounter/encounter_top.php"; ?>"
