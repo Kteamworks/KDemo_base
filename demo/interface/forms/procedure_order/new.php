@@ -513,11 +513,12 @@ margin-bottom: 10px;' class="pull-right" onclick="top.restoreSession();location=
 
 <center>
 
+<?php $newcrop_user_role=sqlQuery("select newcrop_user_role from users where username='".$_SESSION['authUser']."'"); ?>
 
 <p>
 <table border='1' width='95%' id='proctable'>
 
- <tr>
+ <tr <?php  if($newcrop_user_role['newcrop_user_role']=='erxdoctor') { ?> style="visibility:hidden;position:absolute" <?php } ?>>
   <td width='1%' valign='top' nowrap><b><?php xl('Ordering Provider','e'); ?>:</b></td>
   <td valign='top'>
 <?php
@@ -527,7 +528,7 @@ generate_form_field(array('data_type'=>10,'field_id'=>'provider_id'),
   </td>
  </tr>
 
- <tr>
+ <tr <?php  if($newcrop_user_role['newcrop_user_role']=='erxdoctor') { ?> style="visibility:hidden;position:absolute" <?php } ?>>
   <td width='1%' valign='top' nowrap><b><?php xl('Sending To','e'); ?>:</b></td>
   <td valign='top'>
    <select name='form_lab_id' onchange='lab_id_changed()'>
@@ -544,7 +545,7 @@ generate_form_field(array('data_type'=>10,'field_id'=>'provider_id'),
   </td>
  </tr>
 
- <tr>
+ <tr <?php  if($newcrop_user_role['newcrop_user_role']=='erxdoctor') { ?> style="visibility:hidden;position:absolute" <?php } ?>>
   <td width='1%' valign='top' nowrap><b><?php xl('Order Date','e'); ?>:</b></td>
   <td valign='top'>
 <?php
@@ -560,7 +561,7 @@ generate_form_field(array('data_type'=>10,'field_id'=>'provider_id'),
   </td>
  </tr>
 
- <tr>
+ <tr <?php  if($newcrop_user_role['newcrop_user_role']=='erxdoctor') { ?> style="visibility:hidden;position:absolute" <?php } ?>>
   <td width='1%' valign='top' nowrap><b><?php xl('Internal Time Collected','e'); ?>:</b></td>
   <td valign='top'>
 <?php
@@ -576,7 +577,7 @@ generate_form_field(array('data_type'=>10,'field_id'=>'provider_id'),
   </td>
  </tr>
 
- <tr>
+ <tr <?php  if($newcrop_user_role['newcrop_user_role']=='erxdoctor') { ?> style="visibility:hidden;position:absolute" <?php } ?>>
   <td width='1%' valign='top' nowrap><b><?php xl('Priority','e'); ?>:</b></td>
   <td valign='top'>
 <?php
@@ -586,7 +587,7 @@ generate_form_field(array('data_type'=>1,'field_id'=>'order_priority',
   </td>
  </tr>
 
- <tr>
+ <tr  <?php  if($newcrop_user_role['newcrop_user_role']=='erxdoctor') { ?> style="visibility:hidden;position:absolute" <?php } ?>>
   <td width='1%' valign='top' nowrap><b><?php xl('Status','e'); ?>:</b></td>
   <td valign='top'>
 <?php
@@ -603,7 +604,7 @@ generate_form_field(array('data_type'=>1,'field_id'=>'order_status',
   </td>
  </tr>
 
- <tr>
+ <tr <?php  if($newcrop_user_role['newcrop_user_role']=='erxdoctor') { ?> style="visibility:hidden;position:absolute" <?php } ?>>
   <td width='1%' valign='top' nowrap><b><?php xl('Clinical History','e'); ?>:</b></td>
   <td valign='top'>
    <input type='text' maxlength='255' name='form_clinical_hx' style='width:100%'

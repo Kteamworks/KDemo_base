@@ -7,7 +7,18 @@ div.tiny {
 .currentview {
   border: 2px solid blue;
   cursor: default; }
-
+    
+.PT_INACTIVE {
+/*    opacity: 0.4;
+    text-decoration: line-through; */
+	color:	#5cb85c;
+}
+.PT_UNBIILLED {
+color:	#d9534f;
+}
+table#pt_table th {
+    text-align: left;
+}
 #printview, #dayview, #weekview, #monthview {
   cursor: hand; }
 

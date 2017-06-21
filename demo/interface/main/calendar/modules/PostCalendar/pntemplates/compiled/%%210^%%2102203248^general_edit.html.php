@@ -1,7 +1,7 @@
-<?php /* Smarty version 2.6.2, created on 2017-06-13 09:38:01
+<?php /* Smarty version 2.6.2, created on 2017-06-21 08:59:07
          compiled from C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html */ ?>
 <?php require_once(SMARTY_DIR . 'core' . DIRECTORY_SEPARATOR . 'core.load_plugins.php');
-smarty_core_load_plugins(array('plugins' => array(array('function', 'xl', 'C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html', 170, false),array('function', 'amcCollect', 'C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html', 198, false),array('function', 'html_select_date', 'C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html', 219, false),array('function', 'html_options', 'C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html', 225, false),array('function', 'html_radios', 'C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html', 313, false),)), $this); ?>
+smarty_core_load_plugins(array('plugins' => array(array('function', 'xl', 'C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html', 235, false),array('function', 'amcCollect', 'C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html', 263, false),array('function', 'html_select_date', 'C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html', 284, false),array('function', 'html_options', 'C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html', 290, false),array('function', 'html_radios', 'C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html', 378, false),)), $this); ?>
 <html>
 <head>
 <?php html_header_show(); ?>
@@ -13,6 +13,71 @@ smarty_core_load_plugins(array('plugins' => array(array('function', 'xl', 'C:/xa
 
 <?php echo '
 <style type="text/css">
+@import url(http:/netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css);
+i.icon-set-preview-112-symbolicons-block-syringe {
+    width: 57px;
+    height: 57px;
+    background-position: -580px -522px;
+}
+i.icon-set-preview-112-symbolicons-block {
+    display: inline-block;
+    background-image: url(images/fort-icon.png);
+    background-size: 1449px 1449px;
+    background-repeat: no-repeat;
+}
+i.icon-set-preview-112-md-community-pill {
+    width: 45px;
+    height: 57px;
+    background-position: -744px -1218px;
+}
+i.icon-set-preview-112-md-community {
+    display: inline-block;
+    background-image: url(images/pill.png);
+    background-size: 1758px 1739px;
+    background-repeat: no-repeat;
+}
+i.icon-set-preview-112-community-pillbottle {
+    width: 36px;
+    height: 57px;
+    background-position: -945px -232px;
+}
+i.icon-set-preview-112-community {
+
+background-color: #0078C1;
+background-radious: 50%;
+    display: inline-block;
+    background-image: url(images/bottle.png);
+    background-size: 1014px 985px;
+    background-repeat: no-repeat;
+}
+.rating input { display: none; } 
+.rating label:before { 
+  margin: 5px;
+  font-size: 1.25em;
+  font-family: FontAwesome;
+  display: inline-block;
+  content: "\\f205";
+}
+
+.rating > label { 
+  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=.5);
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+  color: #ddd; 
+ float: right; 
+}
+
+/***** CSS to Highlight Stars on Hover *****/
+
+.rating input:checked ~ label, /* show gold star when clicked */
+.rating:not(:checked) label:hover, /* hover current star */
+.rating:not(:checked) label:hover ~ label { color: #FFD700;  } /* hover previous stars in list */
+
+.rating input:checked + label:hover, /* hover current star when changing rating */
+.rating input:checked ~ label:hover,
+.rating label:hover ~ input:checked ~ label, /* lighten current selection */
+.rating input:checked ~ label:hover ~ label { color: #FFED85;  } 
     .text {
         font-size: 9pt;
     }
@@ -299,7 +364,7 @@ $vid=sqlStatement("SELECT form_id from forms where encounter='".$_SESSION['encou
 </tr>
 <?php if ($this->_tpl_vars['DRUG_ARRAY_VALUES']): ?>
 <tr ng-controller="Main" ng-click="showAlert(dessert)" class="displayblock">
-	<td COLSPAN="1" class="text" ALIGN="right" VALIGN="MIDDLE" >&nbsp; <?php echo smarty_function_xl(array('t' => 'in-house'), $this);?>
+	<td COLSPAN="1" class="text" ALIGN="right" VALIGN="MIDDLE" >&nbsp; <?php echo smarty_function_xl(array('t' => 'in-house Drugs: '), $this);?>
  </td>
 	<td COLSPAN="2" ALIGN="LEFT" VALIGN="MIDDLE" >
 	<input type = "text" ng-model = "yourName" placeholder = "Search by drug name...">

@@ -15,6 +15,26 @@ $results = sqlStatement($qry, array($drug_id));
         <!-- NAME -->
 		        <div class="form-group">
             <label>Dosage Type</label>
+<table>
+<tr class="rating">
+    <td class="value">
+        <input type="radio" name="ratings[1]" id="Degelijkheid_1" value="1" class="radio">
+            <i class="icon-set-preview-112-md-community icon-set-preview-112-md-community-pill"></i>
+        </input>
+    </td>
+    <td class="value">
+        <input type="radio" name="ratings[2]" id="Degelijkheid_2" value="1" class="radio">
+            <i class="icon-set-preview-112-symbolicons-block icon-set-preview-112-symbolicons-block-syringe"></i>
+        </input>
+    </td>
+        <td class="value">
+        <input type="radio" name="ratings[3]" id="Degelijkheid_3" value="1" class="radio">
+            <i class="icon-set-preview-112-community icon-set-preview-112-community-pillbottle"></i>
+        </input>
+    </td>
+        
+</tr>
+</table>
 			<select ng-init="dosagetype = options[0]" name="dosagetype" class="form-control" ng-model="dosagetype" required>
 			<option value="">-- Choose Dosage Type --</option>
     <option value="1" selected="">Tablet</option>
