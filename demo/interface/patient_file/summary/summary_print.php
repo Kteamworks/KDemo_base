@@ -41,6 +41,9 @@ $pstreet = $result_patient['street'];
 	section {
 		margin-left: 20px;
 	}
+	.cd-breadcrumb.triangle li > * {
+    padding: 1em 0.3em 1em 1.4em !important;
+	}
 	</style>
 <script type="text/javascript" src="../../../library/textformat.js"></script>
 <script type="text/javascript" src="../../../library/dynarch_calendar.js"></script>
@@ -93,8 +96,25 @@ $vid=sqlStatement("SELECT form_id from forms where encounter='".$_SESSION['encou
 			<li><a href="../transaction/add_transaction.php"><i class="fa fa-note" style="margin-right: 8px;"></i>Referral</a></li>
 				<li><a href="../../forms/admit/new.php"><i class="fa fa-note" style="margin-right: 8px;"></i>Admission</a></li>
 			<li class="current"></i><em>Summary</em></li>
+			<li><a href= "" onclick='top.restoreSession()' style="background-color: #dd4b39 !important;
+color: #fff;">
+<?php echo htmlspecialchars(xl('Check Out'),ENT_NOQUOTES);
+$user =$_SESSION["authUser"];  
+$enc=$_GLOBALS['encounter'];
+$s=sqlStatement("select username,newcrop_user_role from users where username='".$user."'");
+$s1=  sqlFetchArray($s);
+if($s1["newcrop_user_role"]=="erxnurse")
+{
+sqlStatement("UPDATE form_encounter SET out_to='Sent To',out_time=NOW() where encounter= '".$enc."'");
+}
+else{
+sqlStatement("UPDATE form_encounter SET out_to='Examined By',out_time=NOW() where encounter= '".$enc."' ");
+
+}
+?></a></li>
 		</ol>
 	</nav>
+	
 </section>
   <?php }?>
 <div class="container-fluid no-margin">

@@ -1,7 +1,7 @@
-<?php /* Smarty version 2.6.2, created on 2017-06-21 08:59:07
+<?php /* Smarty version 2.6.2, created on 2017-06-22 12:24:14
          compiled from C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html */ ?>
 <?php require_once(SMARTY_DIR . 'core' . DIRECTORY_SEPARATOR . 'core.load_plugins.php');
-smarty_core_load_plugins(array('plugins' => array(array('function', 'xl', 'C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html', 235, false),array('function', 'amcCollect', 'C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html', 263, false),array('function', 'html_select_date', 'C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html', 284, false),array('function', 'html_options', 'C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html', 290, false),array('function', 'html_radios', 'C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html', 378, false),)), $this); ?>
+smarty_core_load_plugins(array('plugins' => array(array('function', 'xl', 'C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html', 224, false),array('function', 'amcCollect', 'C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html', 252, false),array('function', 'html_select_date', 'C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html', 273, false),array('function', 'html_options', 'C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html', 279, false),array('function', 'html_radios', 'C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html', 367, false),)), $this); ?>
 <html>
 <head>
 <?php html_header_show(); ?>
@@ -14,70 +14,49 @@ smarty_core_load_plugins(array('plugins' => array(array('function', 'xl', 'C:/xa
 <?php echo '
 <style type="text/css">
 @import url(http:/netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css);
-i.icon-set-preview-112-symbolicons-block-syringe {
+span.icon-set-preview-112-symbolicons-block-syringe {
     width: 57px;
     height: 57px;
     background-position: -580px -522px;
 }
-i.icon-set-preview-112-symbolicons-block {
+span.icon-set-preview-112-symbolicons-block {
     display: inline-block;
     background-image: url(images/fort-icon.png);
     background-size: 1449px 1449px;
     background-repeat: no-repeat;
 }
-i.icon-set-preview-112-md-community-pill {
+span.icon-set-preview-112-md-community-pill {
     width: 45px;
     height: 57px;
     background-position: -744px -1218px;
 }
-i.icon-set-preview-112-md-community {
+span.icon-set-preview-112-md-community {
     display: inline-block;
     background-image: url(images/pill.png);
     background-size: 1758px 1739px;
     background-repeat: no-repeat;
 }
-i.icon-set-preview-112-community-pillbottle {
+span.icon-set-preview-112-community-pillbottle {
     width: 36px;
     height: 57px;
     background-position: -945px -232px;
 }
-i.icon-set-preview-112-community {
+span.icon-set-preview-112-community {
 
-background-color: #0078C1;
-background-radious: 50%;
+
     display: inline-block;
     background-image: url(images/bottle.png);
     background-size: 1014px 985px;
     background-repeat: no-repeat;
 }
-.rating input { display: none; } 
-.rating label:before { 
-  margin: 5px;
-  font-size: 1.25em;
-  font-family: FontAwesome;
-  display: inline-block;
-  content: "\\f205";
+#skin_1 .radio-checked {
+background-color: #0078C1;
+
+}
+a.radio-fx:hover,a.radio-fx.selected {
+background-color:#0088cc;
 }
 
-.rating > label { 
-  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=.5);
-  -webkit-transform: rotate(45deg);
-  -ms-transform: rotate(45deg);
-  transform: rotate(45deg);
-  color: #ddd; 
- float: right; 
-}
-
-/***** CSS to Highlight Stars on Hover *****/
-
-.rating input:checked ~ label, /* show gold star when clicked */
-.rating:not(:checked) label:hover, /* hover current star */
-.rating:not(:checked) label:hover ~ label { color: #FFD700;  } /* hover previous stars in list */
-
-.rating input:checked + label:hover, /* hover current star when changing rating */
-.rating input:checked ~ label:hover,
-.rating label:hover ~ input:checked ~ label, /* lighten current selection */
-.rating input:checked ~ label:hover ~ label { color: #FFED85;  } 
     .text {
         font-size: 9pt;
     }
@@ -90,6 +69,16 @@ background-radious: 50%;
 	.cd-breadcrumb li > * {
     font-size: 1.5rem !important;
 }
+a.radio-fx span, a.radio-fx {
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+
+	background-color: #998;
+border: 1px solid;
+border-radius: 4px;
+}
+
 </style>
 '; ?>
 
@@ -718,6 +707,26 @@ var elems = document.getElementsByClassName("displaynone");
   }
   return query_string;
 }();
+</script>
+<script type="text/javascript">
+        $(\'input:radio\').hide().each(function() {
+            $(this).attr(\'data-radio-fx\', this.name);
+            var label = $("label[for=" + \'"\' + this.id + \'"\' + "]").text();
+            $(\'<a \' + (label != \'\' ? \'title=" \' + label + \' "\' : \'\' ) + \' data-radio-fx="\'+this.name+\'" class="radio-fx" href="#">\'+
+                \'<span class="radio\' + (this.checked ? \' radio-checked\' : \'\') + \'"></span></a>\').insertAfter(this);
+        });
+        $(\'a.radio-fx\').on(\'click\', function(e) {
+            e.preventDefault();
+            var unique = $(this).attr(\'data-radio-fx\');
+            $("a[data-radio-fx=\'"+unique+"\'] span").attr(\'class\',\'radio\');
+            $(":radio[data-radio-fx=\'"+unique+"\']").attr(\'checked\',false);
+            $(this).find(\'span\').attr(\'class\',\'radio-checked\');
+            $(this).prev(\'input:radio\').attr(\'checked\',true);
+        }).on(\'keydown\', function(e) {
+            if ((e.keyCode ? e.keyCode : e.which) == 32) {
+                $(this).trigger(\'click\');
+            }
+        });
 </script>
 '; ?>
 

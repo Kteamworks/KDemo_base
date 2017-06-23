@@ -111,6 +111,7 @@ function SendSMS()
 						  echo var_dump($ch);
 						  curl_close($ch);
 						  echo var_dump($response);
+						  break;
 						  echo 'Message has been sent.';
 						 }catch(Exception $e){
 						  echo 'Message: ' .$e->getMessage();
@@ -122,6 +123,7 @@ function InsertEventFull()
 	// =======================================
 	// multi providers case
 	// =======================================
+	
         if (is_array($_POST['form_provider'])) {
 
             // obtain the next available unique key to group multiple providers around some event
@@ -148,6 +150,7 @@ function InsertEventFull()
         // single provider
         // ====================================
         } else {
+
             $args = $_POST;
             // specify some special variables needed for the INSERT
             $args['new_multiple_value'] = "";
@@ -349,6 +352,7 @@ if ($_POST['form_action'] == "save") {
     /* =======================================================
      *                    UPDATE EVENTS
      * =====================================================*/
+
     if ($eid) {
 
         // what is multiple key around this $eid?

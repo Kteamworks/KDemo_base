@@ -17,19 +17,19 @@ $results = sqlStatement($qry, array($drug_id));
             <label>Dosage Type</label>
 <table>
 <tr class="rating">
+<td>
+                    <input name="dosagetype" ng-model="dosagetype" value="1" data-radio-fx="music" type="radio">
+					<a data-radio-fx="music" class="radio-fx" href="#"><span class="radio icon-set-preview-112-md-community icon-set-preview-112-md-community-pill"></span></a>
+                     </input></td>
+
     <td class="value">
-        <input type="radio" name="ratings[1]" id="Degelijkheid_1" value="1" class="radio">
-            <i class="icon-set-preview-112-md-community icon-set-preview-112-md-community-pill"></i>
-        </input>
-    </td>
-    <td class="value">
-        <input type="radio" name="ratings[2]" id="Degelijkheid_2" value="1" class="radio">
-            <i class="icon-set-preview-112-symbolicons-block icon-set-preview-112-symbolicons-block-syringe"></i>
+                    <input name="dosagetype" ng-model="dosagetype" value="2" data-radio-fx="music" type="radio">
+					<a data-radio-fx="music" class="radio-fx" href="#"><span class="radio icon-set-preview-112-symbolicons-block icon-set-preview-112-symbolicons-block-syringe"></span></a>
         </input>
     </td>
         <td class="value">
-        <input type="radio" name="ratings[3]" id="Degelijkheid_3" value="1" class="radio">
-            <i class="icon-set-preview-112-community icon-set-preview-112-community-pillbottle"></i>
+                    <input name="dosagetype" ng-model="dosagetype" value="3" data-radio-fx="music" type="radio">
+					<a data-radio-fx="music" class="radio-fx" href="#"><span class="radio icon-set-preview-112-community icon-set-preview-112-community-pillbottle"></span></a>
         </input>
     </td>
         
@@ -102,3 +102,23 @@ $results = sqlStatement($qry, array($drug_id));
         <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
     </div>
 </form>
+<script type="text/javascript">
+        $('input:radio').hide().each(function() {
+            $(this).attr('data-radio-fx', this.name);
+            var label = $("label[for=" + '"' + this.id + '"' + "]").text();
+            $('<a ' + (label != '' ? 'title=" ' + label + ' "' : '' ) + ' data-radio-fx="'+this.name+'" class="radio-fx" href="#">'+
+                '<span class="radio' + (this.checked ? ' radio-checked' : '') + '"></span></a>').insertAfter(this);
+        });
+        $('a.radio-fx').on('click', function(e) {
+            e.preventDefault();
+            var unique = $(this).attr('data-radio-fx');
+            $("a[data-radio-fx='"+unique+"'] span").attr('class','radio');
+            $(":radio[data-radio-fx='"+unique+"']").attr('checked',false);
+            $(this).find('span').attr('class','radio-checked');
+            $(this).prev('input:radio').attr('checked',true);
+        }).on('keydown', function(e) {
+            if ((e.keyCode ? e.keyCode : e.which) == 32) {
+                $(this).trigger('click');
+            }
+        });
+</script>
