@@ -177,9 +177,13 @@ $query = "SELECT $sellist FROM patient_data a,form_encounter b where a.pid=b.pid
 }
 $res = sqlStatement($query);
 while ($row = sqlFetchArray($res)) {
-  
-  // Each <tr> will have an ID identifying the patient.
+    // Each <tr> will have an ID identifying the patient.
+  if($row['out_to'] == 'Examined By') {
+	    $arow = array('DT_RowId' => 'pid_' . $row['pid'],'DT_RowClass' => 'PT_INACTIVE');
+  }
+  else {
   $arow = array('DT_RowId' => 'pid_' . $row['pid']);
+  }
   foreach ($aColumns as $colname) {
     if ($colname == 'name') {
       $name = $row['fname'];
