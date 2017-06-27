@@ -179,6 +179,9 @@ $vid=sqlStatement("SELECT form_id from forms where encounter='".$_SESSION['encou
 
  $nvid2=$nvid1['id'];
 		?>
+		<?php $newcrop_user_role=sqlQuery("select newcrop_user_role from users where username='".$_SESSION['authUser']."'");
+ ?>
+  <?php if($newcrop_user_role['newcrop_user_role']=='erxdoctor') { ?>
 <section>
 	<nav>
 		<ol class="cd-breadcrumb triangle custom-icons">
@@ -206,6 +209,25 @@ $vid=sqlStatement("SELECT form_id from forms where encounter='".$_SESSION['encou
 		</ol>
 	</nav>
 </section>
+  <?php } elseif($newcrop_user_role['newcrop_user_role']=='erxnurse'){?>
+  <section>
+	<nav>
+		<ol class="cd-breadcrumb triangle custom-icons">
+			<li class="current"></i><em>Medical Issues</em></li>
+			<?php if($vid2 == null) { ?>
+			<li><a href="../encounter/load_form.php?formname=vitals"><i class="fa fa-note" style="margin-right: 8px;"></i>Vitals</a></li>
+			<?php } else { ?>
+			<li><a href="../encounter/view_form.php?formname=vitals&id=<?php echo $vid2; ?>"><i class="fa fa-note" style="margin-right: 8px;"></i>Vitals</a></li>
+			<?php } if($rid2 == null) { ?>
+			<li><a href="../../patient_file/encounter/load_form.php?formname=ros"><i class="fa fa-note" style="margin-right: 8px;"></i>Review of systems</a></li>
+						<?php } else { ?>
+			<li><a href="../../patient_file/encounter/view_form.php?formname=ros&id=<?php echo $rid2 ?>"><i class="fa fa-note" style="margin-right: 8px;"></i>Review of systems</a></li>
+			<?php } ?>
+		</ol>
+	</nav>
+</section>	
+  
+  <?php } ?>
 <!-- <div style="float:right" class="buttons">
   <a href='javascript:;' class='css_button' id='back'><span><?php echo htmlspecialchars( xl('Back'), ENT_NOQUOTES); ?></span></a>
 </div>
@@ -230,6 +252,7 @@ foreach ($ISSUE_TYPES as $focustype => $focustitles) {
   if ($category) {
     // Only show this category
     if ($focustype != $category) continue;
+	
   }
 
   if ($first) {
@@ -241,10 +264,13 @@ foreach ($ISSUE_TYPES as $focustype => $focustitles) {
 
   // Show header
   $disptype = $focustitles[0];
+  if($focustype!='delivery'&& $focustype!='dental')
+{
   if(($focustype=='allergy' || $focustype=='medication') && $GLOBALS['erx_enable'])
   echo "<a href='../../eRx.php?page=medentry' class='css_button_small' onclick='top.restoreSession()' ><span>" . htmlspecialchars( xl('Add'), ENT_NOQUOTES) . "</span></a>\n";
   else
   echo "<a href='javascript:;' class='css_button_small' onclick='dopclick(0,\"" . htmlspecialchars($focustype,ENT_QUOTES)  . "\")'><span>" . htmlspecialchars( xl('Add'), ENT_NOQUOTES) . "</span></a>\n";
+
   echo "  <span class='title'>" . htmlspecialchars($disptype,ENT_NOQUOTES) . "</span>\n";
   // echo " <table style='margin-bottom:1em;text-align:center'>";
   echo " <table style='margin-bottom:1em;'>";
@@ -358,6 +384,7 @@ foreach ($ISSUE_TYPES as $focustype => $focustitles) {
     echo "  </td>";
     echo " </tr>\n";
   }
+}
 }
 echo "</table>";
 ?>

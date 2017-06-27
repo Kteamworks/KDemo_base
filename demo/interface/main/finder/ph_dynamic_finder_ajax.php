@@ -150,7 +150,7 @@ $get_provider_name=$provider_name_1['username'];
 //
 if($row2["newcrop_user_role"]=="erxnurse")
 {
-$row = sqlQuery("SELECT COUNT(b.id) AS count FROM form_encounter a,patient_data b where a.pid=b.pid and a.provider_id IN ($X) and a.date='".$today."'");
+$row = sqlQuery("SELECT COUNT(b.id) AS count FROM form_encounter a,patient_data b where a.pid=b.pid  and date(a.date)='".$today."'");
 }
 else
 {
@@ -174,7 +174,7 @@ $out = array(
 );
 if($row2["newcrop_user_role"]=="erxnurse")
 {
-$query ="SELECT $sellist FROM form_encounter a,patient_data b where a.pid=b.pid and a.date='".$today."' order by provider_id  $limit";
+$query ="SELECT $sellist FROM patient_data a,form_encounter b ,openemr_postcalendar_categories c where a.pid=b.pid and c.pc_catid=b.pc_catid and date(b.date)='".$today."' order by provider_id  $limit";
 }
 else 
 {
