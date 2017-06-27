@@ -43,6 +43,12 @@ while ($row = sqlFetchArray($res)) {
 <?php html_header_show(); ?>
 
 <link rel="stylesheet" href="<?php echo $css_header; ?>" type="text/css">
+<link rel="stylesheet" href="../../../library/css/bootstrap.min.css">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="../../../library/dist/css/AdminLTE.css">
+<link rel="stylesheet" href="../../../library/css/mycss.css">
 <style type="text/css">
 @import "../../../library/js/datatables/media/css/demo_page.css";
 @import "../../../library/js/datatables/media/css/demo_table.css";
@@ -283,7 +289,91 @@ function openNewTopWindow(pid) {
 
 </head>
 <body class="body_top">
+<?php 
+$user=  $_SESSION["authUser"];
 
+$row1 = sqlStatement("SELECT id,newcrop_user_role,specialty,facility_id from users where username='".$user."'");
+$row2=  sqlFetchArray($row1);
+$providerid=$row2['id'];
+$today = date('Y-m-d',strtotime("+0 days"));
+
+$query_seen = "select a.*, b.*,round(((b.pending_patient/a.total_no_of_patients )*100),0)pending_percent,round((((a.total_no_of_patients-b.pending_patient)/a.total_no_of_patients)*100),0)seen_percent, (a.total_no_of_patients-b.pending_patient)no_of_examined_patients
+from
+(SELECT count(b.id) total_no_of_patients 
+FROM patient_data a,form_encounter b 
+where a.pid=b.pid and b.provider_id='".$providerid."'  and date(b.date)=date('".$today."') )a,
+
+(SELECT count(b.id)pending_patient
+FROM patient_data a,form_encounter b 
+where a.pid=b.pid and b.provider_id='".$providerid."'  and date(b.date)=date('".$today."') 
+and out_to is null and out_time is  null)b";
+
+//$query_seen = "SELECT  coalesce(count(b.id),0) total_no_of_patients FROM patient_data a,form_encounter b where a.pid=b.pid and b.provider_id='".$providerid."'  and date(b.date)='".$today."' and b.out_to='Examined By'";
+$res_seen = sqlStatement($query_seen);
+$res_seen1 = sqlFetchArray($res_seen);
+
+?>
+<div class="col-md-12">
+<div class="col-md-4">
+          <!-- Info Boxes Style 2 -->
+          <div class="info-box bg-yellow">
+            <span class="info-box-icon"><i class="ion ion-ios-people-outline"></i></span>
+            <div class="info-box-content">
+              <span class="info-box-text">Todays Patients</span>
+			
+              <span class="info-box-number"><?php  echo $res_seen1['total_no_of_patients'];  ?></span>
+
+              <div class="progress">
+                <div class="progress-bar" style="width: <?php echo $res1['Total_no_of_patients']; ?>%"></div>
+              </div>
+                  <span class="progress-description">
+                    <?php echo $res1['Total_no_of_patients']; ?>% Increase since yesterday
+                  </span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+		  </div>
+		  <div class="col-md-4">
+          <div class="info-box bg-green">
+            <span class="info-box-icon"><i class="ion ion-ios-eye"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">Patients Seen</span>
+              <span class="info-box-number"><?php  echo $res_seen1['no_of_examined_patients']; ?></span>
+
+              <div class="progress">
+                <div class="progress-bar" style="width: <?php echo $res_seen1['seen_percent']; ?>%"></div>
+              </div>
+                  <span class="progress-description">
+                    <?php echo $res_seen1['seen_percent']; ?>% Complete
+                  </span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+		  </div>
+		  <div class="col-md-4">
+          <div class="info-box bg-red">
+            <span class="info-box-icon"><i class="ion ion-compass"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">Patients Pending</span>
+              <span class="info-box-number"><?php  echo $res_seen1['pending_patient']; ?></span>
+
+              <div class="progress">
+                <div class="progress-bar" style="width: <?php echo $res_seen1['pending_percent']; ?>%"></div>
+              </div>
+                  <span class="progress-description">
+                    <?php echo $res_seen1['pending_percent']; ?>% Pending
+                  </span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+		  </div>
+
+</div>
+        </div>
 <div id="dynamic"><!-- TBD: id seems unused, is this div required? -->
 
 <!-- Class "display" is defined in demo_table.css -->
