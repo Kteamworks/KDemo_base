@@ -933,7 +933,7 @@ while ($prow = sqlFetchArray($pres)) {
 }
 
 // Create one more drop-list, for Products.
-if ($GLOBALS['sell_non_drug_products']) {
+/* if ($GLOBALS['sell_non_drug_products']) {
   ++$i;
   echo ($i <= 1) ? " <tr>\n" : "";
   echo "  <td width='50%' align='center' nowrap>\n";
@@ -955,7 +955,7 @@ if ($GLOBALS['sell_non_drug_products']) {
     echo " </tr>\n";
     $i = 0;
   }
-}
+} */
 //Lab Test
   ++$i;
   echo ($i <= 1) ? " <tr>\n" : "";
@@ -1025,8 +1025,8 @@ if ($GLOBALS['sell_non_drug_products']) {
   }  
   
   
-  
-  ++$i;
+  //Pharmacy
+ /* ++$i;
   echo ($i <= 1) ? " <tr>\n" : "";
   echo "  <td width='50%' align='center' nowrap>\n";
   echo "   <select name='Pharmacy Charges' style='width:96%' onchange='codeselect(this)'>\n";
@@ -1043,7 +1043,7 @@ if ($GLOBALS['sell_non_drug_products']) {
   if ($i >= $FEE_SHEET_COLUMNS) {
     echo " </tr>\n";
     $i = 0;
-  }  
+  }  */
   
   
   
@@ -1067,11 +1067,11 @@ if ($_POST['bn_search'] && $_POST['search_term']) {
   }
 }
 
-echo "   <select name='Search Results' style='width:98%' " .
+/*echo "   <select name='Search Results' style='width:98%' " .
   "onchange='codeselect(this)'";
 if (! $numrows) echo ' disabled';
 echo ">\n";
-echo "    <option value=''> " . xlt("Search Results") . " ($numrows " . xlt("items") . ")\n";
+echo "    <option value=''> " . xlt("Search Results") . " ($numrows " . xlt("items") . ")\n";*/
 
 if ($numrows) {
   while ($row = sqlFetchArray($res)) {
@@ -1090,12 +1090,13 @@ echo " </tr>\n";
 </table>
 
 <p style='margin-top:8px;margin-bottom:8px'>
+<!--
 <table>
  <tr>
- <!-- <td>
+  <td>
    <input type='button' value='<?php echo xla('Add Copay');?>'
     onclick="copayselect()" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  </td>-->
+  </td>
   <td>
    <?php echo xlt('Search'); ?>&nbsp;
   </td>
@@ -1128,7 +1129,7 @@ echo " </tr>\n";
    <input type='submit' name='bn_search' value='<?php echo xla('Search');?>'>
   </td>
  </tr>
-</table>
+</table>-->
 </p>
 <p style='margin-top:16px;margin-bottom:8px'>
 
@@ -1356,12 +1357,12 @@ echo xlt('Providers') . ": &nbsp;";
 
 echo "&nbsp;&nbsp;" . xlt('Rendering') . "\n";
 genProviderSelect('ProviderID', '-- '.xl("Please Select").' --', $encounter_provid, $isBilled);
-
+/*
 if (!$GLOBALS['ippf_specific']) {
   echo "&nbsp;&nbsp;" . xlt('Supervising') . "\n";
   genProviderSelect('SupervisorID', '-- '.xl("N/A").' --', $encounter_supid, $isBilled);
 }
-
+*/
 echo "</b></span>\n";
 ?>
 
@@ -1409,14 +1410,14 @@ if ($prod_lino > 0) { // if any products are in this form
   }
 }
 ?>
-<input type='button' name='bn_gen' value='<?php echo xla('Generate Bill');?>' onclick="top.restoreSession();location='<?php echo "$rootdir/reports/custom_report_range_bill.php" ?>'" />
+<!--<input type='button' name='bn_gen' value='<?php echo xla('Generate Bill');?>' onclick="top.restoreSession();location='<?php echo "$rootdir/reports/custom_report_range_bill.php" ?>'" />-->
 
 <?php
 // Allow the patient price level to be fixed here.
 $plres = sqlStatement("SELECT option_id, title FROM list_options " .
   "WHERE list_id = 'pricelevel' ORDER BY seq");
 if (true) {
-  $trow = sqlQuery("SELECT pricelevel FROM patient_data WHERE " .
+  /*$trow = sqlQuery("SELECT pricelevel FROM patient_data WHERE " .
     "pid = ? LIMIT 1", array($pid) );
   $pricelevel = $trow['pricelevel'];
   echo "   <span class='billcell'><b>" . xlt('Price Level') . ":</b></span>\n";
@@ -1430,7 +1431,7 @@ if (true) {
     if ($key == $pricelevel) echo ' selected';
     echo ">" . text($val) . "</option>\n";
   }
-  echo "   </select>\n";
+  echo "   </select>\n";*/
 }
 ?>
 
