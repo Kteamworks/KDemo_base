@@ -57,7 +57,10 @@ $vid=sqlStatement("SELECT form_id from forms where encounter='".$_SESSION['encou
 		$this->assign("admission_LINK",$GLOBALS['webroot'] . "/interface/forms/admit/new.php");
 		$this->assign("summary_LINK",$GLOBALS['webroot'] . "/interface/patient_file/summary/summary_print.php");
     	$this->assign("STYLE", $GLOBALS['style']);
-
+		$res = sqlQuery("select * from users where username='".$_SESSION{"authUser"}."'");
+		if($res['newcrop_user_role'] == 'erxnurse'){
+		$this->assign("DISPLAYNONE", "display:none");
+		}
       // Options for units of measurement and things to omit.
       $this->assign("units_of_measurement",$GLOBALS['units_of_measurement']);
       $this->assign("gbl_vitals_options",$GLOBALS['gbl_vitals_options']);
