@@ -96,7 +96,7 @@ else if ($GLOBALS['concurrent_layout']) {
   
    if ($GLOBALS['default_top_pane']) {
 	  $newcrop_user_role=sqlQuery("select newcrop_user_role from users where username='".$_SESSION['authUser']."'");
- if($newcrop_user_role['newcrop_user_role']=='erxdoctor')
+ if($newcrop_user_role['newcrop_user_role']=='erxdoctor'||$newcrop_user_role['newcrop_user_role']=='erxnurse')
  {
 	 $frame1url="../main/finder/p_dynamic_finder.php";
  } else if($newcrop_user_role['newcrop_user_role']=='erxlab')
