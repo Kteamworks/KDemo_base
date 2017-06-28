@@ -74,6 +74,7 @@ function showhideMenu() {
 <body class="body_title">
 <?php
 $res = sqlQuery("select * from users where username='".$_SESSION{"authUser"}."'");
+
 ?>
 
 <table cellspacing="0" cellpadding="0" width="100%" height="100%">
