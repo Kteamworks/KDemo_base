@@ -1404,9 +1404,7 @@ else if (!empty($GLOBALS['gbl_mask_invoice_number'])) {
   <td colspan='2' align='center'>
    &nbsp;<br>
    <input type='submit' name='form_save' value='<?php echo xla('Save'); ?>' /> &nbsp;
-<?php if (empty($_GET['framed'])) { ?>
-   <input type='button' value='<?php echo xla('Cancel'); ?>' onclick='window.close()' />
-<?php }  ?>
+<input type='button' value='<?php echo xla('Cancel'); ?>' onclick="window.location.href ='../../interface/main/finder/p_tp_dynamic_finder.php'" />
 
 <?php $inv_encounter=$_SESSION['encounter'];?>
    <input type='hidden' name='form_provider'  value='<?php echo attr($inv_provider)  ?>' />

@@ -75,43 +75,15 @@ function echoLine($iname,$date, $charges, $ptpaid, $inspaid,$discount, $duept,$e
   $balance = bucks($charges - $ptpaid - $inspaid);
   $balance = (round($duept,2) != 0) ? 0 : $balance;//if balance is due from patient, then insurance balance is displayed as zero
   $encounter = $encounter ? $encounter : '';
-   $pid=$_SESSION['pid'];
-   $patdata = getPatientData($pid, 'phone_cell,title,age,age_days,age_months,rateplan,date,sex,DOB,genericname1,fname,mname,lname,pubpid,street,city,state,postal_code,providerID');
-  $rate_plan=$patdata['rateplan'];
   //$patcopay = getPatientInsuranceData($pid, $enc);
-  if($rate_plan=="TPAInsurance")
-  {
-	  
-	  echo " <tr id='tr_".attr($var_index)."' >\n";
-  echo "  <td class='detail'>" . text(oeFormatShortDate($date)) . "</td>\n";
-  echo "  <td class='detail' id='".attr($date)."' align='center'>" . htmlspecialchars($encounter, ENT_QUOTES) . "</td>\n";
-  echo "  <td class='detail' align='center' id='td_charges_$var_index' >" . htmlspecialchars(bucks($charges), ENT_QUOTES) . "</td>\n";
-  if($rate_plan=="TPAInsurance"){ 
-  echo "  <td class='detail' align='center' id='td_patient_copay_$var_index' >" . htmlspecialchars(bucks($patcopay), ENT_QUOTES) . "</td>\n";
-  //echo "  <td class='detail' align='center' id='td_copay_$var_index' >" . htmlspecialchars(bucks($copay), ENT_QUOTES) . "</td>\n";
-  echo "  <td class='detail' align='center' id='td_inspaid_$var_index' >" . htmlspecialchars(bucks($inspaid*-1), ENT_QUOTES) . "</td>\n";
-  }
-  echo "  <td class='detail' align='center' id='td_ptpaid_$var_index' >" . htmlspecialchars(bucks($ptpaid*-1), ENT_QUOTES) . "</td>\n";
-  echo "  <td class='detail' align='center' id='dis_charges_$var_index' >" . htmlspecialchars(bucks($discount), ENT_QUOTES) . "</td>\n";
-  //echo "  <td class='detail' align='center' id='balance_$var_index'>" . htmlspecialchars(bucks($balance), ENT_QUOTES) . "</td>\n"; //This was Insurance Balance
-  echo "  <td class='detail' align='center' id='duept_$var_index'>" . htmlspecialchars(bucks(round($duept,2)*1), ENT_QUOTES) . "</td>\n"; //Patient Balance
-  echo "  <td class='detail' align='right'><input type='text' name='".attr($iname)."'  id='paying_".attr($var_index)."' " .
-    " value='" .  $duept . "' onchange='coloring();calctotal()'  autocomplete='off' " .
-    "onkeyup='calctotal()'  style='width:50px'/></td>\n";
-  echo " </tr>\n";
-	  
-  }else{
-  if($duept>0)
-  {
   echo " <tr id='tr_".attr($var_index)."' >\n";
   echo "  <td class='detail'>" . text(oeFormatShortDate($date)) . "</td>\n";
   echo "  <td class='detail' id='".attr($date)."' align='center'>" . htmlspecialchars($encounter, ENT_QUOTES) . "</td>\n";
   echo "  <td class='detail' align='center' id='td_charges_$var_index' >" . htmlspecialchars(bucks($charges), ENT_QUOTES) . "</td>\n";
-  if($rate_plan=="TPAInsurance"){ 
+  //
   echo "  <td class='detail' align='center' id='td_patient_copay_$var_index' >" . htmlspecialchars(bucks($patcopay), ENT_QUOTES) . "</td>\n";
   //echo "  <td class='detail' align='center' id='td_copay_$var_index' >" . htmlspecialchars(bucks($copay), ENT_QUOTES) . "</td>\n";
   echo "  <td class='detail' align='center' id='td_inspaid_$var_index' >" . htmlspecialchars(bucks($inspaid*-1), ENT_QUOTES) . "</td>\n";
-  }
   echo "  <td class='detail' align='center' id='td_ptpaid_$var_index' >" . htmlspecialchars(bucks($ptpaid*-1), ENT_QUOTES) . "</td>\n";
   echo "  <td class='detail' align='center' id='dis_charges_$var_index' >" . htmlspecialchars(bucks($discount), ENT_QUOTES) . "</td>\n";
   //echo "  <td class='detail' align='center' id='balance_$var_index'>" . htmlspecialchars(bucks($balance), ENT_QUOTES) . "</td>\n"; //This was Insurance Balance
@@ -120,8 +92,6 @@ function echoLine($iname,$date, $charges, $ptpaid, $inspaid,$discount, $duept,$e
     " value='" .  $duept . "' onchange='coloring();calctotal()'  autocomplete='off' " .
     "onkeyup='calctotal()'  style='width:50px'/></td>\n";
   echo " </tr>\n";
-  }
-}
 }
 
 // We use this to put dashes, colons, etc. back into a timestamp.
@@ -183,7 +153,6 @@ $alertmsg = ''; // anything here pops up in an alert box
 // If the Save button was clicked...
 if ($_POST['form_save']) {
   $form_pid = $_POST['form_pid'];
-  $dop=$_POST['dop'];
   $form_method = trim($_POST['form_method']);
    $form_towards = trim($_POST['form_towards']);
   $form_source = trim($_POST['form_source']);
@@ -448,8 +417,8 @@ if ($_POST['form_save']) {
 				$r1=sqlStatement("select rec_amt from billing_activity_final where encounter='$enc'");
 					$r2=sqlFetchArray($r1);
 					$recamt=$r2['rec_amt']+$pay_total;
-					sqlStatement("update billing_activity_final set dop=?,rec_amt=?, status= 1, rec_date=now() where encounter=? and pid=? ",
-                            array($dop,$recamt,$enc,$form_pid));
+					sqlStatement("update billing_activity_final set rec_amt=?, status= 1, rec_date=now() where encounter=? and pid=? ",
+							array($recamt,$enc,$form_pid));
 							
 				sqlStatement("insert into ar_activity set "    .
 							"pid = ?"       .
@@ -1001,12 +970,12 @@ $age_days=$patdata['age_days'];
 			echo "<td class='bold' width='10%'>".xlt('')."</td>";
             echo "<td class='bold' width='10%' align='right'>".xlt('Amount')."</td></b></tr>\n";
               if($form_towards==2){
-			  $inres = sqlStatement("SELECT dtime,amount1,amount2,receipt_id,method,source FROM payments WHERE " .
+			  $inres = sqlStatement("SELECT dtime,amount1,amount2,receipt_id,method FROM payments WHERE " .
           "pid = ? AND encounter = ? AND activity=1  " .
 			  "ORDER BY dtime", array($form_pid,$encounter) );
 			  }else
 			  {
-				  $inres = sqlStatement("SELECT dtime,amount1,amount2,receipt_id,method,source FROM payments WHERE " .
+				  $inres = sqlStatement("SELECT dtime,amount1,amount2,receipt_id,method FROM payments WHERE " .
           "pid = ? AND encounter = ? AND activity=1  " .
 			  "ORDER BY dtime desc limit 1", array($form_pid,$encounter) );
 			  }
@@ -1119,9 +1088,7 @@ $age_days=$patdata['age_days'];
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery.js"></script>
 
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dialog.js"></script>
-<!-- pop up calendar -->
-<script type="text/javascript" src="../../library/textformat.js"></script>
- 
+
 
 
 <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
@@ -1257,7 +1224,7 @@ function coloring()
 function CheckVisible(MakeBlank)
  {//Displays and hides the check number text box.
    if(document.getElementById('form_method').options[document.getElementById('form_method').selectedIndex].value=='check_payment' ||
-   	  document.getElementById('form_method').options[document.getElementById('form_method').selectedIndex].value=='card_payment'  )
+   	  document.getElementById('form_method').options[document.getElementById('form_method').selectedIndex].value=='NEFT_payment'  )
    {
 	document.getElementById('check_number').disabled=false;
    }
@@ -1273,7 +1240,7 @@ function validate()
   top.restoreSession();
   issue='no';
    if(((document.getElementById('form_method').options[document.getElementById('form_method').selectedIndex].value=='check_payment' ||
-   	  document.getElementById('form_method').options[document.getElementById('form_method').selectedIndex].value=='card_payment') &&
+   	  document.getElementById('form_method').options[document.getElementById('form_method').selectedIndex].value=='NEFT_payment') &&
 	   document.getElementById('check_number').value=='' ))
    {
     alert("<?php echo addslashes( xl('Please Fill the Check/Ref Number')) ?>");
@@ -1285,12 +1252,6 @@ function validate()
    {
 	  alert("<?php echo addslashes( xl('Please Select Type Of Payment.')) ?>");
 	  return false;
-   }
-   if( document.getElementById('dop').value=='' && document.getElementById('radio_type_of_coverag2').checked==true  )
-   {
-       alert("<?php echo addslashes( xl('Please Enter the Date of Payment.')) ?>");
-      return false;
-       
    }
   if(document.getElementById('radio_type_of_payment_self1').checked==true || document.getElementById('radio_type_of_payment_self2').checked==true || document.getElementById('radio_type_of_payment1').checked==true || document.getElementById('radio_type_of_payment5').checked==true)
    {
@@ -1547,8 +1508,8 @@ function make_insurance()
  {
   make_visible_row();
   make_it_hide();
-   document.getElementById('radio_type_of_payment5').checked=true;
   cursor_pointer();
+  document.getElementById('radio_type_of_payment1').checked=true;
  }
 </script>
 
@@ -1628,43 +1589,19 @@ function make_insurance()
  <tr height="5"><td colspan='3'></td></tr>
  <tr>
   <td class='text' >
-   <?php echo xla('Cheque/RR Number'); ?>:
+   <?php echo xla('Cheque/NEFT Number'); ?>:
   </td>
   <td colspan='2' ><div id="ajax_div_patient" style="display:none;"></div>
    <input type='text'  id="check_number" name='form_source' style="width:120px" value='<?php echo htmlspecialchars($payrow['source'], ENT_QUOTES); ?>'>
   </td>
  </tr>
  <tr height="5"><td colspan='3'></td></tr>
- <?php 
- $today = date('Y-m-d H:i:s',strtotime("+0 days"));
- ?>
- 
- <tr>
-  <td class='text' >
-   <?php echo xla('Date of Payment'); ?>:
-  </td>
-  <td colspan='2' ><div id="ajax_div_patient" style="display:none;"></div>
-   <input type='text' size='10' name='dop' id='dop' <?php echo attr ($disabled)?>;
-       value='<?php echo attr($today); ?>' 
-       title='<?php echo xla('yyyy-mm-dd Date of Payment'); ?>'
-       onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' />
-        <img src='../pic/show_calendar.gif' align='absbottom' width='24' height='22'
-        id='img_end_date' border='0' alt='[?]' style='cursor:pointer;cursor:hand'
-        title='<?php echo xla('Click here to choose a date'); ?>'>
-  </td>
- </tr>
- <tr height="5"><td colspan='3'></td></tr>
- 
- <tr>
+
  <tr>
   <td class='text' valign="middle" >
    <?php echo htmlspecialchars(xl('Patient Coverage'), ENT_QUOTES); ?>:
   </td>
-  <td class='text' colspan="2" >
-  <input type="radio" name="radio_type_of_coverage" id="radio_type_of_coverage1" value="self" checked="checked" 
-  onClick="make_visible_radio();make_self();"/><?php echo htmlspecialchars(xl('Self'), ENT_QUOTES); ?>
-  <input type="radio" name="radio_type_of_coverage" id="radio_type_of_coverag2" value="insurance"   onClick="make_hide_radio();"/>
-  <?php echo htmlspecialchars(xl('Insurance'), ENT_QUOTES); ?>  </td>
+  <td class='text' colspan="2" ><input type="radio" name="radio_type_of_coverage" id="radio_type_of_coverage1" value="self" checked="checked" onClick="make_visible_radio();make_self();"/><?php echo htmlspecialchars(xl('Self'), ENT_QUOTES); ?><input type="radio" name="radio_type_of_coverage" id="radio_type_of_coverag2" value="insurance"   onClick="make_hide_radio();make_insurance();"/><?php echo htmlspecialchars(xl('Insurance'), ENT_QUOTES); ?>  </td>
  </tr>
 
  <tr height="5"><td colspan='3'></td></tr>
@@ -1673,21 +1610,14 @@ function make_insurance()
   <td class='text' valign="top"  >
    <?php echo htmlspecialchars(xl('Payment against'), ENT_QUOTES); ?>:
   </td>
-     <td class='text' colspan="2" ><input type="radio" name="radio_type_of_payment" id="radio_type_of_payment_self1" value="cash" 
-    checked="checked" onClick="make_visible_row();make_it_hide_enc_pay();cursor_pointer();"/><?php echo htmlspecialchars(xl('Visit Payment'), ENT_QUOTES); ?>
-    <input type="radio" name="radio_type_of_payment" id="radio_type_of_payment4" value="pre_payment" onClick="make_hide_row();"/><?php echo htmlspecialchars(xl('Pre Pay'), ENT_QUOTES); ?></td>
+    <td class='text' colspan="2" ><input type="radio" name="radio_type_of_payment" id="radio_type_of_payment_self1" value="cash" checked="checked" onClick="make_visible_row();make_it_hide_enc_pay();cursor_pointer();"/><?php echo htmlspecialchars(xl('Visit Payment'), ENT_QUOTES); ?><input type="radio" name="radio_type_of_payment" id="radio_type_of_payment4" value="pre_payment" onClick="make_hide_row();"/><?php echo htmlspecialchars(xl('Pre Pay'), ENT_QUOTES); ?></td>
   <!--<td class='text' colspan="2" ><input type="radio" name="radio_type_of_payment" id="radio_type_of_payment_self1" value="cash" checked="checked" onClick="make_visible_row();make_it_hide_enc_pay();cursor_pointer();"/><?php echo htmlspecialchars(xl('Encounter Payment'), ENT_QUOTES); ?></td>-->
  </tr>
  <tr id="tr_radio2" style="display:none"><!-- For radio self -->
   <td class='text' valign="top" >
    <?php echo htmlspecialchars(xl('Payment against'), ENT_QUOTES); ?>:
   </td>
-  <td class='text' colspan="3" >
-  <input type="radio" name="radio_type_of_payment" id="radio_type_of_payment1" value="copay"  onClick="make_visible_row();cursor_pointer();"/>
-  <?php echo htmlspecialchars(xl('Co Pay'), ENT_QUOTES); ?><input type="radio" name="radio_type_of_payment" id="radio_type_of_payment5" value="claim"  onClick="make_visible_row();cursor_pointer();"/>
-  <?php echo htmlspecialchars(xl('Claim'), ENT_QUOTES); ?><input type="radio" name="radio_type_of_payment" id="radio_type_of_payment2" value="invoice_balance"  onClick="make_visible_row();"/>
-  <?php echo htmlspecialchars(xl('Invoice Balance'), ENT_QUOTES); ?><br/><input type="radio" name="radio_type_of_payment" id="radio_type_of_payment4" value="pre_payment" onClick="make_hide_row();"/>
-  <?php echo htmlspecialchars(xl('Pre Pay'), ENT_QUOTES); ?></td>
+  <td class='text' colspan="3" ><input type="radio" name="radio_type_of_payment" id="radio_type_of_payment1" value="copay"  onClick="make_visible_row();cursor_pointer();"/><?php echo htmlspecialchars(xl('Co Pay'), ENT_QUOTES); ?><input type="radio" name="radio_type_of_payment" id="radio_type_of_payment5" value="claim"  onClick="make_visible_row();cursor_pointer();"/><?php echo htmlspecialchars(xl('Claim'), ENT_QUOTES); ?><input type="radio" name="radio_type_of_payment" id="radio_type_of_payment2" value="invoice_balance"  onClick="make_visible_row();"/><?php echo htmlspecialchars(xl('Invoice Balance'), ENT_QUOTES); ?><br/><input type="radio" name="radio_type_of_payment" id="radio_type_of_payment4" value="pre_payment" onClick="make_hide_row();"/><?php echo htmlspecialchars(xl('Pre Pay'), ENT_QUOTES); ?></td>
  </tr>
 
  <tr height="15"><td colspan='3'></td></tr>
@@ -1703,7 +1633,7 @@ function make_insurance()
 <table border='0' id="table_display" cellpadding='0' cellspacing='0' width='635'>
  <tr bgcolor="#cccccc" id="tr_head">
   <td class="dehead" width="70">
-   <?php echo htmlspecialchars( xl('Date of Service'), ENT_QUOTES) ?>
+   <?php echo htmlspecialchars( xl('DOS'), ENT_QUOTES) ?>
   </td>
   <td class="dehead" width="65">
    <?php echo htmlspecialchars( xl('Visit Id'), ENT_QUOTES) ?>
@@ -1723,19 +1653,12 @@ function make_insurance()
   <!--<td class="dehead" align="center" width="80" id="td_head_total_charge" >
    <?php echo htmlspecialchars( xl(''), ENT_QUOTES) ?>
   </td>-->
-    <?php
-  $pid=$_SESSION['pid'];
-   $patdata = getPatientData($pid, 'phone_cell,title,age,age_days,age_months,rateplan,date,sex,DOB,genericname1,fname,mname,lname,pubpid,street,city,state,postal_code,providerID');
-  $rate_plan=$patdata['rateplan'];
-  if($rate_plan=="TPAInsurance"){ 
-  ?>
   <td class="dehead" align="center" width="55" id="td_head_patient_co_pay" >
    <?php echo htmlspecialchars( xl('Primary Sponsor Amount'), ENT_QUOTES) ?>
   </td>
 	<td class="dehead" align="center" width="55" id="td_head_co_pay" >
    <?php echo htmlspecialchars( xl('Primary Sponsor Paid'), ENT_QUOTES) ?>
   </td>
-  <?php }?>
   <td class="dehead" align="center" width="80" id="td_head_patient_payment" >
    <?php echo htmlspecialchars( xl('Patient Payment'), ENT_QUOTES) ?>
   </td>
@@ -1972,15 +1895,8 @@ $discount=0;
   <td class="dehead" id='td_total_1'></td>
   <td class="dehead" id='td_total_2'></td>
   <td class="dehead" id='td_total_3'></td>
-  <?php
-  $pid=$_SESSION['pid'];
-   $patdata = getPatientData($pid, 'phone_cell,title,age,age_days,age_months,rateplan,date,sex,DOB,genericname1,fname,mname,lname,pubpid,street,city,state,postal_code,providerID');
-  $rate_plan=$patdata['rateplan'];
-  if($rate_plan=="TPAInsurance"){ 
-  ?> 
   <td class="dehead" id='td_total_4'></td>
   <td class="dehead" id='td_total_5'></td>
-   <?php }?>
   <td class="dehead" id='td_total_6'></td>
   <td class="dehead" id='td_total_7'></td>
 <!--<td class="dehead" id='td_total_8'></td>-->
@@ -2020,17 +1936,12 @@ if($FP==1 && $ins1==0)
 
 
 <input type='submit' name='form_save' value='<?php echo htmlspecialchars( xl('Generate Invoice'), ENT_QUOTES);?>' /> &nbsp;
-<input type='button' value='<?php echo xla('Cancel'); ?>' onclick="window.location.href ='../../interface/main/finder/p_tp_dynamic_finder.php'" />
+<input type='button' value='<?php echo xla('Cancel'); ?>' onclick='window.close()' />
 <?php  } ?>
 <input type="hidden" name="hidden_patient_code" id="hidden_patient_code" value="<?php echo attr($pid);?>"/>
 <input type='hidden' name='ajax_mode' id='ajax_mode' value='' />
 <input type='hidden' name='mode' id='mode' value='' />
 </form>
-<script language="javascript">
-/* required for popup calendar */
-//Calendar.setup({inputField:"admit_date", ifFormat:"%Y-%m-%d", button:"img_transfer_date"});
-Calendar.setup({inputField:"dop", ifFormat:"%Y-%m-%d %H:%M:%S", button:"img_end_date",showsTime:'true'});
-</script>
 <script language="JavaScript">
  calctotal();
 </script>

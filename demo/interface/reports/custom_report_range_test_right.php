@@ -584,6 +584,11 @@ $rateplan=$patdata['rateplan'];
 							<?php echo xlt('Print'); ?>
 						</span>
 					</a>
+					<a href='#' class='css_button' onclick="window.location.href ='../../interface/main/finder/p_tp_dynamic_finder.php'">
+						<span>
+							<?php echo xlt('Cancel'); ?>
+						</span>
+					</a>
 					<?php } ?>
 				</div>
 			</td>
