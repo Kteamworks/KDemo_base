@@ -1,4 +1,20 @@
+<?php
+// Copyright (C) 2012 Rod Roark <rod@sunsetsystems.com>
+// Sponsored by David Eschelbacher, MD
+//
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of the GNU General Public License
+// as published by the Free Software Foundation; either version 2
+// of the License, or (at your option) any later version.
 
+// Sanitize escapes and stop fake register globals.
+//
+$sanitize_all_escapes = true;
+$fake_register_globals = false;
+
+require_once("../../globals.php");
+require_once("$srcdir/formdata.inc.php");
+?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="en">
 <head>
@@ -9,286 +25,738 @@
 
 database, webmaster, dhtml" />
 <meta name="description" content=" Split screen into 3 div containers JavaScript programming" />
-
+<title>Dashboard</title>
 <link rel="shortcut icon" href="favicon.ico" />
 <!-- jquery splitter -->
+<link rel="stylesheet" href="../../../library/slicklab/css/style.css">
+    <link href="../../../library/slicklab/css/style-responsive.css" rel="stylesheet">
+    <!--easy pie chart-->
+    <link href="../../../library/slicklab/js/jquery-easy-pie-chart/jquery.easy-pie-chart.css" rel="stylesheet" type="text/css" media="screen" />
 
-<script type='text/javascript' src='../../library/js/jquery-1.9.0.min.js'></script>
-<script type='text/javascript' src='../../library/js/jquery.splitter-0.14.0.js'></script>
-<link rel='stylesheet' type='text/css' href='../../library/css/jquery.splitter.css'>
-<script>
-jQuery(function($) {
-   $('#widget').width(700).height(400).split({orientation:'vertical', limit:100, position:'70%'});
-   
-   $('#foo').split({orientation:'horizontal', limit:10});
-   $('#a').split({orientation:'vertical', limit:10});
-   $('#spliter2').css({width: 200, height: 300}).split({orientation: 'horizontal', limit: 20});
-});
-</script>
+    <!--vector maps -->
+    <link rel="stylesheet" href="../../../library/slicklab/js/vector-map/jquery-jvectormap-1.1.1.css">
 
-<!-- CSS Stylesheet -->
-
-<style>
-
-#spliter2 .a {
-  background-color: #2d2d2d;
-  
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="js/html5shiv.js"></script>
+    <script src="js/respond.min.js"></script>
+    <![endif]-->
+    <style type="text/css">
+    .state-overview .symbol i {
+    font-size: 35px;
+    position: absolute;
+    margin-top: -12px;
+    margin-left: -8px;
 }
-#spliter2 .b {
-  background-color: #2d002d;
+circle{
+    fill: #000;
+    stroke: #848484;
 }
-#foo {
-  background-color: #E92727;
-}
-#x {
-  background-color: #EFBD73;
-}
-#y {
-  background-color: #e4e5e5;
-}
-#b {
-  background-color: #73A4EF;
-}
-#bar {
-  background-color: #BEE927;
-}
-</style>
-
-<style type="text/css" id="vbulletin_css">
-
-
-.red {
-	
-float:left;
-
-height: 400px;
-overflow:scroll;
-background-color:  #696;
-color:#fff;
-margin-left: 40px;
-border:0px solid #73A4EF;
-width:1px;
-word-wrap: break-word;
-font-family: monospace;
-}
-
-
-
-.vertical-text {
-    -ms-transform: rotate(90deg);
-    -moz-transform: rotate(90deg);
-    -webkit-transform: rotate(90deg);
-    transform: rotate(90deg);
-    -ms-transform-origin: left top 0;
-    -moz-transform-origin: left top 0;
-    -webkit-transform-origin: left top 0;
-    transform-origin: left top 0;
-    background: #E23737;
-    color: #fff;
-    margin-left: 40px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    text-transform: uppercase;
-    border: 1px solid #B52C2C;
-    text-transform: 1px 1px 0px rgba(0, 0, 0, 0.5);
-    box-shadow: 2px -2px 0px rgba(0, 0, 0, 0.1);
-    float: left;
-}
-
-.red2 {
-float:left;
-width : 100px;
-height: 400px;
-overflow:show;
-border:0x solid #ff0000;
-display: -webkit-flex;
-display: flex;
--webkit-flex-wrap: wrap;
-flex-wrap: wrap;
--webkit-align-content: center;
-align-content: center;
-vertical-align: 50%;	
-}
-	
-.black {
-margin-left:100px;
-height:100px;
-overflow:scroll;
-border:0px solid #000;
-}
-
-
-.black2 {
-margin-left:100px;
-height:400px;
-overflow:scroll;
-border:0px solid #000;
-}
-
-.blue {
-margin-left:100px;
-height:100px;
-overflow:hidden;
-border:0px solid #000;
-}
-
-#green {
-clear:both;
-border:0px solid #696;
-}
-
-label
-{
-	color: #FFFFFF;
-}
-
-#pt_table th
-{
-	color: #FFFFFF;
-}
-
-#navbar {position: relative;width:20%;height:100%;z-index: 100; float:left;padding-top: 0px; margin-top: -3px; border-top: none;background-color:#ccc;font-family: verdana,arial,sans-serif;font-weight:bold;}
-
-#navbar a{display: block; text-decoration: none;width: 180px; height: 40px;background-color:#ccc;}
-
-#navbar ul li a:hover {border: none; border-top: 1px solid white;background-color:#AB4500;}
-
-#navbar li {background-image: none; padding: 0px;}
-
-#navbar ul {list-style-type: none;padding:0;text-indent: 20px;display: block;border : 1px solid;border-width : 0 1px;text-decoration: none;background-color:#ccc;}
-
-
-#navbar ul li {float : left;border : 1px solid;position : relative;list-style-type: none;background-image: none; padding: 0px; background-color:#ccc;}
-
-
-#content {float:right;background-color:#ddd;width:70%;height:100%;}
-
-#content a {color: #AB4500; padding-left: 0px; text-decoration:none;}
-#content a:hover {text-decoration: underline; background-color: transparent; color: #AB4500; padding-left: 0px; }
-
-
-/* CSS Document */ 
-
-.offscreen { 
-  position: absolute; 
-  top: -30em; 
-  left: -300em; 
-} 
-
-div#hmenu { 
-   margin: 0; 
-   padding: .3em 0 .3em 0; 
-   background: #ddeebb; 
-   width: 100%; 
-   text-align: center; 
-} 
-
-div#hmenu ul { 
-   list-style: none; 
-   margin: 0; 
-   padding: 0; 
-} 
-
-div#hmenu ul li { 
-   margin: 0; 
-   padding: 0; 
-   display: inline; 
-} 
-
-div#hmenu ul a:link{ 
-   margin: 0; 
-   padding: .3em .4em .3em .4em; 
-   text-decoration: none; 
-   font-weight: bold; 
-   font-size: medium; 
-   color: #004415; 
-} 
-
-div#hmenu ul a:visited{ 
-   margin: 0; 
-   padding: .3em .4em .3em .4em; 
-   text-decoration: none; 
-   font-weight: bold; 
-   font-size: medium; 
-   color: #227755; 
-} 
-
-div#hmenu ul a:active{ 
-   margin: 0; 
-   padding: .3em .4em .3em .4em; 
-   text-decoration: none; 
-   font-weight: bold; 
-   font-size: medium; 
-   color: #227755; 
-} 
-
-div#hmenu ul a:hover{ 
-   margin: 0; 
-   padding: .3em .4em .3em .4em; 
-   text-decoration: none; 
-   font-weight: bold; 
-   font-size: medium; 
-   color: #f6f0cc; 
-   background-color: #227755; 
-}
-
-
-</style>
-
-
+.mega-bg {
+    background-image: url("http://zada.ba/wp-content/themes/zada/images/doctor.png");
+    background-repeat: no-repeat;
+    background-position: bottom;
+    position: absolute;
+    right: 0;
+    bottom: -5px;
+    width: 300px;
+    height: 162px;
+    background-size:42%;
+}</style>
 </head>
 <body>
+					<?php
+$query = sqlQuery("SELECT a.no_of_admitted_patient, b.no_of_op_patient,c.no_of_op_patient_today,
+d.no_of_ip_patient_today,e.no_of_visits_today
+FROM
+(SELECT count(id)no_of_admitted_patient FROM form_encounter where pc_catid=12)a,
+(SELECT count(id)no_of_op_patient FROM form_encounter where pc_catid!=12)b,
+(SELECT count(id)no_of_op_patient_today 
+FROM form_encounter where pc_catid!=12 and date=current_date())c,
+(SELECT count(id)no_of_ip_patient_today 
+FROM form_encounter where pc_catid=12 and date=current_date())d,
+(SELECT count(id)no_of_visits_today FROM form_encounter where date=current_Date())e");
+?>
+<div class="body-content">
+    <section>
+
+            <!-- page head start-->
+            <div class="page-head">
+                <h3>
+                    Dashboard
+                </h3>
+                <span class="sub-title">Welcome Administrator!</span>
+                <div class="state-information">
+                    <div class="state-graph">
+                        <div id="balance" class="chart"></div>
+                        <div class="info">Balance $ 2,317</div>
+                    </div>
+                    <div class="state-graph">
+                        <div id="item-sold" class="chart"></div>
+                        <div class="info">Patients Admitted | <?php echo $query['no_of_admitted_patient']; ?></div>
+                    </div>
+                </div>
+            </div>
+            <!-- page head end-->
+
+            <!--body wrapper start-->
+            <div class="wrapper">
+                <!--state overview start-->
+                <div class="row state-overview">
+                    <div class="col-xs-3">
+                        <section class="panel purple">
+                            <div class="symbol">
+                                <i class="fa fa-user
+                                "></i>
+                            </div>
+                            <div class="value white">
+                                <h1 class="timer" data-from="0" data-to="320"
+                                    data-speed="1000">
+                                    <?php echo $query['no_of_visits_today']; ?>
+                                </h1>
+                                <p>Todays Visits</p>
+                            </div>
+                        </section>
+                    </div>
+                    <div class="col-xs-3">
+                        <section class="panel ">
+                            <div class="symbol purple-color">
+                                <i class="fa fa-wheelchair"></i>
+                            </div>
+                            <div class="value gray">
+                                <h1 class="purple-color timer" data-from="0" data-to="123"
+                                    data-speed="1000">
+                                    <?php echo $query['no_of_op_patient']; ?>
+                                </h1>
+                                <p>OPD Patient</p>
+                            </div>
+                        </section>
+                    </div>
+                    <div class="col-xs-3">
+                        <section class="panel green">
+                            <div class="symbol ">
+                                <i class="fa fa-calendar "></i>
+                            </div>
+                            <div class="value white">
+                                <h1 class="timer" data-from="0" data-to="432"
+                                    data-speed="1000">
+                                    <?php echo $query['no_of_op_patient_today']; ?>
+                                </h1>
+                                <p>Today OPs</p>
+                            </div>
+                        </section>
+                    </div>
+                    <div class="col-xs-3">
+                        <section class="panel red">
+                            <div class="symbol ">
+                                <i class="fa fa-bed" aria-hidden="true"></i>
+
+                            </div>
+                            <div class="value white">
+                                <h1 class="timer" data-from="0" data-to="432"
+                                    data-speed="1000">
+                                    <?php echo $query['no_of_ip_patient_today']; ?>
+                                </h1>
+                                <p>Todays IPs</p>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+                <!--state overview end-->
+
+                <div class="row">
+<div class="col-md-8">
+                    <section class="panel post-wrap pro-box team-member">
+                        <aside class="bg-primary v-align">
+                            <div class="panel-body text-center">
+                                <div class="team-member-wrap" id="list">
+                                    <div class="team-member-info">
+                                        <!--<div class="action-set">
+                                            <a href="javascript:;" class="tooltips" data-original-title="Profile Info" data-toggle="tooltip" data-placement="top">
+                                                <i class="fa fa-reorder"></i>
+                                            </a>
+                                        </div> -->
+                                        <div class="team-title">
+                                            <a href="javascript:;" class="m-name">
+                                                Alison Jones
+                                            </a>
+                                            <span class="sub-title">Sr Doctor</span>
+                                        </div>
+
+                                        <div class="call-info">
+                                            <a href="inbox-compose.html">
+                                                <i class="fa fa-envelope-o"></i>
+                                            </a>
+                                            <img src="../../../library/slicklab/img/img2.jpg" alt="" />
+                                            <a href="inbox-compose.html">
+                                                <i class="fa fa-phone"></i>
+                                            </a>
+                                        </div>
+										<div class="call-info">
+										<a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+                                        </div><div class="status">
+                                            <h5>specialized</h5>
+                                            <span>Bypass Surgery</span>
+
+                                    </div><br>
+									<div class="status">
+                                            <h5>Room No</h5>
+                                            <span>5</span>
+
+                                    </div><br>
+									<div class="status">
+                                            <h5>Patients Seen</h5>
+                                            <span>15</span>
+
+                                    </div><br>
+									<div class="status">
+                                            <h5>Paitients waiting</h5>
+                                            <span>5</span>
+
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        </aside>
+						<div style="height: 630px;overflow-y: scroll;">
+                        <aside style="width: 800px;">
+                            <header class="panel-heading head-border">
+                                Doctors
+                                <span class="action-tools pull-right">
+                                    <a class="fa fa-reorder" href="javascript:;"></a>
+                                </span>
+                            </header>
+							 <?php  $newcrop_user_role=sqlStatement("select * from users where newcrop_user_role='erxdoctor'"); ?>
+                            <div class="post-info">
+                                <ul class="team-list cycle-pager external" id='no-template-pager'>
+								<?php   while($newcrop_user_roles = sqlFetchArray($newcrop_user_role)){  ?>
+                                    <li >
+                                        <a href="javascript:void(0);" onClick="postData(<?php echo $newcrop_user_roles['id']; ?>);" >
+                                            <span class="thumb-small">
+                                                <img class="circle" src="../../../library/slicklab/img/img2.jpg" alt=""/>
+                                                <i class="online dot"></i>
+                                            </span>
+                                            <span class="name"><?php echo ucfirst(strtolower($newcrop_user_roles['fname'])).' '. ucfirst(strtolower($newcrop_user_roles['lname'])); ?></span><span class="pull-right">10 <i class="fa fa-arrow-up green" style="color:#00a65a"></i></span><span class="pull-right" style="clear: right;
+margin: 10px;
+">12 <i class="fa fa-arrow-down red" style="color:  #dd4b39"></i></span>
+                                        </a>
+                                    </li>
+								<?php } ?>
+                                <!--    <li>
+                                        <a href="javascript:;">
+                                            <span class="thumb-small">
+                                                <img class="circle" src="../../../library/slicklab/img/img1.jpg" alt=""/>
+                                                <i class="away dot"></i>
+                                            </span>
+                                            <span class="name">Joliana Devis</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:;">
+                                            <span class="thumb-small">
+                                                <img class="circle" src="../../../library/slicklab/img/img3.jpg" alt=""/>
+                                                <i class="busy dot"></i>
+                                            </span>
+                                            <span class="name">David Alexzender</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:;">
+                                            <span class="thumb-small">
+                                                <img class="circle" src="../../../library/slicklab/img/img4.jpg" alt=""/>
+                                                <i class="offline dot"></i>
+                                            </span>
+                                            <span class="name">Emma Rose</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:;">
+                                            <span class="thumb-small">
+                                                <img class="circle" src="../../../library/slicklab/img/img1.jpg" alt=""/>
+                                                <i class="online dot"></i>
+                                            </span>
+                                            <span class="name">Jacqueline Jones</span>
+                                        </a>
+                                    </li> -->
+
+                                </ul>
+                                <div class="add-more-member">
+                                    <a href="javascript:;" class=" ">View All Member</a>
+                                    <a href="javascript:;" class="add-btn pull-right">
+                                        +
+                                    </a>
+                                </div>
+                            </div>
+                        </aside>
+						</div>
+                    </section>
+                </div>
+                    <div class="col-md-4">
+                        <section class="panel">
+
+                            <div class="slick-carousal">
+                                <div class="overlay-c-bg"></div>
+                                <div id="news-feed" class="owl-carousel owl-theme">
+                                    <div class="item">
+                                        <h3 class="text-success">News</h3>
+                                        <span class="date">12 March 2015</span>
+                                        <h1>If today were the last day of your life, would you want to do what your are about to do today</h1>
+                                        <div class="text-center">
+                                            <a href="javascript:;" class="view-all">View All</a>
+                                        </div>
+                                    </div>
+                                    <div class="item">
+                                        <h3 class="text-success">News</h3>
+                                        <span class="date">11 February 2015</span>
+                                        <h1>SlickLab build with Boostrap latest version 3+. Its very easy to customize. Hope you enjoy it..</h1>
+                                        <div class="text-center">
+                                            <a href="javascript:;" class="view-all">View All</a>
+                                        </div>
+                                    </div>
+                                    <div class="item">
+                                        <h3 class="text-success">News</h3>
+                                        <span class="date">10 January 2015</span>
+                                        <h1>It has huge usable widgets, amazing design, clean code quality, super responsive and quick customar support.</h1>
+                                        <div class="text-center">
+                                            <a href="javascript:;" class="view-all">View All</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
 
-<!--
-<div id="hmenu"> 
-<ul> 
-  <li><a href="http://www.w3.org/Consortium/activities">W3C Activities</a></li> 
-  <li><a href="http://www.w3.org/TR/">W3C Technical Reports</a></li> 
-  <li><a href="http://www.w3.org/Consortium/siteindex">W3C Site Index</a></li> 
-  <li><a href="http://www.w3.org/Consortium/new-to-w3c">New Visitors</a></li> 
-  <li><a href="http://www.w3.org/Consortium/">About W3C</a></li> 
-  <li><a href="http://www.w3.org/Consortium/join">Join W3C</a></li> 
-  <li><a href="http://www.w3.org/Consortium/contact">Contact W3C</a></li> 
-</ul>   
-</div> 
--->
-<div class='red1'> </div>
-<div id="widget">
-  <div id="foo">
-     
-     <div id="a">
-        <div id="x"><div style="padding: 0.5em; color: White; text-align:justify"><B>Messages</B></div></div>
-        <div id="y"><?php include("../../main/messages/minmessages.php"); ?></div>
-       
-     </div><!-- #a -->
-     <div id="b"></div>
-   </div> <!-- end of #foo -->
-   <div id="bar"></div>
-</div> <!-- end of #widget -->
-<div class='red1'> </div>
-<div id="x"><div style="padding: 0.5em; color: White; text-align:justify"></div><B>Patient Appointments</B></div>
-<div id="debug"><?php include("patient_tracker.php");?></div>
-<div id="spliter2">
-  <div class="a">
-  </div>
-  <div class='red1'> </div>
-  <div id="x"><div style="padding: 0.5em; color: White; text-align:justify"><B>InPatients</B></div></div>
-  <div class="b">
-  <?php require_once("p_dynamic_finder_ip.php"); ?></div>
+
+                        </section>
+
+                        <section class="panel">
+                            <div class="panel-body">
+                                <!--monthly page view start-->
+                                <ul class="monthly-page-view">
+                                    <li class="pull-left page-view-label">
+                                        <span class="page-view-value timer" data-from="0" data-to="93205"
+                                              data-speed="4000">
+                                            <!--93,205-->
+                                        </span>
+                                        <span>Monthly Page views</span>
+                                    </li>
+                                    <li class="pull-right">
+                                        <div id="page-view-graph" class="chart"></div>
+                                    </li>
+                                </ul>
+                                <!--monthly page view end-->
+                            </div>
+                        </section>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-8">
+                        <section class="panel" id="block-panel">
+                            <header class="panel-heading head-border">
+                                mobile visit
+                                <span class="tools pull-right">
+                                    <a class="fa fa-repeat box-refresh" href="javascript:;"></a>
+                                    <a class="t-collapse fa fa-chevron-down" href="javascript:;"></a>
+                                    <a class="t-close fa fa-times" href="javascript:;"></a>
+                                </span>
+                            </header>
+                            <div class="panel-body">
+                                <ul class="mobile-visit">
+                                    <li class="page-view-label">
+                                        <span class="page-view-value"> 5,2105</span>
+                                        <span>Unique visitors</span>
+                                    </li>
+                                    <li>
+                                        <div class="easy-pie-chart">
+                                            <div class="iphone-visitor" data-percent="45"><span>45</span>%</div>
+                                        </div>
+                                        <div class="visit-title">
+                                            <i class="fa fa-apple green-color"></i>
+                                            <span>iPhone</span>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="easy-pie-chart">
+                                            <div class="android-visitor" data-percent="40"><span>40</span>%</div>
+                                        </div>
+                                        <div class="visit-title">
+                                            <i class="fa fa-android purple-color"></i>
+                                            <span>Android</span>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </section>
+                    </div>
+                    <div class="col-md-4">
+                        <section class="panel">
+                            <div class="panel-body- weather-widget">
+                                <div class="weather-state">
+                                    <span class="weather-icon">
+                                        <i class="slicon-weather_downpour_fullmoon"></i>
+                                    </span>
+
+                                    <span class="weather-type">Storm</span>
+                                </div>
+                                <div class="weather-info">
+                                    <span class="degree">13</span>
+                                    <span class="weather-city">Bangalore</span>
+                                    <div class="switch-btn">
+                                        <input type="checkbox" class="js-switch-small-green " checked>
+                                    </div>
+                                    <div class="weather-chart m-t-40" data-type="line" data-resize="true" data-height="65" data-width="100%" data-line-width="1.5" data-line-color="#0bc2af" data-spot-color="#0bc2af" data-fill-color=""  data-highlight-line-color="#0bc2af" data-spot-radius="0" data-data="[1,5,3,6,4,7,9]"></div>
+                                </div>
+
+                            </div>
+                        </section>
+                    </div>
+                </div>
+
+                <div class="row">
+                <div class="col-md-6">
+                    <section class="panel">
+                        <header class="panel-heading head-border">
+                            Notification
+                            <span class="tools pull-right">
+                                <a class="fa fa-repeat box-refresh" href="javascript:;"></a>
+                            </span>
+                        </header>
+                        <div class="noti-information notification-menu">
+                            <!--notification info start-->
+                            <div class="notification-list mail-list not-list">
+                                <a href="javascript:;" class="single-mail">
+                                        <span class="icon bg-primary">
+                                            <i class="fa fa-envelope-o"></i>
+                                        </span>
+                                    <span class="purple-color">Dr Paresh </span> is in meeting
+                                    <p>
+                                        <small>Just Now</small>
+                                    </p>
+                                        <span class="read tooltips" data-original-title="Mark as Unread" data-toggle="tooltip" data-placement="left">
+                                            <i class="fa fa-circle-o"></i>
+                                        </span>
+                                </a>
+                                <a href="javascript:;" class="single-mail">
+                                        <span class="icon bg-success">
+                                            <i class="fa fa-comments-o"></i>
+                                        </span>
+                                    <span class="red-color">Dr Jim Doe</span> is on leave today
+                                    <p>
+                                        <small>30 Mins Ago</small>
+                                    </p>
+                                        <span class="read tooltips" data-original-title="Mark as Unread" data-toggle="tooltip" data-placement="left">
+                                            <i class="fa fa-circle-o"></i>
+                                        </span>
+                                </a>
+                                <a href="javascript:;" class="single-mail">
+                                        <span class="icon bg-warning">
+                                            <i class="fa fa-warning"></i>
+                                        </span> OPD area is not clean
+                                    <p>
+                                        <small> 2 Days Ago</small>
+                                    </p>
+                                        <span class="read tooltips" data-original-title="Mark as Unread" data-toggle="tooltip" data-placement="left">
+                                            <i class="fa fa-circle-o"></i>
+                                        </span>
+                                </a>
+                                <a href="javascript:;" class="single-mail">
+                                        <span class="icon bg-dark">
+                                           <i class="fa fa-database"></i>
+                                        </span>
+                                    <strong>Sorry for inconvience.There will be power cut for 2 hrs</strong>
+                                    <p>
+                                        <small>1 Week Ago</small>
+                                    </p>
+                                        <span class="un-read tooltips" data-original-title="Mark as Read" data-toggle="tooltip" data-placement="left">
+                                            <i class="fa fa-circle"></i>
+                                        </span>
+                                </a>
+                                <a href="javascript:;" class="single-mail">
+                                        <span class="icon bg-danger">
+                                            <i class="fa fa-warning"></i>
+                                        </span>
+                                    <strong>Server Failed Notification</strong>
+
+                                    <p>
+                                        <small>10 Days Ago</small>
+                                    </p>
+                                        <span class="un-read tooltips" data-original-title="Mark as Read" data-toggle="tooltip" data-placement="left">
+                                            <i class="fa fa-circle"></i>
+                                        </span>
+                                </a>
+
+                                <a href="javascript:;" class="single-mail text-center">
+                                    View All Notification
+                                </a>
+
+                            </div>
+                            <!--notification info end-->
+                        </div>
+                    </section>
+                </div>
+                
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <section class="panel">
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-md-7">
+                                        <div class="w-map-size" id="world-map"> </div>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <div class="sale-monitor">
+                                            <div class="title">
+                                                <h3>Sales Monitor</h3>
+                                                <p>Proper sell monitoring through the world map to plan for the next marketing attempt</p>
+                                            </div>
+                                            <div class="states">
+                                                <div class="info">
+                                                    <div class="desc pull-left">Australia</div>
+                                                    <div class="percent pull-right">70%</div>
+                                                </div>
+                                                <div class="progress progress-sm">
+                                                    <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 70%">
+                                                        <span class="sr-only">70% </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="states">
+                                                <div class="info">
+                                                    <div class="desc pull-left">Europe</div>
+                                                    <div class="percent pull-right">45%</div>
+                                                </div>
+                                                <div class="progress progress-sm">
+                                                    <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 45%">
+                                                        <span class="sr-only">45% </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="states">
+                                                <div class="info">
+                                                    <div class="desc pull-left">Latin America</div>
+                                                    <div class="percent pull-right">35%</div>
+                                                </div>
+                                                <div class="progress progress-sm">
+                                                    <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 35%">
+                                                        <span class="sr-only">35% </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <section class="panel">
+                            <div class="panel-body cpu-graph">
+                                <div class="row">
+                                    <div class="col-md-7">
+                                        <div class="c-info">
+                                            <h3>Power Consumption</h3>
+                                            <p>Once this tab is open click the CPU button above the list of programs twice</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <div class="easy-pie-chart">
+                                            <div class="percentage-light" data-percent="33"><span>33%</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                    <div class="col-md-6">
+                        <section class="panel">
+                            <header class="panel-heading">
+                                To Do List
+                                <span class="tools pull-right">
+                                    <a class="fa fa-repeat box-refresh" href="javascript:;"></a>
+                                    <a class="t-collapse fa fa-chevron-down" href="javascript:;"></a>
+                                    <a class="t-close fa fa-times" href="javascript:;"></a>
+                                </span>
+                            </header>
+                            <div class="panel-body">
+                                <ul class="todo-list-item" id="todo-list">
+                                    <li class="clearfix">
+                                        <div class="chk-todo pull-left">
+                                            <input type="checkbox" value="0" />
+                                        </div>
+                                        <p class="todo-title">
+                                            Dr Monica has a operation by 2:30pm
+                                        </p>
+                                        <div class="action-todo pull-right clearfix">
+                                            <a href="#" class="todo-edit"><i class="icon-pencil"></i></a>
+                                            <a href="#" class="todo-remove"><i class="icon-close"></i></a>
+                                        </div>
+                                    </li>
+                                    <li class="clearfix">
+
+                                        <div class="chk-todo pull-left">
+                                            <input type="checkbox" value="0" />
+
+                                        </div>
+                                        <p class="todo-title">
+                                            Medical Kit have to buy
+                                        </p>
+                                        <div class="action-todo pull-right clearfix">
+                                            <a href="#" class="todo-edit"><i class="icon-pencil"></i></a>
+                                            <a href="#" class="todo-remove"><i class="icon-close"></i></a>
+                                        </div>
+                                    </li>
+                                    <li class="clearfix">
+
+                                        <div class="chk-todo pull-left">
+                                            <input type="checkbox" value="0" />
+
+                                        </div>
+                                        <p class="todo-title">
+                                            Aenean eu leo quam. Pellentesque sumon sem venenatis.
+                                        </p>
+                                        <div class="action-todo pull-right clearfix">
+                                            <a href="#" class="todo-edit"><i class="icon-pencil"></i></a>
+                                            <a href="#" class="todo-remove"><i class="icon-close"></i></a>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+
+
+            </div>
+            <!--body wrapper end-->
+			     <!-- body content end-->
+    </section>
 </div>
+<script>
+// When the page finishes loading
 
-<!--
-<div class='red'> Messages</div>
-<div class='blue'><?php //include("../../main/messages/messages.php"); ?></div>
-<div class='red'>Patient Queue</div>
-<div class='blue'><?php //include("patient_tracker.php");?></div>
-<div class='red2'>Check In Patients</div>
-<div class='black2'><?php //require_once("dynamic_finder.php"); ?></div>
+    // When the user clicks any <li>, activate script
+    function postData(thisBtn) {
+        // Assign the value of the data attribute
+        //var thisBtn =   $(this).data('id');
 
-<div id='green'>&nbsp;</div>
--->
+        // If an <li> doesn't have this attribute, stop
+        if(thisBtn == undefined)
+            return false;
+        // Start the ajax
+        $.ajax({
+                // Where to send request
+                url: 'ajax.index.php',
+                url: 'ajax.index.php',
+                // What to send
+                data: { did: thisBtn },
+                // How to send
+                type: 'post',
+                // What to do when request succeeds
+                success: function(response) {
+                    // Save the contents of the response into
+                    // whatever has the id="list"
+                    $("#list").html(response);
+                }
+        });
+    }
 
+</script>
+<!-- jQuery 2.2.3 -->
+<script src="../../../library/dist/jQuery/jquery-2.2.3.min.js"></script>
+<!-- Bootstrap 3.3.6 -->
+<script src="../../../library/js/bootstrap.min.js"></script>
+
+<!-- AdminLTE App -->
+<script src="../../../library/slicklab/js/scripts.js"></script>
+
+<!--jquery-ui-->
+<script src="../../../library/slicklab/js/jquery-ui/jquery-ui-1.10.1.custom.min.js" type="text/javascript"></script>
+
+<script src="../../../library/slicklab/js/jquery-migrate.js"></script>
+<script src="../../../library/slicklab/js/bootstrap.min.js"></script>
+<script src="../../../library/slicklab/js/modernizr.min.js"></script>
+
+<!--Nice Scroll-->
+<script src="../../../library/slicklab/js/jquery.nicescroll.js" type="text/javascript"></script>
+
+<!--right slidebar-->
+<script src="../../../library/slicklab/js/slidebars.min.js"></script>
+
+<!--switchery-->
+<script src="../../../library/slicklab/js/switchery/switchery.min.js"></script>
+<script src="../../../library/slicklab/js/switchery/switchery-init.js"></script>
+
+<!--flot chart -->
+<script src="../../../library/slicklab/js/flot-chart/jquery.flot.js"></script>
+<script src="../../../library/slicklab/js/flot-chart/flot-spline.js"></script>
+<script src="../../../library/slicklab/js/flot-chart/jquery.flot.resize.js"></script>
+<script src="../../../library/slicklab/js/flot-chart/jquery.flot.tooltip.min.js"></script>
+<script src="../../../library/slicklab/js/flot-chart/jquery.flot.pie.js"></script>
+<script src="../../../library/slicklab/js/flot-chart/jquery.flot.selection.js"></script>
+<script src="../../../library/slicklab/js/flot-chart/jquery.flot.stack.js"></script>
+<script src="../../../library/slicklab/js/flot-chart/jquery.flot.crosshair.js"></script>
+
+
+<!--earning chart init-->
+<script src="../../../library/slicklab/js/earning-chart-init.js"></script>
+
+
+<!--Sparkline Chart-->
+<script src="../../../library/slicklab/js/sparkline/jquery.sparkline.js"></script>
+<script src="../../../library/slicklab/js/sparkline/sparkline-init.js"></script>
+
+<!--easy pie chart-->
+<script src="../../../library/slicklab/js/jquery-easy-pie-chart/jquery.easy-pie-chart.js"></script>
+<script src="../../../library/slicklab/js/easy-pie-chart.js"></script>
+
+
+<!--vectormap-->
+<script src="../../../library/slicklab/js/vector-map/jquery-jvectormap-1.2.2.min.js"></script>
+<script src="../../../library/slicklab/js/vector-map/jquery-jvectormap-world-mill-en.js"></script>
+<script src="../../../library/slicklab/js/dashboard-vmap-init.js"></script>
+
+<!--Icheck-->
+<script src="../../../library/slicklab/js/icheck/skins/icheck.min.js"></script>
+<script src="../../../library/slicklab/js/todo-init.js"></script>
+
+<!--jquery countTo-->
+<script src="../../../library/slicklab/js/jquery-countTo/jquery.countTo.js"  type="text/javascript"></script>
+
+<!--owl carousel-->
+<script src="../../../library/slicklab/js/owl.carousel.js"></script>
+
+
+<script type="text/javascript">
+
+    $(document).ready(function() {
+
+        //countTo
+
+        $('.timer').countTo();
+
+        //owl carousel
+
+        $("#news-feed").owlCarousel({
+            navigation : true,
+            slideSpeed : 300,
+            paginationSpeed : 400,
+            singleItem : true,
+            autoPlay:true
+        });
+    });
+
+    $(window).on("resize",function(){
+        var owl = $("#news-feed").data("owlCarousel");
+        owl.reinit();
+    });
+
+</script>
 
 </body>
 </html>
