@@ -59,9 +59,24 @@ $returnurl = $GLOBALS['concurrent_layout'] ? 'encounter_top.php' : 'patient_enco
 }
 $encounter=$_SESSION['encounter'];
 $patdata = getPatientData($pid, 'age,age_days,age_months,title,sex,DOB,date,fname,mname,lname,pubpid,genericname1,street,city,state,postal_code');
-$age=$patdata['age'];
-$age_months=$patdata['age_months'];
-$age_days=$patdata['age_days'];
+$dob = strtotime($patdata['DOB']);
+$current_time = time();
+$age_years = date('Y',$current_time) - date('Y',$dob);
+$age_months = date('m',$current_time) - date('m',$dob);
+$age_days = date('d',$current_time) - date('d',$dob);
+if ($age_days<0) {
+    $days_in_month = date('t',$current_time);
+    $age_months--;
+    $age_days= $days_in_month+$age_days;
+}
+
+if ($age_months<0) {
+    $age_years--;
+    $age_months = 12+$age_months;
+}
+$age=$age_years;
+$age_months=$age_months;
+$age_days=$age_days;
 $today = date("Y-m-d h:i:s A"); 
 $time= date("H:i:s");
 $day=sqlStatement("select dayname('$today') day");
@@ -94,14 +109,14 @@ $row2=  sqlFetchArray($row1);
  <?php
 if($age!=0)
 	{
-	echo "<td>" . xlt('Age/Gender') . ": " . text($patdata['age']) ." ".xlt('Years')." , ".text($patdata['sex']). "</td>";
+	echo "<td>" . xlt('Age/Gender') . ": " . text($age) ." ".xlt('Years')." , ".text($patdata['sex']). "</td>";
 	}else
 	if($age_months!=0)
 	{
-	echo "<td>" . xlt('Age/Gender') . ": " . text($patdata['age_months']) ." ".xlt('Months')." , ".text($patdata['sex']). "</td>";
+	echo "<td>" . xlt('Age/Gender') . ": " . text($age_months) ." ".xlt('Months')." , ".text($patdata['sex']). "</td>";
 	}else
 	{
-		echo "<td>" . xlt('Age/Gender') . ": " . text($patdata['age_days']) ." ".xlt('Days')." , ".text($patdata['sex']). "</td>";
+		echo "<td>" . xlt('Age/Gender') . ": " . text($age_days) ." ".xlt('Days')." , ".text($patdata['sex']). "</td>";
 	}
 ?>	
  </tr>
