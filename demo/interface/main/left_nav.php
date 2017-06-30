@@ -407,9 +407,70 @@ $res = sqlQuery("select * from users where username='".$_SESSION{"authUser"}."'"
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="../../library/dist/css/AdminLTE.min.css">
 <link rel="stylesheet" href="../../library/css/mycss.css">
-    <link href="../../library/slicklab/js/switchery/switchery.min.css" rel="stylesheet" type="text/css" media="screen" />
+
 <link rel="stylesheet" href="../../library/dist/css/skins/_all-skins.min.css">
 <style type="text/css">
+
+html {
+  background: #878476;
+}
+
+.container {
+  position: absolute;
+  top: 0; right: 0; bottom: 0; left: 0;
+  height: 40px;
+  margin: auto;
+  text-align: center;
+}
+
+/** Switch
+ -------------------------------------*/
+
+.switch input {
+  position: absolute;
+  opacity: 0;
+}
+
+/**
+ * 1. Adjust this to size
+ */
+
+.switch {
+  display: inline-block;
+  font-size: 20px; /* 1 */
+  height: 1em;
+  width: 2em;
+  background: #BDB9A6;
+  border-radius: 1em;
+
+
+}
+
+.switch div {
+  height: 1em;
+  width: 1em;
+  border-radius: 1em;
+  background: #FFF;
+  box-shadow: 0 0.1em 0.3em rgba(0,0,0,0.3);
+  -webkit-transition: all 300ms;
+     -moz-transition: all 300ms;
+          transition: all 300ms;
+  background-color: #3c763d;
+border-color: #3c763d;
+
+}
+
+.switch input:checked + div {
+  -webkit-transform: translate3d(100%, 0, 0);
+     -moz-transform: translate3d(100%, 0, 0);
+          transform: translate3d(100%, 0, 0);
+
+  background-color: #dd4b39;
+border-color: #dd4b39;
+  background-color: #dd4b39;
+border-color: #dd4b39;
+
+}
 
  .smalltext {
   font-family:sans-serif;
@@ -1182,9 +1243,10 @@ if ($GLOBALS['athletic_team']) {
         <div class="pull-left info">
           <p><?php echo htmlspecialchars($res{"fname"}.' '.$res{"lname"},ENT_NOQUOTES); ?></p>
           <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
-		  <div class="switch-btn">
-                                        <input class="js-switch-small-green " checked="" style="display: none;" data-switchery="true" type="checkbox"><span class="switchery switchery-small" style="background-color: rgb(232, 232, 232); border-color: rgb(232, 232, 232); box-shadow: 0px 0px 0px 0px rgb(232, 232, 232) inset; transition: border 0.4s ease 0s, box-shadow 0.4s ease 0s;"><small style="left: 0px; background-color: rgb(255, 255, 255); transition: left 0.2s ease 0s;"></small></span>
-                                    </div>
+
+  <label class="switch"><input type="checkbox" />    <div></div>
+  </label>
+
         </div>
       </div>
       <!-- search form -->
@@ -2078,9 +2140,6 @@ $(selector).on('click', function(){
 <script src="../../plugins/fastclick/fastclick.js"></script>
 <!-- AdminLTE App -->
 <script src="../../library/dist/js/app.min.js"></script>
-<!--switchery-->
-<script src="../../library/slicklab/js/switchery/switchery.min.js"></script>
-<script src="../../library/slicklab/js/switchery/switchery-init.js"></script>
 
 </body>
 </html>
