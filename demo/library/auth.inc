@@ -69,7 +69,7 @@ if (isset($_GET['auth']) && ($_GET['auth'] == "login") && isset($_POST['authUser
 else if ( (isset($_GET['auth'])) && ($_GET['auth'] == "logout") )
 {
     newEvent("logout", $_SESSION['authUser'], $_SESSION['authProvider'], 1, "success");
-	sqlStatement("UPDATE users set online_status=0 where username='".$_SESSION['authUser']."'");
+	sqlStatement("UPDATE users set status=0 where username='".$_SESSION['authUser']."'");
     authCloseSession();
     authLoginScreen();
 }

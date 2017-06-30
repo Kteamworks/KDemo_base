@@ -294,9 +294,24 @@ $admit=sqlStatement("select * from t_form_admit  where encounter='".$encounter."
 $admit1=sqlFetchArray($admit);
 $row32=sqlStatement("select * from insurance_data where pid='".$form_pid."'");
 $row3=sqlFetchArray($row32);
-$age=$patdata['age'];
-$age_months=$patdata['age_months'];
-$age_days=$patdata['age_days'];
+$dob = strtotime($patdata['DOB']);
+$current_time = time();
+$age_years = date('Y',$current_time) - date('Y',$dob);
+$age_months = date('m',$current_time) - date('m',$dob);
+$age_days = date('d',$current_time) - date('d',$dob);
+if ($age_days<0) {
+    $days_in_month = date('t',$current_time);
+    $age_months--;
+    $age_days= $days_in_month+$age_days;
+}
+
+if ($age_months<0) {
+    $age_years--;
+    $age_months = 12+$age_months;
+}
+$age=$age_years;
+$age_months=$age_months;
+$age_days=$age_days;
 $test=$_POST['form_billlist'];
 
 
@@ -322,14 +337,14 @@ $test=$_POST['form_billlist'];
 	echo "<td style='padding-right: '  >" . xlt('Bill No') . ":&nbsp&nbsp&nbsp&nbsp&nbsp " . text($billid['bill_id']) . "</td>";
 		if($age!=0)
 	{
-	echo "<tr><td  style='padding-right: 100px;' >" . xlt('Age/Gender') . ": " . text($patdata['age']) ." ".xlt('Years')." , ".text($patdata['sex']). "</td>";
+	echo "<tr><td  style='padding-right: 100px;' >" . xlt('Age/Gender') . ": " . text($age) ." ".xlt('Years')." , ".text($patdata['sex']). "</td>";
 	}else
 	if($age_months!=0)
 	{
-	echo "<tr><td  style='padding-right: 100px;' >" . xlt('Age/Gender') . ": " . text($patdata['age_months']) ." ".xlt('Months')." , ".text($patdata['sex']). "</td>";
+	echo "<tr><td  style='padding-right: 100px;' >" . xlt('Age/Gender') . ": " . text($age_months) ." ".xlt('Months')." , ".text($patdata['sex']). "</td>";
 	}else
 	{
-		echo "<tr><td  style='padding-right: 100px;' >" . xlt('Age/Gender') . ": " . text($patdata['age_days']) ." ".xlt('Days')." , ".text($patdata['sex']). "</td>";
+		echo "<tr><td  style='padding-right: 100px;' >" . xlt('Age/Gender') . ": " . text($age_days) ." ".xlt('Days')." , ".text($patdata['sex']). "</td>";
 	}
 	echo "<td  style='padding-right: 2px;' >" . xlt('Bill Date') . ":&nbsp&nbsp ". text(date('d/M/y h:i:s A',strtotime($billdate['d'])))."</td>";
 	echo "<tr><td  style='padding-right: 100px;' >" . xlt('Address:') . " &nbsp&nbsp&nbsp&nbsp&nbsp" . "".text($patdata['street']). "</td>";

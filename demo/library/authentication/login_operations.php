@@ -116,7 +116,7 @@ function validate_user_password($username,&$password,$provider)
             // Some users may be able to authorize without being providers:
             if ($userInfo['see_auth'] > '2') $_SESSION['userauthorized'] = '1';
             newEvent( 'login', $username, $provider, 1, "success: $ip");
-			sqlStatement("UPDATE users set online_status=1 where username='".$_SESSION['authUser']."'");
+			sqlStatement("UPDATE users set status=1 where username='".$_SESSION['authUser']."'");
             $valid=true;
         } else {
             newEvent( 'login', $username, $provider, 0, "failure: $ip. user not in group: $provider");
