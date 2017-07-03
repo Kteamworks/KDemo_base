@@ -288,7 +288,14 @@ $vid=sqlStatement("SELECT form_id from forms where encounter='".$_SESSION['encou
    echo "<select name='form_provider' class='form-control' />";
     while ($urow = sqlFetchArray($ures)) {
       echo "    <option value='" . attr($urow['id']) . "'";
-      if ($urow['id'] == $defaultProvider) echo " selected";
+	  if($result['provider_id']=='')
+  {
+	  if($urow['id'] == $defaultProvider) echo "selected";
+  }else
+  {
+  if ($viewmode && $urow['id'] == $result['provider_id']) echo " selected";
+  }
+     // if ($urow['id'] == $defaultProvider) echo " selected";
       echo ">" . "Dr. ".text($urow['fname']);
       if ($urow['lname']) echo " " . text($urow['lname']);
       echo "</option>\n";
