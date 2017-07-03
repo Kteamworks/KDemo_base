@@ -434,12 +434,16 @@ html {
 /**
  * 1. Adjust this to size
  */
+.user-panel > .info > p {
+    margin-bottom: 2px;
+}
 
 .switch {
   display: inline-block;
   font-size: 20px; /* 1 */
   height: 1em;
   width: 2em;
+  margin-bottom: -8px;
   background: #BDB9A6;
   border-radius: 1em;
 
@@ -997,6 +1001,43 @@ function isEncounterLocked( encounterId ) {
 	return false;
 	<?php } ?>
  }
+ 
+ function toggleCheckbox(element)
+ {
+   if(element.checked) {
+
+	    $.ajax({
+                // Where to send request
+                url: 'status.update.php',
+                // What to send
+                data: { did: 2 },
+                // How to send
+                type: 'post',
+                // What to do when request succeeds
+                success: function(response) {
+                    // Save the contents of the response into
+                    // whatever has the id="list"
+                    $("#status").html(response);
+                }
+        });
+   }
+   else {
+   	    $.ajax({
+                // Where to send request
+                url: 'status.update.php',
+                // What to send
+                data: { did: 1 },
+                // How to send
+                type: 'post',
+                // What to do when request succeeds
+                success: function(response) {
+                    // Save the contents of the response into
+                    // whatever has the id="list"
+                    $("#status").html(response);
+                }
+        });
+   }
+ }
  // Call this to announce that the encounter has changed.  You must call this
  // if you change the session encounter, so that the navigation frame will
  // show the correct encounter and so that the other frame will be reloaded if
@@ -1240,11 +1281,13 @@ if ($GLOBALS['athletic_team']) {
 			<?php } ?>
             </a>
         </div>
+		<?php if($res['status'] == 2) {
+		$user_status = 'Busy';$class = 'danger';$checked = 'checked'; } else {	$user_status = 'Online';$class = 'success'; }		?>
         <div class="pull-left info">
           <p><?php echo htmlspecialchars($res{"fname"}.' '.$res{"lname"},ENT_NOQUOTES); ?></p>
-          <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+          <a href="#" id="status"><i class="fa fa-circle text-<?php echo $class; ?>"></i> <?php echo $user_status ?></a>
 
-  <label class="switch"><input type="checkbox" />    <div></div>
+  <label class="switch"><input type="checkbox" onchange="toggleCheckbox(this)" <?php echo $checked; ?>/>    <div></div>
   </label>
 
         </div>

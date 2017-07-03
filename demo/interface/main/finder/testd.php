@@ -63,11 +63,12 @@ circle{
     height: 162px;
     background-size:42%;
 }</style>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
 </head>
 <body>
 					<?php
 $query = sqlQuery("SELECT a.no_of_admitted_patient, b.no_of_op_patient,c.no_of_op_patient_today,
-d.no_of_ip_patient_today,e.no_of_visits_today
+d.no_of_ip_patient_today,e.no_of_visits_today,f.total_registrations
 FROM
 (SELECT count(id)no_of_admitted_patient FROM form_encounter where pc_catid=12)a,
 (SELECT count(id)no_of_op_patient FROM form_encounter where pc_catid!=12)b,
@@ -75,7 +76,8 @@ FROM
 FROM form_encounter where pc_catid!=12 and date=current_date())c,
 (SELECT count(id)no_of_ip_patient_today 
 FROM form_encounter where pc_catid=12 and date=current_date())d,
-(SELECT count(id)no_of_visits_today FROM form_encounter where date=current_Date())e");
+(SELECT count(id)no_of_visits_today FROM form_encounter where date=current_Date())e,
+(SELECT count(id)total_registrations from patient_Data)f");
 ?>
 <div class="body-content">
     <section>
@@ -89,7 +91,7 @@ FROM form_encounter where pc_catid=12 and date=current_date())d,
                 <div class="state-information">
                     <div class="state-graph">
                         <div id="balance" class="chart"></div>
-                        <div class="info">Balance $ 2,317</div>
+                        <div class="info">Patients Registered | <?php echo $query['total_registrations']; ?></div>
                     </div>
                     <div class="state-graph">
                         <div id="item-sold" class="chart"></div>
@@ -165,7 +167,7 @@ FROM form_encounter where pc_catid=12 and date=current_date())d,
                 <!--state overview end-->
 
                 <div class="row">
-<div class="col-md-8">
+<div class="col-md-8" style="max-height: 632px;overflow:hidden">
                     <section class="panel post-wrap pro-box team-member">
                         <aside class="bg-primary v-align">
                             <div class="panel-body text-center">
@@ -228,17 +230,49 @@ FROM form_encounter where pc_catid=12 and date=current_date())d,
                             </header>
 							 <?php  $newcrop_user_role=sqlStatement("select * from users where newcrop_user_role='erxdoctor'"); ?>
                             <div class="post-info">
+							                                <div class="add-more-member">
+                                    <a href="javascript:;" class=" ">Search Doctors</a>
+                                    <a href="javascript:;" class="add-btn pull-right">
+                                        <i class="fa fa-search"></i>
+                                    </a>
+                                </div>
                                 <ul class="team-list cycle-pager external" id='no-template-pager'>
-								<?php   while($newcrop_user_roles = sqlFetchArray($newcrop_user_role)){  ?>
+								<?php   while($newcrop_user_roles = sqlFetchArray($newcrop_user_role)){ 
+								if($newcrop_user_roles['status'] == 1) {
+								$status = 'online';
+								} elseif ($newcrop_user_roles['status'] == 2) {
+									$status = 'busy';
+								} else {
+									$status = 'offline';
+								}
+																   $today = date('Y-m-d',strtotime("+0 days"));
+
+$query_seen = "select a.*, b.*,round(((b.pending_patient/a.total_no_of_patients )*100),0)pending_percent,round((((a.total_no_of_patients-b.pending_patient)/a.total_no_of_patients)*100),0)seen_percent, (a.total_no_of_patients-b.pending_patient)no_of_examined_patients
+from
+(SELECT count(b.id) total_no_of_patients 
+FROM patient_data a,form_encounter b 
+where a.pid=b.pid and b.provider_id='".$newcrop_user_roles['id']."'  and date(b.date)=date('".$today."') )a,
+
+(SELECT count(b.id)pending_patient
+FROM patient_data a,form_encounter b 
+where a.pid=b.pid and b.provider_id='".$newcrop_user_roles['id']."'  and date(b.date)=date('".$today."') 
+and out_to is null and out_time is  null)b";
+$res_seen = sqlStatement($query_seen);
+$res_seen1 = sqlFetchArray($res_seen);
+								?>
                                     <li >
                                         <a href="javascript:void(0);" onClick="postData(<?php echo $newcrop_user_roles['id']; ?>);" >
                                             <span class="thumb-small">
-                                                <img class="circle" src="../../../library/slicklab/img/img2.jpg" alt=""/>
-                                                <i class="online dot"></i>
+														<?php if($newcrop_user_roles['user_image']) { ?>
+              <img src="../<?php echo $newcrop_user_roles['user_image']; ?>" class="circle" alt="User Image">
+			<?php } elseif($newcrop_user_roles['newcrop_user_role'] == 'erxdoctor') { ?>
+			<img src="../../../library/dist/img/doctor.png" class="img-circle" alt="User Image">
+			<?php }?>
+                                                <i class="<?php echo $status; ?> dot"></i>
                                             </span>
-                                            <span class="name"><?php echo ucfirst(strtolower($newcrop_user_roles['fname'])).' '. ucfirst(strtolower($newcrop_user_roles['lname'])); ?></span><span class="pull-right">10 <i class="fa fa-arrow-up green" style="color:#00a65a"></i></span><span class="pull-right" style="clear: right;
+                                            <span class="name"><?php echo ucfirst(strtolower($newcrop_user_roles['fname'])).' '. ucfirst(strtolower($newcrop_user_roles['lname'])); ?></span><span class="pull-right"><?php  echo $res_seen1['no_of_examined_patients']; ?> <i class="fa fa-arrow-up green" style="color:#00a65a"></i></span><span class="pull-right" style="clear: right;
 margin: 10px;
-">12 <i class="fa fa-arrow-down red" style="color:  #dd4b39"></i></span>
+"><?php  echo $res_seen1['pending_patient']; ?> <i class="fa fa-arrow-down red" style="color:  #dd4b39"></i></span>
                                         </a>
                                     </li>
 								<?php } ?>
@@ -280,12 +314,7 @@ margin: 10px;
                                     </li> -->
 
                                 </ul>
-                                <div class="add-more-member">
-                                    <a href="javascript:;" class=" ">View All Member</a>
-                                    <a href="javascript:;" class="add-btn pull-right">
-                                        +
-                                    </a>
-                                </div>
+
                             </div>
                         </aside>
 						</div>
@@ -652,7 +681,6 @@ margin: 10px;
         $.ajax({
                 // Where to send request
                 url: 'ajax.index.php',
-                url: 'ajax.index.php',
                 // What to send
                 data: { did: thisBtn },
                 // How to send
@@ -669,6 +697,25 @@ margin: 10px;
 </script>
 <!-- jQuery 2.2.3 -->
 <script src="../../../library/dist/jQuery/jquery-2.2.3.min.js"></script>
+<script type="text/javascript">
+$(window).load(function(){ 
+    // Perform something here...
+	        $.ajax({
+                // Where to send request
+                url: 'ajax.index.php',
+                // What to send
+                data: { did: 4 },
+                // How to send
+                type: 'post',
+                // What to do when request succeeds
+                success: function(response) {
+                    // Save the contents of the response into
+                    // whatever has the id="list"
+                    $("#list").html(response);
+                }
+        });
+});
+</script>
 <!-- Bootstrap 3.3.6 -->
 <script src="../../../library/js/bootstrap.min.js"></script>
 
