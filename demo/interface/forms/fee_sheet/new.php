@@ -24,7 +24,6 @@ $usbillstyle = $GLOBALS['ippf_specific'] ? " style='display:none'" : "";
 
 // This may be an error message or warning that pops up when the form is loaded.
 $alertmsg = '';
-
 function alphaCodeType($id) {
   global $code_types;
   foreach ($code_types as $key => $value) {
@@ -499,6 +498,35 @@ $bilgrpval=$_POST[''];
 
 }
 if (!$alertmsg && ($_POST['bn_save'] || $_POST['bn_save_close'])) {
+	  // Post discount.
+  if (!empty($_POST['form_discount'])) {
+	 $amount  = sprintf('%01.2f', trim($_POST['form_discount']));
+     $memo = xl('Discount');
+	$reason_code=$_POST['reason_code'];
+	$approved_by=$_POST['approved_by'];
+      $time = date('Y-m-d H:i:s');
+      $query = "INSERT INTO ar_activity ( " .
+        "pid, encounter, code, modifier, payer_type, post_user, post_time, " .
+        "session_id, memo, adj_amount,reason_code,approved_by " .
+        ") VALUES ( " .
+        "?, " .
+        "?, " .
+        "'', " .
+        "'', " .
+        "'0', " .
+        "?, " .
+        "?, " .
+        "'0', " .
+        "?, " .
+		"?, " .
+		"?, " .
+        "? " .
+        ")";
+      sqlStatement($query, array($pid,$encounter,$_SESSION['authUserID'],$time,$memo,$amount,$reason_code,$approved_by) );
+	  sqlQuery("Update billing_main_copy set dis_amt=? where encounter=?",array($amount,$encounter));   
+    
+ 
+  }
   $main_provid = 0 + $_POST['ProviderID'];
   $main_supid  = 0 + $_POST['SupervisorID'];
   if ($main_supid == $main_provid) $main_supid = 0;
@@ -729,9 +757,12 @@ if (!$alertmsg && ($_POST['bn_save'] || $_POST['bn_save_close'])) {
     formFooter();
     exit;
   }
+  
 }
-
+  
 $billresult = getBillingByEncounter($pid, $encounter, "*");
+
+
 ?>
 <html>
 <head>
@@ -1365,7 +1396,18 @@ if (!$GLOBALS['ippf_specific']) {
 */
 echo "</b></span>\n";
 ?>
-
+<br></br>
+<table>
+<tr class='billcell'>
+  <td>
+ <b>  <?php echo xlt('Discount Amount')?>:</b>
+  </td>
+  <td>
+   <input type='text' name='form_discount' size='6' maxlength='8' value=''
+    style='text-align:right'>
+  </td>
+ </tr>
+ </table>
 <p>
 &nbsp;
 
