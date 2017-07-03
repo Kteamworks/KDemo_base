@@ -54,8 +54,11 @@ $res_seen1 = sqlFetchArray($res_seen);
                                             <a href="../messages/messages.php?showall=no&sortby=users.lname&sortorder=asc&begin=0&task=addnew&form_active=1">
                                                 <i class="fa fa-envelope-o"></i>
                                             </a>
-                                            <img src="../../../library/slicklab/img/img2.jpg" alt="" />
-                                            <a href="tel:<?php echo $newcrop_user_roles['phonecell']; ?>">
+                                            														<?php if($newcrop_user_roles['user_image']) { ?>
+              <img src="../<?php echo $newcrop_user_roles['user_image']; ?>" class="circle" alt="User Image">
+			<?php } elseif($newcrop_user_roles['newcrop_user_role'] == 'erxdoctor') { ?>
+			<img src="../../../library/dist/img/doctor.png" class="img-circle" alt="User Image">
+			<?php }?><a href="tel:<?php echo $newcrop_user_roles['phonecell']; ?>">
                                                 <i class="fa fa-phone"></i>
                                             </a>
                                         </div>

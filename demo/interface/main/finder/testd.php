@@ -106,7 +106,7 @@ FROM form_encounter where pc_catid=12 and date=current_date())d,
                 <!--state overview start-->
                 <div class="row state-overview">
                     <div class="col-xs-3">
-                        <section class="panel purple">
+                        <section class="panel yellow">
                             <div class="symbol">
                                 <i class="fa fa-user
                                 "></i>
