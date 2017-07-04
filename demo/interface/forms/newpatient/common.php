@@ -284,7 +284,7 @@ $vid=sqlStatement("SELECT form_id from forms where encounter='".$_SESSION['encou
      
 <?php
   $ures = sqlStatement("SELECT id, username, fname, lname FROM users WHERE " .
-  "authorized != 0 AND active = 1 ORDER BY lname, fname");
+  "authorized != 0 AND active = 1 ORDER BY fname, lname");
    echo "<select name='form_provider' class='form-control' />";
     while ($urow = sqlFetchArray($ures)) {
       echo "    <option value='" . attr($urow['id']) . "'";
@@ -296,7 +296,7 @@ $vid=sqlStatement("SELECT form_id from forms where encounter='".$_SESSION['encou
   if ($viewmode && $urow['id'] == $result['provider_id']) echo " selected";
   }
      // if ($urow['id'] == $defaultProvider) echo " selected";
-      echo ">" . "Dr. ".text($urow['fname']);
+      echo ">" . "".text($urow['fname']);
       if ($urow['lname']) echo " " . text($urow['lname']);
       echo "</option>\n";
     }
