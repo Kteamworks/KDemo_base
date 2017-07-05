@@ -320,129 +320,8 @@ margin: 10px;
 						</div>
                     </section>
                 </div>
-                    <div class="col-md-4">
-                        <section class="panel">
-
-                            <div class="slick-carousal">
-                                <div class="overlay-c-bg"></div>
-                                <div id="news-feed" class="owl-carousel owl-theme">
-                                    <div class="item">
-                                        <h3 class="text-success">News</h3>
-                                        <span class="date">12 March 2015</span>
-                                        <h1>If today were the last day of your life, would you want to do what your are about to do today</h1>
-                                        <div class="text-center">
-                                            <a href="javascript:;" class="view-all">View All</a>
-                                        </div>
-                                    </div>
-                                    <div class="item">
-                                        <h3 class="text-success">News</h3>
-                                        <span class="date">11 February 2015</span>
-                                        <h1>SlickLab build with Boostrap latest version 3+. Its very easy to customize. Hope you enjoy it..</h1>
-                                        <div class="text-center">
-                                            <a href="javascript:;" class="view-all">View All</a>
-                                        </div>
-                                    </div>
-                                    <div class="item">
-                                        <h3 class="text-success">News</h3>
-                                        <span class="date">10 January 2015</span>
-                                        <h1>It has huge usable widgets, amazing design, clean code quality, super responsive and quick customar support.</h1>
-                                        <div class="text-center">
-                                            <a href="javascript:;" class="view-all">View All</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-
-
-                        </section>
-
-                        <section class="panel">
-                            <div class="panel-body">
-                                <!--monthly page view start-->
-                                <ul class="monthly-page-view">
-                                    <li class="pull-left page-view-label">
-                                        <span class="page-view-value timer" data-from="0" data-to="93205"
-                                              data-speed="4000">
-                                            <!--93,205-->
-                                        </span>
-                                        <span>Monthly Page views</span>
-                                    </li>
-                                    <li class="pull-right">
-                                        <div id="page-view-graph" class="chart"></div>
-                                    </li>
-                                </ul>
-                                <!--monthly page view end-->
-                            </div>
-                        </section>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-8">
-                        <section class="panel" id="block-panel">
-                            <header class="panel-heading head-border">
-                                mobile visit
-                                <span class="tools pull-right">
-                                    <a class="fa fa-repeat box-refresh" href="javascript:;"></a>
-                                    <a class="t-collapse fa fa-chevron-down" href="javascript:;"></a>
-                                    <a class="t-close fa fa-times" href="javascript:;"></a>
-                                </span>
-                            </header>
-                            <div class="panel-body">
-                                <ul class="mobile-visit">
-                                    <li class="page-view-label">
-                                        <span class="page-view-value"> 5,2105</span>
-                                        <span>Unique visitors</span>
-                                    </li>
-                                    <li>
-                                        <div class="easy-pie-chart">
-                                            <div class="iphone-visitor" data-percent="45"><span>45</span>%</div>
-                                        </div>
-                                        <div class="visit-title">
-                                            <i class="fa fa-apple green-color"></i>
-                                            <span>iPhone</span>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="easy-pie-chart">
-                                            <div class="android-visitor" data-percent="40"><span>40</span>%</div>
-                                        </div>
-                                        <div class="visit-title">
-                                            <i class="fa fa-android purple-color"></i>
-                                            <span>Android</span>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
-                        </section>
-                    </div>
-                    <div class="col-md-4">
-                        <section class="panel">
-                            <div class="panel-body- weather-widget">
-                                <div class="weather-state">
-                                    <span class="weather-icon">
-                                        <i class="slicon-weather_downpour_fullmoon"></i>
-                                    </span>
-
-                                    <span class="weather-type">Storm</span>
-                                </div>
-                                <div class="weather-info">
-                                    <span class="degree">13</span>
-                                    <span class="weather-city">Bangalore</span>
-                                    <div class="switch-btn">
-                                        <input type="checkbox" class="js-switch-small-green " checked>
-                                    </div>
-                                    <div class="weather-chart m-t-40" data-type="line" data-resize="true" data-height="65" data-width="100%" data-line-width="1.5" data-line-color="#0bc2af" data-spot-color="#0bc2af" data-fill-color=""  data-highlight-line-color="#0bc2af" data-spot-radius="0" data-data="[1,5,3,6,4,7,9]"></div>
-                                </div>
-
-                            </div>
-                        </section>
-                    </div>
-                </div>
-
-                <div class="row">
-                <div class="col-md-6">
+		
+                <div class="col-md-4">
                     <section class="panel">
                         <header class="panel-heading head-border">
                             Notification
@@ -524,7 +403,73 @@ margin: 10px;
                     </section>
                 </div>
                 
+
+
                 </div>
+
+                <div class="row">
+                    <div class="col-md-8">
+                        <section class="panel" id="block-panel">
+                            <header class="panel-heading head-border">
+                                mobile visit
+                                <span class="tools pull-right">
+                                    <a class="fa fa-repeat box-refresh" href="javascript:;"></a>
+                                    <a class="t-collapse fa fa-chevron-down" href="javascript:;"></a>
+                                    <a class="t-close fa fa-times" href="javascript:;"></a>
+                                </span>
+                            </header>
+                            <div class="panel-body">
+                                <ul class="mobile-visit">
+                                    <li class="page-view-label">
+                                        <span class="page-view-value"> 5,2105</span>
+                                        <span>Unique visitors</span>
+                                    </li>
+                                    <li>
+                                        <div class="easy-pie-chart">
+                                            <div class="iphone-visitor" data-percent="45"><span>45</span>%</div>
+                                        </div>
+                                        <div class="visit-title">
+                                            <i class="fa fa-apple green-color"></i>
+                                            <span>iPhone</span>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="easy-pie-chart">
+                                            <div class="android-visitor" data-percent="40"><span>40</span>%</div>
+                                        </div>
+                                        <div class="visit-title">
+                                            <i class="fa fa-android purple-color"></i>
+                                            <span>Android</span>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </section>
+                    </div>
+                    <div class="col-md-4">
+                        <section class="panel">
+                            <div class="panel-body- weather-widget">
+                                <div class="weather-state">
+                                    <span class="weather-icon">
+                                        <i class="slicon-weather_downpour_fullmoon"></i>
+                                    </span>
+
+                                    <span class="weather-type">Storm</span>
+                                </div>
+                                <div class="weather-info">
+                                    <span class="degree">13</span>
+                                    <span class="weather-city">Bangalore</span>
+                                    <div class="switch-btn">
+                                        <input type="checkbox" class="js-switch-small-green " checked>
+                                    </div>
+                                    <div class="weather-chart m-t-40" data-type="line" data-resize="true" data-height="65" data-width="100%" data-line-width="1.5" data-line-color="#0bc2af" data-spot-color="#0bc2af" data-fill-color=""  data-highlight-line-color="#0bc2af" data-spot-radius="0" data-data="[1,5,3,6,4,7,9]"></div>
+                                </div>
+
+                            </div>
+                        </section>
+                    </div>
+                </div>
+
 
                 <div class="row">
                     <div class="col-md-12">
