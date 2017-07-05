@@ -1,4 +1,16 @@
-<!DOCTYPE html>
+<?php 
+include_once("../../globals.php");
+include_once("$srcdir/api.inc");
+include_once("$srcdir/forms.inc");
+include_once("$srcdir/encounter.inc");
+require_once("$srcdir/formdata.inc.php");
+require_once("$srcdir/patient.inc");
+require_once("$srcdir/acl.inc");
+require_once("$srcdir/options.inc.php");
+require_once("$srcdir/formatting.inc.php");
+require_once("$srcdir/erx_javascript.inc.php");
+
+?>
 <html>
 <head>
 <style>
@@ -20,14 +32,14 @@ th {text-align: left;}
 <?php
 $q = intval($_GET['q']);
 
-$con = mysqli_connect('localhost','root','admin123','mangoo');
+/* $con = mysqli_connect('localhost','root','admin123','mangoo');
 if (!$con) {
     die('Could not connect: ' . mysqli_error($con));
 }
 $wards="wards";
-mysqli_select_db($con,"mangoo");
+mysqli_select_db($con,"mangoo"); */
 $sql="SELECT * FROM list_options WHERE list_id='".General."' AND is_default = '".$q."'";
-$result = mysqli_query($con,$sql);
+$result = sqlStatement($con,$sql);
 
 if ($q=='1')
 {
@@ -46,9 +58,9 @@ echo "<table>
 </tr>";
     $adm='left';
 	$sql2="select * from t_form_admit where status='".$adm."'";
-	$result2=mysqli_query($con,$sql2);
+	$result2=sqlStatement($sql2);
 
-	while($row2=mysqli_fetch_array($result2))
+	while($row2=sqlFetchArray($result2))
 	{
 	
 	
@@ -84,9 +96,9 @@ echo "<tr>
 
     $adm='occupied';
 	$sql2="select * from t_form_admit where status='".$adm."'";
-	$result2=mysqli_query($con,$sql2);
+	$result2=sqlStatement($sql2);
 	
-while($row2=mysqli_fetch_array($result2))
+while($row2=sqlFetchArray($result2))
 	{
 	$rdm=$row2['admit_to_ward'];
 	$rdm2=$row2['admit_to_bed'];
@@ -130,9 +142,9 @@ echo "<table>
 </tr>";
     $adm='discharge';
 	$sql2="select * from t_form_admit where status='".$adm."'";
-	$result2=mysqli_query($con,$sql2);
+	$result2=sqlStatement($con,$sql2);
 
-	while($row2=mysqli_fetch_array($result2))
+	while($row2=sqlFetchArray($result2))
 	{
 	$rdm=$row2['admit_to_ward'];
 	$rdm2=$row2['admit_to_bed'];
@@ -179,9 +191,9 @@ echo "<table>
 </tr>";
     $adm='admit';
 	$sql2="select * from t_form_admit where status='".$adm."'";
-	$result2=mysqli_query($con,$sql2);
+	$result2=sqlStatement($con,$sql2);
 
-	while($row2=mysqli_fetch_array($result2))
+	while($row2=sqlFetchArray($result2))
 	{
 	
 	$rdm=$row2['admit_to_ward'];
@@ -213,7 +225,7 @@ echo "<input type=\"hidden\" name=\"fd\" value=\"Final Admit\"></input>";
 
 
 
-mysqli_close($con);
+//mysqli_close($con);
 ?>
 </body>
 </html>

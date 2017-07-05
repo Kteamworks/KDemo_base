@@ -1,4 +1,16 @@
-<!DOCTYPE html>
+<?php 
+include_once("../../globals.php");
+include_once("$srcdir/api.inc");
+include_once("$srcdir/forms.inc");
+include_once("$srcdir/encounter.inc");
+require_once("$srcdir/formdata.inc.php");
+require_once("$srcdir/patient.inc");
+require_once("$srcdir/acl.inc");
+require_once("$srcdir/options.inc.php");
+require_once("$srcdir/formatting.inc.php");
+require_once("$srcdir/erx_javascript.inc.php");
+
+?>
 <html>
 <head>
 
@@ -8,21 +20,21 @@
 <?php
 $q = $_GET['q'];
 
-$con = mysqli_connect('localhost','root','','mangoo');
-if (!$con) {
+/*$con = mysqli_connect('localhost','root','','mangoo');
+ if (!$con) {
     die('Could not connect: ' . mysqli_error($con));
 }
-mysqli_select_db($con,"mangoo");
+mysqli_select_db($con,"mangoo"); 
 //$sql="SELECT * FROM list_options WHERE list_id='".General."' AND is_default = 0";
-//$result = mysqli_query($con,$sql);
+//$result = mysqli_query($con,$sql);*/
 
 echo "<table>";
 
 
     $sql="SELECT * FROM list_options WHERE list_id ='".$q."' AND is_default IN(0,3)";
-	$result = mysqli_query($con,$sql);
+	$result = sqlStatement($sql);
 	$i=0;
-	while($row=mysqli_fetch_array($result))
+	while($row=sqlFetchArray($result))
 	{
     echo "<tr>";
 	$a=$row['title'];
@@ -40,7 +52,8 @@ echo "<table>";
 	}
     
 	echo "</tr>";
-echo "</table>";?>
+echo "</table>";
+?>
 
 
 </body>
