@@ -70,7 +70,7 @@ jQuery('#form_postal_code').blur(function(){ //.postcode class of zipcode text f
 var s = jQuery(this).val();
 jQuery.ajax({
 type: 'POST',
-url: "http://demo.medsmart.co.in/demo/interface/new/insertzip.php", //file which read zip code excel file
+url: "<?php echo $GLOBALS['webroot'] ?>/interface/new/insertzip.php", //file which read zip code excel file
 dataType: "json", //is used for return multiple values
 data: { 's' : s },
 success: function(data){
