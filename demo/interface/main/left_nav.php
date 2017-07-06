@@ -1513,6 +1513,9 @@ if ($GLOBALS['athletic_team']) {
     <ul class="treeview-menu">
       <?php genMiscLink('RTop','fin','0',xl('Patients'),'main/finder/dynamic_finder.php'); ?>
 	   <?php genMiscLink('RTop','fin','0',xl('Todays Patients'),'main/finder/p_tp_dynamic_finder.php'); ?>
+	   <?php if($newcrop_user_role['newcrop_user_role']=='erxcash'){?>
+	      <?php genMiscLink('RTop','fin','0',xl('Pending Patients'),'main/finder/pa_dynamic_finder.php'); ?>
+	   <?php  }  ?>
 	   <?php if($newcrop_user_role['newcrop_user_role']=='erxdoctor' || $newcrop_user_role['newcrop_user_role']=='erxnurse') {?>
 	  <?php genMiscLink('RTop','fin','0',xl('My Patients'),'main/finder/p_dynamic_finder.php'); ?>
 	   <?php }?>
