@@ -1598,7 +1598,7 @@ if (($_POST['form_save'] || $_POST['form_delete']) && !$alertmsg) {
 	  }
 */	  
 //-------------------------------------------------------------------------------//		
-		
+		include_once('dbconnect.php');
 		
 		
 			 $drug_id = sqlInsert("INSERT INTO drugs ( " .
@@ -1606,7 +1606,7 @@ if (($_POST['form_save'] || $_POST['form_delete']) && !$alertmsg) {
     "size, unit, route, cyp_factor, related_code, " .
     "allow_multiple, allow_combining, active " .
     ") VALUES ( " .
-    "'" . $selected          . "', " .
+    "'" .mysqli_real_escape_string($con,$selected)          . "', " .
     "'" . $mfr          . "', " .
     "'" . $instock          . "', " .
 	 "'" .$sup. "', " .
@@ -1648,8 +1648,8 @@ if (($_POST['form_save'] || $_POST['form_delete']) && !$alertmsg) {
 	$codesmed=sqlInsert("INSERT INTO codes(".
 	"code_text,code,code_type,units,fee,cyp_factor,active".
 	") VALUES ( " .
-	"'" . $selected          . "', " .
-	"'" . $selected          . "', " .
+	"'" .mysqli_real_escape_string($con,$selected)         . "', " .
+	"'" .mysqli_real_escape_string($con,$selected)         . "', " .
 	"'" . $codetyp          . "', " .
 	"'" . $units          . "', " .
 	"'" . $unitPrice      . "', " .
@@ -1728,7 +1728,7 @@ if (($_POST['form_save'] || $_POST['form_delete']) && !$alertmsg) {
       "drug_id, selector,quantity,taxrates " .
       ") VALUES ( " .
         "'" . add_escape_custom($drug_id) . "', " .
-        "'" . $selected . "', " .
+        "'" .mysqli_real_escape_string($con,$selected) . "', " .
 		 "'" . $totalStock . "', " .
         "'" . add_escape_custom($form_notes) . "' )");
 		 
@@ -1815,7 +1815,7 @@ if (($_POST['form_save'] || $_POST['form_delete']) && !$alertmsg) {
     "size, unit, route, cyp_factor, related_code, " .
     "allow_multiple, allow_combining, active " .
     ") VALUES ( " .
-    "'" . $selected          . "', " .
+    "'" .mysqli_real_escape_string($con,$selected)         . "', " .
 	"'" . $mfr          . "', " .
 	"'" . $instock          . "', " .
 	 "'" .escapedff('form_supplier'). "', " .
@@ -1856,8 +1856,8 @@ if (($_POST['form_save'] || $_POST['form_delete']) && !$alertmsg) {
 	$codesmed=sqlInsert("INSERT INTO codes(".
 	"code_text,code,code_type,units,fee,cyp_factor,active".
 	") VALUES ( " .
-	"'" . $selected          . "', " .
-	"'" . $selected          . "', " .
+	"'" . mysqli_real_escape_string($con,$selected)         . "', " .
+	"'" . mysqli_real_escape_string($con,$selected)          . "', " .
 	"'" . $codetyp          . "', " .
 	"'" . $units          . "', " .
 	"'" . $unitPrice      . "', " .
@@ -1932,7 +1932,7 @@ if (($_POST['form_save'] || $_POST['form_delete']) && !$alertmsg) {
       "drug_id, selector,quantity,taxrates " .
       ") VALUES ( " .
         "'" . add_escape_custom($drug_id) . "', " .
-        "'" . $selected . "', " .
+        "'" . mysqli_real_escape_string($con,$selected) . "', " .
 		 "'" . $totalStock . "', " .
         "'" . add_escape_custom($form_notes) . "' )");
 		  

@@ -1,0 +1,78 @@
+<body class="body_top">
+<img src=" <?php echo $GLOBALS['webroot']?>/interface/pic/medii.jpg" style="margin:0px 0px" align="top"/>
+<hr>
+<?php
+  $patdata = getPatientData($pid, 'street,city,state,rateplan,date,sex,DOB,genericname1,fname,mname,lname,pubpid');
+ function ageCalculator($dob){
+	if(!empty($dob)){
+		$birthdate = new DateTime($dob);
+		$today   = new DateTime('today');
+		$age = $birthdate->diff($today)->y;
+		return $age;
+	}else{
+		return 0;
+	}
+}
+
+$dob =text($patdata['DOB']) ;
+$encounter=$_SESSION['encounter'];
+$enc=sqlStatement("select * from form_encounter where encounter='".$encounter."'");
+$enc1=sqlFetchArray($enc);
+$provider=$enc1['provider_id'];
+$row1 = sqlStatement("SELECT * from users where id='".$provider."'");
+$row2=  sqlFetchArray($row1);
+$billings=sqlStatement("select * from billing  where encounter='".$encounter."' and id in ('".$grpbillid."')");
+$billing=sqlFetchArray($billings);
+
+$approve=sqlStatement("SELECT * from billing_activity where encounter='".$encounter."'");
+$approved=sqlFetchArray($approve);
+$approved_amt=$approved['approved_amt'];
+    echo "<table border=1 rules=cols style='width:100%'>";
+	echo "<tr><td  style='padding-right: 100px;' >" . xlt('Name') . ": <b>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp" . text($patdata['fname']) . "  " . text($patdata['lname']) . "</b></td>";
+	echo "<td style='padding-right: '  >" . xlt('Bill No') . ":&nbsp&nbsp&nbsp&nbsp&nbsp " . text($billing['bill_id']) . "</td>";
+	echo "<tr><td  style='padding-right: 100px;' >" . xlt('Age/Gender') . ": " . ageCalculator($dob) ." , ".text($patdata['sex']). "</td>";
+	echo "<td  style='padding-right: 2px;' >" . xlt('Bill Date') . ":&nbsp&nbsp ". text(date(' d/M/y'))."</td>";
+	echo "<tr><td  style='padding-right: 100px;' >" . xlt('Address:') . " &nbsp&nbsp&nbsp&nbsp&nbsp" . "".text($patdata['street']). "</td>";
+	echo "<td  style='padding-right: 10px;'>" . xlt('MR No') . ": &nbsp&nbsp&nbsp&nbsp&nbsp" . text($patdata['genericname1']) . "</td></tr>";
+	echo "<tr><td  style='padding-right: 100px;' >" . xlt('Location:') . " &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp" . "".text($patdata['city']).", ".text($patdata['state']) ."</td>";
+	echo "<td  style='padding-right: 10px;' >" . xlt('Visit ID') . ":&nbsp&nbsp&nbsp&nbsp&nbsp " . text($enc1['encounter_ipop']) . "</td></tr>";
+	echo "<tr><td style='padding-right: 100px;'  >" . xlt('Doctor') . ":&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp &nbsp&nbsp" . text($row2['fname']) . "  " . text($row2['lname']) . "</td>";
+	echo "<td  style='padding-right: 100px;' >" . xlt('Department') . ": " . text($row2['specialty']) . "</td></tr>";
+    echo "</table>";
+	print "</div>";
+	 print "<div id='superbill_billingdata'>";
+        //print "<h1>".xlt('Billing Information').":</h1>";
+      
+           
+            echo "<table width='100%' style='#000;'>";
+            echo "<tr style='border-top: 1px solid #000;' >";
+			echo "<b>";
+            echo "<td class='bold' width='20%'>".xlt('Date')."</td>";
+            echo "<td class='bold' width='20%'>".xlt('Head')."</td>";
+			echo "<td class='bold' width='20%'>".xlt('Description')."</td>";
+			echo "<td class='bold' width='20%'>".xlt('Rate')."</td>";
+			echo "<td class='bold' width='10%'>".xlt('Qty')."</td>";
+            echo "<td class='bold' width='10%'>".xlt('Fee')."</td></tr><tr style='border-bottom: 1px solid #000;'><td></td><td></td><td></td><td></td><td></td><td></td></tr>";
+			echo "</b>";
+			$con = mysqli_connect('localhost','root','','openemr');
+                 if (!$con) {
+            die('Could not connect: ' . mysqli_error($con));
+             }
+			$a= "select * from billing  where encounter='".$encounter."' and id in ('".$grpbillid."')";
+			$result2=mysqli_query($con,$a);
+			
+	             while($b=mysqli_fetch_array($result2))
+			{
+			  echo "<tr>";
+			 
+                    echo "<td class='text' style='font-size: 0.8em'>" . text(date('d/M/y',strtotime($b['date']))) ."</td>";
+                    echo "<td class='text'>". text($b['code_type'])."</td>\n";
+					echo "<td class='text' nowrap>".text($b['code_text']) . "</td>";
+					echo "<td class='text'>" .text($rate) . "</td>";
+			        echo "<td class='text'>" .text($b['units']) . "</td>";
+                    echo "<td class='text'>";
+                    echo oeFormatMoney($b['fee']);
+                    echo "</td>";
+					
+                    echo "</tr>";
+			} 
