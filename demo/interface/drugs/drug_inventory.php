@@ -95,7 +95,9 @@ function dodclick(id) {
 function dodclick1(id) {
  dlgopen('add_edit_drug1.php?drug=' + id, '_blank', 725, 475);
 }
-
+function dodclick2(id) {
+ dlgopen('add_new_medicine.php?drug=' + id, '_blank', 725, 475);
+}
 // Process click on drug QOO or lot.
 function doiclick(id, lot) {
  dlgopen('add_edit_lot.php?drug=' + id + '&lot=' + lot, '_blank', 600, 475);
@@ -268,6 +270,7 @@ function dosort(orderby) {
 
 <center><p>
  <input type='button' value='<?php echo xla('Add Drug'); ?>' onclick='dodclick(0)'/>
+ <input type='button' value='<?php echo xla('Add New Item'); ?>' onclick='dodclick2(0)'/>
 </p></center>
 
 <input type="hidden" name="form_orderby" value="<?php echo attr($form_orderby) ?>" />

@@ -1,5 +1,5 @@
 <?php
-$con=mysqli_connect("localhost","asharma","asharphdv123","greencity_test");
+$con=mysqli_connect("localhost","root","","mangoo");
 //mysql_select_db("students") or die(mysql_error());
 	
 

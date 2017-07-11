@@ -2142,7 +2142,7 @@ else {
  
  </td>
 
-
+<td><a href='addnewsupplier.php'>Add New Supplier</a></td>
  
  
  <!-- <tr>
