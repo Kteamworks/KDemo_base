@@ -38,10 +38,18 @@ if ($_GET['set_pid'] && $form_review) {
   $result = getPatientData($pid, "*, DATE_FORMAT(DOB,'%Y-%m-%d') as DOB_YMD");
   $encounter=$result['ecounter'];
   ?>
+  <style>
+  	tr.detail td:nth-child(5) {
+    display: none;
+}
+  </style>
   <script language='JavaScript'>
     parent.left_nav.setPatient(<?php echo "'" . addslashes($result['fname']) . " " . addslashes($result['lname']) . "',$pid,'" . addslashes($result['pubpid']) . "','', ' " . xl('DOB') . ": " . oeFormatShortDate($result['DOB_YMD']) . " " . xl('Age') . ": " . getPatientAge($result['DOB_YMD']) . "'"; ?>);
     parent.left_nav.setRadio(window.name, 'orp');
   </script>
+  
+   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+
   <?php
 }
 
@@ -80,9 +88,10 @@ if ($_POST['form_submit'] && !empty($_POST['form_line'])) {
         "procedure_order_seq = '$order_seq', " .
         "date_report = '$date_report', " .
         "date_collected = " . QuotedOrNull(oresData("form_date_collected", $lino)) . ", " .
+		"lab = '" . oresData("form_result_lab", $lino) . "', " .
         "specimen_num = '" . oresData("form_specimen_num", $lino) . "', " .
         "report_status = '" . oresData("form_report_status", $lino) . "'";
-
+  
       // Set the review status to reviewed.
       if ($form_review) 
         $sets .= ", review_status = 'reviewed'";
@@ -115,12 +124,16 @@ if ($_POST['form_submit'] && !empty($_POST['form_line'])) {
         "result_code = '" . oresData("form_result_code", $lino) . "', " .
         "result_text = '" . oresData("form_result_text", $lino) . "', " .
         "abnormal = '" . oresData("form_result_abnormal", $lino) . "', " .
+		"lab = '" . oresData("form_result_lab", $lino) . "', " .
         "result = '" . oresData("form_result_result", $lino) . "', " .
+		"seq = '" . oresData("form_seq_num", $lino) . "', " .
         "`range` = '" . oresData("form_result_range", $lino) . "', " .
         "units = '" . oresData("form_result_units", $lino) . "', " .
         "facility = '" . oresData("form_facility", $lino) . "', " .
         "comments = '" . add_escape_custom($form_comments) . "', " .
         "result_status = '" . oresData("form_result_status", $lino) . "'";
+		
+		
       if ($result_id) { // result already exists
         sqlStatement("UPDATE procedure_result SET $sets "  .
           "WHERE procedure_result_id = '$result_id'");
@@ -131,6 +144,7 @@ if ($_POST['form_submit'] && !empty($_POST['form_line'])) {
 	
       }
     }
+	
   } // end foreach
 	/* $codetype="Lab Fees";
   	$code="1002";
@@ -162,6 +176,9 @@ if ($_POST['form_submit'] && !empty($_POST['form_line'])) {
 	  "activity = '" . add_escape_custom($act) . "', " .
 	  "groupname = '" . add_escape_custom($grpn) . "', " .
       "provider_id = '" . add_escape_custom($provider_id) . "'"); */
+	
+	$encounter=$GLOBALS['encounter'];
+   sqlStatement("UPDATE procedure_order set order_status='complete' where encounter_id='".$encounter."'");
 	
 }
 ?>
@@ -392,27 +409,29 @@ if ($form_batch) {
  <tr class='head'>
   <td colspan='2'><?php echo $form_batch ? xl('Patient') : xl('Order'); ?></td>
   <td colspan='4'><?php xl('Report','e'); ?></td>
-  <td colspan='7'><?php xl('Results and','e'); ?> <span class='reccolor''>
+  <td colspan='8'><?php xl('Results and','e'); ?> <span class='reccolor''>
    <?php  xl('Recommendations','e'); ?></span></td>
  </tr>
 
  <tr class='head'>
   <td><?php echo $form_batch ? xl('Name') : xl('Date'); ?></td>
   <td><?php echo $form_batch ? xl('ID') : xl('Procedure Name'); ?></td>
-  <td><?php xl('Reported','e'); ?></td>
+  <td><?php xl('','e'); ?></td>
   <td><?php xl('Ext Time Collected','e'); ?></td>
-  <td><?php xl('Specimen','e'); ?></td>
-  <td><?php xl('Status','e'); ?></td>
+  <td><?php xl('','e'); ?></td>
+  <td><?php xl('','e'); ?></td>
   <td><?php xl('Code','e'); ?></td>
   <td><?php xl('Name','e'); ?></td>
   <td><?php xl('Abn','e'); ?></td>
   <td><?php xl('Value','e'); ?></td>
   <td><?php xl('Units', 'e'); ?></td>
   <td><?php xl('Range','e'); ?></td>
-  <td><?php xl('?','e'); ?></td>
+  <td><?php xl('Sent Outside','e'); ?></td>
+  <td><?php xl('Comment','e'); ?></td>
  </tr>
 
 <?php 
+$encounter=$_GET["encounter"] ? $_GET["encounter"] : $GLOBALS['encounter'];
 $selects =
   "po.procedure_order_id, po.date_ordered, pc.procedure_order_seq, " .
   "pt1.procedure_type_id AS order_type_id, pc.procedure_name, " .
@@ -450,8 +469,8 @@ else {
   $query = "SELECT $selects " .
   "FROM procedure_order AS po " .
   "$joins " .
-  "WHERE po.patient_id = '$pid' AND $where " .
-  "ORDER BY $orderby";
+  "WHERE po.patient_id = '$pid' AND po.encounter_id= '$encounter' AND $where " .
+  " group by order_type_id ORDER BY $orderby";
 }
 
 $res = sqlStatement($query);
@@ -464,16 +483,20 @@ $lino = 0;
 $extra_html = '';
 $lastrcn = '';
 $facilities = array();
+$today = date('Y-m-d H:i:s',strtotime("+0 days"));
+$today1 = date('Y-m-d H:i:s');
+
 
 while ($row = sqlFetchArray($res)) {
+	$status="final";
   $order_type_id  = empty($row['order_type_id'      ]) ? 0 : ($row['order_type_id' ] + 0);
   $order_id       = empty($row['procedure_order_id' ]) ? 0 : ($row['procedure_order_id' ] + 0);
   $order_seq      = empty($row['procedure_order_seq']) ? 0 : ($row['procedure_order_seq'] + 0);
   $report_id      = empty($row['procedure_report_id']) ? 0 : ($row['procedure_report_id'] + 0);
-  $date_report    = empty($row['date_report'     ]) ? '' : $row['date_report'];
-  $date_collected = empty($row['date_collected'  ]) ? '' : substr($row['date_collected'], 0, 16);
+  $date_report    = empty($row['date_report'     ]) ? $today : $row['date_report'];
+  $date_collected = empty($row['date_collected'  ]) ? $today1 : substr($row['date_collected'], 0, 16);
   $specimen_num   = empty($row['specimen_num'    ]) ? '' : $row['specimen_num'];
-  $report_status  = empty($row['report_status'   ]) ? '' : $row['report_status']; 
+  $report_status  = empty($row['report_status'   ]) ? $status: $row['report_status']; 
   $review_status  = empty($row['review_status'   ]) ? 'received' : $row['review_status'];
 
   // skip report_status = receive to make sure do not show the report before it reviewed and sign off by Physicians
@@ -488,7 +511,7 @@ while ($row = sqlFetchArray($res)) {
     "pt2.range AS pt2_range, pt2.procedure_type_id AS procedure_type_id, " .
     "pt2.name AS name, pt2.description, pt2.seq AS seq, " .
     "ps.procedure_result_id, ps.result_code AS result_code, ps.result_text, ps.abnormal, ps.result, " .
-    "ps.range, ps.result_status, ps.facility, ps.comments, ps.units, ps.comments";
+    "ps.range, ps.result_status, ps.facility, ps.comments, ps.units, ps.comments,ps.lab";
 
    // procedure_type_id for order:
   $pt2cond = "pt2.parent in( SELECT t1.procedure_type_id Grandparent
@@ -521,16 +544,18 @@ while ($row = sqlFetchArray($res)) {
 
   $rres = sqlStatement($query);
   while ($rrow = sqlFetchArray($rres)) {
+	  $status="no";
     $restyp_code      = empty($rrow['procedure_code'  ]) ? '' : $rrow['procedure_code'];
     $restyp_type      = empty($rrow['procedure_type'  ]) ? '' : $rrow['procedure_type'];
     $restyp_name      = empty($rrow['name'            ]) ? '' : $rrow['name'];
     $restyp_units     = empty($rrow['pt2_units'       ]) ? '' : $rrow['pt2_units'];
     $restyp_range     = empty($rrow['pt2_range'       ]) ? '' : $rrow['pt2_range'];
-
+    $res_seq          = empty($rrow['seq'       ]) ? '' : $rrow['seq'];
     $result_id        = empty($rrow['procedure_result_id']) ? 0 : ($rrow['procedure_result_id'] + 0);
     $result_code      = empty($rrow['result_code'     ]) ? $restyp_code : $rrow['result_code'];
     $result_text      = empty($rrow['result_text'     ]) ? $restyp_name : $rrow['result_text'];
-    $result_abnormal  = empty($rrow['abnormal'        ]) ? '' : $rrow['abnormal'];
+    $result_abnormal  = empty($rrow['abnormal'        ]) ? $status: $rrow['abnormal'];
+    $result_lab       = empty($rrow['lab'        ]) ? $status: $rrow['lab'];
     $result_result    = empty($rrow['result'          ]) ? '' : $rrow['result'];
     $result_units     = empty($rrow['units'           ]) ? $restyp_units : $rrow['units'];
     $result_facility  = empty($rrow['facility'        ]) ? '' : $rrow['facility'];
@@ -555,9 +580,9 @@ while ($row = sqlFetchArray($res)) {
       ++$encount;
       $lastrcn = '';
     }
-    $bgcolor = "#" . (($encount & 1) ? "ddddff" : "ffdddd");
+   // $bgcolor = "#" . (($encount & 1) ? "ddddff" : "ffdddd");
 
-    echo " <tr class='detail' bgcolor='$bgcolor'>\n";
+    echo " <tr class='detail' bgcolor='#ddddff'>\n";
 
     // Generate first 2 columns.
     if ($lastpoid != $order_id || $lastpcid != $order_seq) {
@@ -598,14 +623,14 @@ while ($row = sqlFetchArray($res)) {
     //
     if ($report_id != $lastprid) {
       echo "  <td nowrap>";
-      echo "<input type='text' size='8' name='form_date_report[$lino]'" .
+      echo "<input type='hidden' size='8' name='form_date_report[$lino]'" .
         " id='form_date_report[$lino]' class='celltextfw' value='" . attr($date_report) . "' " .
         " title='" . xl('Date of this report') . "'" .
         " onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)'" .
         " />";
-      echo "<span class='bold' id='q_date_report[$lino]' style='cursor:pointer' " .
-        "title='" . xl('Click here to choose a date') . "' />?</span>";
-      echo "</td>\n";
+      /*echo "<span class='bold' id='q_date_report[$lino]' style='cursor:pointer' " .
+        "title='" . xl('Click here to choose a date') . "' />?</span>"; */
+      echo "</td>\n"; 
 
       echo "  <td nowrap>";
       echo "<input type='text' size='13' name='form_date_collected[$lino]'" .
@@ -618,16 +643,16 @@ while ($row = sqlFetchArray($res)) {
         "title='" . xl('Click here to choose a date and time') . "' />?</span>";
       echo "</td>\n";
 
-      echo "  <td>";
-      echo "<input type='text' size='8' name='form_specimen_num[$lino]'" .
+         echo "  <td>";
+      /*echo "<input type='text' size='8' name='form_specimen_num[$lino]'" .
         " class='celltext' value='" . attr($specimen_num) . "' " .
         " title='" . xl('Specimen number/identifier') . "'" .
-        " />";
-      echo "</td>\n";
+        " />"; */
+      echo "</td>\n"; 
 
       echo "  <td>";
-      echo generate_select_list("form_report_status[$lino]", 'proc_rep_status',
-        $report_status, xl('Report Status'), ' ', 'cellselect');
+     /* echo generate_select_list("form_report_status[$lino]", 'proc_rep_status',
+        $report_status, xl('Report Status'), ' ', 'cellselect'); */
       echo "</td>\n";
     }
     else {
@@ -642,11 +667,15 @@ while ($row = sqlFetchArray($res)) {
     echo "  <td>" .
       "<input type='text' size='16' name='form_result_text[$lino]'" .
       " class='celltext' value='" . attr($result_text) . "' />";
+	  echo "<input type='hidden' size='8' name='form_seq_num[$lino]'" .
+        " class='celltext' value='" . attr($res_seq) . "' " .
+        " title='" . xl('Sequence') . "'" .
+        " />";
       "</td>\n";
 
     echo "  <td>";
     echo generate_select_list("form_result_abnormal[$lino]", 'proc_res_abnormal',
-      $result_abnormal, xl('Indicates abnormality'), ' ', 'cellselect');
+      $result_abnormal, xl('Indicates abnormality'), ' ', 'cellselect'); 
     echo "</td>\n";
 
     echo "  <td>";
@@ -676,8 +705,15 @@ while ($row = sqlFetchArray($res)) {
     echo "<input type='hidden' name='form_line[$lino]' " .
       "value='$order_id:$order_seq:$report_id:$result_id' />";
     echo "</td>\n";
+	
+	
 
-    echo "  <td class='bold' style='cursor:pointer' " .
+   echo "  <td>";
+    echo generate_select_list("form_result_lab[$lino]", 'proc_res_abnormal',
+      $result_lab, xl(''), ' ', 'cellselect'); 
+    echo "</td>\n";
+	
+	 echo "  <td class='bold' style='cursor:pointer' " .
       "onclick='extShow($lino, this)' align='center' " .
       "title='" . xl('Click here to view/edit more details') . "'>";
     echo "&nbsp;?&nbsp;";
@@ -750,20 +786,20 @@ if (!empty($facilities)) {
 <?php
 if ($form_review) {
  // if user authorized for pending review.
- if ($reviewauth) {
+ //if ($reviewauth) { 
  ?>
   <center><p>
    <input type='submit' name='form_submit' value='<?php xl('Sign Results','e'); ?>' />
   </p></center>
  <?php
- }
- else {
+ //}
+/* else {
  ?>
   <center><p>
    <input type='button' name='form_submit' value='<?php xl('Sign Results','e'); ?>' onclick="alert('<?php xl('Not authorized to Sign Results','e') ?>');" />
   </p></center>
  <?php
- }
+ } */
 }
 else {
 ?>
@@ -798,7 +834,16 @@ for (var lino = 0; f['form_line['+lino+']']; ++lino) {
    button:'q_date_collected['+lino+']', showsTime:true});
  }
 }
+$(document).ready(function(){
 
+//$("tr.detail td:nth-child(5)").css("display","none");
+
+
+//$("tr td:nth-child(7)").css("display","none");
+//$("tr td:nth-child(3)").css("display","none");
+//$("tr td:nth-child(6)").css("display","none");
+//$("tr td:nth-child(9)").css("display","none");
+});
 </script>
 
 </form>
