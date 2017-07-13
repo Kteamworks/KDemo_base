@@ -154,6 +154,7 @@ if ($_POST['form_save']) {
     "`range` = "        . invalue('form_range')          . ", " .
     "standard_code = "  . invalue('form_standard_code')  . ", " .
     "related_code = "   . invalue('form_related_code')   . ", " .
+	"notes_test = "   . invalue('form_related_notes')   . ", " .
     "seq = "            . invalue('form_seq');
 
   if ($typeid) {
@@ -366,7 +367,15 @@ generate_form_field(array('data_type' => 1, 'field_id' => 'units',
     style='width:100%' readonly />
   </td>
  </tr>
-
+<tr class='resonly'>
+  <td nowrap><b><?php echo xlt('Notes'); ?>:</b></td>
+  <td>
+   <input type='text' size='255' name='form_related_notes'
+    value='<?php echo htmlspecialchars($row['notes_test'], ENT_QUOTES);?>'
+    title='<?php echo xla('Enter the notes which is required'); ?>'
+    style='width:100%' class='inputtext' />
+  </td>
+ </tr>
 </table>
 
 <br />

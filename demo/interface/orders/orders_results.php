@@ -415,7 +415,7 @@ if ($form_batch) {
 <?php 
 $selects =
   "po.procedure_order_id, po.date_ordered, pc.procedure_order_seq, " .
-  "pt1.procedure_type_id AS order_type_id, pc.procedure_name, " .
+  "pt1.procedure_type_id AS order_type_id,pt1.notes_test, pc.procedure_name, " .
   "pr.procedure_report_id, pr.date_report, pr.date_collected, pr.specimen_num, " .
   "pr.report_status, pr.review_status";
 
@@ -467,6 +467,7 @@ $facilities = array();
 
 while ($row = sqlFetchArray($res)) {
   $order_type_id  = empty($row['order_type_id'      ]) ? 0 : ($row['order_type_id' ] + 0);
+  //$notes_test = empty($row['notes_test'      ]) ? 0 : ($row['notes_test' ] + 0);
   $order_id       = empty($row['procedure_order_id' ]) ? 0 : ($row['procedure_order_id' ] + 0);
   $order_seq      = empty($row['procedure_order_seq']) ? 0 : ($row['procedure_order_seq'] + 0);
   $report_id      = empty($row['procedure_report_id']) ? 0 : ($row['procedure_report_id'] + 0);
@@ -485,7 +486,7 @@ while ($row = sqlFetchArray($res)) {
   }
 
   $selects = "pt2.procedure_type, pt2.procedure_code, pt2.units AS pt2_units, " .
-    "pt2.range AS pt2_range, pt2.procedure_type_id AS procedure_type_id, " .
+    "pt2.range AS pt2_range, pt2.procedure_type_id AS procedure_type_id,pt2.notes_test AS notes_test, " .
     "pt2.name AS name, pt2.description, pt2.seq AS seq, " .
     "ps.procedure_result_id, ps.result_code AS result_code, ps.result_text, ps.abnormal, ps.result, " .
     "ps.range, ps.result_status, ps.facility, ps.comments, ps.units, ps.comments";
@@ -526,7 +527,7 @@ while ($row = sqlFetchArray($res)) {
     $restyp_name      = empty($rrow['name'            ]) ? '' : $rrow['name'];
     $restyp_units     = empty($rrow['pt2_units'       ]) ? '' : $rrow['pt2_units'];
     $restyp_range     = empty($rrow['pt2_range'       ]) ? '' : $rrow['pt2_range'];
-
+    $notes_test     = empty($rrow['notes_test'       ]) ? '' : $rrow['notes_test'];
     $result_id        = empty($rrow['procedure_result_id']) ? 0 : ($rrow['procedure_result_id'] + 0);
     $result_code      = empty($rrow['result_code'     ]) ? $restyp_code : $rrow['result_code'];
     $result_text      = empty($rrow['result_text'     ]) ? $restyp_name : $rrow['result_text'];
@@ -534,7 +535,7 @@ while ($row = sqlFetchArray($res)) {
     $result_result    = empty($rrow['result'          ]) ? '' : $rrow['result'];
     $result_units     = empty($rrow['units'           ]) ? $restyp_units : $rrow['units'];
     $result_facility  = empty($rrow['facility'        ]) ? '' : $rrow['facility'];
-    $result_comments  = empty($rrow['comments'        ]) ? '' : $rrow['comments'];
+    $result_comments  = empty($rrow['comments'        ]) ? $notes_test : $rrow['comments'];
     $result_range     = empty($rrow['range'           ]) ? $restyp_range : $rrow['range'];
     $result_status    = empty($rrow['result_status'   ]) ? '' : $rrow['result_status'];
 
