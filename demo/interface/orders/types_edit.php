@@ -370,10 +370,15 @@ generate_form_field(array('data_type' => 1, 'field_id' => 'units',
 <tr class='resonly'>
   <td nowrap><b><?php echo xlt('Notes'); ?>:</b></td>
   <td>
-   <input type='text' size='255' name='form_related_notes'
+  <textarea rows='5' cols='15' name='form_related_notes'
+    title='<?php echo xla('Enter the notes which is required'); ?>'
+      style='width:100%' class='inputtext' /> 
+	  <?php echo htmlspecialchars($row['notes_test'], ENT_QUOTES);?>
+      </textarea>
+   <!--<input type='text' size='255' name='form_related_notes'
     value='<?php echo htmlspecialchars($row['notes_test'], ENT_QUOTES);?>'
     title='<?php echo xla('Enter the notes which is required'); ?>'
-    style='width:100%' class='inputtext' />
+    style='width:100%' class='inputtext' />-->
   </td>
  </tr>
 </table>
