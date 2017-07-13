@@ -102,7 +102,13 @@ global $ignoreAuth;
  $startampm = '';
  $info_msg = "";
  // If we are saving, then save and close the window.
- //
+ if (isset($_POST) && count($_POST)>0 )
+{  //here iam trying to store it but it is not working as shows undefined functions
+  $sql = "INSERT INTO paytm_txn_details (MID, ORDERID, TXNAMOUNT, CURRENCY, TXNID, BANKTXNID, STATUS, RESPCODE, RESPMSG, TXNDATE, GATEWAYNAME, BANKNAME, PAYMENTMODE) 
+        VALUES ('".$_POST['MID']."', '".$_POST['ORDERID']."', '".$_POST['TXNAMOUNT']."', '".$_POST['CURRENCY']."', '".$_POST['TXNID']."', '".$_POST['BANKTXNID']."', '".$_POST['STATUS']."', '".$_POST['RESPCODE']."', '".$_POST['RESPMSG']."', '".$_POST['TXNDATE']."', '".$_POST['GATEWAYNAME']."', '".$_POST['BANKNAME']."', '".$_POST['PAYMENTMODE']."')";  
+        $result = sqlQuery($sql); 
+ 
+}
  if ($_POST['form_action'] == "save") {
 	 
 	 
@@ -343,14 +349,116 @@ sqlInsert("INSERT INTO openemr_postcalendar_events ( " .
   if ($starttimeh > 12) $starttimeh -= 12;
  }
 ?>
+<!DOCTYPE html>
 <html>
 <head>
-<?php html_header_show(); ?>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <title><?php echo $eid ? xlt('Edit') : xlt('Add New') ?> <?php echo xlt('Event');?></title>
-<link rel="stylesheet" href='<?php echo $css_header ?>' type='text/css'>
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <!-- Bootstrap 3.3.6 -->
+  <link rel="stylesheet" href="../library/css/bootstrap.min.css">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="../library/dist/css/AdminLTE.min.css">
+  <!-- AdminLTE Skins. Choose a skin from the css/skins
+       folder instead of downloading all of them to reduce the load. -->
+  <link rel="stylesheet" href="../library/dist/css/skins/_all-skins.min.css">
+<?php html_header_show(); ?>
+
 
 <style>
-td { font-size:0.8em; }
+#loading {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: rgba(0,0,0,.5);
+	background-image: url('gifloader.gif');
+	background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center; 
+    -webkit-transition: all .5s ease;
+    z-index: 1000;
+    display:none;
+}
+.navbar-nav > .user-menu .user-image {
+
+    background-color: white;
+}
+.img-circle {
+	    background-color: white;
+}
+* {
+    box-sizing: border-box;
+}
+
+/* Create three columns of equal width */
+.columns {
+    float: right;
+    padding: 8px;
+}
+
+/* Style the list */
+.price {
+    list-style-type: none;
+    border: 1px solid #eee;
+    margin: 0;
+    padding: 0;
+    -webkit-transition: 0.3s;
+    transition: 0.3s;
+}
+
+/* Add shadows on hover */
+.price:hover {
+    box-shadow: 0 8px 12px 0 rgba(0,0,0,0.2)
+}
+ul.price li {
+	display:inline;
+}
+/* Pricing header */
+.price .header {
+    background-color: #111;
+    color: white;
+    font-size: 20px;
+}
+
+/* List items */
+.price li {
+    border-bottom: 1px solid #eee;
+    padding: 14px;
+    text-align: center;
+}
+
+/* Grey list item */
+.price .grey {
+    background-color: #eee;
+    font-size: 20px;
+}
+
+/* The "Sign Up" button */
+.button {
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 10px 25px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 18px;
+}
+
+/* Change the width of the three columns to 100% 
+(to stack horizontally on small screens) */
+@media only screen and (max-width: 600px) {
+    .columns {
+        width: 100%;
+    }
+}
 </style>
 
 <style type="text/css">@import url(../library/dynarch_calendar.css);</style>
@@ -408,8 +516,31 @@ td { font-size:0.8em; }
   dobstyle = (dob == '' || dob.substr(5, 10) == '00-00') ? '' : 'none';
   document.getElementById('dob_row').style.display = dobstyle;
  }
- function change_provider(){
-  var f = document.forms[0];
+ function change_provider(doctor){
+	 var sel = doctor.value;
+	 		        $.ajax({
+                // Where to send request
+                url: 'doctor.price.php',
+                // What to send
+                data: { did: sel },
+                // How to send
+                type: 'post',
+                // What to do when request succeeds
+                success: function(response) {
+                    // Save the contents of the response into
+                    // whatever has the id="list"
+					if(response) {
+
+                    $("#price").html(response);
+											$("#save_btn").prop("disabled",true);
+					}
+					else {
+						$("#save_btn").prop("disabled",false);
+						$("#doctor_price_list").remove();
+					}
+                }
+        });
+	  var f = document.forms[0];
   f.form_date.value='';
   f.form_hour.value='';
   f.form_minute.value='';
@@ -524,6 +655,13 @@ td { font-size:0.8em; }
   } else if (f.form_category.value=='10') {
 	unsetpatient();	
   }
+   // var form_category = $("#form_category").val(); 
+ // var form_date = $("#form_date").val();
+ // var form_title = $("#form_title").val();
+ //   var form_hour = $("#form_hour").val();
+//	  var form_minute = $("#form_minute").val();
+//	    var form_ampm = $("#form_ampm").val();
+
   var form_action = document.getElementById('form_action');
   form_action.value="save";
   f.submit();
@@ -540,37 +678,178 @@ td { font-size:0.8em; }
     return false;
  }
 </script>
- <style type="text/css">
  
-body {
-    font-family: sans-serif;
-    background-color: #638fd0;
-    
-    background: -webkit-radial-gradient(circle, white, #638fd0);
-    background: -moz-radial-gradient(circle, white, #638fd0);
-}
- 
-h1 {
-    color:#638fd0;
-    font-family:Impact;
-    font-weight: bold;
-    font-size:200%;
-}
-td {
-    color:#FFFFFF;
-    font-family:"arial black";
-    font-weight: bold;
-}
- </style>
 </head>
 
-<body onunload='imclosing()' onload='categoryChanged()'>
+<body onunload='imclosing()' onload='categoryChanged()' class="hold-transition skin-blue layout-top-nav">
+<div id="loading"></div>
+<div class="wrapper">
 
+<?php
+ $result = getPatientData($pid);
+?>
+  <header class="main-header">
+    <nav class="navbar navbar-static-top">
+      <div class="container">
+        <div class="navbar-header">
+          <a href="#" class="navbar-brand"><b>Med</b>Smart</a>
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
+            <i class="fa fa-bars"></i>
+          </button>
+        </div>
+
+        <!-- Navbar Right Menu -->
+        <div class="navbar-custom-menu">
+          <ul class="nav navbar-nav">
+           
+            <!-- Notifications Menu -->
+            <li class="dropdown notifications-menu">
+              <!-- Menu toggle button -->
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                <i class="fa fa-bell-o"></i>
+                <span class="label label-warning">10</span>
+              </a>
+              <ul class="dropdown-menu">
+                <li class="header">You have 10 notifications</li>
+                <li>
+                  <!-- Inner Menu: contains the notifications -->
+                  <ul class="menu">
+                    <li><!-- start notification -->
+                      <a href="#">
+                        <i class="fa fa-users text-aqua"></i> 5 new members joined today
+                      </a>
+                    </li>
+                    <!-- end notification -->
+                  </ul>
+                </li>
+                <li class="footer"><a href="#">View all</a></li>
+              </ul>
+            </li>
+           
+            <!-- User Account Menu -->
+            <li class="dropdown user user-menu">
+              <!-- Menu Toggle Button -->
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                <!-- The user image in the navbar-->
+                <img src="../library/dist/img/male_user.png" class="user-image" alt="User Image">
+                <!-- hidden-xs hides the username on small devices so only the image appears. -->
+                <span class="hidden-xs"><?php echo htmlspecialchars($result['fname']." ".$result['lname'],ENT_NOQUOTES); ?></span>
+              </a>
+              <ul class="dropdown-menu">
+                <!-- The user image in the menu -->
+                <li class="user-header">
+                  <img src="../library/dist/img/male_user.png" class="img-circle" alt="User Image">
+
+                  <p>
+                    <?php echo htmlspecialchars($result['fname']." ".$result['lname'],ENT_NOQUOTES); ?>
+                    <small><?php echo htmlspecialchars($result['genericname1'],ENT_NOQUOTES); ?></small>
+                  </p>
+                </li>
+                <!-- Menu Body -->
+                <li class="user-body">
+
+                </li>
+                <!-- Menu Footer-->
+                <li class="user-footer">
+                  <div class="pull-left">
+				  
+<input type="button" style="text-align: right;" class="btn btn-default btn-flat" value="<?php echo xl('Change Password'); ?>" onclick="window.location = '<?php echo $landingpage."&password_update=1";?>'"/>
+
+                    </div>
+                  <div class="pull-right">
+				  <input type="button" style="text-align: right;" class="btn btn-default btn-flat" value="<?php echo xl('Log Out'); ?>" onclick="window.location = 'logout.php'"/>
+
+                     </div>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+        <!-- /.navbar-custom-menu -->
+      </div>
+      <!-- /.container-fluid -->
+    </nav>
+  </header>
+  <!-- Full Width Column -->
+  <div class="content-wrapper">
+    <div class="container">
+      <!-- Content Header (Page header) -->
+      <section class="content-header">
+        <h1>
+          <?php echo htmlspecialchars( xl('Welcome'), ENT_NOQUOTES); ?> <b><?php echo htmlspecialchars($result['fname']." ".$result['lname'],ENT_NOQUOTES); ?></b>
+
+        </h1>
+        <ol class="breadcrumb">
+          <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+		  <li><a href="<?php echo $GLOBALS['webroot'] ?>/patients/get_patient_info.php">Patient Portal</a></li>
+          <li class="active">New Appointment</li>
+        </ol>
+      </section>
+
+
+      <!-- Main content -->
+      <section class="content">
+        <?php if(isset($_POST['STATUS'])) { 
+		$eid_ret = $_POST['ORDERID'];
+		$n_str = str_replace("ORDS","",$eid_ret);
+		$str = ltrim($n_str, '0');
+		 if ($_POST['STATUS'] == "TXN_SUCCESS") {
+			 		
+		$event_data = sqlQuery("SELECT * from openemr_postcalendar_events WHERE pc_eid='$str'");
+		$doc_id = $event_data['pc_aid'];
+		$doctor_name = sqlQuery("SELECT * from users WHERE id='$doc_id'");
+		$d_name = 'Dr '.$doctor_name['fname'].' '.$doctor_name['lname'];
+			 $user = 'kavaii';
+ $password = '12345';
+ $sender_id = 'KAVAII';//helloz welcom FAPcop abhiii'hiiiii
+ $sender = $pn_no;//9673776599 9320491970
+ $msg = 'City Hospital- Appointment Confirmed with '.$d_name.' at ';
+ $msg.=$event_data['pc_startTime'];
+ $msg.=' hrs on ';
+ $msg.=$event_data['pc_eventDate'];
+ $priority = 'sdnd';
+ $sms_type = 'normal';
+ //$data = array('user'=>$user, 'pass'=>$password, 'sender'=>$sender_id, 'phone'=>$sender, 'text'=>$msg,  'stype'=>$sms_type);//'priority'=>$priority,
+ $data='user='.$user.'&pass='.$password.'&sender='.$sender_id.'&phone='.$sender.'&text='.$msg.'&stype='.$sms_type.'&priority=sdnd'; 
+ 
+ //http://bhashsms.com/api/sendmsg.php?user='kavaii'&pass='12345'&sender='KAVAII'&phone='9782364064'&text='Hii'&stype='normal'&priority='sdnd'
+ 
+ //http://bhashsms.com/api/sendmsg.php?user=kavaii&pass=12345&sender=kavaii%20&phone=9731960662%20&text=hii%20&priority=sdnd&stype=normal
+ $ch = curl_init('http://bhashsms.com/api/sendmsg.php?'.$data);
+ curl_setopt($ch, CURLOPT_POST, true);
+ curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+ curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+ try {
+  $response = curl_exec($ch);
+
+  curl_close($ch);
+ }catch(Exception $e){
+  echo 'Message: ' .$e->getMessage();
+ }
+
+		?>
+			<!-- check whether success or not -->
+
+        <div class="alert alert-success alert-dismissable">
+            <i class="fa  fa-check-circle"></i>
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            <b>Success!</b> Your Appointment has been confirmed with <?php echo $d_name; ?> at <?php echo $event_data['pc_startTime'] ?> hrs on <?php echo $event_data['pc_eventDate'] ?>
+        </div>
+		 <?php } else { 
+		 sqlQuery("DELETE FROM openemr_postcalendar_events WHERE pc_eid='$str'");
+		 ?>
+        <div class="alert alert-danger alert-dismissable">
+            <i class="fa  fa-times-circle-o"></i>
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            <b>Transaction Failed!</b> <?php echo $_POST['RESPMSG']; ?>
+        </div>
+		<?php } } ?> 
 <form method='post' name='theform' id='theform' action='add_edit_event_user.php?eid=<?php echo attr($eid) ?>' onsubmit='return top.restoreSession()' />
 <input type="hidden" name="form_action" id="form_action" value="">
 <center>
 
-<table border='0' width='100%'>
+<table border='0' width='100%' class="table">
 
  <tr>
   <td width='1%' nowrap>
@@ -595,7 +874,7 @@ td {
    <b><?php echo xlt('Title'); ?>:</b>
   </td>
   <td nowrap>
-   <input type='text' size='5' name='form_title' value='<?php echo attr($appt_title) ?>' readonly='readonly'
+   <input type='text' size='5' name='form_title' id='form_title' value='<?php echo attr($appt_title) ?>' readonly='readonly'
     style='width:100%'
     title='<?php echo xla('Event title'); ?>' />
   </td>
@@ -636,7 +915,7 @@ td {
 
  <tr>
   <td nowrap>
-   <b><?php echo xlt('Provider'); ?>:</b>
+   <b><?php echo xlt('Doctor'); ?>:</b>
   </td>
   <td nowrap>
    <?php
@@ -657,13 +936,13 @@ td {
       // if we clicked on a provider's schedule to add the event, use THAT.
       if ($userid) $defaultProvider = $userid;
     }
-        echo "<select name='form_provider' onchange='change_provider();' style='width:100%' />";
+        echo "<select name='form_provider' id='form_provider' onchange='change_provider(this);' style='width:100%' />";
         while ($urow = sqlFetchArray($ures)) {
             echo "    <option value='" . attr($urow['id']) . "'";
             if ($urow['id'] == $defaultProvider) echo " selected";
             #if (($urow['id'] == $_GET['userid'])||($urow['id']== $userid)) echo " selected"; 
-            echo ">" . text($urow['lname']);
-            if ($urow['fname']) echo ", " . text($urow['fname']);
+            echo ">" . text($urow['fname']);
+            if ($urow['fname']) echo " " . text($urow['lname']);
             echo "</option>\n";
         }
         echo "</select>";
@@ -679,24 +958,53 @@ td {
 	<input type='text' size='40' name='form_comments' style='width:100%' value='<?php echo attr($hometext); ?>' title='<?php echo xla('Optional information about this event');?>' />
   </td>
  </tr>
-
 </table>
-
+<div class="columns row" id="price">
+</div>
+<div class="row">
 <p>
-<input type='button' name='form_save' value='<?php echo xla('Save');?>' onclick="validate()" />
+<input type='button' name='form_save' id='save_btn' class='btn btn-primary' value='<?php echo xla('Save');?>' onclick="validate()" />
 &nbsp;
-<input type='button' value='<?php echo xla('Find Open Appointment');?>' onclick='find_available()' />
+<input type='button' class='btn btn-info' value='<?php echo xla('Find Open Appointment');?>' onclick='find_available()' />
 &nbsp;
 <?php
 if($eid) {
 ?>
-<input type='button' value='<?php echo xla('Delete');?>' onclick='deleteEvent()' />
+<input type='button' class='btn btn-danger' value='<?php echo xla('Delete');?>' onclick='deleteEvent()' />
 &nbsp;
 <?php } ?>
-<input type='button' value='<?php echo xla('Cancel');?>' onclick='parent.$.fn.fancybox.close()' />
+<input type='button' class='btn btn-warning' value='<?php echo xla('Cancel');?>' onclick='parent.$.fn.fancybox.close()' />
 </p>
+</div>
 </center>
 </form>
 
+      </section>
+      <!-- /.content -->
+    </div>
+    <!-- /.container -->
+  </div>
+  <!-- /.content-wrapper -->
+  <footer class="main-footer">
+    <div class="container">
+      <div class="pull-right hidden-xs">
+        <b>Version</b> 1.3
+      </div>
+      <strong>Copyright &copy; 2013-2017 <a href="http://medsmart.com">MedSmart</a>.</strong> All rights
+      reserved.
+    </div>
+    <!-- /.container -->
+  </footer>
+</div>
+<!-- ./wrapper -->
+
+<!-- jQuery 2.2.3 -->
+<script src="../library/dist/jQuery/jquery-2.2.3.min.js"></script>
+<!-- Bootstrap 3.3.6 -->
+<script src="../library/js/bootstrap.min.js"></script>
+<!-- FastClick -->
+<script src="../plugins/fastclick/fastclick.js"></script>
+<!-- AdminLTE App -->
+<script src="../library/dist/js/app.min.js"></script>
 </body>
 </html>

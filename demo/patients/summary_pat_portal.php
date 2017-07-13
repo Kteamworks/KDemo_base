@@ -50,11 +50,55 @@ global $ignoreAuth;
  include_once("$srcdir/lists.inc");
 
 ?>
+<!DOCTYPE html>
 <html>
-
 <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Patient | Portal</title>
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <!-- Bootstrap 3.3.6 -->
+  <link rel="stylesheet" href="../library/css/bootstrap.min.css">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="../library/dist/css/AdminLTE.min.css">
+  <!-- AdminLTE Skins. Choose a skin from the css/skins
+       folder instead of downloading all of them to reduce the load. -->
+  <link rel="stylesheet" href="../library/dist/css/skins/_all-skins.min.css">
+<style>
+.navbar-nav > .user-menu .user-image {
+
+    background-color: white;
+}
+.img-circle {
+	    background-color: white;
+}
+.small {
+	font-size: 100%;
+}
+a.edit_event {
+position: absolute;
+margin: 10px;
+left: 22%;
+top: 49%;
+font-size: 20px;
+
+}
+a.edit_event:before {
+	float: right;
+content: "\f055";
+font-family: FontAwesome;
+left: -5px;
+position: absolute;
+top: 0;
+}
+</style>
 <?php html_header_show(); ?>
-<link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
+
 <link rel="stylesheet" type="text/css" href="<?php echo $web_root; ?>/library/js/fancybox/jquery.fancybox-1.2.6.css" media="screen" />
 <link rel="stylesheet" type="text/css" href="<?php echo $web_root; ?>/library/dynarch_calendar.css">
 <script type="text/javascript" src="<?php echo $web_root; ?>/library/textformat.js"></script>
@@ -369,24 +413,120 @@ $(document).ready(function(){
 </script>
 
 </head>
-<title><?php echo xlt('Patient Information'); ?></title>
-<body class="body_top">
-
-<div id="wrapper" class="lefttop" style="width: 700px;">
-<h2 class="heading"><?php echo htmlspecialchars( xl('Patient Portal'), ENT_NOQUOTES); ?></h2>
+<!-- ADD THE CLASS layout-top-nav TO REMOVE THE SIDEBAR. -->
+<body class="hold-transition skin-blue layout-top-nav">
+<div class="wrapper">
 
 <?php
  $result = getPatientData($pid);
 ?>
-<?php echo htmlspecialchars( xl('Welcome'), ENT_NOQUOTES); ?> <b><?php echo htmlspecialchars($result['fname']." ".$result['lname'],ENT_NOQUOTES); ?></b>
+  <header class="main-header">
+    <nav class="navbar navbar-static-top">
+      <div class="container">
+        <div class="navbar-header">
+          <a href="#" class="navbar-brand"><b>Med</b>Smart</a>
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
+            <i class="fa fa-bars"></i>
+          </button>
+        </div>
 
-<div style='margin-top:10px'> <!-- start main content div -->
+        <!-- Navbar Right Menu -->
+        <div class="navbar-custom-menu">
+          <ul class="nav navbar-nav">
+           
+            <!-- Notifications Menu -->
+            <li class="dropdown notifications-menu">
+              <!-- Menu toggle button -->
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                <i class="fa fa-bell-o"></i>
+                <span class="label label-warning">10</span>
+              </a>
+              <ul class="dropdown-menu">
+                <li class="header">You have 10 notifications</li>
+                <li>
+                  <!-- Inner Menu: contains the notifications -->
+                  <ul class="menu">
+                    <li><!-- start notification -->
+                      <a href="#">
+                        <i class="fa fa-users text-aqua"></i> 5 new members joined today
+                      </a>
+                    </li>
+                    <!-- end notification -->
+                  </ul>
+                </li>
+                <li class="footer"><a href="#">View all</a></li>
+              </ul>
+            </li>
+           
+            <!-- User Account Menu -->
+            <li class="dropdown user user-menu">
+              <!-- Menu Toggle Button -->
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                <!-- The user image in the navbar-->
+                <img src="../library/dist/img/male_user.png" class="user-image" alt="User Image">
+                <!-- hidden-xs hides the username on small devices so only the image appears. -->
+                <span class="hidden-xs"><?php echo htmlspecialchars($result['fname']." ".$result['lname'],ENT_NOQUOTES); ?></span>
+              </a>
+              <ul class="dropdown-menu">
+                <!-- The user image in the menu -->
+                <li class="user-header">
+                  <img src="../library/dist/img/male_user.png" class="img-circle" alt="User Image">
+
+                  <p>
+                    <?php echo htmlspecialchars($result['fname']." ".$result['lname'],ENT_NOQUOTES); ?>
+                    <small><?php echo htmlspecialchars($result['genericname1'],ENT_NOQUOTES); ?></small>
+                  </p>
+                </li>
+                <!-- Menu Body -->
+                <li class="user-body">
+
+                </li>
+                <!-- Menu Footer-->
+                <li class="user-footer">
+                  <div class="pull-left">
+				  
+<input type="button" style="text-align: right;" class="btn btn-default btn-flat" value="<?php echo xl('Change Password'); ?>" onclick="window.location = '<?php echo $landingpage."&password_update=1";?>'"/>
+
+                    </div>
+                  <div class="pull-right">
+				  <input type="button" style="text-align: right;" class="btn btn-default btn-flat" value="<?php echo xl('Log Out'); ?>" onclick="window.location = 'logout.php'"/>
+
+                     </div>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+        <!-- /.navbar-custom-menu -->
+      </div>
+      <!-- /.container-fluid -->
+    </nav>
+  </header>
+  <!-- Full Width Column -->
+  <div class="content-wrapper">
+    <div class="container">
+      <!-- Content Header (Page header) -->
+      <section class="content-header">
+        <h1>
+          <?php echo htmlspecialchars( xl('Welcome'), ENT_NOQUOTES); ?> <b><?php echo htmlspecialchars($result['fname']." ".$result['lname'],ENT_NOQUOTES); ?></b>
+
+        </h1>
+        <ol class="breadcrumb">
+          <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+          <li class="active">Patient Portal</li>
+        </ol>
+      </section>
+
+
+      <!-- Main content -->
+      <section class="content">
+        
  <table border="0" cellspacing="0" cellpadding="0" width="100%">
   <tr>
    <td align="left" valign="top">
     <!-- start left column div -->
     <div style='float:left; margin-right:20px'>
-     <table cellspacing=0 cellpadding=0>
+     <table class="table table-striped" cellspacing=0 cellpadding=0>
       <?php if ( $GLOBALS['activate_ccr_ccd_report'] ) { // show CCR/CCD reporting options ?>
        <tr>
         <td width='650px'>
@@ -637,7 +777,7 @@ expand_collapse_widget($widgetTitle, $widgetLabel, $widgetButtonLabel,
 	// appointments expand collapse widget
 	$widgetTitle = xl("Appointments");
 	$widgetLabel = "appointments";
-	$widgetButtonLabel = xl("Add");
+	$widgetButtonLabel = xl("");
         $widgetButtonLink = "add_edit_event_user.php?pid=".htmlspecialchars($pid, ENT_QUOTES);
         $widgetButtonClass = "edit_event iframe";
 	$linkMethod = "";
@@ -670,14 +810,32 @@ expand_collapse_widget($widgetTitle, $widgetLabel, $widgetButtonLabel,
  </tr>
 </table>
 
-</div> <!-- end main content div -->
+      </section>
+      <!-- /.content -->
+    </div>
+    <!-- /.container -->
+  </div>
+  <!-- /.content-wrapper -->
+  <footer class="main-footer">
+    <div class="container">
+      <div class="pull-right hidden-xs">
+        <b>Version</b> 1.3
+      </div>
+      <strong>Copyright &copy; 2013-2017 <a href="http://medsmart.com">MedSmart</a>.</strong> All rights
+      reserved.
+    </div>
+    <!-- /.container -->
+  </footer>
+</div>
+<!-- ./wrapper -->
 
-<input type="button" style="text-align: right;" value="<?php echo xl('Log Out'); ?>" onclick="window.location = 'logout.php'"/>
-
-<input type="button" style="text-align: right;" value="<?php echo xl('Change Password'); ?>" onclick="window.location = '<?php echo $landingpage."&password_update=1";?>'"/>
-
-
-</wrapper>
-
+<!-- jQuery 2.2.3 -->
+<script src="../library/dist/jQuery/jquery-2.2.3.min.js"></script>
+<!-- Bootstrap 3.3.6 -->
+<script src="../library/js/bootstrap.min.js"></script>
+<!-- FastClick -->
+<script src="../plugins/fastclick/fastclick.js"></script>
+<!-- AdminLTE App -->
+<script src="../library/dist/js/app.min.js"></script>
 </body>
 </html>

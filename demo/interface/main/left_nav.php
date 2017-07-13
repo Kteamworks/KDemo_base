@@ -120,6 +120,7 @@ use ESign\Api;
   'orc' => array(xl('Proc Load') , 0, 'orders/load_compendium.php'),
   'orb' => array(xl('Proc Bat')  , 0, 'orders/orders_results.php?batch=1'),
   'ore' => array(xl('E-Reports') , 0, 'orders/list_reports.php'),
+    'oro' => array(xl('E-Reports') , 0, 'orders/a.php'),
   'ppo' => array(xl('CMS Portal'), 0, 'cmsportal/list_requests.php'),
   'cht' => array(xl('Chart Trk') , 0, '../custom/chart_tracker.php'),
   'imp' => array(xl('Import')    , 0, '../custom/import.php'),
@@ -1776,6 +1777,7 @@ $newcrop_user_role=sqlQuery("select newcrop_user_role from users where username=
 	  <?php genMiscLink('RTop','fin','0',xl('Lab Specific'),'main/finder/p_dynamic_finder_lab.php'); ?>
 	   <?php genMiscLink('RTop','fin','0',xl('Lab Review'),'main/finder/p_dynamic_finder_lab_report_review.php'); ?>
 	   <?php genMiscLink('RTop','fin','0',xl('Lab Report'),'main/finder/p_dynamic_finder_lab_report.php'); ?>
+	     <?php genTreeLink('RTop','oro',xl('Outside Lab')); ?>
       <?php genTreeLink('RTop','orl',xl('Providers')); ?>
       <?php genTreeLink('RTop','ort',xl('Configuration')); ?>
       <?php genTreeLink('RTop','orc',xl('Load Compendium')); ?>

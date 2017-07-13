@@ -23,7 +23,7 @@ $sanitize_all_escapes = true;
 $fake_register_globals = false;
 
 require_once("../globals.php");
-require_once($GLOBALS["include_root"] . "/orders/single_order_results.inc.php");
+require_once($GLOBALS["include_root"] . "/orders/single_order_results1.inc.php");
 
 // Check authorization.
 $thisauth = acl_check('patients', 'med');

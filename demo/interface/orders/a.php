@@ -68,7 +68,7 @@ $errmsg = '';
 
 // Send selected unsent orders if requested. This does not support downloading
 // very well as it will only send the first of those.
-if ($_POST['form_xmit']) {
+/*if ($_POST['form_xmit']) {
   foreach ($_POST['form_cb'] as $formid) {
     $row = sqlQuery("SELECT lab_id FROM procedure_order WHERE " .
       "procedure_order_id = ?", array($formid));
@@ -82,10 +82,17 @@ if ($_POST['form_xmit']) {
     sqlStatement("UPDATE procedure_order SET date_transmitted = NOW() WHERE " .
       "procedure_order_id = ?", array($formid));
   }
-}
+} */
+
+
+
+$page = $_SERVER['PHP_SELF'];
+$sec = "10";
+
 ?>
 <html>
 <head>
+<meta http-equiv="refresh" content="<?php echo $sec?>;URL='<?php echo $page?>'">
 <?php html_header_show();?>
 
 <link rel="stylesheet" href='<?php  echo $css_header ?>' type='text/css'>
@@ -99,10 +106,7 @@ a, a:visited, a:hover { color:#0000cc; }
 
 </style>
 
-<style type="text/css">@import url(<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar.css);</style>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar.js"></script>
-<?php include_once("{$GLOBALS['srcdir']}/dynarch_calendar_en.inc.php"); ?>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar_setup.js"></script>
+
 
 <script type="text/javascript" src="../../library/dialog.js"></script>
 <script type="text/javascript" src="../../library/textformat.js"></script>
@@ -146,8 +150,7 @@ function openPtMatch(args) {
 </head>
 
 <body class="body_top">
-<form method='post' action='list_reports.php' enctype='multipart/form-data'
- onsubmit='return validate(this)'>
+<form method='post' action='' enctype='multipart/form-data'>
 
 <!-- This might be set by the results window: -->
 <input type='hidden' name='form_external_refresh' value='' />
@@ -293,60 +296,7 @@ $form_patient = !empty($_POST['form_patient']);
 $form_provider = empty($_POST['form_provider']) ? '' : intval($_POST['form_provider']);
 ?>
 
-<table width='100%'>
- <tr>
-  <td class='text' align='center'>
-   &nbsp;<?php echo xlt('From'); ?>:
-   <input type='text' size='6' name='form_from_date' id='form_from_date'
-    value='<?php echo attr($form_from_date); ?>'
-    title='<?php echo xla('yyyy-mm-dd'); ?>'
-    onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' />
-   <img src='../pic/show_calendar.gif' align='absbottom' width='24' height='22'
-    id='img_from_date' border='0' alt='[?]' style='cursor:pointer'
-    title='<?php echo xla('Click here to choose a date'); ?>' />
 
-   &nbsp;<?php echo xlt('To'); ?>:
-   <input type='text' size='6' name='form_to_date' id='form_to_date'
-    value='<?php echo attr($form_to_date); ?>'
-    title='<?php echo xla('yyyy-mm-dd'); ?>'
-    onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' />
-   <img src='../pic/show_calendar.gif' align='absbottom' width='24' height='22'
-    id='img_to_date' border='0' alt='[?]' style='cursor:pointer'
-    title='<?php echo xla('Click here to choose a date'); ?>' />
-
-   &nbsp;
-   <input type='checkbox' name='form_patient' value='1'
-    <?php if ($form_patient) echo 'checked '; ?>/><?php echo xlt('Current Pt Only'); ?>
-
-   &nbsp;
-   <select name='form_reviewed'>
-<?php
-foreach (array(
-  '1' => xl('All'),
-  '2' => xl('GCH,Completed'),
-  '3' => xl('Sent Outside,Pending'),
-  '4' => xl('Sent Outside, Completed'),
-  '5' => xl('GCH,Pending'),
-  '6' => xl('Not sent outside'),
-  ) as $key => $value) {
-  echo "<option value='$key'";
-  if ($key == $form_reviewed) echo " selected";
-  echo ">" . text($value) . "</option>\n";
-}
-?>
-   </select>
-
-   &nbsp;
-<?php
- generate_form_field(array('data_type' => 10, 'field_id' => 'provider',
-   'empty_title' => '-- All Providers --'), $form_provider);
-?>
-
-   &nbsp;
-   <input type='submit' name='form_refresh' value=<?php echo xla('Submit'); ?>>
-  </td>
- </tr>
-</table>
 
 <table width='100%' cellpadding='1' cellspacing='2'>
 
@@ -359,15 +309,16 @@ foreach (array(
 
  <tr class='head'>
   <td><?php echo xlt('Name'       ); ?></td>
-  <td><?php echo xlt('ID'         ); ?></td>
+  <td><?php echo xlt('Order ID'         ); ?></td>
   <td><?php echo xlt('Date'       ); ?></td>
   <td><?php echo xlt('ID'         ); ?></td>
   <td><?php echo xlt('Code'       ); ?></td>
   <td><?php echo xlt('Description'); ?></td>
-  <?php if (($form_reviewed == 3)||($form_reviewed == 4)||($form_reviewed == 6)||($form_reviewed == 2)||($form_reviewed == 5)) { ?>
+  
   <td><?php echo xlt('Test Name'); ?></td>
-  <?php } ?>
+  
   <td><?php echo xlt('Date'       ); ?></td>
+  
   <!--<td><?php echo xlt('Status'     ); ?></td>-->
   <!-- <td><?php echo xlt('Reviewed'   ); ?></td> -->
  </tr>
@@ -391,14 +342,7 @@ $orderby =
 $where = "1 = 1";
 $sqlBindArray = array();
 
-if (!empty($form_from_date)) {
-  $where .= " AND po.date_ordered >= ?";
-  $sqlBindArray[] = $form_from_date;
-}
-if (!empty($form_to_date)) {
-  $where .= " AND po.date_ordered <= ?";
-  $sqlBindArray[] = $form_to_date;
-}
+
 
 if ($form_patient) {
   $where .= " AND po.patient_id = ?";
@@ -409,29 +353,15 @@ if ($form_provider) {
   $where .= " AND po.provider_id = ?";
   $sqlBindArray[] = $form_provider;
 }
-//---------------------completed------------------//
-if ($form_reviewed == 2) {
-  $where .= " AND pr.procedure_report_id IS NOT NULL AND res.result !='' and res.lab='no'";
-}
-//------------------------sent outside,Pending-------------------//
-else if ($form_reviewed == 3) {
-  $where .= " AND pr.procedure_report_id IS NOT NULL AND res.result='' and res.lab='yes' and res.sample ='yes'";
-}
-//-----------------Sent outside completed----------------------//
-else if ($form_reviewed == 4) {
-  $where .= " AND pr.procedure_report_id IS NOT NULL AND res.result !='' and res.lab='yes'";
-}
-else if ($form_reviewed == 5) {
-  $where .= " AND po.date_transmitted IS NULL AND res.result ='' and res.lab='no'";
-}
-else if ($form_reviewed == 6) {
-  $where .= " AND pr.procedure_report_id IS NOT NULL AND res.result ='' and res.lab='yes' and res.sample !='yes' ";
-}
 
-if (($form_reviewed == 3)||($form_reviewed == 4)||($form_reviewed == 6)||($form_reviewed == 2)||($form_reviewed == 5)) 
-{
+//------------------------sent outside,Pending-------------------//
+
+  $where .= " AND pr.procedure_report_id IS NOT NULL and res.lab='yes'";
+
+
+
 	$query = "SELECT " .
-  "pd.fname, pd.mname, pd.lname, pd.pubpid,res.lab,res.result_text, $selects " .
+  "pd.fname,res.procedure_result_id, pd.mname, pd.lname, pd.pubpid,res.lab,res.result_text, $selects " .
   "FROM procedure_order AS po " .
   "LEFT JOIN procedure_order_code AS pc ON pc.procedure_order_id = po.procedure_order_id " .
   "LEFT JOIN patient_data AS pd ON pd.pid = po.patient_id LEFT JOIN procedure_report AS pr ON pr.procedure_order_id = po.procedure_order_id AND " .
@@ -439,16 +369,7 @@ if (($form_reviewed == 3)||($form_reviewed == 4)||($form_reviewed == 6)||($form_
   "right JOIN procedure_result as res on res.procedure_report_id=pr.procedure_report_id " .
   "WHERE $where " .
   "ORDER BY pd.lname, pd.fname, pd.mname, po.patient_id, $orderby";
-}
-else {
-$query = "SELECT " .
-  "pd.fname, pd.mname, pd.lname, pd.pubpid, $selects " .
-  "FROM procedure_order AS po " .
-  "LEFT JOIN procedure_order_code AS pc ON pc.procedure_order_id = po.procedure_order_id " .
-  "LEFT JOIN patient_data AS pd ON pd.pid = po.patient_id $joins " .
-  "WHERE $where " .
-  "ORDER BY pd.lname, pd.fname, pd.mname, po.patient_id, $orderby";
-}
+
 $res = sqlStatement($query, $sqlBindArray);
 
 $lastptid = -1;
@@ -460,6 +381,7 @@ $extra_html = '';
 $num_checkboxes = 0;
 
 while ($row = sqlFetchArray($res)) {
+  $result_id    = empty($row['procedure_result_id'          ]) ? '' : $row['procedure_result_id'];
   $patient_id       = empty($row['patient_id'         ]) ? 0 : ($row['patient_id'         ] + 0);
   $order_id         = empty($row['procedure_order_id' ]) ? 0 : ($row['procedure_order_id' ] + 0);
   $order_seq        = empty($row['procedure_order_seq']) ? 0 : ($row['procedure_order_seq'] + 0);
@@ -483,9 +405,12 @@ while ($row = sqlFetchArray($res)) {
   if ($lastpoid != $order_id || $lastpcid != $order_seq) {
     ++$encount;
   }
- // $bgcolor = "#ddddff" : "ffdddd";
+  $bgcolor = "#ddddff";
 
-  echo " <tr class='detail' bgcolor='#ddddff'>\n";
+  
+  
+  
+  echo " <tr class='detail' bgcolor='$bgcolor'>\n";
 
   // Generate patient columns.
   if ($lastptid != $patient_id) {
@@ -543,9 +468,24 @@ while ($row = sqlFetchArray($res)) {
   else {
     echo "  <td colspan='2' style='background-color:transparent'>&nbsp;</td>";
   }
-    if (($form_reviewed == 3)||($form_reviewed == 4)||($form_reviewed==6)||($form_reviewed == 2)||($form_reviewed == 5)) {
- echo "  <td>" . text($test_name) . "</td>\n";
-	}
+   
+   $abnQry = sqlQuery("SELECT sample,abnormal FROM procedure_result " .
+    "WHERE procedure_result_id =$result_id ");
+   
+  $abntmp = xl_list_label($abnQry['abnormal']);
+  $smpltmp = xl_list_label($abnQry['sample']);
+   
+   if($smpltmp=='yes')
+   {
+   
+ echo "  <td bgcolor='pink'>" . text($test_name) . "</td>\n";
+  
+   }
+   else {
+	   echo "  <td>" . text($test_name) . "</td>\n";
+   }
+ 
+	
   // Generate report columns.
   if ($report_id) {
 	   
@@ -560,7 +500,7 @@ while ($row = sqlFetchArray($res)) {
   else {
     echo "  <td colspan='2' style='background-color:transparent'>&nbsp;</td>";
   }
-
+echo "  <td align='center'><input type='hidden' name='id[]' value='$result_id'></td>";
   echo " </tr>\n";
 
   $lastptid = $patient_id;
@@ -572,21 +512,11 @@ while ($row = sqlFetchArray($res)) {
 
 </table>
 
-<?php if ($num_checkboxes) { ?>
+
 <center><p>
-<input type='submit' name='form_xmit' value='<?php echo xla('Transmit Selected Orders'); ?>' />
+<!--<input type='submit' name='submit' value='Submit' />-->
 </p></center>
-<?php } ?>
 
-<script language='JavaScript'>
-
-// Initialize calendar widgets for "from" and "to" dates.
-Calendar.setup({inputField:'form_from_date', ifFormat:'%Y-%m-%d',
- button:'img_from_date'});
-Calendar.setup({inputField:'form_to_date', ifFormat:'%Y-%m-%d',
- button:'img_to_date'});
-
-</script>
 
 </form>
 </body>

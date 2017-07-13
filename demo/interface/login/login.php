@@ -168,7 +168,8 @@ else {
 <td><span class="text1"><b><?php echo xlt('Password:'); ?></span></b></td>
 <td>
 <input class="entryfield" type="password" size="10" name="clearPass">
-</td></tr>
+</td>
+</tr>
 
 <?php
 if ($GLOBALS['language_menu_login']) {
@@ -208,8 +209,11 @@ $ip=$_SERVER['REMOTE_ADDR'];
 </table>
 
 </div>
-<div style="clear: both;"> </div>
+<div style="clear: both;"> 
+</div>
 <div class="version">
+
+
 <b><?php echo "v".text($openemr_version) ?> | <a  href="http://kavaii.com" target="main"><?php echo xlt('Info'); ?></a></b>
 </div>
 </div>
