@@ -541,9 +541,9 @@ while ($row = sqlFetchArray($res)) {
 
     // If there is more than one line of comments, everything after that is "notes".
     $result_notes = '';
-    $i = strpos($result_comments, "\n");
+   $i = strpos($result_comments, "\n");
     if ($i !== FALSE) {
-      $result_notes = trim(substr($result_comments, $i + 1));
+    $result_notes = trim(substr($result_comments, $i + 1));
       $result_comments = substr($result_comments, 0, $i);
     }
     $result_comments = trim($result_comments);

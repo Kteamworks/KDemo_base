@@ -53,7 +53,7 @@ include_once($GLOBALS["srcdir"] . "/api.inc");
 
 // Set the path to this script
 $path_to_this_script = $rootdir . "/patient_file/summary/labdata.php";
-
+$encounter=$GLOBALS['encounter'];
 
 // is this the printable HTML-option?
 $printable = $_POST['print'];
@@ -67,13 +67,13 @@ $frow = sqlQuery("SELECT * FROM facility " .
 			"FROM procedure_report " . 
 			"JOIN procedure_order ON  procedure_report.procedure_order_id = procedure_order.procedure_order_id " . 
 			"JOIN procedure_order_code ON procedure_order.procedure_order_id = procedure_order_code.procedure_order_id " . 
-			"WHERE procedure_order.patient_id = ? " . 
+			"WHERE procedure_order.patient_id = ?  AND procedure_order.encounter_id= ? " . 
 			"ORDER BY procedure_report.date_collected ";
-$result=sqlQuery($spell, array($pid) );
+$result=sqlQuery($spell, array($pid,$encounter) );
 
 // main db-spell
 //----------------------------------------
-$main_spell  = "SELECT procedure_result.procedure_result_id, procedure_result.result, procedure_result.result_text,  procedure_result.result_code, procedure_result.units, procedure_result.abnormal, procedure_result.range, ";
+$main_spell  = "SELECT procedure_result.procedure_result_id, procedure_result.result, procedure_result.result_text,  procedure_result.result_code, procedure_result.units, procedure_result.abnormal, procedure_result.range,procedure_result.comments, ";
 $main_spell .= "procedure_report.date_collected, procedure_report.review_status, ";
 $main_spell .= "procedure_order.encounter_id ";
 $main_spell .= "FROM procedure_result ";
@@ -82,10 +82,10 @@ $main_spell .= "	ON procedure_result.procedure_report_id = procedure_report.proc
 $main_spell .= "JOIN procedure_order ";
 $main_spell .= "	ON procedure_report.procedure_order_id = procedure_order.procedure_order_id ";
 $main_spell .= "WHERE procedure_result.result_code = ? "; // '?'
-$main_spell .= "AND procedure_order.patient_id = ? ";
-$main_spell .= "AND procedure_result.result IS NOT NULL ";
-$main_spell .= "AND procedure_result.result != ''";
-$main_spell .= "ORDER BY procedure_result.result_code,procedure_report.date_collected DESC limit 1 ";
+$main_spell .= "AND procedure_order.patient_id = ? AND procedure_order.encounter_id=?";
+//$main_spell .= "AND procedure_result.result IS NOT NULL ";
+//$main_spell .= "AND procedure_result.result != ''";
+$main_spell .= "ORDER BY procedure_result.seq,procedure_report.date_collected DESC limit 1 ";
 //----------------------------------------
 
 // some styles and javascripts
@@ -118,6 +118,15 @@ var flashvars = {};
 var data;
 
 </script>
+<style type="text/css">
+@media all {
+	.page-break	{ display: none; }
+}
+
+@media print {
+	.page-break	{ display: block; page-break-before: always; }
+}
+</style>
 <style>
 labdetaildata
 {
@@ -134,10 +143,12 @@ table {
 .left{
     float:left;
 }
-
+.white-space{
+    white-space:pre-wrap;
+}
 
 </style>
-<p style="margin-top:120px"></p>
+<p style="margin-top:150px"></p>
 <!--<img style="position:absolute;top:0;right:0;"src=" <?php echo $GLOBALS['webroot']?>/interface/pic/logo.png" />
 <h3><?php echo text($frow['name']) ?>
 <br><?php echo text($frow['street']) ?>
@@ -199,7 +210,7 @@ if($printable) {
 	echo "<td>" . xlt('Patient ID') . ":" . text($genericname1) . "</td></tr>";
 	echo "<tr><td>" . xlt('Age/Gender') . ":" . ageCalculator($dob) ." ,". text($Gender)."</td>";
 	echo "<td>" . xlt('Patient Visit ID') . ":" . text($enc1['encounter_ipop']) . "</td></tr>";
-	echo "<tr><td>" . xlt('Referred') . ":" . text($row2['fname'])  ." ".text($row2['lname']). "</td>"; 
+	//echo "<tr><td>" . xlt('Referred') . ":" . text($row2['fname'])  ." ".text($row2['lname']). "</td>"; 
    echo "<td>" . xlt('') . "</td></tr>";
 	echo "</table>";
 	}
@@ -217,7 +228,7 @@ if(!$printable){
 	echo "<table border='1'>";
 	echo "<tr><td>";
 	
-	$spell  = "SELECT DISTINCT procedure_result.result_code AS value_code, procedure_result.result_text as value_text ";
+	/*$spell  = "SELECT DISTINCT procedure_result.result_code AS value_code, procedure_result.result_text as value_text ";
 	$spell .= "FROM procedure_result ";
 	$spell .= "JOIN procedure_report ";
 	$spell .= "	ON procedure_result.procedure_report_id = procedure_report.procedure_report_id ";
@@ -227,12 +238,68 @@ if(!$printable){
 	$spell .= "AND procedure_result.result IS NOT NULL ";
 	$spell .= "AND procedure_result.result != ''";
 	$spell .= "ORDER BY procedure_result.result_code ASC ";
-	$query  = sqlStatement($spell,array($pid));
+	$query  = sqlStatement($spell,array($pid));*/
+	$spell  = "SELECT DISTINCT procedure_result.result_code AS value_code, procedure_result.result_text as value_text, procedure_report.procedure_report_id procedure_report_id ";
+	$spell .= "FROM procedure_result ";
+	$spell .= "JOIN procedure_report ";
+	$spell .= "	ON procedure_result.procedure_report_id = procedure_report.procedure_report_id ";
+	$spell .= "JOIN procedure_order ";
+	$spell .= "	ON procedure_report.procedure_order_id = procedure_order.procedure_order_id ";
+	//$spell .= "JOIN procedure_order_code ";
+	//$spell .= "	ON procedure_order_code.procedure_order_id = procedure_report.procedure_order_id ";
+	//$spell .= "AND procedure_order_code.procedure_order_seq = procedure_report.procedure_order_seq ";
+	$spell .= "WHERE procedure_order.patient_id = ? AND procedure_order.encounter_id=? ";
+	//$spell .= "AND procedure_result.result IS NOT NULL ";
+	//$spell .= "AND procedure_result.result != ''";
+	$spell .= "ORDER BY procedure_report.procedure_report_id,procedure_result.result_code ASC ";
+	//$spell .= "ORDER BY procedure_result.result_code,procedure_report.procedure_report_id,procedure_result.seq ASC ";
+	$query  = sqlStatement($spell,array($pid,$encounter));
 	
 
 	// Select which items to view...
 	$i = 0;
-	while($myrow = sqlFetchArray($query)){
+	$id=0;
+		while($myrow = sqlFetchArray($query)){
+		
+		$rows[] = $myrow;
+		
+	}	
+	
+	 $rowCount = count($rows);
+  for ($i = 0; $i < $rowCount; $i++){
+	  $j++;
+	  
+	 if($id==0)
+    {
+      $id = $rows[$i]['procedure_report_id'];
+	  echo $rows[$i]['procedure_name'];
+    }
+	
+	//echo $rows[$i]['procedure_report_id'];
+echo "<input type='checkbox' name='value_code[]' value=" . attr($rows[$i]['value_code']) . " ";
+		if($value_select){
+			if (in_array($rows[$i]['value_code'], $value_select)){ echo "checked='checked' ";}
+		}
+		echo " /> " . text($rows[$i]['value_text']) . "<br />";
+		$value_list[$i][value_code] = $rows[$i]['value_code'];
+		//$i++;	
+		$tab++;
+		
+		 if( $id != $rows[$i+1]['procedure_report_id']){
+			
+           $id = $rows[$i+1]['procedure_report_id'];
+		     echo"<hr>";
+           
+        }
+		
+        //echo "</td>";
+		/*if($tab == 10) {
+			echo "</td>";
+			$tab=0;
+		}*/
+		
+	}
+	/*while($myrow = sqlFetchArray($query)){
 
 		echo "<input type='checkbox' name='value_code[]' value=" . attr($myrow['value_code']) . " ";
 		if($value_select){
@@ -246,7 +313,7 @@ if(!$printable){
 			echo "</td><td>";
 			$tab=0;
 		}	
-	}
+	}*/
 	echo "</tr>";
 	echo "</table>";
 	echo "</div>";
@@ -254,20 +321,20 @@ if(!$printable){
 	?><input type='checkbox' onclick="checkAll(this)" /> <?php echo xlt('Toggle All') . "<br/>";
 	echo "<table><tr>";
 	// Choose output mode [list vs. matrix]
-	echo "<td>" . xlt('Select output') . ":</td>";
+		echo "<td>" . xlt('Select output') . ":</td>";
 	echo "<td><input type='radio' name='mode' ";
 	$mode = $_POST['mode'];
-	if($mode == 'list'){ echo "checked='checked' ";}
+	if($mode != 'matrix'){ echo "checked='checked' ";}
 	echo " value='list'> " . xlt('List') . "<br>";
 	
-	echo "<input type='radio' name='mode' ";
-	if($mode != 'list'){ echo "checked='checked' ";}
-	echo " value='matrix'> " . xlt('Matrix') . "<br>";
+	//echo "<input type='radio' name='mode' ";
+	//if($mode == 'matrix'){ echo "checked='checked' ";}
+	//echo " value='matrix'> " . xlt('Matrix') . "<br>";
 
 	echo "<td></td></td>";
 	echo "</tr><tr>";
 	echo "<td>";
-
+	
     echo "<a href='../summary/demographics.php' ";
     if (!$GLOBALS['concurrent_layout']){ echo "target='Main'"; }
     echo " class='css_button' onclick='top.restoreSession()'>";
@@ -318,7 +385,7 @@ $i = 0;
 			$date_array  = array();//  reset local array
 			// get data from db
 			$spell  = $main_spell;
-			$query  = sqlStatement($spell,array($this_value,$pid));	
+			$query  = sqlStatement($spell,array($this_value,$pid,$encounter));	
 			while($myrow = sqlFetchArray($query)){
 			   
 				$r=sqlStatement("SELECT * from procedure_type where procedure_code='".$myrow['result_code']."'");
@@ -352,7 +419,12 @@ $i = 0;
 				//echo "<td class='list_item'>" . text($ree1['name']) . "</td>";
 				echo "<td class='list_item' nowrap>&nbsp;&nbsp;&nbsp;" . text($myrow['result_text']) . "</td>";
 
-				if($myrow['abnormal'] == 'No' || $myrow['abnormal'] == 'no'  || $myrow['abnormal'] == '' || $myrow['abnormal'] == NULL ) {
+				
+				if($myrow['result']=='')
+				{
+					echo "<td class='list_item' align='center' nowrap>--</td>";
+				}
+				else if($myrow['abnormal'] == 'No' || $myrow['abnormal'] == 'no'  || $myrow['abnormal'] == '' || $myrow['abnormal'] == NULL ) {
 					echo "<td class='list_item' align='center' nowrap>&nbsp;&nbsp;&nbsp;" . text($myrow['result']) . " ".generate_display_field(array('data_type'=>'1','list_id'=>'proc_unit'),$myrow['units']) ."&nbsp;&nbsp;</td>";
 				} else {
 					echo "<td class='list_result_abnorm' nowrap>&nbsp;" ;
@@ -370,7 +442,14 @@ $i = 0;
 					echo"<td> </td>";
 				}else
 				{
-				echo "<td class='list_item' nowrap>&nbsp;&nbsp;(" . text($myrow['range'])." ". generate_display_field(array('data_type'=>'1','list_id'=>'proc_unit'),$myrow['units']) .")&nbsp;&nbsp;</td>";
+				echo "<td class='list_item' style='white-space:pre-wrap ; word-wrap:break-word' align='center' nowrap>&nbsp;&nbsp;(" . text($myrow['range'])." ". generate_display_field(array('data_type'=>'1','list_id'=>'proc_unit'),$myrow['units']) .")&nbsp;&nbsp;</td>";
+				}
+				if($myrow['comments']==null)
+				{
+					echo" ";
+				}else
+				{
+				echo "</tr><tr><td class='white-space' colspan='3' style='font-size: 17px'><i>&nbsp;&nbsp;<br/>" . text($myrow['comments']) ."&nbsp;&nbsp;</i></td><br/>";
 				}
 				/*echo "<td class='list_item'>" . generate_display_field(array('data_type'=>'1','list_id'=>'proc_unit'),$myrow['units']) . "</td>";
 				echo "<td class='list_log'>"  . text($myrow['date_collected']) . "</td>";
@@ -558,6 +637,10 @@ $i = 0;
 
 if(!$printable){
 	if(!$nothing){
+	/*	if ($_POST['submit']) {
+			$encounter=$GLOBALS['encounter'];
+    sqlStatement("UPDATE procedure_order set order_status='complete' where encounter_id='".$encounter."'");
+} */
 		echo "<p>";
 		echo "<form method='post' action='" . $path_to_this_script . "' target='_new' onsubmit='return top.restoreSession()'>";
 		echo "<input type='hidden' name='mode' value='". attr($mode) . "'>";	
@@ -577,7 +660,7 @@ if(!$printable){
 	echo "<p align=center><b>" . xlt('******END OF REPORT******') . "</p>";
 	echo "<br><br><br><h4><span class=left>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" . xlt('')."</span>";
 	echo "<h4><span class=right>" . xlt('LAB TECHNOLOGIST')."&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>";
-	echo "<br><span class=left>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;".xlt('PATHOLOGIST')."</span>";
+	echo "<br><span class=left>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;".xlt('')."</span>";
     echo "<span class=right>".xlt('Checked By')."&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>";
 	}
 echo "</span>";
