@@ -47,12 +47,12 @@ global $ignoreAuth;
 <form method="post" action="https://www.sandbox.paypal.com/cgi-bin/webscr" id="form2">
 
 <input type="hidden" name="upload" value="1">
-<input type="hidden" name="return" value="http://localhost/KDemo_base/demo/patients/Paypal/success.php">
+<input type="hidden" name="return" value="http://localhost/KDemo_base/demo/patients/add_edit_event_user.php?pid=<?php echo $pid ?>">
 <input type="hidden" name="cmd" value="_xclick">
 
 <input type="hidden" name="business" value="sada059-facilitator@gmail.com">
-<input type="hidden" name="item_name" id="EIDSAV" value="" />
-<input type="hidden" name="item_number" value="<?php echo $pid ?>" />
+<input type="hidden" name="item_name" value="Doctor Fees" />
+<input type="hidden" name="item_number" id="EIDSAV" value="" />
 <input type="hidden" name="amount" value="1" /> 
    <input type="hidden" name="currency_code" value="INR">
 </form>
@@ -86,8 +86,8 @@ global $ignoreAuth;
 			$("#loading").show();
 		},
                 success: function(response) {
-					var ords = 'ORDS00000'+response;
-        $("#EIDSAV").val(ords);
+				//	var ords = 'ORDS00000'+response;
+        $("#EIDSAV").val(response);
 		$("#loading").hide();
                        $('#form2').submit();
 		
