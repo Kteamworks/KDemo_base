@@ -43,13 +43,59 @@ global $ignoreAuth;
 <input type="hidden" title="TXN_AMOUNT" tabindex="10" type="text" name="TXN_AMOUNT" value="<?php echo $newcrop_user_roles['pr_price']; ?>">
 	
 </form>
+
+<form method="post" action="https://www.sandbox.paypal.com/cgi-bin/webscr" id="form2">
+
+<input type="hidden" name="upload" value="1">
+<input type="hidden" name="return" value="http://localhost/KDemo_base/demo/patients/Paypal/success.php">
+<input type="hidden" name="cmd" value="_xclick">
+
+<input type="hidden" name="business" value="sada059-facilitator@gmail.com">
+<input type="hidden" name="item_name" id="EIDSAV" value="" />
+<input type="hidden" name="item_number" value="<?php echo $pid ?>" />
+<input type="hidden" name="amount" value="1" /> 
+   <input type="hidden" name="currency_code" value="INR">
+</form>
+
   <ul class="price" id="doctor_price_list">
     <li class="header">Doctor Charges</li>
     <li class="grey">₹ <?php echo $newcrop_user_roles['pr_price']; ?> / visit</li>
-    <li class="grey"><button type="button" class="button" onclick="login()">Pay Now</button></li>
+    <li class="grey"><button type="button" class="button-paytm" onclick="login()">Pay With Paytm</button></li>
+	<li class="grey"><button type="button" class="button-paypal" onclick="loginpaypal()">Pay With PayPal</button></li>
   </ul>
 		            
 			    <script type="text/javascript">
+				    function loginpaypal() {
+		  var f = document.getElementById('theform');
+  if (!f.form_date.value || !f.form_hour.value || !f.form_minute.value) {
+   alert('Please click on "Find Open Appointment" to select a time.');
+   return false;
+  }
+  else {
+	  		  var data = $("#theform").serialize();
+ // var dataString = 'form_category='+form_category+'&form_date='+form_date+'&form_title='+form_title+'&form_minute='+form_minute+'&form_ampm='+form_ampm+'&form_hour='+form_hour;
+  	 		        $.ajax({
+                // Where to send request
+                url: 'save.event.php',
+                // What to send
+                data: data,
+                // How to send
+                type: 'post',
+                // What to do when request succeeds
+						beforeSend: function(){
+			$("#loading").show();
+		},
+                success: function(response) {
+					var ords = 'ORDS00000'+response;
+        $("#EIDSAV").val(ords);
+		$("#loading").hide();
+                       $('#form2').submit();
+		
+				}
+        });
+
+  }
+    }
     function login() {
 		  var f = document.getElementById('theform');
   if (!f.form_date.value || !f.form_hour.value || !f.form_minute.value) {
