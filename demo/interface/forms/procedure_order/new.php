@@ -250,7 +250,13 @@ if ($_POST['bn_save'] || $_POST['bn_xmit']) {
     echo addslashes(xl('Transmit failed') . ': ' . $alertmsg);
     echo "')</script>\n";
   }
+  $res = sqlQuery("select * from users where username='".$_SESSION{"authUser"}."'");
+if($res['newcrop_user_role'] == 'erxnurse' || $res['newcrop_user_role'] == 'erxdoctor' ){
   formJump("../../../controller.php?prescription&edit&id=&pid=$pid");
+}else
+{
+	formJump();
+}
   formFooter();
   exit;
 }

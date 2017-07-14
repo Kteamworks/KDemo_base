@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.2, created on 2017-07-03 12:09:37
+<?php /* Smarty version 2.6.2, created on 2017-07-14 09:10:46
          compiled from C:%5Cxampp%5Chtdocs%5CKDemo_base%5Cdemo%5Cinterface%5Cforms%5Cros/templates/ros/general_new.html */ ?>
 <?php require_once(SMARTY_DIR . 'core' . DIRECTORY_SEPARATOR . 'core.load_plugins.php');
 smarty_core_load_plugins(array('plugins' => array(array('function', 'xl', 'C:\xampp\htdocs\KDemo_base\demo\interface\forms\ros/templates/ros/general_new.html', 589, false),array('function', 'html_radios', 'C:\xampp\htdocs\KDemo_base\demo\interface\forms\ros/templates/ros/general_new.html', 598, false),)), $this); ?>
@@ -575,32 +575,42 @@ Add a counter to the multi-steps indicator
 <section>
 	<nav>
 		<ol class="cd-breadcrumb triangle custom-icons" >
-		<li id="ros"><a href="<?php echo $this->_tpl_vars['ROS_LINK']; ?>
+		<li id="ros" style="<?php echo $this->_tpl_vars['DISPLAYNONE1']; ?>
+"><a href="<?php echo $this->_tpl_vars['ROS_LINK']; ?>
 "><i class="fa fa-note" style="margin-right: 8px;"></i>Medical Issues</a></li>
 			
 			<li id="visit" style="<?php echo $this->_tpl_vars['DISPLAYNONE']; ?>
-"><a href="<?php echo $this->_tpl_vars['VISIT_LINK']; ?>
+;<?php echo $this->_tpl_vars['DISPLAYNONE1']; ?>
+;"><a href="<?php echo $this->_tpl_vars['VISIT_LINK']; ?>
 "><i class="fa fa-note" style="margin-right: 8px;"></i>Visit Notes</a></li>
-			<li id="vitals"><a href="<?php echo $this->_tpl_vars['VITALS_LINK']; ?>
+			<li id="vitals" style="<?php echo $this->_tpl_vars['DISPLAYNONE1']; ?>
+"><a href="<?php echo $this->_tpl_vars['VITALS_LINK']; ?>
 "><i class="fa fa-note" style="margin-right: 8px;"></i>Vitals</a></li>
-			<li class="current"></i><em>Review of systems</em></li>
+			<li class="current" style="<?php echo $this->_tpl_vars['DISPLAYNONE1']; ?>
+"></i><em>Review of systems</em></li>
 			<li id="lab"  style="<?php echo $this->_tpl_vars['DISPLAYNONE']; ?>
-"><a href="<?php echo $this->_tpl_vars['LAB_LINK']; ?>
+;<?php echo $this->_tpl_vars['DISPLAYNONE1']; ?>
+;"><a href="<?php echo $this->_tpl_vars['LAB_LINK']; ?>
 "><i class="fa fa-note" style="margin-right: 8px;"></i>Lab Tests</a></li>
 			<li id="prescription"  style="<?php echo $this->_tpl_vars['DISPLAYNONE']; ?>
-"><a href="<?php echo $this->_tpl_vars['prescription_LINK']; ?>
+;<?php echo $this->_tpl_vars['DISPLAYNONE1']; ?>
+;"><a href="<?php echo $this->_tpl_vars['prescription_LINK']; ?>
 "><i class="fa fa-note" style="margin-right: 8px;"></i>Prescription</a></li>
 			<li id="plan"  style="<?php echo $this->_tpl_vars['DISPLAYNONE']; ?>
-"><a href="<?php echo $this->_tpl_vars['plan_LINK']; ?>
+;<?php echo $this->_tpl_vars['DISPLAYNONE1']; ?>
+;"><a href="<?php echo $this->_tpl_vars['plan_LINK']; ?>
 "><i class="fa fa-note" style="margin-right: 8px;"></i>Plan</a></li>
 			<li id="referral"  style="<?php echo $this->_tpl_vars['DISPLAYNONE']; ?>
-"><a href="<?php echo $this->_tpl_vars['referral_LINK']; ?>
+;<?php echo $this->_tpl_vars['DISPLAYNONE1']; ?>
+;"><a href="<?php echo $this->_tpl_vars['referral_LINK']; ?>
 "><i class="fa fa-note" style="margin-right: 8px;"></i>Referral</a></li>
 			<li id="admission"  style="<?php echo $this->_tpl_vars['DISPLAYNONE']; ?>
-"><a href="<?php echo $this->_tpl_vars['admission_LINK']; ?>
+;<?php echo $this->_tpl_vars['DISPLAYNONE1']; ?>
+;"><a href="<?php echo $this->_tpl_vars['admission_LINK']; ?>
 "><i class="fa fa-note" style="margin-right: 8px;"></i>Admission</a></li>
 			<li id="summary"  style="<?php echo $this->_tpl_vars['DISPLAYNONE']; ?>
-"><a href="<?php echo $this->_tpl_vars['summary_LINK']; ?>
+;<?php echo $this->_tpl_vars['DISPLAYNONE1']; ?>
+;"><a href="<?php echo $this->_tpl_vars['summary_LINK']; ?>
 ">Summary</a></li>
 		</ol>
 	</nav>

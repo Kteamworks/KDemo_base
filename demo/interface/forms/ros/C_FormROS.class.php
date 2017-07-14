@@ -44,6 +44,9 @@ class C_FormROS extends Controller {
 		if($res['newcrop_user_role'] == 'erxnurse'){
 		$this->assign("DISPLAYNONE", "display:none");
 		}
+		if($res['newcrop_user_role'] != 'erxnurse' && $res['newcrop_user_role'] != 'erxdoctor' ){
+		$this->assign("DISPLAYNONE1", "display:none");
+		}
     }
     
     function default_action() {

@@ -17,6 +17,12 @@ sqlInsert("update form_dictation set pid = ?,groupname=?,user=?,authorized=?,act
 }
 $_SESSION["encounter"] = $encounter;
 formHeader("Redirecting....");
-formJump("../../patient_file/transaction/add_transaction.php");
+  $res = sqlQuery("select * from users where username='".$_SESSION{"authUser"}."'");
+if($res['newcrop_user_role'] == 'erxnurse' || $res['newcrop_user_role'] == 'erxdoctor' ){
+     formJump("../../patient_file/transaction/add_transaction.php");
+}else
+{
+ formJump();
+}
 formFooter();
 ?>

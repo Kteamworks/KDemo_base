@@ -61,6 +61,9 @@ $vid=sqlStatement("SELECT form_id from forms where encounter='".$_SESSION['encou
 		if($res['newcrop_user_role'] == 'erxnurse'){
 		$this->assign("DISPLAYNONE", "display:none");
 		}
+		if($res['newcrop_user_role'] != 'erxnurse' && $res['newcrop_user_role'] != 'erxdoctor' ){
+		$this->assign("DISPLAYNONE1", "display:none");
+		}
       // Options for units of measurement and things to omit.
       $this->assign("units_of_measurement",$GLOBALS['units_of_measurement']);
       $this->assign("gbl_vitals_options",$GLOBALS['gbl_vitals_options']);

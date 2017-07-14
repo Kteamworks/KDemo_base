@@ -84,6 +84,7 @@ if ($mode) {
   }
 
   if ($GLOBALS['concurrent_layout'])
+	  
     $body_onload_code = "javascript:location.href='../../forms/admit/new.php';";
   else
     $body_onload_code = "javascript:parent.Transactions.location.href='../../forms/admit/new.php;";
