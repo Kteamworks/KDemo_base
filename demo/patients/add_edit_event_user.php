@@ -158,10 +158,11 @@ if (!$_POST['form_allday']) {
   curl_close($ch);
  // echo var_dump($response);
   echo 'Message has been sent.';
+   header('location:get_patient_info.php');
  }catch(Exception $e){
   echo 'Message: ' .$e->getMessage();
  }
- 
+
   // Compute start and end time strings to be saved.
 
   
