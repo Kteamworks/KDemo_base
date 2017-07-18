@@ -48,7 +48,24 @@ global $ignoreAuth;
  require_once("$srcdir/formatting.inc.php");
  require_once("$srcdir/edi.inc");
  include_once("$srcdir/lists.inc");
+ // If we are saving, then save and close the window.
+  $pn=getPatientData($pid, "phone_cell");
+$pn_no=$pn['phone_cell'];
 
+ if (isset($_POST) && count($_POST)>0 )
+{  //here iam trying to store it but it is not working as shows undefined functions
+  $sql = "INSERT INTO paytm_txn_details (MID, ORDERID, TXNAMOUNT, CURRENCY, TXNID, BANKTXNID, STATUS, RESPCODE, RESPMSG, TXNDATE, GATEWAYNAME, BANKNAME, PAYMENTMODE) 
+        VALUES ('".$_POST['MID']."', '".$_POST['ORDERID']."', '".$_POST['TXNAMOUNT']."', '".$_POST['CURRENCY']."', '".$_POST['TXNID']."', '".$_POST['BANKTXNID']."', '".$_POST['STATUS']."', '".$_POST['RESPCODE']."', '".$_POST['RESPMSG']."', '".$_POST['TXNDATE']."', '".$_POST['GATEWAYNAME']."', '".$_POST['BANKNAME']."', '".$_POST['PAYMENTMODE']."')";  
+        $result = sqlQuery($sql); 
+ 
+}
+ if (isset($_GET['tx']) && count($_GET)>0 )
+{  //here iam trying to store it but it is not working as shows undefined functions
+  $sql = "INSERT INTO paypal_txn_details (TXNID,EVENTID, TXNAMOUNT, CURRENCY,  BANKTXNID, STATUS, RESPCODE, RESPMSG, TXNDATE, GATEWAYNAME, BANKNAME, PAYMENTMODE) 
+        VALUES ('".$_GET['tx']."','".$_GET['item_number']."', '".$_GET['amt']."', '".$_GET['cc']."', '".$_GET['bank_tx_id']."', '".$_GET['st']."', '".$_GET['reason_code']."', '".$_GET['reason_msg']."', '".date('Y-m-d')."', 'paypal', '".$_GET['bank_name']."', '".$_GET['payment_type']."')";  
+        $result = sqlQuery($sql); 
+ 
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -81,14 +98,12 @@ global $ignoreAuth;
 	font-size: 100%;
 }
 a.edit_event {
-position: absolute;
-margin: 10px;
-left: 22%;
-top: 49%;
+	position: relative;
 font-size: 20px;
+margin-right: 15px;
 
 }
-a.edit_event:before {
+.section-header-dynamic a.edit_event:before {
 	float: right;
 content: "\f055";
 font-family: FontAwesome;
@@ -520,7 +535,112 @@ $(document).ready(function(){
 
       <!-- Main content -->
       <section class="content">
-        
+         <?php if(isset($_POST['STATUS'])) { 
+		$eid_ret = $_POST['ORDERID'];
+		$n_str = str_replace("ORDS","",$eid_ret);
+		$str = ltrim($n_str, '0');
+		 if ($_POST['STATUS'] == "TXN_SUCCESS") {
+			 		
+		$event_data = sqlQuery("SELECT * from openemr_postcalendar_events WHERE pc_eid='$str'");
+		$doc_id = $event_data['pc_aid'];
+		$doctor_name = sqlQuery("SELECT * from users WHERE id='$doc_id'");
+		$d_name = 'Dr '.$doctor_name['fname'].' '.$doctor_name['lname'];
+			 $user = 'kavaii';
+ $password = '12345';
+ $sender_id = 'KAVAII';//helloz welcom FAPcop abhiii'hiiiii
+ $sender = $pn_no;//9673776599 9320491970
+ $msg = 'City Hospital- Appointment Confirmed with '.$d_name.' at ';
+ $msg.=$event_data['pc_startTime'];
+ $msg.=' hrs on ';
+ $msg.=$event_data['pc_eventDate'];
+ $priority = 'sdnd';
+ $sms_type = 'normal';
+ //$data = array('user'=>$user, 'pass'=>$password, 'sender'=>$sender_id, 'phone'=>$sender, 'text'=>$msg,  'stype'=>$sms_type);//'priority'=>$priority,
+ $data='user='.$user.'&pass='.$password.'&sender='.$sender_id.'&phone='.$sender.'&text='.$msg.'&stype='.$sms_type.'&priority=sdnd'; 
+ 
+ //http://bhashsms.com/api/sendmsg.php?user='kavaii'&pass='12345'&sender='KAVAII'&phone='9782364064'&text='Hii'&stype='normal'&priority='sdnd'
+ 
+ //http://bhashsms.com/api/sendmsg.php?user=kavaii&pass=12345&sender=kavaii%20&phone=9731960662%20&text=hii%20&priority=sdnd&stype=normal
+ $ch = curl_init('http://bhashsms.com/api/sendmsg.php?'.$data);
+ curl_setopt($ch, CURLOPT_POST, true);
+ curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+ curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+ try {
+  $response = curl_exec($ch);
+//var_dump($response);
+  curl_close($ch);
+ }catch(Exception $e){
+  echo 'Message: ' .$e->getMessage();
+ }
+
+		?>
+			<!-- check whether success or not -->
+
+        <div class="alert alert-success alert-dismissable">
+            <i class="fa  fa-check-circle"></i>
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            <b>Success!</b> Your Appointment has been confirmed with <?php echo $d_name; ?> at <?php echo $event_data['pc_startTime'] ?> hrs on <?php echo $event_data['pc_eventDate'] ?>
+        </div>
+		 <?php } else { 
+		 sqlQuery("DELETE FROM openemr_postcalendar_events WHERE pc_eid='$str'");
+		 ?>
+        <div class="alert alert-danger alert-dismissable">
+            <i class="fa  fa-times-circle-o"></i>
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            <b>Transaction Failed!</b> <?php echo $_POST['RESPMSG']; ?>
+        </div>
+		<?php } } if(isset($_GET['tx'])) {  
+$str = $_GET['item_number'];
+		 if ($_GET['st'] == "Completed") {
+			 		
+		$event_data = sqlQuery("SELECT * from openemr_postcalendar_events WHERE pc_eid='$str'");
+		$doc_id = $event_data['pc_aid'];
+		$doctor_name = sqlQuery("SELECT * from users WHERE id='$doc_id'");
+		$d_name = 'Dr '.$doctor_name['fname'].' '.$doctor_name['lname'];
+			 $user = 'kavaii';
+ $password = '12345';
+ $sender_id = 'KAVAII';//helloz welcom FAPcop abhiii'hiiiii
+ $sender = $pn_no;//9673776599 9320491970
+ $msg = 'City Hospital- Appointment Confirmed with '.$d_name.' at ';
+ $msg.=$event_data['pc_startTime'];
+ $msg.=' hrs on ';
+ $msg.=$event_data['pc_eventDate'];
+ $priority = 'sdnd';
+ $sms_type = 'normal';
+ //$data = array('user'=>$user, 'pass'=>$password, 'sender'=>$sender_id, 'phone'=>$sender, 'text'=>$msg,  'stype'=>$sms_type);//'priority'=>$priority,
+ $data='user='.$user.'&pass='.$password.'&sender='.$sender_id.'&phone='.$sender.'&text='.$msg.'&stype='.$sms_type.'&priority=sdnd'; 
+ 
+ //http://bhashsms.com/api/sendmsg.php?user='kavaii'&pass='12345'&sender='KAVAII'&phone='9782364064'&text='Hii'&stype='normal'&priority='sdnd'
+ 
+ //http://bhashsms.com/api/sendmsg.php?user=kavaii&pass=12345&sender=kavaii%20&phone=9731960662%20&text=hii%20&priority=sdnd&stype=normal
+ $ch = curl_init('http://bhashsms.com/api/sendmsg.php?'.$data);
+
+ curl_setopt($ch, CURLOPT_POST, true);
+ curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+ curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+ try {
+  $response = curl_exec($ch);
+  curl_close($ch);
+ }catch(Exception $e){
+  echo 'Message: ' .$e->getMessage();
+ }
+?> 
+		        <div class="alert alert-success alert-dismissable">
+            <i class="fa  fa-check-circle"></i>
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            <b>Success!</b> Your Appointment has been confirmed with <?php echo $d_name; ?> at <?php echo $event_data['pc_startTime'] ?> hrs on <?php echo $event_data['pc_eventDate'] ?>
+        </div>
+		 <?php } else { 
+		 sqlQuery("DELETE FROM openemr_postcalendar_events WHERE pc_eid='$str'");
+		 ?>
+		         <div class="alert alert-danger alert-dismissable">
+            <i class="fa  fa-times-circle-o"></i>
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            <b>Transaction Failed!</b>
+        </div>
+		<?php } } ?>
  <table border="0" cellspacing="0" cellpadding="0" width="100%">
   <tr>
    <td align="left" valign="top">
