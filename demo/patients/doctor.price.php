@@ -47,7 +47,7 @@ global $ignoreAuth;
 <form method="post" action="https://www.sandbox.paypal.com/cgi-bin/webscr" id="form2">
 
 <input type="hidden" name="upload" value="1">
-<input type="hidden" name="return" value="http://localhost/KDemo_base/demo/patients/add_edit_event_user.php?pid=<?php echo $pid ?>">
+<input type="hidden" name="return" value="http://localhost/KDemo_base/demo/patients/summary_pat_portal.php?pid=<?php echo $pid ?>">
 <input type="hidden" name="cmd" value="_xclick">
 
 <input type="hidden" name="business" value="sada059-facilitator@gmail.com">

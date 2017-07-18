@@ -14,7 +14,8 @@
     //landing page definition -- where to go if something goes wrong
 	$landingpage = "index.php?site=".$_SESSION['site_id'];
     //
-    
+         $_SESSION['uname'] = $_POST['uname'];
+		  $_SESSION['pass'] = $_POST['pass'];
     //checking whether the request comes from index.php
         if (!isset($_SESSION['itsme'])) {
                 session_destroy();
@@ -24,12 +25,12 @@
     //
 
     //some validation
-        if (!isset($_POST['uname']) || empty($_POST['uname'])) {
+        if (!isset($_SESSION['uname']) || empty($_SESSION['uname'])) {
                 session_destroy();
 		header('Location: '.$landingpage.'&w&c');
 		exit;
 	}
-        if (!isset($_POST['pass']) || empty($_POST['pass'])) {
+        if (!isset($_SESSION['pass']) || empty($_SESSION['pass'])) {
                 session_destroy();
                 header('Location: '.$landingpage.'&w&c');
 		exit;
@@ -51,7 +52,7 @@
     require_once("$srcdir/authentication/common_operations.php");        
     $password_update=isset($_SESSION['password_update']);
     unset($_SESSION['password_update']);
-    $plain_code= $_POST['pass'];
+    $plain_code= $_SESSION['pass'];
     // set the language
     if (!empty($_POST['languageChoice'])) {
             $_SESSION['language_choice'] = $_POST['languageChoice'];
@@ -74,7 +75,7 @@
     $sql= "SELECT ".implode(",",array(COL_ID,COL_PID,COL_POR_PWD,COL_POR_SALT,COL_POR_PWD_STAT))
           ." FROM ".TBL_PAT_ACC_ON
           ." WHERE ".COL_POR_USER."=?";
-            $auth = privQuery($sql, array($_POST['uname']));
+            $auth = privQuery($sql, array($_SESSION['uname']));
             if($auth===false)
             {
                 session_destroy();
@@ -107,7 +108,7 @@
                 }
 
             }
-            $_SESSION['portal_username']=$_POST['uname'];
+            $_SESSION['portal_username']=$_SESSION['uname'];
     $sql = "SELECT * FROM `patient_data` WHERE `pid` = ?";
 
     if ($userData = sqlQuery($sql, array($auth['pid']) )) { // if query gets executed
@@ -181,7 +182,7 @@
         exit;
     }		
     //
+     header("location: summary_pat_portal.php");
 
-    require_once('summary_pat_portal.php');
 
 ?>

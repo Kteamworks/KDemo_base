@@ -260,7 +260,7 @@
             <?php if (!(empty($hiddenLanguageField))) echo $hiddenLanguageField; ?>
 	</form>
     
-        <div class="copyright"><?php echo htmlspecialchars( xl('Powered by'), ENT_NOQUOTES);?> OpenEMR</div>
+        <div class="copyright"><?php echo htmlspecialchars( xl('Powered by'), ENT_NOQUOTES);?> MedSmart</div>
       </div>
     <?php } ?>
 
