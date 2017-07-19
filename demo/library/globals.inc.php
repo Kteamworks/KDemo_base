@@ -1638,13 +1638,7 @@ $GLOBALS_METADATA = array(
     ),
 	
 	' ' => array(
-      xl('Payment through PAYTM: '),
-      '',                           // data type
-      '',
-      xl('')
-    ),
-	'sp1' => array(
-      xl(''),
+      xl('Payment through PAYTM '),
       '',                           // data type
       '',
       xl('')
@@ -1680,7 +1674,7 @@ $GLOBALS_METADATA = array(
       xl('PAYTM REDIRECT URL')
     ),
 	'  ' => array(
-      xl('Payment through PAYPAL: '),
+      xl('Payment through PAYPAL '),
       '',                           // data type
       '',
       xl('')
