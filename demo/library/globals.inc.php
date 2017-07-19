@@ -1622,6 +1622,52 @@ $GLOBALS_METADATA = array(
     ),
 
   ),
+  //Payment Tab
+  'Payment' => array(
+  'payment_flag' => array(
+      xl('Enable Payments'),
+      'bool',                           // data type
+      '0',
+      xl('Enable Payments')
+    ),
+  'currency_code' => array(
+      xl('Currency Code'),
+      'text',                           // data type
+      'INR',
+      xl('Currency Code')
+    ),
+	'paytm_merchant_mid' => array(
+      xl('PAYTM MERCHANT MID'),
+      'text',                           // data type
+      '',
+      xl('PAYTM_MERCHANT_MID')
+    ),
+	'paytm_environment' => array(
+      xl('PAYTM ENVIRONMENT'),
+      'text',                           // data type
+      '',
+      xl('PAYTM ENVIRONMENT')
+    ),
+	'paytm_merchant_key' => array(
+      xl('PAYTM MERCHANT KEY'),
+      'text',                           // data type
+      '',
+      xl('PAYTM MERCHANT KEY')
+    ),
+	'paytm_merchant_website' => array(
+      xl('PAYTM MERCHANT WEBSITE'),
+      'text',                           // data type
+      '',
+      xl('PAYTM MERCHANT WEBSITE')
+    ),
+	'paypal_facilitator_key' => array(
+      xl('PAYPAL FACILITATOR KEY'),
+      'text',                           // data type
+      '',
+      xl('PAYPAL FACILITATOR KEY')
+    ),
+	
+  ),
 
   // Portal Tab
   //
