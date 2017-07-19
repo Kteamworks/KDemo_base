@@ -1636,6 +1636,19 @@ $GLOBALS_METADATA = array(
       'INR',
       xl('Currency Code')
     ),
+	
+	' ' => array(
+      xl('Payment through PAYTM: '),
+      '',                           // data type
+      '',
+      xl('')
+    ),
+	'sp1' => array(
+      xl(''),
+      '',                           // data type
+      '',
+      xl('')
+    ),
 	'paytm_merchant_mid' => array(
       xl('PAYTM MERCHANT MID'),
       'text',                           // data type
@@ -1660,13 +1673,36 @@ $GLOBALS_METADATA = array(
       '',
       xl('PAYTM MERCHANT WEBSITE')
     ),
+	'paytm_redirect_url' => array(
+      xl('PAYTM REDIRECT URL'),
+      'text',                           // data type
+      '',
+      xl('PAYTM REDIRECT URL')
+    ),
+	'  ' => array(
+      xl('Payment through PAYPAL: '),
+      '',                           // data type
+      '',
+      xl('')
+    ),
 	'paypal_facilitator_key' => array(
       xl('PAYPAL FACILITATOR KEY'),
       'text',                           // data type
       '',
       xl('PAYPAL FACILITATOR KEY')
     ),
-	
+	'paypal_redirect_url' => array(
+      xl('PAYPAL REDIRECT URL'),
+      'text',                           // data type
+      '',
+      xl('PAYPAL REDIRECT URL')
+    ),
+	'paypal_account_email' => array(
+      xl('PAYPAL ACCOUNT EMAIL'),
+      'text',                           // data type
+      '',
+      xl('PAYPAL ACCOUNT EMAIL')
+    ),
   ),
 
   // Portal Tab
