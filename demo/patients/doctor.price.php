@@ -50,11 +50,11 @@ global $ignoreAuth;
 <input type="hidden" name="return" value="http://localhost/KDemo_base/demo/patients/summary_pat_portal.php?pid=<?php echo $pid ?>">
 <input type="hidden" name="cmd" value="_xclick">
 
-<input type="hidden" name="business" value="sada059-facilitator@gmail.com">
+<input type="hidden" name="business" value="<?php echo  $GLOBALS['paypal_account_email']; ?>">
 <input type="hidden" name="item_name" value="Doctor Fees" />
 <input type="hidden" name="item_number" id="EIDSAV" value="" />
 <input type="hidden" name="amount" value="1" /> 
-   <input type="hidden" name="currency_code" value="INR">
+   <input type="hidden" name="currency_code" value="<?php echo  $GLOBALS['currency_code']; ?>">
 </form>
 
   <ul class="price" id="doctor_price_list">

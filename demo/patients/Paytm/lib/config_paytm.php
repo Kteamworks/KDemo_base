@@ -10,16 +10,18 @@
 */
 $ignoreAuth = 1;
 global $ignoreAuth;
- include_once("../../../interface/globals.php");
+ require_once("../../../interface/globals.php");
  if ($GLOBALS['payment_flag'] ==1 ) {
 	 $env = 'PROD';
  } else {
 	 $env = 'TEST';
  }
+ var_dump($GLOBALS['paytm_merchant_key']);
 define('PAYTM_ENVIRONMENT', $env); // PROD
-define('PAYTM_MERCHANT_KEY', 'bKMfNxPPf_QdZppa'); //Change this constant's value with Merchant key downloaded from portal
-define('PAYTM_MERCHANT_MID', 'DIY12386817555501617'); //Change this constant's value with MID (Merchant ID) received from Paytm
-define('PAYTM_MERCHANT_WEBSITE', 'DIYtestingweb'); //Change this constant's value with Website name received from Paytm
+define('PAYTM_MERCHANT_KEY', $GLOBALS['paytm_merchant_key']); //Change this constant's value with Merchant key downloaded from portal
+define('PAYTM_MERCHANT_MID', $GLOBALS['paytm_merchant_mid']); //Change this constant's value with MID (Merchant ID) received from Paytm
+define('PAYTM_MERCHANT_WEBSITE', $GLOBALS['paytm_merchant_website']); //Change this constant's value with Website name received from Paytm
+define('PAYTM_REDIRECT_URL', $GLOBALS['webroot']."/patients/summary_pat_portal.php"); //Change this constant's value with Website name received from Paytm
 
 $PAYTM_DOMAIN = "pguat.paytm.com";
 if (PAYTM_ENVIRONMENT == 'PROD') {
