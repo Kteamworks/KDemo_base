@@ -516,715 +516,7 @@ border-color: #dd4b39;
 </style>
 <link rel="stylesheet" href="../../library/js/jAlert-master/src/jAlert-v3.css" />
 <!-- <link rel="stylesheet" href="../../library/js/jquery.treeview-1.4.1/jquery.treeview.css" /> -->
-<script src="../../library/js/jquery-1.7.2.min.js"></script>
-<script src="../../library/js/jAlert-master/src/jAlert-v3.js"></script>
-<script src="../../library/js/jAlert-master/src/jAlert-functions.js"> //optional!!</script>
 
-<script src="../../library/js/jquery.treeview-1.4.1/jquery.treeview.js" type="text/javascript"></script>
-
-<script type="text/javascript" src="../../library/dialog.js"></script>
-
-<script language='JavaScript'>
- 
- // tajemo work by CB 2012/01/31 12:32:57 PM dated reminders counter
- function getReminderCount(){ 
-   top.restoreSession();
-   // Send the skip_timeout_reset parameter to not count this as a manual entry in the
-   //  timing out mechanism in OpenEMR.
-   $.post("<?php echo $GLOBALS['webroot']; ?>/library/ajax/dated_reminders_counter.php",
-     { skip_timeout_reset: "1" }, 
-     function(data) {
-		 datax = data.replace(/[{()}]/g, '');
-		 $("#reminderCountSpan").addClass('pull-right-container');
-       $("#reminderCountSpan").html('<small class="label pull-right bg-red">'+datax+'</small>');
-    // run updater every 60 seconds 
-     var repeater = setTimeout("getReminderCount()", 60000); 
-   });
-   //piggy-back on this repeater to run other background-services
-   //this is a silent task manager that returns no output
-   $.post("<?php echo $GLOBALS['webroot']; ?>/library/ajax/execute_background_services.php",
-      { skip_timeout_reset: "1", ajax: "1" });
- }   
- 
- $(document).ready(function (){
-   getReminderCount();//
-   parent.loadedFrameCount += 1;
-   
-   
- // end of tajemo work dated reminders counter
- })
- // Master values for current pid and encounter.
- var active_pid = 0;
- var active_encounter = 0;
- var encounter_locked = false;
-
- // Current selections in the top and bottom frames.
- var topName = '';
- var botName = '';
-
- // Expand and/or collapse frames in response to checkbox clicks.
- // fnum indicates which checkbox was clicked (1=left, 2=right).
- function toggleFrame(fnum) {
-  var f = document.forms[0];
-  var fset = top.document.getElementById('fsright');
-  if (!f.cb_top.checked && !f.cb_bot.checked) {
-   if (fnum == 1) f.cb_bot.checked = true;
-   else f.cb_top.checked = true;
-  }
-  var rows = f.cb_top.checked ? '*' :  '0';
-  rows += f.cb_bot.checked ? ',*' : ',0';
-  fset.rows = rows;
-  fset.rows = rows;
- }
-
- // Load the specified url into the specified frame (RTop or RBot).
- // The URL provided must be relative to interface.
- function loadFrame(fname, frame, url) {
-  top.restoreSession();
-  var i = url.indexOf('{PID}');
-  if (i >= 0) url = url.substring(0,i) + active_pid + url.substring(i+5);
-  top.frames[frame].location = '<?php echo "$web_root/interface/" ?>' + url;
-  if (frame == 'RTop') topName = fname; else botName = fname;
- }
-
- // Load the specified url into a frame to be determined, with the specified
- // frame as the default; the url must be relative to interface.
- function loadFrame2(fname, frame, url) {
-  var usage = fname.substring(3);
-  if (active_pid == 0 && usage > '0') {
-   alert('<?php xl('You must first select or add a patient.','e') ?>');
-   //jAlert('<?php echo 'You must first select or add a patient.' ?>');
-   return false;
-  }
-  if (active_encounter == 0 && usage > '1') {
-   alert('<?php xl('You must first select or create an visit.','e') ?>');
-   return false;
-  }
-  if (encounter_locked && usage > '1') {
-   alert('<?php echo xls('This visit is locked. No new forms can be added.') ?>');
-   return false;
-  }
-  var f = document.forms[0];
-  top.restoreSession();
-  var i = url.indexOf('{PID}');
-  if (i >= 0) url = url.substring(0,i) + active_pid + url.substring(i+5);
-  if(f.sel_frame)
-   {
-	  var fi = f.sel_frame.selectedIndex;
-	  if (fi == 1) frame = 'RTop'; else if (fi == 2) frame = 'RBot';
-   }
-  if (!f.cb_bot.checked) frame = 'RTop'; else if (!f.cb_top.checked) frame = 'RBot';
-  top.frames[frame].location = '<?php echo "$web_root/interface/" ?>' + url;
-  if (frame == 'RTop') topName = fname; else botName = fname;
-  return false;
- }
- 
- function loadFrame3(fname, frame, url) {
-  var f = document.forms[0];
-  top.restoreSession();
-  var i = url.indexOf('{PID}');
-  if (i >= 0) url = url.substring(0,i) + active_pid + url.substring(i+5);
-  if(f.sel_frame)
-   {
-	  var fi = f.sel_frame.selectedIndex;
-	  if (fi == 1) frame = 'RTop'; else if (fi == 2) frame = 'RBot';
-   }
-  if (!f.cb_bot.checked) frame = 'RTop'; else if (!f.cb_top.checked) frame = 'RBot';
-  top.frames[frame].location = '<?php echo "$web_root/interface/" ?>' + url;
-  if (frame == 'RTop') topName = fname; else botName = fname;
-  return false;
- }
-
- // Make sure the the top and bottom frames are open or closed, as specified.
- function forceSpec(istop, isbot) {
-  var f = document.forms[0];
-  if (f.cb_top.checked != istop) {
-   f.cb_top.checked = istop;
-   toggleFrame(1);
-  }
-  if (f.cb_bot.checked != isbot) {
-   f.cb_bot.checked = isbot;
-   toggleFrame(2);
-  }
- }
-
- // Make sure both frames are open.
- function forceDual() {
-  forceSpec(true, true);
- }
-
- // Load the specified url into a frame to be determined, with the specified
- // frame as the default; the url must be relative to interface.
- function loadFrameDual(tname, bname, topurl, boturl) {
-  var topusage = tname.substring(3);
-  var botusage = bname.substring(3);
-  if (active_pid == 0 && (topusage > '0' || botusage > '0')) {
-   alert('<?php xl('You must first select or add a patient.','e') ?>');
-   return false;
-  }
-  if (active_encounter == 0 && (topusage > '1' || botusage > '1')) {
-   alert('<?php xl('You must first select or create an visit.','e') ?>');
-   return false;
-  }
-  if (encounter_locked  && (topusage > '1' || botusage > '1')) {
-   alert('<?php echo xls('This visit is locked. No new forms can be added.') ?>');
-   return false;
-  }
-  var f = document.forms[0];
-  forceDual();
-  top.restoreSession();
-  var i = topurl.indexOf('{PID}');
-  if (i >= 0) topurl = topurl.substring(0,i) + active_pid + topurl.substring(i+5);
-  i = boturl.indexOf('{PID}');
-  if (i >= 0) boturl = boturl.substring(0,i) + active_pid + boturl.substring(i+5);
-  top.frames.RTop.location = '<?php echo "$web_root/interface/" ?>' + topurl;
-  top.frames.RBot.location = '<?php echo "$web_root/interface/" ?>' + boturl;
-  topName = tname;
-  botName = bname;
-  return false;
- }
-
- // Select a designated radio button. raname may be either the radio button
- // array name (rb_top or rb_bot), or the frame name (RTop or RBot).
- // You should call this if you directly load a document that does not
- // correspond to the current radio button setting.
- function setRadio(raname, rbid) {
-<?php if ($GLOBALS['concurrent_layout'] < 2) { ?>
-  var f = document.forms[0];
-  if (raname == 'RTop') raname = 'rb_top';
-  if (raname == 'RBot') raname = 'rb_bot';
-  for (var i = 0; i < f[raname].length; ++i) {
-   if (f[raname][i].value.substring(0,3) == rbid) {
-    f[raname][i].checked = true;
-    return true;
-   }
-  }
-<?php } ?>
-  return false;
- }
-
- // Set disabled/enabled state of radio buttons and associated labels
- // depending on whether there is an active patient or encounter.
- function syncRadios() {
-  var f = document.forms[0];
-  encounter_locked = isEncounterLocked(active_encounter);
-<?php if (($GLOBALS['concurrent_layout'] == 2)||($GLOBALS['concurrent_layout'] == 3)) { ?>
-  var nlinks = document.links.length;
-  for (var i = 0; i < nlinks; ++i) {
-   var lnk = document.links[i];
-   if (lnk.id.length != 4) continue;
-   var usage = lnk.id.substring(3);
-   if (usage == '1' || usage == '2') {
-    var da = false;
-    if (active_pid == 0) da = true;
-    if (active_encounter == 0 && usage > '1') da = true;
-    if (encounter_locked && usage > '1') da = true;
-    <?php
-    if ($GLOBALS['concurrent_layout'] == 2){
-      $color = "'#0000ff'";
-    }else{
-      $color = "'#000000'";
-    }
-    ?>
-    lnk.style.color = da ? '#888888' : <?php echo $color; ?>;
-   }
-  }
-<?php } else if ($GLOBALS['concurrent_layout'] < 2) { ?>
-  for (var i = 0; i < f.rb_top.length; ++i) {
-   var da = false;
-   var rb1 = f.rb_top[i];
-   var rb2 = f.rb_bot[i];
-   var rbid = rb1.value.substring(0,3);
-   var usage = rb1.value.substring(3);
-   if (active_pid == 0 && usage > '0') da = true;
-   if (active_encounter == 0 && usage > '1') da = true;
-   if (encounter_locked && usage > '1') da = true;
-   // daemon_frame can also set special label colors, so don't mess with
-   // them unless we have to.
-   if (rb1.disabled != da) {
-    rb1.disabled = da;
-    rb2.disabled = da;
-    document.getElementById('lbl_' + rbid).style.color = da ? '#888888' : '#000000';
-   }
-  }
-<?php } ?>
-//  f.popups.disabled = (active_pid == 0);
- }
-
-function goHome() {
-    top.frames['RTop'].location='<?php echo $GLOBALS['default_top_pane']?>';
-    top.frames['RBot'].location='messages/messages.php?form_active=1';
-}
-
-//Function to clear active patient and encounter in the server side
-function clearactive() {
-	top.restoreSession();
-	//Ajax call to clear active patient in session
-	$.ajax({
-	  type: "POST",
-	  url: "<?php echo $GLOBALS['webroot'] ?>/library/ajax/unset_session_ajax.php",
-	  data: { func: "unset_pid"},
-	  success:function( msg ) {
-		clearPatient();
-		top.frames['RTop'].location='<?php echo $GLOBALS['default_top_pane']?>';
-		top.frames['RBot'].location='messages/messages.php?form_active=1';
-	  }
-	});
-    
-	$(parent.Title.document.getElementById('clear_active')).hide();
-}
- // Reference to the search.php window.
- var my_window;
-
- // Open the search.php window.
- function initFilter() {
-    my_window = window.open("../../custom/search.php", "mywindow","status=1");
- }
-
- // This is called by the search.php (Filter) window.
- function processFilter(fieldString, serviceCode) {
-  var f = document.forms[0];
-  document.getElementById('searchFields').value = fieldString;
-  f.search_service_code.value = serviceCode;
-  findPatient("Filter");
-  f.search_service_code.value = '';
-  my_window.close();
- }
-
- // Process the click to find a patient by name, id, ssn or dob.
- function findPatient(findby) {
-  var f = document.forms[0];
-  if (! f.cb_top.checked) {
-   f.cb_top.checked = true;
-   toggleFrame(1);
-  }
-  f.findBy.value = findby;
-  setRadio('rb_top', 'dem');
-  top.restoreSession();
-  document.find_patient.submit();
- }
-
- // Helper function to set the contents of a div.
- function setSomeContent(id, content, doc) {
-  if (doc.getElementById) {
-   var x = doc.getElementById(id);
-   x.innerHTML = '';
-   x.innerHTML = content;
-  }
-  else if (doc.all) {
-   var x = doc.all[id];
-   x.innerHTML = content;
-  }
- }
- function setDivContent(id, content) {
-  setSomeContent(id, content, document);
- }
- function setTitleContent(id, content) {
-  setSomeContent(id, content, parent.Title.document);
- }
-
- // This is called automatically when a new patient is set, to make sure
- // there are no patient-specific documents showing stale data.  If a frame
- // was just loaded with data for the correct patient, its name is passed so
- // that it will not be zapped.  At this point the new server-side pid is not
- // assumed to be set, so this function will only load global data.
- function reloadPatient(frname) {
-  var f = document.forms[0];
-  if (topName.length > 3 && topName.substring(3) > '0' && frname != 'RTop') {
-   loadFrame('cal0','RTop', '<?php echo $primary_docs['cal'][2]; ?>');
-   setRadio('rb_top', 'cal');
-  }
-  if (botName.length > 3 && botName.substring(3) > '0' && frname != 'RBot') {
-   loadFrame('ens0','RBot', '<?php echo $primary_docs['ens'][2]; ?>');
-   setRadio('rb_bot', 'ens');
-  }
- }
-
- // Reload encounter-specific frames, excluding a specified frame.  At this
- // point the new server-side encounter ID may not be set and loading the same
- // document for the new encounter will not work, so load patient info instead.
- function reloadEncounter(frname) {
-  var f = document.forms[0];
-  if (topName.length > 3 && topName.substring(3) > '1' && frname != 'RTop') {
-   loadFrame('dem1','RTop', '<?php echo $primary_docs['dem'][2]; ?>');
-   setRadio('rb_top', 'dem');
-  }
-  if (botName.length > 3 && botName.substring(3) > '1' && frname != 'RBot') {
-   loadFrame('ens1','RBot', '<?php echo $primary_docs['ens'][2]; ?>');
-   setRadio('rb_bot', 'ens');
-  }
- }
-
- // Clear and reload issue-related menu items for active_pid.
- // Currently this only applies to athletic teams, but might be implemented
- // in the general menu at some future time.
- //
- function reloadIssues() {
-<?php
-  if ($GLOBALS['athletic_team']) {
-    // Generates a menu item for each active issue that this patient
-    // has of each issue type.  Each one looks like this:
-    //   Onset-Date [Add] Issue-Title
-    // where the first part is a link to open the issue dialog,
-    // [Add] is a link that auto-creates and opens a new encounter, and
-    // Issue-Title is a link that shows related encounters.
-    foreach ($ISSUE_TYPES as $key => $value) {
-?>
-  $('#icontainer_<?php echo $key ?>').empty();
-  if (active_pid != 0) {
-   $('#icontainer_<?php echo $key ?>').append("<li>" +
-    "<a href='' id='xxx1' onclick='return repPopup(" +
-    "\"../patient_file/summary/add_edit_issue.php?thistype=" +
-    "<?php echo $key; ?>\")' " +
-    "title='<?php echo xl('Create new issue'); ?>'>" +
-    "<?php echo xl('New') . " " . $value[1]; ?></a></li>");
-   top.restoreSession();
-   $.getScript('../../library/ajax/left_nav_issues_ajax.php?type=<?php echo $key; ?>');
-  }
-<?php
-    }
-  }
-?>
- } // end function reloadIssues
-
- // This is referenced in left_nav_issues_ajax.php and is called when [Add]
- // is clicked for an issue menu item to add a new encounter for the issue.
- // So far this only applies to the Athletic Team version of the menu.
- //
- function addEncNotes(issue) {
-
-  // top.restoreSession();
-  // $.getScript('../../library/ajax/left_nav_encounter_ajax.php?createvisit=1&issue=' + issue);
-
-  // The above AJAX call was to create the encounter right away, but we later
-  // (2012-07-03) decided it's better to present the New Encounter form instead.
-  // Note the issue ID is passed so it will be pre-selected in that form.
-  loadFrame2('nen1','RBot','forms/newpatient/new.php?autoloaded=1&calenc=&issue=' + issue);
-
-  return false;
- }
-
- // Call this to announce that the patient has changed.  You must call this
- // if you change the session PID, so that the navigation frame will show the
- // correct patient and so that the other frame will be reloaded if it contains
- // patient-specific information from the previous patient.  frname is the name
- // of the frame that the call came from, so we know to only reload content
- // from the *other* frame if it is patient-specific.
- function setPatient(pname, pid, pubpid, frname, str_dob) {
-  var str = '<a href=\'javascript:;\' onclick="parent.left_nav.loadCurrentPatientFromTitle()" title="PID = ' + pid + '"><b>' + pname + ' (' + pubpid + ')<br /></b></a>';
-  setDivContent('current_patient', str);
-  setTitleContent('current_patient', str + str_dob);
-  if (pid == active_pid) return;
-  setDivContent('current_encounter', '<b><?php xl('None','e'); ?></b>');
-  active_pid = pid;
-  active_encounter = 0;
-  encounter_locked = false;
-  if (frname) reloadPatient(frname);
-  syncRadios();
-  $(parent.Title.document.getElementById('current_patient_block')).show();
-  var encounter_block = $(parent.Title.document.getElementById('current_encounter_block'));
-  $(encounter_block).hide();
-
-  // zero out the encounter frame, replace it with the encounter list frame
-  var f = document.forms[0];
-  if ( f.cb_top.checked && f.cb_bot.checked ) {
-      var encounter_frame = getEncounterTargetFrame('enc');
-      if ( encounter_frame != undefined )  {
-          loadFrame('ens0',encounter_frame, '<?php echo $primary_docs['ens'][2]; ?>');
-          setRadio(encounter_frame, 'ens');
-      }
-  }
-
-  reloadIssues(pid);
-  $(parent.Title.document.getElementById('clear_active')).show();//To display Clear Active Patient button on selecting a patient
- }
- function setPatientEncounter(EncounterIdArray,EncounterDateArray,CalendarCategoryArray) {
- //This function lists all encounters of the patient.
- //This function writes the drop down in the top frame.
- //It is called when a new patient is create/selected from the search menu.
-  var str = '<Select class="text" id="EncounterHistory" onchange="{top.restoreSession();toencounter(this.options[this.selectedIndex].value)}">';
-  str+='<option value=""><?php echo htmlspecialchars( xl('Visit History'), ENT_QUOTES) ?></option>';
-  str+='<option value="New Encounter"><?php echo htmlspecialchars( xl('New Visit'), ENT_QUOTES) ?></option>';
-  str+='<option value="Past Encounter List"><?php echo htmlspecialchars( xl('Past Visit List'), ENT_QUOTES) ?></option>';
-  for(CountEncounter=0;CountEncounter<EncounterDateArray.length;CountEncounter++)
-   {
-    str+='<option value="'+EncounterIdArray[CountEncounter]+'~'+EncounterDateArray[CountEncounter]+'">'+EncounterDateArray[CountEncounter]+'-'+CalendarCategoryArray[CountEncounter]+'</option>';
-   }
-  str+='</Select>';
-  $(parent.Title.document.getElementById('past_encounter_block')).show();
-  top.window.parent.Title.document.getElementById('past_encounter').innerHTML=str;
- }
-
-function loadCurrentPatientFromTitle() {
-    top.restoreSession();
-    top.frames['RTop'].location='../patient_file/summary/demographics.php';
-}
-
-function getEncounterTargetFrame( name ) {
-    var bias = <?php echo $primary_docs[ 'enc'  ][ 1 ]?>;
-    var f = document.forms[0];
-    var r = 'RTop';
-    if (f.cb_top.checked && f.cb_bot.checked) {
-        if ( bias == 2 ) {
-            r = 'RBot';
-        } else {
-            r = 'RTop';
-        }
-    } else {
-        if ( f.cb_top.checked ) {
-            r = 'RTop';
-        } else if ( f.cb_bot.checked )  {
-            r = 'RBot';
-        }
-    }
-    return r;
-}
-function isEncounterLocked( encounterId ) {
-	<?php if ( $esignApi->lockEncounters() ) { ?>
-	// If encounter locking is enabled, make a syncronous call (async=false) to check the
-	// DB to see if the encounter is locked.
-	// Call restore session, just in case
-	top.restoreSession();
-    $.ajax({
-        type: 'POST',
-        url: '<?php echo $GLOBALS['webroot']?>/interface/esign/index.php?module=encounter&method=esign_is_encounter_locked',
-        data: { encounterId : encounterId },
-        success: function( data ) {
-            encounter_locked = data;
-        },
-        dataType: 'json',
-        async:false
-	});	    
-	return encounter_locked;
-	<?php } else { ?>
-	// If encounter locking isn't enabled, just tell the left_nav that the encounter 
-    // isn't locked.
-	return false;
-	<?php } ?>
- }
- 
- function toggleCheckbox(element)
- {
-   if(element.checked) {
-
-	    $.ajax({
-                // Where to send request
-                url: 'status.update.php',
-                // What to send
-                data: { did: 2 },
-                // How to send
-                type: 'post',
-                // What to do when request succeeds
-                success: function(response) {
-                    // Save the contents of the response into
-                    // whatever has the id="list"
-                    $("#status").html(response);
-                }
-        });
-   }
-   else {
-   	    $.ajax({
-                // Where to send request
-                url: 'status.update.php',
-                // What to send
-                data: { did: 1 },
-                // How to send
-                type: 'post',
-                // What to do when request succeeds
-                success: function(response) {
-                    // Save the contents of the response into
-                    // whatever has the id="list"
-                    $("#status").html(response);
-                }
-        });
-   }
- }
- // Call this to announce that the encounter has changed.  You must call this
- // if you change the session encounter, so that the navigation frame will
- // show the correct encounter and so that the other frame will be reloaded if
- // it contains encounter-specific information from the previous encounter.
- // frname is the name of the frame that the call came from, so we know to only
- // reload encounter-specific content from the *other* frame.
- function setEncounter(edate, eid, frname) {
-  if (eid == active_encounter) return;
-  if (!eid) edate = '<?php xl('None','e'); ?>';
-  var str = '<b>' + edate + '</b>';
-  setDivContent('current_encounter', str);
-  active_encounter = eid;
-  encounter_locked=isEncounterLocked(active_encounter);
-  reloadEncounter(frname);
-  syncRadios();
-  var encounter_block = $(parent.Title.document.getElementById('current_encounter_block'));
-  var encounter = $(parent.Title.document.getElementById('current_encounter'));
-  var estr = '<a href=\'javascript:;\' onclick="parent.left_nav.loadCurrentEncounterFromTitle()"><b>' + edate + ' (' + eid + ')</b></a>';
-  encounter.html( estr );
-  encounter_block.show();
- }
-
- function loadCurrentEncounterFromTitle() {
-      top.restoreSession();
-      top.frames[ parent.left_nav.getEncounterTargetFrame('enc') ].location='../patient_file/encounter/encounter_top.php';
- }
-
- // You must call this if you delete the active patient (or if for any other
- // reason you "close" the active patient without opening a new one), so that
- // the appearance of the navigation frame will be correct and so that any
- // stale content will be reloaded.
- function clearPatient() {
-  if (active_pid == 0) return;
-  var f = document.forms[0];
-  active_pid = 0;
-  active_encounter = 0;
-  encounter_locked = false;
-  setDivContent('current_patient', '<b><?php xl('None','e'); ?></b>');
-  $(parent.Title.document.getElementById('current_patient_block')).hide();
-  top.window.parent.Title.document.getElementById('past_encounter').innerHTML='';
-  $(parent.Title.document.getElementById('current_encounter_block')).hide();
-  reloadPatient('');
-  syncRadios();
- }
-
- // You must call this if you delete the active encounter (or if for any other
- // reason you "close" the active encounter without opening a new one), so that
- // the appearance of the navigation frame will be correct and so that any
- // stale content will be reloaded.
- function clearEncounter() {
-  if (active_encounter == 0) return;
-  top.window.parent.Title.document.getElementById('current_encounter').innerHTML="<b><?php echo htmlspecialchars( xl('None'), ENT_QUOTES) ?></b>";
-  active_encounter = 0;
-  encounter_locked = false;
-  reloadEncounter('');
-  syncRadios();
- }
-function removeOptionSelected(EncounterId)
-{//Removes an item from the Encounter drop down.
-	var elSel = top.window.parent.Title.document.getElementById('EncounterHistory');
-	var i;
-	for (i = elSel.length - 1; i>=2; i--) {
-	 EncounterHistoryValue=elSel.options[i].value;
-	 EncounterHistoryValueArray=EncounterHistoryValue.split('~');
-		if (EncounterHistoryValueArray[0]==EncounterId) {
-			elSel.remove(i);
-		}
-	}
-}
-
- // You can call this to make sure the session pid is what we expect.
- function pidSanityCheck(pid) {
-  if (pid != active_pid) {
-   alert('Session patient ID is ' + pid + ', expecting ' + active_pid +
-    '. This session is unstable and should be abandoned. Do not use ' +
-    'OpenEMR in multiple browser windows!');
-   return false;
-  }
-  return true;
- }
-
- // You can call this to make sure the session encounter is what we expect.
- function encounterSanityCheck(eid) {
-  if (eid != active_encounter) {
-   alert('Session encounter ID is ' + eid + ', expecting ' + active_encounter +
-    '. This session is unstable and should be abandoned. Do not use ' +
-    'OpenEMR in multiple browser windows!');
-   return false;
-  }
-  return true;
- }
-
- // Pop up a report.
- function repPopup(aurl) {
-  top.restoreSession();
-  window.open('<?php echo "$web_root/interface/reports/" ?>' + aurl, '_blank', 'width=750,height=550,resizable=1,scrollbars=1');
-  return false;
- }
-
- // This is invoked to pop up some window when a popup item is selected.
- function selpopup(selobj) {
-  var i = selobj.selectedIndex;
-  var opt = selobj.options[i];
-  if (i > 0) {
-   var width  = 750;
-   var height = 550;
-   if (opt.text == 'Export' || opt.text == 'Import') {
-    width  = 500;
-    height = 400;
-   }
-   else if (opt.text == 'Refer') {
-    width  = 700;
-    height = 500;
-   }
-   dlgopen(opt.value, '_blank', width, height);
-  }
-  selobj.selectedIndex = 0;
- }
-// Treeview activation stuff:
-$(document).ready(function(){
-  if(3 == <?php echo $GLOBALS['concurrent_layout'] ?>){
-    $("#navigation-slide > li > a.collapsed + ul").slideToggle("medium");
-    $("#navigation-slide > li > ul > li > a.collapsed_lv2 + ul").slideToggle("medium");
-    $("#navigation-slide > li > a.expanded").click(function() {
-      $("#navigation-slide > li > a.expanded").not(this).toggleClass("expanded").toggleClass("collapsed").parent().find('> ul').slideToggle("medium");
-      $(this).toggleClass("expanded").toggleClass("collapsed").parent().find('> ul').slideToggle("medium");
-    });
-    $("#navigation-slide > li > a.collapsed").click(function() {
-      $("#navigation-slide > li > a.expanded").not(this).toggleClass("expanded").toggleClass("collapsed").parent().find('> ul').slideToggle("medium");
-      $(this).toggleClass("expanded").toggleClass("collapsed").parent().find('> ul').slideToggle("medium");
-    });
-    $("#navigation-slide > li  > ul > li > a.expanded_lv2").click(function() {
-      $("#navigation-slide > li > a.expanded").next("ul").find("li > a.expanded_lv2").not(this).toggleClass("expanded_lv2").toggleClass("collapsed_lv2").parent().find('> ul').slideToggle("medium");
-      $(this).toggleClass("expanded_lv2").toggleClass("collapsed_lv2").parent().find('> ul').slideToggle("medium");
-    });
-    $("#navigation-slide > li  > ul > li > a.collapsed_lv2").click(function() {
-      $("#navigation-slide > li > a.expanded").next("ul").find("li > a.expanded_lv2").not(this).toggleClass("expanded_lv2").toggleClass("collapsed_lv2").parent().find('> ul').slideToggle("medium");
-      $(this).toggleClass("expanded_lv2").toggleClass("collapsed_lv2").parent().find('> ul').slideToggle("medium");
-    });
-    $("#navigation-slide > li  > a#cal0").prepend('<img src="../../images/calendar.png" class="nav-menu-img" />');
-	 $("#navigation-slide > li  > a#pfb0").prepend('<img src="../../images/pfb.png" class="nav-menu-img" />');
-    $("#navigation-slide > li  > a#msg0").prepend('<img src="../../images/messages.png" class="nav-menu-img" />');
-    $("#navigation-slide > li  > a#patimg").prepend('<img src="../../images/patient.png" class="nav-menu-img" />');
-	$("#navigation-slide > li  > a#bedimg").prepend('<img src="../../images/bed.png" class="nav-menu-img" />');
-	$("#navigation-slide > li  > a#ddb0").prepend('<img src="../../images/Dashboard.png" class="nav-menu-img" />');
-	$("#navigation-slide > li  > a#ana0").prepend('<img src="../../images/ana.png" class="nav-menu-img" />');
-	$("#navigation-slide > li  > a#manageimg").prepend('<img src="../../images/manage.png" class="nav-menu-img" />');
-	$("#navigation-slide > li  > a#analyticsimg").prepend('<img src="../../images/analytics.png" class="nav-menu-img" />');
-	$("#navigation-slide > li  > a#certificateimg").prepend('<img src="../../images/certificate.png" class="nav-menu-img" />');
-    $("#navigation-slide > li  > a#app0").prepend('<img src="../../images/patient.png" class="nav-menu-img" />');
-    $("#navigation-slide > li  > a#ppo0").prepend('<img src="../../images/patient.png" class="nav-menu-img" />');
-    $("#navigation-slide > li  > a#repimg").prepend('<img src="../../images/reports.png" class="nav-menu-img" />');
-    $("#navigation-slide > li  > a#feeimg").prepend('<img src="../../images/fee.png" class="nav-menu-img" />');
-    $("#navigation-slide > li  > a#adm0").prepend('<img src="../../images/inventory.png" class="nav-menu-img" />');
-    $("#navigation-slide > li  > a#invimg").prepend('<img src="../../images/inventory.png" class="nav-menu-img" />');
-	$("#navigation-slide > li  > a#phrimg").prepend('<img src="../../images/rx.png" class="nav-menu-img" />');
-    $("#navigation-slide > li  > a#admimg").prepend('<img src="../../images/admin.png" class="nav-menu-img" />');
-    $("#navigation-slide > li  > a#misimg").prepend('<img src="../../images/misc.png" class="nav-menu-img" />');
-    $("#navigation-slide > li  > a#proimg").prepend('<img src="../../images/procedures.png" class="nav-menu-img" />');
-		$("#navigation-slide > li  > a#modimg").prepend('<img src="../../images/module.png" class="nav-menu-img" />');
-    $("#navigation-slide > li").each(function(index) {
-      if($(" > ul > li", this).size() == 0){
-        $(" > a", this).addClass("collapsed");
-      }
-    });
-  }else if(2 == <?php echo $GLOBALS['concurrent_layout'] ?>){
-
-    //Remove the links (used by the sliding menu) that will break treeview
-    $('a.collapsed').each(function() { $(this).replaceWith('<span>'+$(this).text()+'</span>'); });
-    $('a.collapsed_lv2').each(function() { $(this).replaceWith('<span>'+$(this).text()+'</span>'); });
-    $('a.expanded').each(function() { $(this).replaceWith('<span>'+$(this).text()+'</span>'); });
-    $('a.expanded_lv2').each(function() { $(this).replaceWith('<span>'+$(this).text()+'</span>'); });
-
-    // Initiate treeview
-    $("#navigation").treeview({
-     animated: "fast",
-     collapsed: true,
-     unique: <?php echo $GLOBALS['athletic_team'] ? 'false' : 'true' ?>,
-     toggle: function() {
-      window.console && console.log("%o was toggled", this);
-     }
-    });
-  }
-});
-
-</script>
 
 </head>
 
@@ -2172,8 +1464,8 @@ if (!$GLOBALS['athletic_team']) {
 syncRadios();
 </script>
 <script type="text/javascript">
-$.noConflict();
 jQuery(document).ready(function($) {
+
 var selector = '.sidebar-menu li';
 $(selector).on('click', function(){
 	
@@ -2182,8 +1474,26 @@ $(selector).on('click', function(){
 });
 });
 </script>
+
 <!-- jQuery 2.2.3 -->
-<script src="../../library/dist/jQuery/jquery-2.2.3.min.js"></script>
+
+<script src="http://code.jquery.com/jquery-1.10.2.min.js" type="text/javascript"></script>
+<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.min.js" type="text/javascript"></script>
+
+<script src="../../library/js/jAlert-master/src/jAlert-v3.js"></script>
+<script src="../../library/js/jAlert-master/src/jAlert-functions.js"> //optional!!</script>
+
+<script src="../../library/js/jquery.treeview-1.4.1/jquery.treeview.js" type="text/javascript"></script>
+
+<script type="text/javascript" src="../../library/dialog.js"></script>
+
+<script src="../../library/js/jAlert-master/src/jAlert-v3.js"></script>
+<script src="../../library/js/jAlert-master/src/jAlert-functions.js"> //optional!!</script>
+
+<script src="../../library/js/jquery.treeview-1.4.1/jquery.treeview.js" type="text/javascript"></script>
+
+<script type="text/javascript" src="../../library/dialog.js"></script>
+
 <!-- Bootstrap 3.3.6 -->
 <script src="../../library/js/bootstrap.min.js"></script>
 <!-- FastClick -->
@@ -2191,5 +1501,706 @@ $(selector).on('click', function(){
 <!-- AdminLTE App -->
 <script src="../../library/dist/js/app.min.js"></script>
 
+<script language='JavaScript'>
+ 
+ // tajemo work by CB 2012/01/31 12:32:57 PM dated reminders counter
+ function getReminderCount(){ 
+   top.restoreSession();
+   // Send the skip_timeout_reset parameter to not count this as a manual entry in the
+   //  timing out mechanism in OpenEMR.
+   $.post("<?php echo $GLOBALS['webroot']; ?>/library/ajax/dated_reminders_counter.php",
+     { skip_timeout_reset: "1" }, 
+     function(data) {
+		 datax = data.replace(/[{()}]/g, '');
+		 $("#reminderCountSpan").addClass('pull-right-container');
+       $("#reminderCountSpan").html('<small class="label pull-right bg-red">'+datax+'</small>');
+    // run updater every 60 seconds 
+     var repeater = setTimeout("getReminderCount()", 60000); 
+   });
+   //piggy-back on this repeater to run other background-services
+   //this is a silent task manager that returns no output
+   $.post("<?php echo $GLOBALS['webroot']; ?>/library/ajax/execute_background_services.php",
+      { skip_timeout_reset: "1", ajax: "1" });
+ }   
+ 
+ $(document).ready(function (){
+   getReminderCount();//
+   parent.loadedFrameCount += 1;
+   
+   
+ // end of tajemo work dated reminders counter
+ })
+ // Master values for current pid and encounter.
+ var active_pid = 0;
+ var active_encounter = 0;
+ var encounter_locked = false;
+
+ // Current selections in the top and bottom frames.
+ var topName = '';
+ var botName = '';
+
+ // Expand and/or collapse frames in response to checkbox clicks.
+ // fnum indicates which checkbox was clicked (1=left, 2=right).
+ function toggleFrame(fnum) {
+  var f = document.forms[0];
+  var fset = top.document.getElementById('fsright');
+  if (!f.cb_top.checked && !f.cb_bot.checked) {
+   if (fnum == 1) f.cb_bot.checked = true;
+   else f.cb_top.checked = true;
+  }
+  var rows = f.cb_top.checked ? '*' :  '0';
+  rows += f.cb_bot.checked ? ',*' : ',0';
+  fset.rows = rows;
+  fset.rows = rows;
+ }
+
+ // Load the specified url into the specified frame (RTop or RBot).
+ // The URL provided must be relative to interface.
+ function loadFrame(fname, frame, url) {
+  top.restoreSession();
+  var i = url.indexOf('{PID}');
+  if (i >= 0) url = url.substring(0,i) + active_pid + url.substring(i+5);
+  top.frames[frame].location = '<?php echo "$web_root/interface/" ?>' + url;
+  if (frame == 'RTop') topName = fname; else botName = fname;
+ }
+
+ // Load the specified url into a frame to be determined, with the specified
+ // frame as the default; the url must be relative to interface.
+ function loadFrame2(fname, frame, url) {
+  var usage = fname.substring(3);
+  if (active_pid == 0 && usage > '0') {
+   alert('<?php xl('You must first select or add a patient.','e') ?>');
+   //jAlert('<?php echo 'You must first select or add a patient.' ?>');
+   return false;
+  }
+  if (active_encounter == 0 && usage > '1') {
+   alert('<?php xl('You must first select or create an visit.','e') ?>');
+   return false;
+  }
+  if (encounter_locked && usage > '1') {
+   alert('<?php echo xls('This visit is locked. No new forms can be added.') ?>');
+   return false;
+  }
+  var f = document.forms[0];
+  top.restoreSession();
+  var i = url.indexOf('{PID}');
+  if (i >= 0) url = url.substring(0,i) + active_pid + url.substring(i+5);
+  if(f.sel_frame)
+   {
+	  var fi = f.sel_frame.selectedIndex;
+	  if (fi == 1) frame = 'RTop'; else if (fi == 2) frame = 'RBot';
+   }
+  if (!f.cb_bot.checked) frame = 'RTop'; else if (!f.cb_top.checked) frame = 'RBot';
+  top.frames[frame].location = '<?php echo "$web_root/interface/" ?>' + url;
+  if (frame == 'RTop') topName = fname; else botName = fname;
+  return false;
+ }
+ 
+ function loadFrame3(fname, frame, url) {
+  var f = document.forms[0];
+  top.restoreSession();
+  var i = url.indexOf('{PID}');
+  if (i >= 0) url = url.substring(0,i) + active_pid + url.substring(i+5);
+  if(f.sel_frame)
+   {
+	  var fi = f.sel_frame.selectedIndex;
+	  if (fi == 1) frame = 'RTop'; else if (fi == 2) frame = 'RBot';
+   }
+  if (!f.cb_bot.checked) frame = 'RTop'; else if (!f.cb_top.checked) frame = 'RBot';
+  top.frames[frame].location = '<?php echo "$web_root/interface/" ?>' + url;
+  if (frame == 'RTop') topName = fname; else botName = fname;
+  return false;
+ }
+
+ // Make sure the the top and bottom frames are open or closed, as specified.
+ function forceSpec(istop, isbot) {
+  var f = document.forms[0];
+  if (f.cb_top.checked != istop) {
+   f.cb_top.checked = istop;
+   toggleFrame(1);
+  }
+  if (f.cb_bot.checked != isbot) {
+   f.cb_bot.checked = isbot;
+   toggleFrame(2);
+  }
+ }
+
+ // Make sure both frames are open.
+ function forceDual() {
+  forceSpec(true, true);
+ }
+
+ // Load the specified url into a frame to be determined, with the specified
+ // frame as the default; the url must be relative to interface.
+ function loadFrameDual(tname, bname, topurl, boturl) {
+  var topusage = tname.substring(3);
+  var botusage = bname.substring(3);
+  if (active_pid == 0 && (topusage > '0' || botusage > '0')) {
+   alert('<?php xl('You must first select or add a patient.','e') ?>');
+   return false;
+  }
+  if (active_encounter == 0 && (topusage > '1' || botusage > '1')) {
+   alert('<?php xl('You must first select or create an visit.','e') ?>');
+   return false;
+  }
+  if (encounter_locked  && (topusage > '1' || botusage > '1')) {
+   alert('<?php echo xls('This visit is locked. No new forms can be added.') ?>');
+   return false;
+  }
+  var f = document.forms[0];
+  forceDual();
+  top.restoreSession();
+  var i = topurl.indexOf('{PID}');
+  if (i >= 0) topurl = topurl.substring(0,i) + active_pid + topurl.substring(i+5);
+  i = boturl.indexOf('{PID}');
+  if (i >= 0) boturl = boturl.substring(0,i) + active_pid + boturl.substring(i+5);
+  top.frames.RTop.location = '<?php echo "$web_root/interface/" ?>' + topurl;
+  top.frames.RBot.location = '<?php echo "$web_root/interface/" ?>' + boturl;
+  topName = tname;
+  botName = bname;
+  return false;
+ }
+
+ // Select a designated radio button. raname may be either the radio button
+ // array name (rb_top or rb_bot), or the frame name (RTop or RBot).
+ // You should call this if you directly load a document that does not
+ // correspond to the current radio button setting.
+ function setRadio(raname, rbid) {
+<?php if ($GLOBALS['concurrent_layout'] < 2) { ?>
+  var f = document.forms[0];
+  if (raname == 'RTop') raname = 'rb_top';
+  if (raname == 'RBot') raname = 'rb_bot';
+  for (var i = 0; i < f[raname].length; ++i) {
+   if (f[raname][i].value.substring(0,3) == rbid) {
+    f[raname][i].checked = true;
+    return true;
+   }
+  }
+<?php } ?>
+  return false;
+ }
+
+ // Set disabled/enabled state of radio buttons and associated labels
+ // depending on whether there is an active patient or encounter.
+ function syncRadios() {
+  var f = document.forms[0];
+  encounter_locked = isEncounterLocked(active_encounter);
+<?php if (($GLOBALS['concurrent_layout'] == 2)||($GLOBALS['concurrent_layout'] == 3)) { ?>
+  var nlinks = document.links.length;
+  for (var i = 0; i < nlinks; ++i) {
+   var lnk = document.links[i];
+   if (lnk.id.length != 4) continue;
+   var usage = lnk.id.substring(3);
+   if (usage == '1' || usage == '2') {
+    var da = false;
+    if (active_pid == 0) da = true;
+    if (active_encounter == 0 && usage > '1') da = true;
+    if (encounter_locked && usage > '1') da = true;
+    <?php
+    if ($GLOBALS['concurrent_layout'] == 2){
+      $color = "'#0000ff'";
+    }else{
+      $color = "'#000000'";
+    }
+    ?>
+    lnk.style.color = da ? '#888888' : <?php echo $color; ?>;
+   }
+  }
+<?php } else if ($GLOBALS['concurrent_layout'] < 2) { ?>
+  for (var i = 0; i < f.rb_top.length; ++i) {
+   var da = false;
+   var rb1 = f.rb_top[i];
+   var rb2 = f.rb_bot[i];
+   var rbid = rb1.value.substring(0,3);
+   var usage = rb1.value.substring(3);
+   if (active_pid == 0 && usage > '0') da = true;
+   if (active_encounter == 0 && usage > '1') da = true;
+   if (encounter_locked && usage > '1') da = true;
+   // daemon_frame can also set special label colors, so don't mess with
+   // them unless we have to.
+   if (rb1.disabled != da) {
+    rb1.disabled = da;
+    rb2.disabled = da;
+    document.getElementById('lbl_' + rbid).style.color = da ? '#888888' : '#000000';
+   }
+  }
+<?php } ?>
+//  f.popups.disabled = (active_pid == 0);
+ }
+
+function goHome() {
+    top.frames['RTop'].location='<?php echo $GLOBALS['default_top_pane']?>';
+    top.frames['RBot'].location='messages/messages.php?form_active=1';
+}
+
+//Function to clear active patient and encounter in the server side
+function clearactive() {
+	top.restoreSession();
+	//Ajax call to clear active patient in session
+	$.ajax({
+	  type: "POST",
+	  url: "<?php echo $GLOBALS['webroot'] ?>/library/ajax/unset_session_ajax.php",
+	  data: { func: "unset_pid"},
+	  success:function( msg ) {
+		clearPatient();
+		top.frames['RTop'].location='<?php echo $GLOBALS['default_top_pane']?>';
+		top.frames['RBot'].location='messages/messages.php?form_active=1';
+	  }
+	});
+    
+	$(parent.Title.document.getElementById('clear_active')).hide();
+}
+ // Reference to the search.php window.
+ var my_window;
+
+ // Open the search.php window.
+ function initFilter() {
+    my_window = window.open("../../custom/search.php", "mywindow","status=1");
+ }
+
+ // This is called by the search.php (Filter) window.
+ function processFilter(fieldString, serviceCode) {
+  var f = document.forms[0];
+  document.getElementById('searchFields').value = fieldString;
+  f.search_service_code.value = serviceCode;
+  findPatient("Filter");
+  f.search_service_code.value = '';
+  my_window.close();
+ }
+
+ // Process the click to find a patient by name, id, ssn or dob.
+ function findPatient(findby) {
+  var f = document.forms[0];
+  if (! f.cb_top.checked) {
+   f.cb_top.checked = true;
+   toggleFrame(1);
+  }
+  f.findBy.value = findby;
+  setRadio('rb_top', 'dem');
+  top.restoreSession();
+  document.find_patient.submit();
+ }
+
+ // Helper function to set the contents of a div.
+ function setSomeContent(id, content, doc) {
+  if (doc.getElementById) {
+   var x = doc.getElementById(id);
+   x.innerHTML = '';
+   x.innerHTML = content;
+  }
+  else if (doc.all) {
+   var x = doc.all[id];
+   x.innerHTML = content;
+  }
+ }
+ function setDivContent(id, content) {
+  setSomeContent(id, content, document);
+ }
+ function setTitleContent(id, content) {
+  setSomeContent(id, content, parent.Title.document);
+ }
+
+ // This is called automatically when a new patient is set, to make sure
+ // there are no patient-specific documents showing stale data.  If a frame
+ // was just loaded with data for the correct patient, its name is passed so
+ // that it will not be zapped.  At this point the new server-side pid is not
+ // assumed to be set, so this function will only load global data.
+ function reloadPatient(frname) {
+  var f = document.forms[0];
+  if (topName.length > 3 && topName.substring(3) > '0' && frname != 'RTop') {
+   loadFrame('cal0','RTop', '<?php echo $primary_docs['cal'][2]; ?>');
+   setRadio('rb_top', 'cal');
+  }
+  if (botName.length > 3 && botName.substring(3) > '0' && frname != 'RBot') {
+   loadFrame('ens0','RBot', '<?php echo $primary_docs['ens'][2]; ?>');
+   setRadio('rb_bot', 'ens');
+  }
+ }
+
+ // Reload encounter-specific frames, excluding a specified frame.  At this
+ // point the new server-side encounter ID may not be set and loading the same
+ // document for the new encounter will not work, so load patient info instead.
+ function reloadEncounter(frname) {
+  var f = document.forms[0];
+  if (topName.length > 3 && topName.substring(3) > '1' && frname != 'RTop') {
+   loadFrame('dem1','RTop', '<?php echo $primary_docs['dem'][2]; ?>');
+   setRadio('rb_top', 'dem');
+  }
+  if (botName.length > 3 && botName.substring(3) > '1' && frname != 'RBot') {
+   loadFrame('ens1','RBot', '<?php echo $primary_docs['ens'][2]; ?>');
+   setRadio('rb_bot', 'ens');
+  }
+ }
+
+ // Clear and reload issue-related menu items for active_pid.
+ // Currently this only applies to athletic teams, but might be implemented
+ // in the general menu at some future time.
+ //
+ function reloadIssues() {
+<?php
+  if ($GLOBALS['athletic_team']) {
+    // Generates a menu item for each active issue that this patient
+    // has of each issue type.  Each one looks like this:
+    //   Onset-Date [Add] Issue-Title
+    // where the first part is a link to open the issue dialog,
+    // [Add] is a link that auto-creates and opens a new encounter, and
+    // Issue-Title is a link that shows related encounters.
+    foreach ($ISSUE_TYPES as $key => $value) {
+?>
+  $('#icontainer_<?php echo $key ?>').empty();
+  if (active_pid != 0) {
+   $('#icontainer_<?php echo $key ?>').append("<li>" +
+    "<a href='' id='xxx1' onclick='return repPopup(" +
+    "\"../patient_file/summary/add_edit_issue.php?thistype=" +
+    "<?php echo $key; ?>\")' " +
+    "title='<?php echo xl('Create new issue'); ?>'>" +
+    "<?php echo xl('New') . " " . $value[1]; ?></a></li>");
+   top.restoreSession();
+   $.getScript('../../library/ajax/left_nav_issues_ajax.php?type=<?php echo $key; ?>');
+  }
+<?php
+    }
+  }
+?>
+ } // end function reloadIssues
+
+ // This is referenced in left_nav_issues_ajax.php and is called when [Add]
+ // is clicked for an issue menu item to add a new encounter for the issue.
+ // So far this only applies to the Athletic Team version of the menu.
+ //
+ function addEncNotes(issue) {
+
+  // top.restoreSession();
+  // $.getScript('../../library/ajax/left_nav_encounter_ajax.php?createvisit=1&issue=' + issue);
+
+  // The above AJAX call was to create the encounter right away, but we later
+  // (2012-07-03) decided it's better to present the New Encounter form instead.
+  // Note the issue ID is passed so it will be pre-selected in that form.
+  loadFrame2('nen1','RBot','forms/newpatient/new.php?autoloaded=1&calenc=&issue=' + issue);
+
+  return false;
+ }
+
+ // Call this to announce that the patient has changed.  You must call this
+ // if you change the session PID, so that the navigation frame will show the
+ // correct patient and so that the other frame will be reloaded if it contains
+ // patient-specific information from the previous patient.  frname is the name
+ // of the frame that the call came from, so we know to only reload content
+ // from the *other* frame if it is patient-specific.
+ function setPatient(pname, pid, pubpid, frname, str_dob) {
+  var str = '<a href=\'javascript:;\' onclick="parent.left_nav.loadCurrentPatientFromTitle()" title="PID = ' + pid + '"><b>' + pname + ' (' + pubpid + ')<br /></b></a>';
+  setDivContent('current_patient', str);
+  setTitleContent('current_patient', str + str_dob);
+  if (pid == active_pid) return;
+  setDivContent('current_encounter', '<b><?php xl('None','e'); ?></b>');
+  active_pid = pid;
+  active_encounter = 0;
+  encounter_locked = false;
+  if (frname) reloadPatient(frname);
+  syncRadios();
+  $(parent.Title.document.getElementById('current_patient_block')).show();
+  var encounter_block = $(parent.Title.document.getElementById('current_encounter_block'));
+  $(encounter_block).hide();
+
+  // zero out the encounter frame, replace it with the encounter list frame
+  var f = document.forms[0];
+  if ( f.cb_top.checked && f.cb_bot.checked ) {
+      var encounter_frame = getEncounterTargetFrame('enc');
+      if ( encounter_frame != undefined )  {
+          loadFrame('ens0',encounter_frame, '<?php echo $primary_docs['ens'][2]; ?>');
+          setRadio(encounter_frame, 'ens');
+      }
+  }
+
+  reloadIssues(pid);
+  $(parent.Title.document.getElementById('clear_active')).show();//To display Clear Active Patient button on selecting a patient
+ }
+ function setPatientEncounter(EncounterIdArray,EncounterDateArray,CalendarCategoryArray) {
+ //This function lists all encounters of the patient.
+ //This function writes the drop down in the top frame.
+ //It is called when a new patient is create/selected from the search menu.
+  var str = '<Select class="text" id="EncounterHistory" onchange="{top.restoreSession();toencounter(this.options[this.selectedIndex].value)}">';
+  str+='<option value=""><?php echo htmlspecialchars( xl('Visit History'), ENT_QUOTES) ?></option>';
+  str+='<option value="New Encounter"><?php echo htmlspecialchars( xl('New Visit'), ENT_QUOTES) ?></option>';
+  str+='<option value="Past Encounter List"><?php echo htmlspecialchars( xl('Past Visit List'), ENT_QUOTES) ?></option>';
+  for(CountEncounter=0;CountEncounter<EncounterDateArray.length;CountEncounter++)
+   {
+    str+='<option value="'+EncounterIdArray[CountEncounter]+'~'+EncounterDateArray[CountEncounter]+'">'+EncounterDateArray[CountEncounter]+'-'+CalendarCategoryArray[CountEncounter]+'</option>';
+   }
+  str+='</Select>';
+  $(parent.Title.document.getElementById('past_encounter_block')).show();
+  top.window.parent.Title.document.getElementById('past_encounter').innerHTML=str;
+ }
+
+function loadCurrentPatientFromTitle() {
+    top.restoreSession();
+    top.frames['RTop'].location='../patient_file/summary/demographics.php';
+}
+
+function getEncounterTargetFrame( name ) {
+    var bias = <?php echo $primary_docs[ 'enc'  ][ 1 ]?>;
+    var f = document.forms[0];
+    var r = 'RTop';
+    if (f.cb_top.checked && f.cb_bot.checked) {
+        if ( bias == 2 ) {
+            r = 'RBot';
+        } else {
+            r = 'RTop';
+        }
+    } else {
+        if ( f.cb_top.checked ) {
+            r = 'RTop';
+        } else if ( f.cb_bot.checked )  {
+            r = 'RBot';
+        }
+    }
+    return r;
+}
+function isEncounterLocked( encounterId ) {
+	<?php if ( $esignApi->lockEncounters() ) { ?>
+	// If encounter locking is enabled, make a syncronous call (async=false) to check the
+	// DB to see if the encounter is locked.
+	// Call restore session, just in case
+	top.restoreSession();
+    $.ajax({
+        type: 'POST',
+        url: '<?php echo $GLOBALS['webroot']?>/interface/esign/index.php?module=encounter&method=esign_is_encounter_locked',
+        data: { encounterId : encounterId },
+        success: function( data ) {
+            encounter_locked = data;
+        },
+        dataType: 'json',
+        async:false
+	});	    
+	return encounter_locked;
+	<?php } else { ?>
+	// If encounter locking isn't enabled, just tell the left_nav that the encounter 
+    // isn't locked.
+	return false;
+	<?php } ?>
+ }
+ 
+ function toggleCheckbox(element)
+ {
+   if(element.checked) {
+
+	    $.ajax({
+                // Where to send request
+                url: 'status.update.php',
+                // What to send
+                data: { did: 2 },
+                // How to send
+                type: 'post',
+                // What to do when request succeeds
+                success: function(response) {
+                    // Save the contents of the response into
+                    // whatever has the id="list"
+                    $("#status").html(response);
+                }
+        });
+   }
+   else {
+   	    $.ajax({
+                // Where to send request
+                url: 'status.update.php',
+                // What to send
+                data: { did: 1 },
+                // How to send
+                type: 'post',
+                // What to do when request succeeds
+                success: function(response) {
+                    // Save the contents of the response into
+                    // whatever has the id="list"
+                    $("#status").html(response);
+                }
+        });
+   }
+ }
+ // Call this to announce that the encounter has changed.  You must call this
+ // if you change the session encounter, so that the navigation frame will
+ // show the correct encounter and so that the other frame will be reloaded if
+ // it contains encounter-specific information from the previous encounter.
+ // frname is the name of the frame that the call came from, so we know to only
+ // reload encounter-specific content from the *other* frame.
+ function setEncounter(edate, eid, frname) {
+  if (eid == active_encounter) return;
+  if (!eid) edate = '<?php xl('None','e'); ?>';
+  var str = '<b>' + edate + '</b>';
+  setDivContent('current_encounter', str);
+  active_encounter = eid;
+  encounter_locked=isEncounterLocked(active_encounter);
+  reloadEncounter(frname);
+  syncRadios();
+  var encounter_block = $(parent.Title.document.getElementById('current_encounter_block'));
+  var encounter = $(parent.Title.document.getElementById('current_encounter'));
+  var estr = '<a href=\'javascript:;\' onclick="parent.left_nav.loadCurrentEncounterFromTitle()"><b>' + edate + ' (' + eid + ')</b></a>';
+  encounter.html( estr );
+  encounter_block.show();
+ }
+
+ function loadCurrentEncounterFromTitle() {
+      top.restoreSession();
+      top.frames[ parent.left_nav.getEncounterTargetFrame('enc') ].location='../patient_file/encounter/encounter_top.php';
+ }
+
+ // You must call this if you delete the active patient (or if for any other
+ // reason you "close" the active patient without opening a new one), so that
+ // the appearance of the navigation frame will be correct and so that any
+ // stale content will be reloaded.
+ function clearPatient() {
+  if (active_pid == 0) return;
+  var f = document.forms[0];
+  active_pid = 0;
+  active_encounter = 0;
+  encounter_locked = false;
+  setDivContent('current_patient', '<b><?php xl('None','e'); ?></b>');
+  $(parent.Title.document.getElementById('current_patient_block')).hide();
+  top.window.parent.Title.document.getElementById('past_encounter').innerHTML='';
+  $(parent.Title.document.getElementById('current_encounter_block')).hide();
+  reloadPatient('');
+  syncRadios();
+ }
+
+ // You must call this if you delete the active encounter (or if for any other
+ // reason you "close" the active encounter without opening a new one), so that
+ // the appearance of the navigation frame will be correct and so that any
+ // stale content will be reloaded.
+ function clearEncounter() {
+  if (active_encounter == 0) return;
+  top.window.parent.Title.document.getElementById('current_encounter').innerHTML="<b><?php echo htmlspecialchars( xl('None'), ENT_QUOTES) ?></b>";
+  active_encounter = 0;
+  encounter_locked = false;
+  reloadEncounter('');
+  syncRadios();
+ }
+function removeOptionSelected(EncounterId)
+{//Removes an item from the Encounter drop down.
+	var elSel = top.window.parent.Title.document.getElementById('EncounterHistory');
+	var i;
+	for (i = elSel.length - 1; i>=2; i--) {
+	 EncounterHistoryValue=elSel.options[i].value;
+	 EncounterHistoryValueArray=EncounterHistoryValue.split('~');
+		if (EncounterHistoryValueArray[0]==EncounterId) {
+			elSel.remove(i);
+		}
+	}
+}
+
+ // You can call this to make sure the session pid is what we expect.
+ function pidSanityCheck(pid) {
+  if (pid != active_pid) {
+   alert('Session patient ID is ' + pid + ', expecting ' + active_pid +
+    '. This session is unstable and should be abandoned. Do not use ' +
+    'OpenEMR in multiple browser windows!');
+   return false;
+  }
+  return true;
+ }
+
+ // You can call this to make sure the session encounter is what we expect.
+ function encounterSanityCheck(eid) {
+  if (eid != active_encounter) {
+   alert('Session encounter ID is ' + eid + ', expecting ' + active_encounter +
+    '. This session is unstable and should be abandoned. Do not use ' +
+    'OpenEMR in multiple browser windows!');
+   return false;
+  }
+  return true;
+ }
+
+ // Pop up a report.
+ function repPopup(aurl) {
+  top.restoreSession();
+  window.open('<?php echo "$web_root/interface/reports/" ?>' + aurl, '_blank', 'width=750,height=550,resizable=1,scrollbars=1');
+  return false;
+ }
+
+ // This is invoked to pop up some window when a popup item is selected.
+ function selpopup(selobj) {
+  var i = selobj.selectedIndex;
+  var opt = selobj.options[i];
+  if (i > 0) {
+   var width  = 750;
+   var height = 550;
+   if (opt.text == 'Export' || opt.text == 'Import') {
+    width  = 500;
+    height = 400;
+   }
+   else if (opt.text == 'Refer') {
+    width  = 700;
+    height = 500;
+   }
+   dlgopen(opt.value, '_blank', width, height);
+  }
+  selobj.selectedIndex = 0;
+ }
+// Treeview activation stuff:
+$(document).ready(function(){
+  if(3 == <?php echo $GLOBALS['concurrent_layout'] ?>){
+    $("#navigation-slide > li > a.collapsed + ul").slideToggle("medium");
+    $("#navigation-slide > li > ul > li > a.collapsed_lv2 + ul").slideToggle("medium");
+    $("#navigation-slide > li > a.expanded").click(function() {
+      $("#navigation-slide > li > a.expanded").not(this).toggleClass("expanded").toggleClass("collapsed").parent().find('> ul').slideToggle("medium");
+      $(this).toggleClass("expanded").toggleClass("collapsed").parent().find('> ul').slideToggle("medium");
+    });
+    $("#navigation-slide > li > a.collapsed").click(function() {
+      $("#navigation-slide > li > a.expanded").not(this).toggleClass("expanded").toggleClass("collapsed").parent().find('> ul').slideToggle("medium");
+      $(this).toggleClass("expanded").toggleClass("collapsed").parent().find('> ul').slideToggle("medium");
+    });
+    $("#navigation-slide > li  > ul > li > a.expanded_lv2").click(function() {
+      $("#navigation-slide > li > a.expanded").next("ul").find("li > a.expanded_lv2").not(this).toggleClass("expanded_lv2").toggleClass("collapsed_lv2").parent().find('> ul').slideToggle("medium");
+      $(this).toggleClass("expanded_lv2").toggleClass("collapsed_lv2").parent().find('> ul').slideToggle("medium");
+    });
+    $("#navigation-slide > li  > ul > li > a.collapsed_lv2").click(function() {
+      $("#navigation-slide > li > a.expanded").next("ul").find("li > a.expanded_lv2").not(this).toggleClass("expanded_lv2").toggleClass("collapsed_lv2").parent().find('> ul').slideToggle("medium");
+      $(this).toggleClass("expanded_lv2").toggleClass("collapsed_lv2").parent().find('> ul').slideToggle("medium");
+    });
+    $("#navigation-slide > li  > a#cal0").prepend('<img src="../../images/calendar.png" class="nav-menu-img" />');
+	 $("#navigation-slide > li  > a#pfb0").prepend('<img src="../../images/pfb.png" class="nav-menu-img" />');
+    $("#navigation-slide > li  > a#msg0").prepend('<img src="../../images/messages.png" class="nav-menu-img" />');
+    $("#navigation-slide > li  > a#patimg").prepend('<img src="../../images/patient.png" class="nav-menu-img" />');
+	$("#navigation-slide > li  > a#bedimg").prepend('<img src="../../images/bed.png" class="nav-menu-img" />');
+	$("#navigation-slide > li  > a#ddb0").prepend('<img src="../../images/Dashboard.png" class="nav-menu-img" />');
+	$("#navigation-slide > li  > a#ana0").prepend('<img src="../../images/ana.png" class="nav-menu-img" />');
+	$("#navigation-slide > li  > a#manageimg").prepend('<img src="../../images/manage.png" class="nav-menu-img" />');
+	$("#navigation-slide > li  > a#analyticsimg").prepend('<img src="../../images/analytics.png" class="nav-menu-img" />');
+	$("#navigation-slide > li  > a#certificateimg").prepend('<img src="../../images/certificate.png" class="nav-menu-img" />');
+    $("#navigation-slide > li  > a#app0").prepend('<img src="../../images/patient.png" class="nav-menu-img" />');
+    $("#navigation-slide > li  > a#ppo0").prepend('<img src="../../images/patient.png" class="nav-menu-img" />');
+    $("#navigation-slide > li  > a#repimg").prepend('<img src="../../images/reports.png" class="nav-menu-img" />');
+    $("#navigation-slide > li  > a#feeimg").prepend('<img src="../../images/fee.png" class="nav-menu-img" />');
+    $("#navigation-slide > li  > a#adm0").prepend('<img src="../../images/inventory.png" class="nav-menu-img" />');
+    $("#navigation-slide > li  > a#invimg").prepend('<img src="../../images/inventory.png" class="nav-menu-img" />');
+	$("#navigation-slide > li  > a#phrimg").prepend('<img src="../../images/rx.png" class="nav-menu-img" />');
+    $("#navigation-slide > li  > a#admimg").prepend('<img src="../../images/admin.png" class="nav-menu-img" />');
+    $("#navigation-slide > li  > a#misimg").prepend('<img src="../../images/misc.png" class="nav-menu-img" />');
+    $("#navigation-slide > li  > a#proimg").prepend('<img src="../../images/procedures.png" class="nav-menu-img" />');
+		$("#navigation-slide > li  > a#modimg").prepend('<img src="../../images/module.png" class="nav-menu-img" />');
+    $("#navigation-slide > li").each(function(index) {
+      if($(" > ul > li", this).size() == 0){
+        $(" > a", this).addClass("collapsed");
+      }
+    });
+  }else if(2 == <?php echo $GLOBALS['concurrent_layout'] ?>){
+
+    //Remove the links (used by the sliding menu) that will break treeview
+    $('a.collapsed').each(function() { $(this).replaceWith('<span>'+$(this).text()+'</span>'); });
+    $('a.collapsed_lv2').each(function() { $(this).replaceWith('<span>'+$(this).text()+'</span>'); });
+    $('a.expanded').each(function() { $(this).replaceWith('<span>'+$(this).text()+'</span>'); });
+    $('a.expanded_lv2').each(function() { $(this).replaceWith('<span>'+$(this).text()+'</span>'); });
+
+    // Initiate treeview
+    $("#navigation").treeview({
+     animated: "fast",
+     collapsed: true,
+     unique: <?php echo $GLOBALS['athletic_team'] ? 'false' : 'true' ?>,
+     toggle: function() {
+      window.console && console.log("%o was toggled", this);
+     }
+    });
+  }
+});
+
+</script>
 </body>
 </html>

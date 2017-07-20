@@ -8,7 +8,15 @@
 - Above details will be different for testing and production environment.
 
 */
-define('PAYTM_ENVIRONMENT', 'TEST'); // PROD
+$ignoreAuth = 1;
+global $ignoreAuth;
+ include_once("../../../interface/globals.php");
+ if ($GLOBALS['payment_flag'] ==1 ) {
+	 $env = 'PROD';
+ } else {
+	 $env = 'TEST';
+ }
+define('PAYTM_ENVIRONMENT', $env); // PROD
 define('PAYTM_MERCHANT_KEY', 'bKMfNxPPf_QdZppa'); //Change this constant's value with Merchant key downloaded from portal
 define('PAYTM_MERCHANT_MID', 'DIY12386817555501617'); //Change this constant's value with MID (Merchant ID) received from Paytm
 define('PAYTM_MERCHANT_WEBSITE', 'DIYtestingweb'); //Change this constant's value with Website name received from Paytm
