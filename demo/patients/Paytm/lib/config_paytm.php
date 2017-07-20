@@ -10,13 +10,13 @@
 */
 $ignoreAuth = 1;
 global $ignoreAuth;
- require_once("../../../interface/globals.php");
+ require_once("../../interface/globals.php");
  if ($GLOBALS['payment_flag'] ==1 ) {
 	 $env = 'PROD';
  } else {
 	 $env = 'TEST';
  }
- var_dump($GLOBALS['paytm_merchant_key']);
+ var_dump($GLOBALS['patient_reminder_sender_email']);
 define('PAYTM_ENVIRONMENT', $env); // PROD
 define('PAYTM_MERCHANT_KEY', $GLOBALS['paytm_merchant_key']); //Change this constant's value with Merchant key downloaded from portal
 define('PAYTM_MERCHANT_MID', $GLOBALS['paytm_merchant_mid']); //Change this constant's value with MID (Merchant ID) received from Paytm
