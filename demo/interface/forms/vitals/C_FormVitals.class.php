@@ -54,7 +54,7 @@ $vid=sqlStatement("SELECT form_id from forms where encounter='".$_SESSION['encou
 			$this->assign("plan_LINK",$GLOBALS['webroot'] . "/interface/patient_file/encounter/view_form.php?formname=formname=dictation&id=".$plid2);
 		}
 		$this->assign("referral_LINK",$GLOBALS['webroot'] . "/interface/patient_file/transaction/add_transaction.php");
-		$this->assign("admission_LINK",$GLOBALS['webroot'] . "/interface/forms/admit/new.php");
+		$this->assign("admission_LINK",$GLOBALS['webroot'] . "/interface/patient_file/encounter/admit_doctor_form.php");
 		$this->assign("summary_LINK",$GLOBALS['webroot'] . "/interface/patient_file/summary/summary_print.php");
     	$this->assign("STYLE", $GLOBALS['style']);
 		$res = sqlQuery("select * from users where username='".$_SESSION{"authUser"}."'");

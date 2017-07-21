@@ -93,8 +93,8 @@ $vid=sqlStatement("SELECT form_id from forms where encounter='".$_SESSION['encou
 									<?php } else { ?>
 									<li><a href="../encounter/view_form.php?formname=dictation&id=<?php echo $plid2 ?>"><i class="fa fa-note" style="margin-right: 8px;"></i>Plan</a></li>
 									<?php } ?>
-			<li><a href="../transaction/add_transaction.php"><i class="fa fa-note" style="margin-right: 8px;"></i>Referral</a></li>
-				<li><a href="../../forms/admit/new.php"><i class="fa fa-note" style="margin-right: 8px;"></i>Admission</a></li>
+			<li><a href="../../patient_file/transaction/add_transaction.php"><i class="fa fa-note" style="margin-right: 8px;"></i>Referral</a></li>
+				<li><a href="../../patient_file/encounter/admit_doctor_form.php"><i class="fa fa-note" style="margin-right: 8px;"></i>Admission</a></li>
 			<li class="current"></i><em>Summary</em></li>
 			<li>
 			<a href= "../../main/finder/p_dynamic_finder.php " onclick='top.restoreSession();' style="background-color: #dd4b39 !important;

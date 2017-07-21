@@ -10,7 +10,7 @@
 */
 $ignoreAuth = 1;
 global $ignoreAuth;
- require_once("../../interface/globals.php");
+require_once("../../interface/globals.php");
  if ($GLOBALS['payment_flag'] ==1 ) {
 	 $env = 'PROD';
  } else {

@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.2, created on 2017-06-22 12:24:14
+<?php /* Smarty version 2.6.2, created on 2017-07-21 11:37:57
          compiled from C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html */ ?>
 <?php require_once(SMARTY_DIR . 'core' . DIRECTORY_SEPARATOR . 'core.load_plugins.php');
 smarty_core_load_plugins(array('plugins' => array(array('function', 'xl', 'C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html', 224, false),array('function', 'amcCollect', 'C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html', 252, false),array('function', 'html_select_date', 'C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html', 273, false),array('function', 'html_options', 'C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html', 279, false),array('function', 'html_radios', 'C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html', 367, false),)), $this); ?>
@@ -236,7 +236,7 @@ $vid=sqlStatement("SELECT form_id from forms where encounter='".$_SESSION['encou
 /interface/patient_file/encounter/view_form.php?formname=ros&id=<?php  echo $rid2  ?>"><i class="fa fa-note" style="margin-right: 8px;"></i>Review of systems</a></li>
 			<?php  }  ?>
 			<li><a href="<?php echo $this->_tpl_vars['WEBROOT']; ?>
-/interface/encounter/load_form.php?formname=procedure_order"><i class="fa fa-note" style="margin-right: 8px;"></i>Lab Tests</a></li>
+/interface/patient_file/encounter/load_form.php?formname=procedure_order"><i class="fa fa-note" style="margin-right: 8px;"></i>Lab Tests</a></li>
 			<li class="current"></i><em>Prescription</em></li>
 						<?php  if($plid2 == null) {  ?>
 			<li><a href="<?php echo $this->_tpl_vars['WEBROOT']; ?>
@@ -248,7 +248,7 @@ $vid=sqlStatement("SELECT form_id from forms where encounter='".$_SESSION['encou
 			<li><a href="<?php echo $this->_tpl_vars['WEBROOT']; ?>
 /interface/patient_file/transaction/add_transaction.php"><i class="fa fa-note" style="margin-right: 8px;"></i>Referral</a></li>
 			<li><a href="<?php echo $this->_tpl_vars['WEBROOT']; ?>
-/interface/forms/admit/new.php"><i class="fa fa-note" style="margin-right: 8px;"></i>Admission</a></li>
+/interface/patient_file/encounter/admit_doctor_form.php"><i class="fa fa-note" style="margin-right: 8px;"></i>Admission</a></li>
 			<li><a href="<?php echo $this->_tpl_vars['WEBROOT']; ?>
 /interface/patient_file/summary/summary_print.php">Summary</a></li>
 		</ol>

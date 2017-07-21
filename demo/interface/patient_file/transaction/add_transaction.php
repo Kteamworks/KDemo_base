@@ -323,7 +323,7 @@ $vid=sqlStatement("SELECT form_id from forms where encounter='".$_SESSION['encou
 									<li><a href="../encounter/view_form.php?formname=dictation&id=<?php echo $plid2 ?>"><i class="fa fa-note" style="margin-right: 8px;"></i>Plan</a></li>
 									<?php } ?>
 			<li class="current"></i><em>Referral</em></li>
-			<li><a href="../../forms/admit/new.php"><i class="fa fa-note" style="margin-right: 8px;"></i>Admission</a></li>
+			<li><a href="../../patient_file/encounter/admit_doctor_form.php"><i class="fa fa-note" style="margin-right: 8px;"></i>Admission</a></li>
 			<li><a href="../../patient_file/summary/summary_print.php">Summary</a></li>
 		</ol>
 	</nav>
