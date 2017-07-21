@@ -34,7 +34,7 @@ if ($_POST['confirm']) {
 	$assigned_to="Receptionist";
     addPnote($pid, $notes, $userauthorized, '1', $form_note_type, $assigned_to, '', $form_message_status);
     // redirect back to the encounter
-   $address = "{$GLOBALS['rootdir']}/main/finder/p_dynamic_finder_ip.php";
+   $address = "{$GLOBALS['rootdir']}/patient_file/summary/summary_print.php";
     echo "\n<script language='Javascript'>top.restoreSession();window.location='$address';</script>\n";
     exit;
 }
@@ -66,6 +66,19 @@ if ($_POST['confirm']) {
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar_setup.js"></script>
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/textformat.js"></script>
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dialog.js"></script>
+<script>
+function validateForm() {
+    
+	 var startDate = new Date($('#admit_date').val()).getTime();
+    var endDate = new Date($('#discharge_date').val()).getTime();
+    var diff =endDate - startDate;
+	if (diff < 0) {
+    alert("Admission Date is greater than Discharge Date");
+  	return false;
+  } 
+    
+}
+</script>
 <style>
 .cd-breadcrumb.triangle li {
 	font-size: 1.6rem !important;
@@ -74,6 +87,7 @@ if ($_POST['confirm']) {
     padding: 1em 0em 1em 1.5em !important;
 }
 </style>
+
 <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
 <script type="text/javascript">
 function setMyPatient() {
@@ -226,7 +240,7 @@ $today = date('Y-m-d H:i:s',strtotime("+0 days"));
 
 <script language="javascript">
 // jQuery stuff to make the page a little easier to use
-
+//var $j = jQuery.noConflict();
 $(document).ready(function(){
     $("#confirmbtn").click(function() { return ConfirmDelete(); });
     $("#cancel").click(function() { location.href='<?php echo "$rootdir/patient_file/encounter/$returnurl";?>'; });
