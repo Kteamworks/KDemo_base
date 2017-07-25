@@ -20,7 +20,7 @@ if (!empty($_POST["form_pubpid"])) {
     $alertmsg = xl('Warning: Patient ID is not unique!');
   }
 }
-
+require_once("../../controllers/NotificationController.php");
 require_once("$srcdir/pid.inc");
 require_once("$srcdir/patient.inc");
 require_once("$srcdir/options.inc.php");
@@ -104,6 +104,7 @@ updateEmployerData1($pid, $newdata['employer_camp'], true);
   if ($field_id == 'pubpid' && empty($value)) $value = $pid;
   $newdata[$tblname][$colname] = $value;
 }
+NotificationController::create($pid, $_SESSION['authUserID'], '1');
 updatePatientData($pid, $newdata['patient_data'], true);
 updateEmployerData($pid, $newdata['employer_data'], true);	
 		
