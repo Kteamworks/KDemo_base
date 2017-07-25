@@ -653,7 +653,7 @@ if (!$alertmsg && ($_POST['bn_save'] || $_POST['bn_save_close'])) {
 	 $poseq = sqlInsert("INSERT INTO procedure_order_code SET ".
       "procedure_order_id = ?, " .
       "diagnoses = ?, " .
-      "procedure_code = (SELECT procedure_code FROM procedure_type WHERE name =? ), " .
+      "procedure_code = (SELECT procedure_code FROM procedure_type WHERE name =? and procedure_type='ord' ), " .
       "procedure_name = ?",
       array($formid,'', $code, $code));
 	 }else
