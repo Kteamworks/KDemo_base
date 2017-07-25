@@ -16,11 +16,11 @@ class NotificationController extends Controller
 			$insert_notification = sqlInsert("INSERT INTO notifications (model_id,userid_created,type_id) values ($model_id,$userid_created,$type_id)");
 		   foreach ($forwhome as $user) {
               $uid = 1;
-                sqlQuery("INSERT INTO user_notification (notification_id,user_id,is_read) values ($insert_notification,$uid,'0')");
-                // $this->PushNotificationController->response($agent->fcm_token, $type_message->message . $model_id, $model_id);
-            }
-        } catch (\Exception $e) {
-            return redirect()->back()->with('fails', $e->getMessage());
+                sqlInsert("INSERT INTO user_notification (notification_id,user_id,is_read) values ($insert_notification,$uid,'0')");
+           }
+        } catch (Exception $e) {
+			echo $e->getMessage();
+			header('Location: ' . $_SERVER['HTTP_REFERER']);
         }
     }
 
