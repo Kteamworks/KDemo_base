@@ -45,9 +45,12 @@ function addBilling($encounter_id,$ct, $service_id,$code_type, $code, $code_text
   $sql = "insert into billing (date,encounter,servicegrp_id,service_id, code_type, code, code_text, " .
     "pid, authorized, user, groupname, activity, billed, provider_id, " .
     "modifier, units, fee, ndc_info, justify, notecodes) values (" .
-    "NOW(), ?,?, ?, ?, ?,?, ?, ?, ?, ?, 1, ?, ?, ?, ?, ?, ?, ?, ?)";	
+    "NOW(), ?,?, ?, ?, ?,?, ?, ?, ?, ?, 1, ?, ?, ?, ?, ?, ?, ?, ?)";
+
 	
   return sqlInsert($sql, array($encounter_id,$ct,$service_id,$code_type,$code,$code_text,$pid,$authorized,$_SESSION['authId'],$_SESSION['authProvider'],$billed,$provider,$modifier,$units,$fee,$ndc_info,$justify,$notecodes,$modifier));
+
+  
 }
 
 function authorizeBilling($id, $authorized = "1")
