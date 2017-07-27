@@ -320,11 +320,19 @@ margin: 10px;
 						</div>
                     </section>
                 </div>
-		
+		<?php
+
+		$noti_qry = "select a.model_id,b.message,b.type, b.icon_class,c.user_id,is_read
+from notifications a, notification_types b, user_notification c
+where a.type_id=b.id and a.id=c.notification_id and c.user_id=".$_SESSION['authUserID']." ORDER BY c.created_at desc";
+			
+				$notification_arr = sqlStatement($noti_qry);
+					 
+					 ?>
                 <div class="col-md-4">
                     <section class="panel">
                         <header class="panel-heading head-border">
-                            Notification
+                            Notifications (<?php echo sqlNumRows($notification_arr); ?>)
                             <span class="tools pull-right">
                                 <a class="fa fa-repeat box-refresh" href="javascript:;"></a>
                             </span>
@@ -332,68 +340,31 @@ margin: 10px;
                         <div class="noti-information notification-menu">
                             <!--notification info start-->
                             <div class="notification-list mail-list not-list">
-                                <a href="javascript:;" class="single-mail">
+							<?php
+							
+								if(sqlNumRows($notification_arr)) {
+									
+								while($notification = sqlFetchArray($notification_arr)) { 
+								
+							if($notification['type'] == 'registration') {
+									if($notification['is_read'] == 0) { ?>
+                                <a href="<?php echo "../../patient_file/summary/demographics.php?set_pid=".$notification['model_id'] ?>" class="single-user">
                                         <span class="icon bg-primary">
-                                            <i class="fa fa-envelope-o"></i>
+                                            <i style="padding: 10px;" class="<?php echo $notification['icon_class']; ?>"></i>
                                         </span>
-                                    <span class="purple-color">Dr Paresh </span> is in meeting
+                                    <span class="purple-color"><?php echo $notification['message'] ?> </span>
                                     <p>
-                                        <small>Just Now</small>
+                                        <small><?php echo $notification['created_at'] ?></small>
                                     </p>
                                         <span class="read tooltips" data-original-title="Mark as Unread" data-toggle="tooltip" data-placement="left">
                                             <i class="fa fa-circle-o"></i>
                                         </span>
                                 </a>
-                                <a href="javascript:;" class="single-mail">
-                                        <span class="icon bg-success">
-                                            <i class="fa fa-comments-o"></i>
-                                        </span>
-                                    <span class="red-color">Dr Jim Doe</span> is on leave today
-                                    <p>
-                                        <small>30 Mins Ago</small>
-                                    </p>
-                                        <span class="read tooltips" data-original-title="Mark as Unread" data-toggle="tooltip" data-placement="left">
-                                            <i class="fa fa-circle-o"></i>
-                                        </span>
-                                </a>
-                                <a href="javascript:;" class="single-mail">
-                                        <span class="icon bg-warning">
-                                            <i class="fa fa-warning"></i>
-                                        </span> OPD area is not clean
-                                    <p>
-                                        <small> 2 Days Ago</small>
-                                    </p>
-                                        <span class="read tooltips" data-original-title="Mark as Unread" data-toggle="tooltip" data-placement="left">
-                                            <i class="fa fa-circle-o"></i>
-                                        </span>
-                                </a>
-                                <a href="javascript:;" class="single-mail">
-                                        <span class="icon bg-dark">
-                                           <i class="fa fa-database"></i>
-                                        </span>
-                                    <strong>Sorry for inconvience.There will be power cut for 2 hrs</strong>
-                                    <p>
-                                        <small>1 Week Ago</small>
-                                    </p>
-                                        <span class="un-read tooltips" data-original-title="Mark as Read" data-toggle="tooltip" data-placement="left">
-                                            <i class="fa fa-circle"></i>
-                                        </span>
-                                </a>
-                                <a href="javascript:;" class="single-mail">
-                                        <span class="icon bg-danger">
-                                            <i class="fa fa-warning"></i>
-                                        </span>
-                                    <strong>Server Failed Notification</strong>
-
-                                    <p>
-                                        <small>10 Days Ago</small>
-                                    </p>
-                                        <span class="un-read tooltips" data-original-title="Mark as Read" data-toggle="tooltip" data-placement="left">
-                                            <i class="fa fa-circle"></i>
-                                        </span>
-                                </a>
-
-                                <a href="javascript:;" class="single-mail text-center">
+							
+								<?php } } } } else { ?>
+                               <p>You have no new notifications!</p>
+								<?php } ?>
+                              	  <a href="javascript:;" class="single-mail text-center">
                                     View All Notification
                                 </a>
 
