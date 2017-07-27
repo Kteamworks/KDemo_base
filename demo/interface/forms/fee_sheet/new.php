@@ -636,9 +636,9 @@ if (!$alertmsg && ($_POST['bn_save'] || $_POST['bn_save_close'])) {
       addBilling($encounter,$ct,$service_id, $code_type, $code, $code_text, $pid, $auth,
       $provid, $modifier, $units, $fee, $ndc_info, $justify, 0, $notecodes,$modifier);
 	   
-	   if($code_type="Lab Test")
+	   	  	   if($code_type=="Lab Test")
   {
-	  $query4=sqlStatement("select form_id from forms where form_name='Lab Investigation' and encounter='".$encounter."' ");
+	  $query4=sqlStatement("select form_id from forms where form_name='Lab Investigation' and encounter='".$encounter."' and deleted=0 ");
 	  $query5=sqlFetchArray($query4);
 	  if($query5['form_id']==null)
 	  {
@@ -658,6 +658,10 @@ if (!$alertmsg && ($_POST['bn_save'] || $_POST['bn_save_close'])) {
       array($formid,'', $code, $code));
 	 }else
 	 {
+		$proc_code= sqlStatement("SELECT procedure_code FROM procedure_type WHERE name ='".$code."' and procedure_type='ord'");
+		$proc_code1=sqlFetchArray($proc_code);
+		if($proc_code1 != null)
+		{
 	 $formid=$query5['form_id'];
   $poseq = sqlInsert("INSERT INTO procedure_order_code SET ".
       "procedure_order_id = ?, " .
@@ -665,9 +669,13 @@ if (!$alertmsg && ($_POST['bn_save'] || $_POST['bn_save_close'])) {
       "procedure_code = (SELECT procedure_code FROM procedure_type WHERE name =? and procedure_type='ord' ), " .
       "procedure_name = ?",
       array($formid,'', $code, $code));
-	  
+		}
+		else
+		{
+			
+		}
 	 }
-  }	
+  }
 	  sqlQuery("Update billing_main_copy set total_charges=total_charges + ? where encounter=?",array($fee,$encounter));   
 	
     }
