@@ -611,6 +611,10 @@ if (!$alertmsg && ($_POST['bn_save'] || $_POST['bn_save_close'])) {
       if ($del) {
 		  
         deleteBilling($id);
+		if($code_type=="Lab Test")
+		{
+		sqlQuery("DELETE FROM procedure_order_code where procedure_name=?",array($code));
+		}
 		sqlQuery("Update billing_main_copy set total_charges=total_charges - ? where encounter=?",array($fee,$encounter));   
       }
       else {

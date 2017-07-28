@@ -152,6 +152,8 @@ if ($_POST['form_save']) {
     "description = "    . invalue('form_description')    . ", " .
     "units = "          . invalue('form_units')          . ", " .
     "`range` = "        . invalue('form_range')          . ", " .
+	"range_min = "        . invalue('form_range_min')          . ", " .
+    "range_max = "        . invalue('form_range_max')          . ", " .
     "standard_code = "  . invalue('form_standard_code')  . ", " .
     "related_code = "   . invalue('form_related_code')   . ", " .
 	"notes_test = "   . invalue('form_related_notes')   . ", " .
@@ -357,7 +359,24 @@ generate_form_field(array('data_type' => 1, 'field_id' => 'units',
     style='width:100%' class='inputtext' />
   </td>
  </tr>
-
+<tr class='resonly'>
+  <td nowrap><b><?php echo xlt('Minimum Range'); ?>:</b></td>
+  <td>
+   <input type='text' size='40' name='form_range_min' maxlength='255'
+    value='<?php echo htmlspecialchars($row['range_min'], ENT_QUOTES); ?>'
+    title='<?php echo xla('Optional default range for manual entry of results'); ?>'
+    style='width:100%' class='inputtext' />
+  </td>
+ </tr>
+ <tr class='resonly'>
+  <td nowrap><b><?php echo xlt('Maximum Range'); ?>:</b></td>
+  <td>
+   <input type='text' size='40' name='form_range_max' maxlength='255'
+    value='<?php echo htmlspecialchars($row['range_max'], ENT_QUOTES); ?>'
+    title='<?php echo xla('Optional default range for manual entry of results'); ?>'
+    style='width:100%' class='inputtext' />
+  </td>
+ </tr>
  <tr class='resonly'>
   <td nowrap><b><?php echo xlt('Followup Services'); ?>:</b></td>
   <td>
