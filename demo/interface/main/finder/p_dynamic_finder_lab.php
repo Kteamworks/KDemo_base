@@ -54,6 +54,12 @@ if(isset($_POST['txtHint']))
 <?php html_header_show(); ?>
 
 <link rel="stylesheet" href="<?php echo $css_header; ?>" type="text/css">
+<link rel="stylesheet" href="../../../library/css/bootstrap.min.css">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="../../../library/dist/css/AdminLTE.css">
+<link rel="stylesheet" href="../../../library/css/mycss.css">
 
 <style type="text/css">
 @import "../../../library/js/datatables/media/css/demo_page.css";
@@ -296,6 +302,99 @@ function openNewTopWindow(pid) {
 		
 	</ul>
 </div>
+<div class="col-md-12">
+<div class="col-md-3">
+          <!-- Info Boxes Style 2 -->
+          <div class="info-box bg-yellow">
+            <span class="info-box-icon"><i class="ion ion-ios-people-outline"></i></span>
+<?php 
+$today=date("Y-m-d");
+$orders_qry = sqlStatement("Select count(procedure_order_id) id from procedure_order where date_ordered='".$today."'");
+$orders_pending = sqlStatement("Select count(procedure_order_id) id from procedure_order where order_status='pending'");
+$orders_pending1=sqlFetchArray($orders_pending);
+$orders_review = sqlStatement("SELECT count(c.procedure_order_id) id FROM procedure_order c,procedure_report d  where c.procedure_order_id=d.procedure_order_id and d.report_status='final' and  d.review_status='received' and d.report_collected=0");
+$orders_review1=sqlFetchArray($orders_review);
+$orders_report = sqlStatement("SELECT count(c.procedure_order_id) id FROM procedure_order c,procedure_report d where  c.procedure_order_id=d.procedure_order_id and d.report_status='final' and  d.review_status='reviewed' and d.report_collected=0");
+$orders_report1=sqlFetchArray($orders_report);
+
+
+
+?>
+
+ <div class="info-box-content">
+              <span class="info-box-text">Total Orders Today</span>
+			  <?php while($orders_qry1 = sqlFetchArray($orders_qry)) {  ?>
+              <span class="info-box-number"><?php echo $orders_qry1['id']; ?></span>
+<?php } ?> 
+              <div class="progress">
+                <div class="progress-bar" style="width: <?php echo $progress_reg['change_percentage']; ?>%"></div>
+              </div>
+                  <span class="progress-description">
+                    <?php echo $progress_reg['change_percentage']; ?>% Increase in 30 Days
+                  </span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+		  </div>
+		  <div class="col-md-3">
+          <div class="info-box bg-green">
+            <span class="info-box-icon"><i class="ion ion-ios-calendar-outline"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">Orders Pending</span>
+              <span class="info-box-number"><?php echo $orders_pending1['id']; ?></span>
+
+              <div class="progress">
+                <div class="progress-bar" style="width: <?php echo $progress_app['change_percentage']; ?>%"></div>
+              </div>
+                  <span class="progress-description">
+                    <?php echo $progress_app['change_percentage']; ?>% Increase in 30 Days
+                  </span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+		  </div>
+		  <div class="col-md-3">
+          <div class="info-box bg-green">
+            <span class="info-box-icon"><i class="ion ion-ios-calendar-outline"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">Review State</span>
+              <span class="info-box-number"><?php echo $orders_review1['id']; ?></span>
+
+              <div class="progress">
+                <div class="progress-bar" style="width: 70%"></div>
+              </div>
+                  <span class="progress-description">
+                    <?php echo $progress_ipd['change_percentage']; ?>% Increase in 30 Days
+                  </span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+		  </div>
+          <!-- /.info-box -->
+		  <div class="col-md-3">
+          <div class="info-box bg-green">
+            <span class="info-box-icon"><i class="ion ion-ios-calendar-outline"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">Report Publish</span>
+              <span class="info-box-number"><?php echo $orders_report1['id']; ?></span>
+
+              <div class="progress">
+                <div class="progress-bar" style="width: 40%"></div>
+              </div>
+                  <span class="progress-description">
+                    <?php echo $progress_bed['change_percentage']; ?>% Increase in 30 Days
+                  </span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+</div>
+        </div>
 <div id="dynamic"><!-- TBD: id seems unused, is this div required? -->
 
 <!-- Class "display" is defined in demo_table.css -->
