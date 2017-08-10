@@ -322,7 +322,7 @@ margin: 10px;
                 </div>
 		<?php
 
-		$noti_qry = "select a.model_id,b.message,b.type, b.icon_class,c.user_id,is_read
+		$noti_qry = "select a.model_id,b.message,b.type, b.icon_class,c.user_id,is_read,c.created_at
 from notifications a, notification_types b, user_notification c
 where a.type_id=b.id and a.id=c.notification_id and c.user_id=".$_SESSION['authUserID']." ORDER BY c.created_at desc";
 			
@@ -347,24 +347,31 @@ where a.type_id=b.id and a.id=c.notification_id and c.user_id=".$_SESSION['authU
 								while($notification = sqlFetchArray($notification_arr)) { 
 								
 							if($notification['type'] == 'registration') {
-									if($notification['is_read'] == 0) { ?>
-                                <a href="<?php echo "../../patient_file/summary/demographics.php?set_pid=".$notification['model_id'] ?>" class="single-user">
+									if($notification['is_read'] == 0) { 
+									$bk_color = "background-color: #edf2fa;";
+									}
+else {
+$bk_color = "";
+}	?>
+                                <a href="<?php echo "../../patient_file/summary/demographics.php?set_pid=".$notification['model_id'] ?>" class="single-user" style="<?php echo $bk_color; ?>">
                                         <span class="icon bg-primary">
                                             <i style="padding: 10px;" class="<?php echo $notification['icon_class']; ?>"></i>
                                         </span>
                                     <span class="purple-color"><?php echo $notification['message'] ?> </span>
                                     <p>
-                                        <small><?php echo $notification['created_at'] ?></small>
+                                        <small><?php $datetime1 = new DateTime(); $datetime2 = new DateTime($notification['created_at']);
+$interval = $datetime1->diff($datetime2);
+echo $interval->format('%D days %H hours %I minutes ago'); ?></small>
                                     </p>
                                         <span class="read tooltips" data-original-title="Mark as Unread" data-toggle="tooltip" data-placement="left">
                                             <i class="fa fa-circle-o"></i>
                                         </span>
                                 </a>
 							
-								<?php } } } } else { ?>
+								<?php  } } } else { ?>
                                <p>You have no new notifications!</p>
 								<?php } ?>
-                              	  <a href="javascript:;" class="single-mail text-center">
+                              	  <a href="<?php echo '../notifications-list.php' ?>" class="single-mail text-center">
                                     View All Notification
                                 </a>
 

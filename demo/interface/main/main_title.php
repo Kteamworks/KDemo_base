@@ -20,6 +20,10 @@ include_once('../globals.php');
       .visible{
         display:block;
       }
+	  .main-header .navbar {
+		  margin-left: 0px;
+		  margin-right: 10px;
+	  }
 </style>
 
 <script type="text/javascript" language="javascript">
@@ -57,6 +61,21 @@ function toencounter(rawdata) {
     top.Title.location.href = '../patient_file/encounter/encounter_title.php?set_encounter='   + enc;
     top.Main.location.href  = '../patient_file/encounter/patient_encounter.php?set_encounter=' + enc;
 <?php } ?>
+}
+function showdropdownMenu() {
+var frameDocument = $('frame[name="RTop"]', top.document)[0].contentDocument;
+	var dropdown = $("#cross-frame").html();
+        if (! $(frameDocument).find('.navbar-custom-menu')[0]) {
+           $(frameDocument).find('body').prepend('<div class="navbar-custom-menu"><div class="nav navbar-nav"><li  class="dropdown notifications-menu">'+ dropdown +'</li></div></div>');
+        $(frameDocument).find('.noti_User').hover(function() {
+    $(this).siblings("span").css("opacity","1");
+}, function() {
+    $(this).siblings("span").css("opacity","0");
+});
+		} else {
+$(frameDocument).find('.navbar-custom-menu').remove();
+
+}
 }
 function showhideMenu() {
 	var m = parent.document.getElementById("fsbody");
@@ -124,7 +143,185 @@ $res = sqlQuery("select * from users where username='".$_SESSION{"authUser"}."'"
 		</div></td></tr></table>
 </td>
 <td align="right">
-	<table cellspacing="0" cellpadding="1" style="margin:0px 3px 0px 0px;"><tr class="dropdown user user-menu">
+	<table cellspacing="0" cellpadding="1" style="margin:0px 3px 0px 0px;">    
+		<?php
+
+		$noti_qry = "select a.model_id,notification_id,b.message,b.type, b.icon_class,c.user_id,is_read
+from notifications a, notification_types b, user_notification c
+where a.type_id=b.id and a.id=c.notification_id and c.user_id=".$_SESSION['authUserID']." ORDER BY c.created_at desc";
+			$count_noti_qry = "select a.model_id,notification_id,b.message,b.type, b.icon_class,c.user_id,is_read
+from notifications a, notification_types b, user_notification c
+where a.type_id=b.id and a.id=c.notification_id and c.user_id=".$_SESSION['authUserID']." and c.is_read='0'";
+				$notification_count = sqlStatement($count_noti_qry);
+				$notification_arr = sqlStatement($noti_qry);
+					 
+					 ?>
+	<tr class="dropdown user user-menu">
+	<td>   <header class="main-header" > <nav class="navbar navbar-static-top">    <div class="navbar-custom-menu">
+        <ul class="nav navbar-nav"> <li class="dropdown notifications-menu"  onclick='javascript:showdropdownMenu();return false;'>
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              <i class="fa fa-bell-o"></i>
+              <span class="label label-warning"><?php echo sqlNumRows($notification_count); ?></span>
+            </a></li>
+			<div  id="cross-frame">
+			<style>	  ._55m9:focus, ._55m9:hover {
+		  opacity: 1 !important;
+	  }</style>
+			<ul class="dropdown-menu" style="display:block;position: absolute;
+left: 606px;
+width: 280px;
+padding: 0 0 0 0;
+margin: 0;
+top: 100%;
+box-shadow: none;
+border-color: #eee;
+border: 1px solid rgba(0,0,0,.15);
+float: left;
+min-width: 160px;
+z-index: 1000;
+font-size: 14px;
+text-align: left;
+list-style: none;
+background-color: #fff;
+
+border-radius: 4px;" >
+              <li class="header" style="position: relative;border-top-left-radius: 4px;
+border-top-right-radius: 4px;
+border-bottom-right-radius: 0;
+border-bottom-left-radius: 0;
+background-color: #ffffff;
+padding: 7px 10px;
+border-bottom: 1px solid #f4f4f4;
+color: #444444;
+font-size: 14px;
+">You have <?php echo sqlNumRows($notification_count); ?> unread notifications</li>
+<div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 200px;">
+                <!-- inner menu: contains the actual data -->
+                <ul class="menu" style="overflow: hidden;
+width: 100%;
+height: 200px;
+max-height: 200px;
+margin: 0;
+padding: 0;
+list-style: none;
+">
+<?php
+							
+								if(sqlNumRows($notification_arr)) {
+									
+								while($notification = sqlFetchArray($notification_arr)) { 
+								
+							if($notification['type'] == 'registration') {
+									if($notification['is_read'] == 0) {
+$bk_color = "background-color: #edf2fa;";
+									}
+else {
+$bk_color = "";
+}	?>
+                  <li style="<?php echo $bk_color; ?>border-bottom: 1px solid #dddfe2;" id="noti_li<?php echo $notification['notification_id']; ?>">
+                   <a href="<?php echo "../../patient_file/summary/demographics.php?set_pid=".$notification['model_id'] ?>" style="color: #444444;
+overflow: hidden;
+text-overflow: ellipsis;
+padding: 10px;
+
+display: inline-block;
+white-space: nowrap;
+
+"  id="<?php echo $notification['notification_id']; ?>" class='noti_User' onClick="var id = this.id;var dataString = 'id=' + id; 
+                    $.ajax
+                    ({
+                    type: 'POST',
+                            url: '../notificationHandler.php',
+                            data: dataString,
+                            cache: false,
+                            success: function (html)
+                            {
+							
+                            }
+                    });">
+                      <i class="<?php echo $notification['icon_class']; ?> text-aqua" style="width: 20px;color: #00c0ef !important;"></i> <?php echo $notification['message'] ?>
+                    </a>
+					<span  aria-label="Mark as Read" class="_55m9"  id="<?php echo $notification['notification_id']; ?>" style="opacity: 0;background-image: url(../../../images/fb_notification.png);
+    background-repeat: no-repeat;
+    background-size: auto;
+    background-position: 0 -76px;
+    cursor: pointer;
+	    display: inline-block;
+    -webkit-filter: grayscale(100%);
+    height: 18px;
+    margin-top: -4px;
+    right: 8px;
+    top: 8px;
+    width: 18px;
+	margin-top: 0;
+    position: relative;
+    right: -2px;
+    top: -9px;"  onClick="var id = this.id;var dataString = 'id=' + id; 
+                    $.ajax
+                    ({
+                    type: 'POST',
+                            url: '../notificationHandler.php',
+                            data: dataString,
+                            cache: false,
+                            success: function (html)
+                            {
+							if(html == 1) {
+								$('#noti_li'+<?php echo $notification['notification_id']; ?>).animate({backgroundColor:'white'},'slow');
+							}
+                            }
+                    });"  data-hover="tooltip" data-tooltip-alignh="center" title="Mark as Read" role="button" tabindex="0"></span>
+                  </li>
+                <?php  } } } else { ?>
+                               <p>You have no new notifications!</p>
+								<?php } ?>
+                </ul>
+				</div>
+              </li>
+			  
+              <li style="position: relative;
+			  border-top-left-radius: 0;
+border-top-right-radius: 0;
+border-bottom-right-radius: 4px;
+border-bottom-left-radius: 4px;
+font-size: 12px;
+background-color: #fff;
+padding: 7px 10px;
+border-bottom: 1px solid #eeeeee;
+color: #444 !important;
+text-align: center;
+display: block;
+clear: both;
+font-weight: 400;
+line-height: 1.42857143;
+white-space: nowrap;
+"><a href="<?php echo 'notifications-list.php' ?>">View all</a></li>
+            </ul>
+						 <script>
+                    $(document).ready(function () {
+					function a(da) {
+						alert('1');
+					}
+            $('.noti_User').click(function () {
+				alert('hi');
+            var id = this.id;
+                    var dataString = 'id=' + id;
+                    $.ajax
+                    ({
+                    type: "POST",
+                            url: 'notificationHandler.php',
+                            data: dataString,
+                            cache: false,
+                            success: function (html)
+                            {
+                            }
+                    });
+            });
+            });
+</script>
+			</div>
+			</ul>
+
+			</div></nav></header></td>
 <td>
 
 <form action="upload.php" method="post" id="form" enctype="multipart/form-data">
@@ -169,6 +366,7 @@ $res = sqlQuery("select * from users where username='".$_SESSION{"authUser"}."'"
 <script src="../../library/dist/jQuery/jquery-2.2.3.min.js"></script>
 <script src="../../library/js/bootstrap.min.js"></script>
 <script src="../../library/dist/js/app.min.js"></script>
+
 <script type="text/javascript" language="javascript">
 parent.loadedFrameCount += 1;
 $('#OpenImgUpload').click(function(){ $('#imgupload').trigger('click'); });
