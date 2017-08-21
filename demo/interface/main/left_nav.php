@@ -1046,7 +1046,7 @@ $newcrop_user_role=sqlQuery("select newcrop_user_role from users where username=
 	  <!--<?php genMiscLink('RTop','fin','0',xl('InPatients'),'main/finder/p_dynamic_finder_ip.php'); ?>-->
 	  <!--<?php genMiscLink('RTop','fin','0',xl('Todays Patients'),'main/finder/ph_dynamic_finder.php'); ?>-->
 	  <!--<?php genMiscLink('RBot','cod','2',xl('Add Medicines'),'patient_file/encounter/load_form.php?formname=fee_sheet_ph'); ?>-->
-	  <?php genMiscLink('RBot','adm','0',xl('Add Medicines'),'forms/fee_sheet_ph/medSale.php'); ?>
+	  <?php genMiscLink('RBot','adm','0',xl('Sale'),'forms/fee_sheet_ph/medSale.php'); ?>
 	  <!--<?php genMiscLink('RBot','pay','1',xl('Take Payment'),'patient_file/front_payment_pharmacy.php'); ?>-->
 	   <!--<?php genMiscLink('RTop','rep','0',xl('Print Bill'),'reports/custom_report_pharmacy.php'); ?>-->
 	  <?php genMiscLink('RTop','adm','0',xl('Stock Purchase'),'drugs/drug_inventory.php'); ?>

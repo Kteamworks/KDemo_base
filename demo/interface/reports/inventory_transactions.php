@@ -76,16 +76,17 @@ function thisLineItem($row, $xfer=false) {
     echo '"' . esc4Export($row['lot_number'])       . '",';
     echo '"' . esc4Export($row['warehouse'])        . '",';
     echo '"' . esc4Export($dpname)                  . '",';
-    echo '"' . (0 - $row['quantity'])               . '",';
+    echo '"' . ($row['quantity'])               . '",';
     echo '"' . bucks($row['fee'])                   . '",';
-    echo '"' . $row['billed']                       . '",';
-    echo '"' . esc4Export($row['notes'])            . '"' . "\n";
+   // echo '"' . $row['billed']                       . '",';
+   // echo '"' . esc4Export($row['notes'])            . '"' . "\n";
   }
   else {
     $bgcolor = (++$encount & 1) ? "#ddddff" : "#ffdddd";
 ?>
 
  <tr bgcolor="<?php echo $bgcolor; ?>">
+ 
   <td class="detail">
    <?php echo htmlspecialchars(oeFormatShortDate($row['sale_date'])); ?>
   </td>
@@ -105,23 +106,23 @@ function thisLineItem($row, $xfer=false) {
    <?php echo htmlspecialchars($dpname); ?>
   </td>
   <td class="detail" align="right">
-   <?php echo htmlspecialchars(0 - $row['quantity']); ?>
+   <?php echo htmlspecialchars(-($row['quantity'])); ?>
   </td>
   <td class="detail" align="right">
-   <?php echo htmlspecialchars(bucks($row['fee'])); ?>
+   <?php echo htmlspecialchars (bucks($row['fee'])); ?>
   </td>
-  <td class="detail" align="center">
+ <!-- <td class="detail" align="center">
    <?php echo empty($row['billed']) ? '&nbsp;' : '*'; ?>
   </td>
   <td class="detail">
    <?php echo htmlspecialchars($row['notes']); ?>
-  </td>
+  </td> -->
  </tr>
 <?php
   } // End not csv export
 
   $grandtotal   += $row['fee'];
-  $grandqty     -= $row['quantity'];
+  $grandqty     = $row['quantity'];
 
   // In the special case of a transfer, generate a second line item for
   // the source lot.
@@ -129,7 +130,7 @@ function thisLineItem($row, $xfer=false) {
     $row['xfer_inventory_id'] = 0;
     $row['lot_number'] = $row['lot_number_2'];
     $row['warehouse'] = $row['warehouse_2'];
-    $row['quantity'] = 0 - $row['quantity'];
+    $row['quantity'] = $row['quantity'];
     $row['fee'] = 0 - $row['fee'];
     thisLineItem($row, true);
   }
@@ -163,8 +164,8 @@ if ($form_action == 'export') {
   echo '"' . xl('Who'        ) . '",';
   echo '"' . xl('Qty'        ) . '",';
   echo '"' . xl('Amount'     ) . '",';
-  echo '"' . xl('Billed'     ) . '",';
-  echo '"' . xl('Notes'      ) . '"' . "\n";
+ // echo '"' . xl('Billed'     ) . '",';
+  //echo '"' . xl('Notes'      ) . '"' . "\n";
 } // end export
 else {
 ?>
@@ -228,12 +229,12 @@ else {
       <select name='form_trans_type' onchange='trans_type_changed()'>
 <?php
 foreach (array(
-  '0' => xl('All'),
-  '2' => xl('Purchase/Return'),
+  '0' => xl('Sale/Purchase'),
+ /*'2' => xl('Purchase/Return'),
   '1' => xl('Sale'),
   '6' => xl('Distribution'),
-  '4' => xl('Transfer'),
-  '5' => xl('Adjustment'),
+  '4' => xl('Transfer'), */
+  '5' => xl('Discount'),
 ) as $key => $value)
 {
   echo "       <option value='$key'";
@@ -322,12 +323,12 @@ foreach (array(
   <td class="dehead" align="right">
    <?php echo htmlspecialchars(xl('Amount'), ENT_NOQUOTES); ?>
   </td>
-  <td class="dehead" align="Center">
+  <!--<td class="dehead" align="Center">
    <?php echo htmlspecialchars(xl('Billed'), ENT_NOQUOTES); ?>
   </td>
   <td class="dehead">
    <?php echo htmlspecialchars(xl('Notes'), ENT_NOQUOTES); ?>
-  </td>
+  </td> -->
  </tr>
 <?php
 } // end if submit
@@ -339,7 +340,14 @@ if ($form_action) { // if submit or export
 
   $grandtotal = 0;
   $grandqty = 0;
-
+  
+   if ($form_trans_type == 5){
+	  
+	 $query = "select A.code_type,A.memo, A.adj_amount,P.fname,A.post_time from ar_activity as A join patient_data as P on A.pid=P.pid 
+	  WHERE post_time >= '$from_date 00:00:00'  AND post_time <= '$to_date 23:59:59' and A.memo='Discount' ";
+  }
+ 
+else {
   $query = "SELECT s.sale_date, s.fee, s.quantity, s.pid, s.encounter, " .
     "s.billed, s.notes, s.distributor_id, s.xfer_inventory_id, " .
     "p.fname AS pfname, p.mname AS pmname, p.lname AS plname, " .
@@ -376,10 +384,36 @@ if ($form_action) { // if submit or export
   }
   $query .= "ORDER BY s.sale_date, s.sale_id";
   //
+ 
+
+
   $res = sqlStatement($query, array($from_date, $to_date));
+}
+
+ $bgcolor = "#ddddff";
+if ($form_trans_type == 5)
+{$res = sqlStatement($query);
+
+while ($row = sqlFetchArray($res)) { ?>
+	<tr bgcolor="<?php echo $bgcolor; ?>"><td><?php echo $row['post_time']; ?>  </td>
+	<td> <?php echo $row['memo']; ?></td>
+	<td> </td>
+	<td> </td><td> </td>
+	<td><?php echo $row['fname']; ?>  </td>
+	<td> </td>
+	<td style="text-align:right;"> <?php echo $row['adj_amount']; ?> </td> </tr>
+    <?php   $grandtotal   += $row['adj_amount'];     ?>
+	
+ <?php  }
+
+
+
+}
+else {
   while ($row = sqlFetchArray($res)) {
+	  
     thisLineItem($row);
-  }
+} }
 
   // Grand totals line.
   if ($form_action != 'export') { // if submit
@@ -390,7 +424,7 @@ if ($form_action) { // if submit or export
    <?php echo htmlspecialchars(xl('Grand Total'), ENT_NOQUOTES); ?>
   </td>
   <td class="dehead" align="right">
-   <?php echo htmlspecialchars($grandqty, ENT_NOQUOTES); ?>
+   <?php echo htmlspecialchars($grandqty1, ENT_NOQUOTES); ?>
   </td>
   <td class="dehead" align="right">
    <?php echo htmlspecialchars(bucks($grandtotal), ENT_NOQUOTES); ?>
