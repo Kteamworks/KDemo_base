@@ -32,8 +32,33 @@ $ignoreAuth=true;
 include_once("../globals.php");
 include_once("$srcdir/sql.inc");
 ?>
+<!DOCTYPE html>
 <html>
-<head>
+    <head>
+        <meta charset="UTF-8">
+        <title> MedSmart </title>
+        <link href="../../images/logo.png"  rel="shortcut icon" >
+        
+        <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
+        <!-- Bootstrap 3.3.2 -->
+        <link href="../../library/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+        <!-- Admin LTE CSS -->
+        <link href="../../library/css/AdminLTEsemi.css" rel="stylesheet" type="text/css" />
+        <!-- Font Awesome Icons -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
+
+        <link href="../../library/css/app.css" rel="stylesheet" type="text/css" />
+        
+       <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
+		    <link href="../../library/css/widgetbox.css" rel="stylesheet" type="text/css" />
+        <link href="../../library/iCheck/flat/blue.css" rel="stylesheet" type="text/css" />
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <link href="../../library/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
+        
+        
 <?php html_header_show();?>
 <link rel=stylesheet href="<?php echo $css_header;?>" type="text/css">
 <link rel=stylesheet href="../themes/login.css" type="text/css">
@@ -58,9 +83,19 @@ function imsubmitted() {
 
 </head>
 <body onload="javascript:document.login_form.authUser.focus();" >
-<span class="text"></span>
-<center>
-
+        <div id="page" class="hfeed site">
+            <!-- Main content -->
+            <div id="main" style="background:url('hd.jpg');    background-position: 75% 14%;
+    min-height: 432px;">
+                <div class="container">
+                    <div class="content-area">
+                        <div class="row">
+						
+						
+ <div class="login-box" style=" width: 500px;
+    height: 150px;"  valign = "center">
+ <div style="padding: 20px">
+ 
 <form method="POST"
  action="../main/main_screen.php?auth=login&site=<?php echo attr($_SESSION['site_id']); ?>"
  target="_top" name="login_form" onsubmit="return imsubmitted();">
@@ -126,16 +161,12 @@ else {
 }
 ?>
 
-<table width="100%" height="90%" background='hd.jpg'>
-<td align='center' valign='middle' width='34%'>
-<div class="login-box">
-
-<div class="table-right">
-<table width="100%">
 <?php if (count($result) != 1) { ?>
-<tr>
-<td><span class="text"><?php echo xlt('Group:'); ?></span></td>
-<td>
+ <div class="col-xs-12">
+
+<!-- Password -->
+<div class="form-group has-feedback">
+    <span class="text"><?php echo xlt('Group:'); ?></span>
 <select name=authProvider>
 <?php
 	foreach ($result as $iter) {
@@ -143,40 +174,53 @@ else {
 	}
 ?>
 </select>
-</td></tr>
+</div>
+</div>
 <?php } ?>
 
 <?php if (isset($_SESSION['loginfailure']) && ($_SESSION['loginfailure'] == 1)): ?>
-<tr><td colspan='2' class='text' style='color:red'>
+<div class="alert alert-danger alert-dismissable">
+    <i class="fa  fa-ban"> </i> <b> Alert </b>
+    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+    
+
 <?php echo xlt('Invalid username or password'); ?>
-</td></tr>
+</div>
 <?php endif; ?>
 
 <?php if (isset($_SESSION['relogin']) && ($_SESSION['relogin'] == 1)): ?>
-<tr><td colspan='2' class='text' style='color:red;background-color:#dfdfdf;border:solid 1px #bfbfbf;text-align:center'>
+<div class="alert alert-danger alert-dismissable">
+    <i class="fa  fa-ban"> </i> <b> Alert </b>
+    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+   
 <b><?php echo xlt('Password security has recently been upgraded.'); ?><br>
 <?php echo xlt('Please login again.'); ?></b>
 <?php unset($_SESSION['relogin']); ?>
-</td></tr>
+</div>
 <?php endif; ?>
+ <div class="col-xs-12">
+<div class="form-group has-feedback">
+    <input type='text'  name="authUser" placeholder='Enter Email/User ID' class='form-control'>
+	<span class="glyphicon glyphicon-envelope form-control-feedback"></span>
 
-<tr>
-<td><span class="text1"><b><?php echo xlt('Username:'); ?></span></b></td>
-<td>
-<input class="entryfield" type="text" size="10" name="authUser">
-</td></tr><tr>
-<td><span class="text1"><b><?php echo xlt('Password:'); ?></span></b></td>
-<td>
-<input class="entryfield" type="password" size="10" name="clearPass">
-</td>
-</tr>
+</div>
+</div>
+ <div class="col-xs-12">
+
+<!-- Password -->
+<div class="form-group has-feedback">
+      <input type="password" class='form-control' placeholder='Password' name="clearPass">  
+   <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+
+</div>
+</div>
+        
+        
 
 <?php
 if ($GLOBALS['language_menu_login']) {
 if (count($result3) != 1) { ?>
-<tr>
-<td><span class="text"><?php echo xlt('Language'); ?>:</span></td>
-<td>
+<span class="text"><?php echo xlt('Language'); ?>:</span>
 <select class="entryfield" name=languageChoice size="1">
 <?php
         echo "<option selected='selected' value='" . attr($defaultLangID) . "'>" . xlt('Default') . " - " . xlt($defaultLangName) . "</option>\n";
@@ -194,39 +238,122 @@ if (count($result3) != 1) { ?>
         }
 ?>
 </select>
-</td></tr>
+
 <?php }} ?>
 
-<tr><td>&nbsp;</td><td>
-<input class="button large" type="submit" onClick="transmit_form()" value="<?php echo xla('Login');?>">
-</td></tr>
-<tr><td colspan='2' class='text' style='color:red'>
+    <div class="col-xs-12">
+	<input type="submit" onClick="transmit_form()"  class="btn btn-primary btn-block btn-flat" value="<?php echo xla('Login');?>">
+
+       </div><!-- /.col -->
+
+
+ <div class="col-xs-12">
 <?php
 $ip=$_SERVER['REMOTE_ADDR'];
 ?>
 </div>
-</td></tr>
-</table>
-
-</div>
-<div style="clear: both;"> 
-</div>
-<div class="version">
-
-
-<b><?php echo "v".text($openemr_version) ?> | <a  href="http://kavaii.com" target="main"><?php echo xlt('Info'); ?></a></b>
-</div>
-</div>
-<div class="demo">
-		<!-- Uncomment this for the OpenEMR demo installation
-		<p><center>login = admin
-		<br>password = pass
-		-->
-</div>
-</td>
-</tr>
-</table>
 </form>
-</center>
+
+ 
+<div class="row">
+        <div class="col-xs-12">
+
+    <div class="col-xs-6">
+
+            <label>
+                <input type="checkbox" name="remember"> Remember me
+            </label>
+        </div>
+    <!-- /.col -->
+
+    <div class="col-xs-6">
+ 
+<a href="../reset/password.php" class="text-danger bg-success pull-right" style="padding:10px">I forgot my password</a><br> 
+
+</div>
+
+<!-- /.login-page -->
+  </div><!-- /.col -->
+</div>
+</div>
+</div>
+
+						</div>
+						</div>
+						</div>
+						</div>
+            <footer id="colophon" class="site-footer" role="contentinfo" style="
+    padding: 0;
+    padding-top: 15px;">
+                <div class="container">
+
+                    <div class="row">
+                        <div class="site-info col-md-6">
+                            <p class="text-muted">Copyright &copy; <?php echo date('Y') ?>  <a href="www.kavaii.com" target="_blank"><b>Kavaii</b></a>. All rights reserved. Powered by <a href="http://www.medsmart.co,in/"  target="_blank"><b>MedSmart</b></a></p>
+                        </div>
+                        <div class="site-social text-right col-md-6">
+
+                            <ul class="list-inline hidden-print">
+
+                                <li><a href="" class="btn btn-social btn-facebook" target="_blank"><i class="fa fa-facebook fa-fw"></i></a></li>
+
+                                <li><a href="" class="btn btn-social btn-twitter" target="_blank"><i class="fa fa-twitter fa-fw"></i></a></li>
+
+                                <li><a href="" class="btn btn-social btn-google-plus" target="_blank"><i class="fa fa-google-plus fa-fw"></i></a></li>
+
+                                <li><a href="" class="btn btn-social btn-linkedin" target="_blank"><i class="fa fa-linkedin fa-fw"></i></a></li>
+
+                            </ul>
+                        </div>
+                    </div>
+            </footer><!-- #colophon -->
+			</div>
+            <script src="../../library/js/jquery2.1.1.min.js" type="text/javascript"></script>
+            <!-- Bootstrap 3.3.2 JS -->
+            <script src="../../library/js/bootstrap.min.js" type="text/javascript"></script>
+            <!-- Slimscroll -->
+            <script src="../../library/js/superfish.js" type="text/javascript"></script>
+            
+            <script src="../../library/js/mobilemenu.js" type="text/javascript"></script>
+            
+            <script src="../../library/js/know.js" type="text/javascript"></script>
+            
+            
+            <script src="../../library/iCheck/icheck.min.js" type="text/javascript"></script>
+            
+            <script>
+$(function () {
+//Enable check and uncheck all functionality
+    $(".checkbox-toggle").click(function () {
+        var clicks = $(this).data('clicks');
+        if (clicks) {
+            //Uncheck all checkboxes
+            $("input[type='checkbox']", ".mailbox-messages").iCheck("uncheck");
+        } else {
+            //Check all checkboxes
+            $("input[type='checkbox']", ".mailbox-messages").iCheck("check");
+        }
+        $(this).data("clicks", !clicks);
+    });
+//Handle starring for glyphicon and font awesome
+    $(".mailbox-star").click(function (e) {
+        e.preventDefault();
+//detect type
+        var $this = $(this).find("a > i");
+        var glyph = $this.hasClass("glyphicon");
+        var fa = $this.hasClass("fa");
+//Switch states
+        if (glyph) {
+            $this.toggleClass("glyphicon-star");
+            $this.toggleClass("glyphicon-star-empty");
+        }
+        if (fa) {
+            $this.toggleClass("fa-star");
+            $this.toggleClass("fa-star-o");
+        }
+    });
+});
+            </script>
+
 </body>
 </html>
