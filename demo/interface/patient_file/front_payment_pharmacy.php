@@ -383,8 +383,8 @@ $rateplan=$patdata['rateplan'];
 			//echo "<td class='bold' width='10%'>".xlt('UOM')."</td>";
 			echo "<td class='bold' width='10%' align='right'>".xlt('Rate')."</td>";
 			echo "<td class='bold' width='10%' align='right'>".xlt('Qty')."</td>";
-			echo "<td class='bold' width='10%' align='right'>".xlt('Tax Code')."</td>";
-			echo "<td class='bold' width='10%' align='right'>".xlt('Tax Amt')."</td>";
+			echo "<td class='bold' width='10%' align='right'>".xlt('GST %')."</td>";
+			echo "<td class='bold' width='10%' align='right'>".xlt('GST Amt')."</td>";
 			//echo "<td class='bold' width='10%' align='right'>".xlt('Payable Total Amt')."</td>";
             echo "<td class='bold' width='10%' align='right'>".xlt('Amount')."</td></tr><tr style='border-bottom: 1px solid #000;'><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>";
 			echo "</b>";
@@ -445,7 +445,8 @@ $rateplan=$patdata['rateplan'];
 					$drugdetails=sqlStatement("select * from drugs where name='".$drugid."'");
 					$d=sqlFetchArray($drugdetails);
 					$rate=$b['fee']/$b['units'];
-					$vatamount=($d['vat']*$d['mrp'])/100;
+					//echo $d['mrp']."</br>";
+					$vatamount=($b['units']*($d['vat']*$d['PricePerUnit'])/100);
 				    $totalvat = $vatamount + $totalvat;
 					if($b['code_type']=='Pharmacy Charge'){
                     echo "<tr>";
@@ -492,12 +493,18 @@ $rateplan=$patdata['rateplan'];
 	//   echo "<tr style='border-bottom: 1px solid #000;'><td colspan=6>&nbsp; </td></tr>";
 			//echo "<tr style='border-top: 1px solid #000;'><td>&nbsp; </td></tr>";
 			 echo "<tr style='border-bottom: 1px solid #000;'><td class='bold' colspan=9 style='text-align:right'>&nbsp&nbsp"."</td><td class='text' align='right'></td></tr>";
+			 echo "<tr><td class='bold' colspan=4 style='text-align:right'>".xlt('SGST :')."&nbsp&nbsp"."</td><td class='text' align='right'>" . oeFormatMoney(($totalvat)/2) . "</td>";
+			$sgst = oeFormatMoney(($totalvat)/2);
+			$cgst = oeFormatMoney(($totalvat)/2);
+            echo "<td class='bold' colspan=4 style='text-align:right'>".xlt('SubTotal:')."&nbsp&nbsp"."</td><td class='text' align='right'>" . oeFormatMoney($total + abs($copays)) . "</td></tr>";
+			echo "<tr style='border-bottom: 1px solid #000;'><td class='bold' colspan=4 style='text-align:right'>".xlt('CGST :')."&nbsp&nbsp"."</td><td class='text' align='right'>" . oeFormatMoney(($totalvat)/2 ). "</td>";
 			
-            echo "<tr><td class='bold' colspan=9 style='text-align:right'>".xlt('SubTotal:')."&nbsp&nbsp"."</td><td class='text' align='right'>" . oeFormatMoney($total + abs($copays)) . "</td></tr>";
-			echo "<tr ><td class='bold' colspan=9 style='text-align:right'>".xlt('Discount:')."&nbsp&nbsp"."</td><td class='text' align='right'>" . oeFormatMoney($totaldis) . "</td></tr>";
-			 echo "<tr style='border-bottom: 1px solid #000;'><td class='bold' colspan=9 style='text-align:right'>".xlt('Total Tax:')."&nbsp&nbsp"."</td><td class='text' align='right'>" . oeFormatMoney($totalvat) . "</td></tr>";
+			echo "<td class='bold' colspan=4 style='text-align:right'>".xlt('Discount:')."&nbsp&nbsp"."</td><td class='text' align='right'>" . oeFormatMoney($totaldis) . "</td></tr>";
 			
-			echo "<tr ><td class='bold' colspan=9 style='text-align:right'>".xlt('Amount:')."&nbsp&nbsp"."</td><td class='text' align='right'>" . oeFormatMoney($total - $totaldis + abs($copays)) . "</td></tr>";
+			 
+			 echo "<tr ><td class='bold' colspan=4 style='text-align:right'>".xlt('Total GST :')."&nbsp&nbsp"."</td><td class='text' align='right'>" . oeFormatMoney($sgst + $cgst) . "</td>";
+			
+			echo "<td class='bold' colspan=4 style='text-align:right'>".xlt('Amount:')."&nbsp&nbsp"."</td><td class='text' align='right'>" . oeFormatMoney($total - $totaldis + abs($copays)) . "</td></tr>";
 			//echo "<tr style='border-bottom: 1px solid #000;'><td class='bold' colspan=9 style='text-align:right'>".xlt('Primary Sponsor Amount:')."&nbsp&nbsp"."</td><td //class='text' align='right'>" . oeFormatMoney($approved_amt) . "</td></tr>";
 			
 			

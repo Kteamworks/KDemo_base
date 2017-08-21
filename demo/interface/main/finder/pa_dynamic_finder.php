@@ -173,7 +173,7 @@ $(document).ready(function() {
  //$('#pt_table tbody tr').live('click', function (e) {
   // ID of a row element is pid_{value}
   var newpid = this.id.substring(4);
-  var encounter=$(this).find('td').eq(3).html();
+  var encounter=$(this).find('td').eq(2).html();
   //var encounter=enc.substring(4);
  //alert(enc);
   // If the pid is invalid, then don't attempt to set 

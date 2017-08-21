@@ -102,7 +102,8 @@ $sec = "10";
  $reqid=$gresult['id'];
  $gr= sqlStatement("select * from funds WHERE user='$user' and status!='$st'");
  $grd = sqlFetchArray($gr);
-
+ $grd_user=$gresult['user'];
+$collectionamt=$gresult['collectionamt'];
  
  if($grd['level']==1)
 
@@ -118,7 +119,7 @@ $sec = "10";
  
  else if($gresult['id'])
  {
-	 echo "You have a Handover Request to approve \n";
+	 echo "You have a Handover Request to approve for $grd_user with Amount Rs. $collectionamt  \n";
 	 echo " \n <td><input type='submit' name='handover' value='Approve' onclick='top.restoreSession();'/></td>\n";
  }
 else

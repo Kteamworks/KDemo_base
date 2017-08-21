@@ -91,8 +91,19 @@ function numericff($name) {
 <head>
         
         <link rel="stylesheet" href="public/css/default.css" type="text/css">
-        <link rel="stylesheet" href="datepicker/public/css/style.css" type="text/css">
-		<link type="text/css" rel="stylesheet" href="datepicker/libraries/syntaxhighlighter/public/css/shCoreDefault.css">
+        
+		
+		 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
+		 <link rel="stylesheet" href="css/normalize.css">
+		<link rel="stylesheet" href="css/stylesheet.css">
+		<script src="js/jquery.js"></script>
+		<script src="../dist/js/standalone/selectize.js"></script>
+		<script src="js/index.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+		
+		
+		
 
 <?php html_header_show(); ?>
 <title><?php echo $drug_id ? xlt("Edit") : xlt("Add New"); echo ' ' . xlt('Drug'); ?></title>
@@ -140,15 +151,65 @@ input[type="number"] {
 <script type="text/javascript" src="../../library/topdialog.js"></script>
 <script type="text/javascript" src="../../library/dialog.js"></script>
 <script type="text/javascript" src="../../library/textformat.js"></script>
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+ 
+
+
+
+<script language="JavaScript">
+
+<?php require($GLOBALS['srcdir'] . "/restoreSession.php"); ?>
+
+// This is for callback by the find-code popup.
+// Appends to or erases the current list of related codes.
+function set_related(codetype, code, selector, codedesc) {
+ var f = document.forms[0];
+ var s = f.form_related_code.value;
+ if (code) {
+  if (s.length > 0) s += ';';
+  s += codetype + ':' + code;
+ } else {
+  s = '';
+ }
+ f.form_related_code.value = s;
+}
+
+// This invokes the find-code popup.
+function sel_related() {
+ dlgopen('../patient_file/encounter/find_code_popup.php', '_blank', 500, 400);
+}
+
+
+
+</script>
+
+
+
+
+
+</head>
 
 <script language="JavaScript">
 
 
 $(document).ready(function()
 {
+	<?php $a=1;
+	while($a<=10){ ?>
+	$('#<?php echo "toggle_doc".$a ?>').click(function() { 
+	
+		
+$('#<?php echo "input_dr".$a ?> > input').attr("disabled",false);
+	$(this).find('i').toggleClass('fa-plus-circle fa-minus-circle');
+	$('#<?php echo "select_dr".$a ?>, #<?php echo "input_dr".$a ?>').toggle();
+
+   });
+	
+	<?php $a++; } ?>
+	
 $("#name1").change(function()
 {
+	
 var id=$(this).val();
 var dataString = 'id='+ id;
 
@@ -177,7 +238,7 @@ success: function(html)
 $("#manu1").html(html);
 } 
 });
-$.ajax
+/*$.ajax
 ({
 type: "POST",
 
@@ -189,7 +250,7 @@ success: function(html)
 $("#v1").html(html);
 } 
 });
-
+*/
 
 });
 
@@ -222,6 +283,7 @@ success: function(html)
 $("#manu2").html(html);
 } 
 });
+/*
 $.ajax
 ({
 type: "POST",
@@ -234,7 +296,7 @@ success: function(html)
 $("#v2").html(html);
 } 
 });
-
+*/
 });
 $("#name3").change(function()
 {
@@ -265,6 +327,7 @@ success: function(html)
 $("#manu3").html(html);
 } 
 });
+/*
 $.ajax
 ({
 type: "POST",
@@ -277,7 +340,7 @@ success: function(html)
 $("#v3").html(html);
 } 
 });
-
+*/
 });
 $("#name4").change(function()
 {
@@ -308,6 +371,7 @@ success: function(html)
 $("#manu4").html(html);
 } 
 });
+/*
 $.ajax
 ({
 type: "POST",
@@ -320,7 +384,7 @@ success: function(html)
 $("#v4").html(html);
 } 
 });
-
+*/
 });
 
 $("#name5").change(function()
@@ -353,6 +417,7 @@ success: function(html)
 $("#manu5").html(html);
 } 
 });
+/*
 $.ajax
 ({
 type: "POST",
@@ -365,7 +430,7 @@ success: function(html)
 $("#v5").html(html);
 } 
 });
-
+*/
 });
 $("#name6").change(function()
 {
@@ -396,7 +461,7 @@ success: function(html)
 $("#manu6").html(html);
 } 
 });
-$.ajax
+/*$.ajax
 ({
 type: "POST",
 
@@ -408,7 +473,7 @@ success: function(html)
 $("#v6").html(html);
 } 
 });
-
+*/
 });
 
 
@@ -442,7 +507,7 @@ success: function(html)
 $("#manu7").html(html);
 } 
 });
-$.ajax
+/* $.ajax
 ({
 type: "POST",
 
@@ -454,7 +519,7 @@ success: function(html)
 $("#v7").html(html);
 } 
 });
-
+*/
 });
 
 $("#name8").change(function()
@@ -486,6 +551,7 @@ success: function(html)
 $("#manu8").html(html);
 } 
 });
+/*
 $.ajax
 ({
 type: "POST",
@@ -498,7 +564,7 @@ success: function(html)
 $("#v8").html(html);
 } 
 });
-
+*/
 });
 $("#name9").change(function()
 {
@@ -529,7 +595,7 @@ success: function(html)
 $("#manu9").html(html);
 } 
 });
-$.ajax
+/* $.ajax
 ({
 type: "POST",
 
@@ -541,7 +607,7 @@ success: function(html)
 $("#v9").html(html);
 } 
 });
-
+*/
 });
 
 
@@ -574,7 +640,7 @@ success: function(html)
 $("#manu10").html(html);
 } 
 });
-$.ajax
+/* $.ajax
 ({
 type: "POST",
 
@@ -586,7 +652,7 @@ success: function(html)
 $("#v10").html(html);
 } 
 });
-
+*/
 });
 
 
@@ -1171,11 +1237,10 @@ $(document).on("focus", ".sum", function() {
 	var q = $("#q1").val();
 	var v = $("#v1").val();
 	
-	var mrp = $("#mrp1").val();
-	var ma = [(+mrp)*100]/(100 + (+v));
-	var dv= [(+d) * (+t)]/100;
-	var vv= [(+v) * (+ma)*(+q)]/100;
-	var result = (+q)*[(+t) - (+dv) ]+ (+vv);
+	var value1 = [(100 + (+v))] * [(+t)/100] * (+q);
+	var value2 = [(+d)/100] * (+value1);
+	
+	var result =  (+value1) - (+value2);
 	$("#t1").val(result);
 	
 });
@@ -1186,12 +1251,10 @@ $(document).on("focus", ".sum", function() {
 	var t = $("#tp2").val();
 	var q = $("#q2").val();
 	var v = $("#v2").val();
-	var mrp = $("#mrp2").val();
-	var ma = [(+mrp)*100]/(100 + (+v));
+	var value1 = [(100 + (+v))] * [(+t)/100] * (+q);
+	var value2 = [(+d)/100] * (+value1);
 	
-	var dv= [(+d) * (+t)]/100;
-	var vv= [(+v) * (+ma)*(+q)]/100;
-	var result = (+q)*[(+t) - (+dv) ]+ (+vv);
+	var result =  (+value1) - (+value2);
 	$("#t2").val(result);
 });
 $(document).on("focus", ".sum", function() {
@@ -1200,11 +1263,10 @@ $(document).on("focus", ".sum", function() {
 	var t = $("#tp3").val();
 	var q = $("#q3").val();
 	var v = $("#v3").val();
-	var mrp = $("#mrp3").val();
-	var ma = [(+mrp)*100]/(100 + (+v));
-	var dv= [(+d) * (+t)]/100;
-	var vv= [(+v) * (+ma)*(+q)]/100;
-	var result = (+q)*[(+t) - (+dv) ]+ (+vv);
+	var value1 = [(100 + (+v))] * [(+t)/100] * (+q);
+	var value2 = [(+d)/100] * (+value1);
+	
+	var result =  (+value1) - (+value2);
 	$("#t3").val(result);
 });
 
@@ -1214,11 +1276,10 @@ $(document).on("focus", ".sum", function() {
 	var t = $("#tp4").val();
 	var q = $("#q4").val();
 	var v = $("#v4").val();
-    var mrp = $("#mrp4").val();
-	var ma = [(+mrp)*100]/(100 + (+v));
-	var dv= [(+d) * (+t)]/100;
-	var vv= [(+v) * (+ma)*(+q)]/100;
-	var result = (+q)*[(+t) - (+dv) ]+ (+vv);
+    var value1 = [(100 + (+v))] * [(+t)/100] * (+q);
+	var value2 = [(+d)/100] * (+value1);
+	
+	var result =  (+value1) - (+value2);
 	$("#t4").val(result);
 });
 $(document).on("focus", ".sum", function() {
@@ -1227,11 +1288,10 @@ $(document).on("focus", ".sum", function() {
 	var t = $("#tp5").val();
 	var q = $("#q5").val();
 	var v = $("#v5").val();
-	var mrp = $("#mrp5").val();
-	var ma = [(+mrp)*100]/(100 + (+v));
-	var dv= [(+d) * (+t)]/100;
-	var vv= [(+v) * (+ma)*(+q)]/100;
-	var result = (+q)*[(+t) - (+dv) ]+ (+vv);
+	var value1 = [(100 + (+v))] * [(+t)/100] * (+q);
+	var value2 = [(+d)/100] * (+value1);
+	
+	var result =  (+value1) - (+value2);
 	$("#t5").val(result);
 });
 $(document).on("focus", ".sum", function() {
@@ -1240,11 +1300,10 @@ $(document).on("focus", ".sum", function() {
 	var t = $("#tp6").val();
 	var q = $("#q6").val();
 	var v = $("#v6").val();
-	var mrp = $("#mrp6").val();
-	var ma = [(+mrp)*100]/(100 + (+v));
-	var dv= [(+d) * (+t)]/100;
-	var vv= [(+v) * (+ma)*(+q)]/100;
-	var result = (+q)*[(+t) - (+dv) ]+ (+vv);
+	var value1 = [(100 + (+v))] * [(+t)/100] * (+q);
+	var value2 = [(+d)/100] * (+value1);
+	
+	var result =  (+value1) - (+value2);
 	$("#t6").val(result);
 });
 $(document).on("focus", ".sum", function() {
@@ -1253,11 +1312,10 @@ $(document).on("focus", ".sum", function() {
 	var t = $("#tp7").val();
 	var q = $("#q7").val();
 	var v = $("#v7").val();
-	var mrp = $("#mrp7").val();
-	var ma = [(+mrp)*100]/(100 + (+v));
-	var dv= [(+d) * (+t)]/100;
-	var vv= [(+v) * (+ma)*(+q)]/100;
-	var result = (+q)*[(+t) - (+dv) ]+ (+vv);
+	var value1 = [(100 + (+v))] * [(+t)/100] * (+q);
+	var value2 = [(+d)/100] * (+value1);
+	
+	var result =  (+value1) - (+value2);
 	$("#t7").val(result);
 });
 $(document).on("focus", ".sum", function() {
@@ -1266,11 +1324,10 @@ $(document).on("focus", ".sum", function() {
 	var t = $("#tp8").val();
 	var q = $("#q8").val();
 	var v = $("#v8").val();
-	var mrp = $("#mrp8").val();
-	var ma = [(+mrp)*100]/(100 + (+v));
-	var dv= [(+d) * (+t)]/100;
-	var vv= [(+v) * (+ma)*(+q)]/100;
-	var result = (+q)*[(+t) - (+dv) ]+ (+vv);
+	var value1 = [(100 + (+v))] * [(+t)/100] * (+q);
+	var value2 = [(+d)/100] * (+value1);
+	
+	var result =  (+value1) - (+value2);
 	$("#t8").val(result);
 });
 
@@ -1280,12 +1337,10 @@ $(document).on("focus", ".sum", function() {
 	var t = $("#tp9").val();
 	var q = $("#q9").val();
 	var v = $("#v9").val();
-	var mrp = $("#mrp9").val();
-	var ma = [(+mrp)*100]/(100 + (+v));
-	var dv= [(+d) * (+t)]/100;
-	var vv= [(+v) * (+ma)*(+q)]/100;
-	var result = (+q)*[(+t) - (+dv) ]+ (+vv);
-	$("#t9").val(result);
+	var value1 = [(100 + (+v))] * [(+t)/100] * (+q);
+	var value2 = [(+d)/100] * (+value1);
+	
+	var result =  (+value1) - (+value2);	$("#t9").val(result);
 });
 $(document).on("focus", ".sum", function() {
    // var d = 0;
@@ -1293,178 +1348,12 @@ $(document).on("focus", ".sum", function() {
 	var t = $("#tp10").val();
 	var q = $("#q10").val();
 	var v = $("#v10").val();
-	var mrp = $("#mrp10").val();
-	var ma = [(+mrp)*100]/(100 + (+v));
-	var dv= [(+d) * (+t)]/100;
-	var vv= [(+v) * (+ma)*(+q)]/100;
-	var result = (+q)*[(+t) - (+dv) ]+ (+vv);
+	var value1 = [(100 + (+v))] * [(+t)/100] * (+q);
+	var value2 = [(+d)/100] * (+value1);
+	
+	var result =  (+value1) - (+value2);
 	$("#t10").val(result);
 });
-
-$(document).on("focus", ".sum", function() {
-   // var d = 0;
-    var d = $("#d11").val();
-	var t = $("#tp11").val();
-	var q = $("#q11").val();
-	var v = $("#v11").val();
-	var mrp = $("#mrp11").val();
-	var ma = [(+mrp)*100]/(100 + (+v));
-	var dv= [(+d) * (+t)]/100;
-	var vv= [(+v) * (+ma)*(+q)]/100;
-	var result = (+q)*[(+t) - (+dv) ]+ (+vv);
-	$("#t11").val(result);
-});
-$(document).on("focus", ".sum", function() {
-   // var d = 0;
-    var d = $("#d12").val();
-	var t = $("#tp12").val();
-	var q = $("#q12").val();
-	var v = $("#v12").val();
-	var mrp = $("#mrp12").val();
-	var ma = [(+mrp)*100]/(100 + (+v));
-	var dv= [(+d) * (+t)]/100;
-	var vv= [(+v) * (+ma)*(+q)]/100;
-	var result = (+q)*[(+t) - (+dv) ]+ (+vv);
-	$("#t12").val(result);
-});
-$(document).on("focus", ".sum", function() {
-   // var d = 0;
-    var d = $("#d13").val();
-	var t = $("#tp13").val();
-	var q = $("#q13").val();
-	var v = $("#v13").val();
-	var mrp = $("#mrp13").val();
-	var ma = [(+mrp)*100]/(100 + (+v));
-	var dv= [(+d) * (+t)]/100;
-	var vv= [(+v) * (+ma)*(+q)]/100;
-	var result = (+q)*[(+t) - (+dv) ]+ (+vv);
-	$("#t13").val(result);
-});
-$(document).on("focus", ".sum", function() {
-   // var d = 0;
-    var d = $("#d14").val();
-	var t = $("#tp14").val();
-	var q = $("#q14").val();
-	var v = $("#v14").val();
-    var mrp = $("#mrp1").val();
-	var ma = [(+mrp)*100]/(100 + (+v));
-	var dv= [(+d) * (+t)]/100;
-	var vv= [(+v) * (+ma)*(+q)]/100;
-	var result = (+q)*[(+t) - (+dv) ]+ (+vv);
-	$("#t14").val(result);
-});
-
-$(document).on("focus", ".sum", function() {
-   // var d = 0;
-    var d = $("#d15").val();
-	var t = $("#tp15").val();
-	var q = $("#q15").val();
-	var v = $("#v15").val();
-	var mrp = $("#mrp15").val();
-	var ma = [(+mrp)*100]/(100 + (+v));
-	var dv= [(+d) * (+t)]/100;
-	var vv= [(+v) * (+ma)*(+q)]/100;
-	var result = (+q)*[(+t) - (+dv) ]+ (+vv);
-	$("#t15").val(result);
-});
-
-
-
-$(document).on("focus", ".sum", function() {
-   // var d = 0;
-    var d = $("#d16").val();
-	var t = $("#tp16").val();
-	var q = $("#q16").val();
-	var v = $("#v16").val();
-	var mrp = $("#mrp16").val();
-	var ma = [(+mrp)*100]/(100 + (+v));
-	var dv= [(+d) * (+t)]/100;
-	var vv= [(+v) * (+ma)*(+q)]/100;
-	var result = (+q)*[(+t) - (+dv) ]+ (+vv);
-	$("#t16").val(result);
-});
-$(document).on("focus", ".sum", function() {
-   // var d = 0;
-    var d = $("#d17").val();
-	var t = $("#tp17").val();
-	var q = $("#q17").val();
-	var v = $("#v17").val();
-	var mrp = $("#mrp17").val();
-	var ma = [(+mrp)*100]/(100 + (+v));
-	var dv= [(+d) * (+t)]/100;
-	var vv= [(+v) * (+ma)*(+q)]/100;
-	var result = (+q)*[(+t) - (+dv) ]+ (+vv);
-	$("#t17").val(result);
-});
-$(document).on("focus", ".sum", function() {
-   // var d = 0;
-    var d = $("#d18").val();
-	var t = $("#tp18").val();
-	var q = $("#q18").val();
-	var v = $("#v18").val();
-	var mrp = $("#mrp18").val();
-	var ma = [(+mrp)*100]/(100 + (+v));
-	var dv= [(+d) * (+t)]/100;
-	var vv= [(+v) * (+ma)*(+q)]/100;
-	var result = (+q)*[(+t) - (+dv) ]+ (+vv);
-	$("#t18").val(result);
-});
-$(document).on("focus", ".sum", function() {
-   // var d = 0;
-    var d = $("#d19").val();
-	var t = $("#tp19").val();
-	var q = $("#q19").val();
-	var v = $("#v19").val();
-	var mrp = $("#mrp19").val();
-	var ma = [(+mrp)*100]/(100 + (+v));
-	var dv= [(+d) * (+t)]/100;
-	var vv= [(+v) * (+ma)*(+q)]/100;
-	var result = (+q)*[(+t) - (+dv) ]+ (+vv);
-	$("#t19").val(result);
-});
-$(document).on("focus", ".sum", function() {
-   // var d = 0;
-    var d = $("#d20").val();
-	var t = $("#tp20").val();
-	var q = $("#q20").val();
-	var v = $("#v20").val();
-	var mrp = $("#mrp20").val();
-	var ma = [(+mrp)*100]/(100 + (+v));
-	var dv= [(+d) * (+t)]/100;
-	var vv= [(+v) * (+ma)*(+q)]/100;
-	var result = (+q)*[(+t) - (+dv) ]+ (+vv);
-	$("#t20").val(result);
-});
-
-
-
-
-
-
-
-
-
-
-<?php require($GLOBALS['srcdir'] . "/restoreSession.php"); ?>
-
-// This is for callback by the find-code popup.
-// Appends to or erases the current list of related codes.
-function set_related(codetype, code, selector, codedesc) {
- var f = document.forms[0];
- var s = f.form_related_code.value;
- if (code) {
-  if (s.length > 0) s += ';';
-  s += codetype + ':' + code;
- } else {
-  s = '';
- }
- f.form_related_code.value = s;
-}
-
-// This invokes the find-code popup.
-function sel_related() {
- dlgopen('../patient_file/encounter/find_code_popup.php', '_blank', 500, 400);
-}
 
 
 
@@ -1472,25 +1361,16 @@ function sel_related() {
 
 
 
-
-
-</head>
-
 <body class="body_top">
 <?php
 // If we are saving, then save and close the window.
 // First check for duplicates.
-if ($_POST['sbtrow']) {
-session_start();
-//$_SESSION['row']=$_POST['trr'];
-//$tableRow=$_SESSION['row'];
-$tableRow=$_POST['trr'];
 
-}
 
 
 
 if (($_POST['form_save'] || $_POST['form_delete']) && !$alertmsg) {
+	
   $new_drug = false;
   if ($drug_id) {
    if ($_POST['form_save']) { // updating an existing drug
@@ -1527,10 +1407,11 @@ if (($_POST['form_save'] || $_POST['form_delete']) && !$alertmsg) {
   }
   else if ($_POST['form_save']) { // saving a new drug
    $new_drug = true;
+             
    
          if(isset($_POST['supplier'])&& $_POST['supplier']!=""){
 			 
-			  $sup=$_POST['supplier'];
+			  $sup=$_POST['supplier']; 
 			  $invoice= $_POST['invoice'];
 			  
 			  $j=0;
@@ -1538,12 +1419,7 @@ if (($_POST['form_save'] || $_POST['form_delete']) && !$alertmsg) {
 		
 		
 		
-		if($selected=='add')
-		{
-		  $selected = $_POST['form_name1'][$j];
 		
-		
-		}
 		
 		$batch= $_POST['batch'][$j];
 		$medType= $_POST['medType'][$j];
@@ -1598,15 +1474,21 @@ if (($_POST['form_save'] || $_POST['form_delete']) && !$alertmsg) {
 	  }
 */	  
 //-------------------------------------------------------------------------------//		
-		include_once('dbconnect.php');
 		
+		 include_once('dbconnect.php');
 		
+		 $sel = mysqli_real_escape_string($con,$selected);
+		$master = sqlInsert("Insert into medicine_master (Medicine_Name,Medicine_Type,Medicine_Manufacturer,Medicine_Tax)
+		VALUES ('$sel','$medType','$mfr','$vat')
+		ON DUPLICATE KEY UPDATE Medicine_Name='$sel'");
+ 
+	
 			 $drug_id = sqlInsert("INSERT INTO drugs ( " .
     "name,mfr,inStock,supplier,batch,medType,quantity,medGroup,totalStock,free,date,pack,packType,expdate,mrp,mrpa,PricePerUnit,tradePrice,discount,vat,totalValue,invoice,max_level, form, " .
     "size, unit, route, cyp_factor, related_code, " .
     "allow_multiple, allow_combining, active " .
     ") VALUES ( " .
-    "'" .mysqli_real_escape_string($con,$selected)          . "', " .
+    "'" .  mysqli_real_escape_string($con,$selected)        . "', " .
     "'" . $mfr          . "', " .
     "'" . $instock          . "', " .
 	 "'" .$sup. "', " .
@@ -1648,8 +1530,8 @@ if (($_POST['form_save'] || $_POST['form_delete']) && !$alertmsg) {
 	$codesmed=sqlInsert("INSERT INTO codes(".
 	"code_text,code,code_type,units,fee,cyp_factor,active".
 	") VALUES ( " .
-	"'" .mysqli_real_escape_string($con,$selected)         . "', " .
-	"'" .mysqli_real_escape_string($con,$selected)         . "', " .
+	"'" . mysqli_real_escape_string($con,$selected)          . "', " .
+	"'" . mysqli_real_escape_string($con,$selected)          . "', " .
 	"'" . $codetyp          . "', " .
 	"'" . $units          . "', " .
 	"'" . $unitPrice      . "', " .
@@ -1669,6 +1551,38 @@ if (($_POST['form_save'] || $_POST['form_delete']) && !$alertmsg) {
 
 	")");
 	
+	
+//-------------------------------------------------------------------------------------------//
+
+/*-----logic for unique primary key stats--------*/
+/*	
+	 
+	 $test = sqlStatement("SELECT  * FROM `list_options` WHERE `list_id`='drug_supplier' order by CONVERT(SUBSTRING(option_id, 1), SIGNED INTEGER) desc limit 1");
+ while($test1 = sqlFetchArray($test)){
+
+ $test2=$test1['option_id'];
+ }
+  $test3= $test2+1;
+  
+	/*-------logic Ends-------------------------------
+	$valid = sqlQuery("SELECT title FROM list_options WHERE " .
+"title = '"  . $sup  . "' " );
+
+   if(!$valid)	
+   {	
+
+$supply_id = sqlInsert("INSERT INTO list_options ( " .
+    "list_id,title,option_id " .
+    ") VALUES ( " .
+    "'" . 'drug_supplier'          . "', " .
+	 "'"  . $sup ."', " .
+	  "'" . $test3          . "' " .
+    ")");	
+	
+   }
+	
+	
+	*/
 	
 	
 	
@@ -1728,284 +1642,19 @@ if (($_POST['form_save'] || $_POST['form_delete']) && !$alertmsg) {
       "drug_id, selector,quantity,taxrates " .
       ") VALUES ( " .
         "'" . add_escape_custom($drug_id) . "', " .
-        "'" .mysqli_real_escape_string($con,$selected) . "', " .
+        "'" . mysqli_real_escape_string($con,$selected) . "', " .
 		 "'" . $totalStock . "', " .
         "'" . add_escape_custom($form_notes) . "' )");
 		 
-		 
-		 
-	
-	
-	
-	
-	
 	
 	
 	$j++;
 		}  
 		
   }
-		else{
-			
-			$invoice= $_POST['invoice'];
-			
-			 $j=0;
-	foreach($_POST['form_name'] as $selected) {
 		
-		
-		if($selected=='add')
-		{
-		  $selected = $_POST['form_name1'][$j];
-		
-		
-		}
-		
-		$batch= $_POST['batch'][$j];
-		$medType= $_POST['medType'][$j];
-	    $group= $_POST['group'][$j];
-		//$date= $_POST['date'][$j];
-		$month= $_POST['month'][$j];
-		$year= $_POST['year'][$j];
-		echo $date= $month.'-'.$year; exit;
-		$qty= $_POST['qty'][$j];
-		$pack= $_POST['pack'][$j];
-		$mrp= $_POST['mrp'][$j];
-		$mfr= $_POST['mfr'][$j];
-		$instock= $_POST['instock'][$j];
-		$trade= $_POST['trade'][$j];
-		$discount= $_POST['discount'][$j];
-		$vat= $_POST['vat'][$j];
-		$mrpa = ($mrp * 100)/(100+$vat);
-		$total= $_POST['total'][$j];
-		$type= $_POST['type'][$j];
-		$unitPrice= $mrp/$pack;    
-        $free= $_POST['free'][$j];
-			$totalStock =  ($instock*$pack) + ($qty*$pack) + ($free*$pack) ;
-			if(empty($selected))
-			continue;
-	
-//------------------Duplicate---------------------------------//	
-/*
-		$crow = sqlStatement("SELECT COUNT(*) AS count,name FROM drugs WHERE " .
-    "name = '"  .  $selected   . "' " );
    
-      while ($croww = sqlFetchArray($crow))
-	  {
-		  
-		  $med=$croww['name'];
-		  
-	 $msg = 'Cannot add '.$med.'  because it already exists!';
-      
-   
-    if ($croww['name']) {
-		
-		
-	echo "<script type='text/javascript'>alert('$msg');";
-    //$alertmsg = addslashes(xl('Cannot add this entry because it already exists!'));
-	echo "window.location.href = 'add_edit_drug.php'";
-	echo "</script>";
-	}
-	  }
-	*/  
-//-------------------------------------------------------------------------------//	
 
-	
-    $drug_id = sqlInsert("INSERT INTO drugs ( " .
-    "name,mfr,inStock,supplier,batch,medType,medGroup,quantity,totalStock,free,date,pack,packType,expdate,mrp,mrpa,PricePerUnit,tradePrice,discount,vat,totalValue,invoice,max_level, form, " .
-    "size, unit, route, cyp_factor, related_code, " .
-    "allow_multiple, allow_combining, active " .
-    ") VALUES ( " .
-    "'" .mysqli_real_escape_string($con,$selected)         . "', " .
-	"'" . $mfr          . "', " .
-	"'" . $instock          . "', " .
-	 "'" .escapedff('form_supplier'). "', " .
-    "'" . $batch    . "', " .
-	 "'" . $medType    . "', " .
-	  "'" . $group    . "', " .
-    "'" . $qty      . "', " .
-	 "'" . $totalStock      . "', " .
-	"'" . $free      . "', " .
-	"'" . date('Y/m/d') . "', " .
-	 "'" . $pack      . "', " .
-	 "'" . $type      . "', " .
-    "'" . $date . "', " .
-	 "'" . $mrp . "', " .
-	  "'" . $mrpa . "', " .
-	 "'" . $unitPrice . "', " .
-	  "'" . $trade . "', " .
-	   "'" . $discount . "', " .
-	    "'" . $vat . "', " .
-		 "'" . $total . "', " .
-		  "'" . $invoice . "', " .
-    "'" . escapedff('form_max_level')     . "', " .
-    "'" . escapedff('form_form')          . "', " .
-    "'" . escapedff('form_size')          . "', " .
-    "'" . escapedff('form_unit')          . "', " .
-    "'" . escapedff('form_route')         . "', " .
-    "'" . numericff('form_cyp_factor')    . "', " .
-    "'" . escapedff('form_related_code')  . "', " .
-    (empty($_POST['form_allow_multiple' ]) ? 0 : 1) . ", " .
-    (empty($_POST['form_allow_combining']) ? 0 : 1) . ", " .
-    (empty($_POST['form_active']) ? 0 : 1)        .
-    ")");
-	
-	$codetyp=11;
-	$cf=0;
-	$active=1;
-	$units=1;
-	$codesmed=sqlInsert("INSERT INTO codes(".
-	"code_text,code,code_type,units,fee,cyp_factor,active".
-	") VALUES ( " .
-	"'" . mysqli_real_escape_string($con,$selected)         . "', " .
-	"'" . mysqli_real_escape_string($con,$selected)          . "', " .
-	"'" . $codetyp          . "', " .
-	"'" . $units          . "', " .
-	"'" . $unitPrice      . "', " .
-	"'" . $cf      . "', " .
-	"'" . $active      . "'" .
-	")");
-	
-	$medprice=sqlInsert("INSERT INTO prices (".
-	"pr_id,pr_selector, pr_level, pr_price".
-	") VALUES ( " .
-	"'" .    $codesmed           . "', " .
-	"'" .    ''           . "', " .
-	"'" . 'standard'      . "', " .
-	"'" . $unitPrice      . "'" .
-
-	")");
-	
-	//----------------------------------Drugs_warehouse---------------------------------------//
-	
-	
-	
-	 $warehouse = 	sqlInsert("INSERT INTO product_warehouse ( " .
-        "pw_drug_id, pw_warehouse, pw_min_level, pw_max_level ) VALUES ( " .
-        "'" . add_escape_custom($drug_id) . "', "                            .
-          "'onsite ', " .
-          "' 1', " .
-         "' 10000' " .
-         ")");	
-	
-//--------------------------------------------drug_inventory-----------------------------------------//
-	
-	$lot_id = sqlInsert("INSERT INTO drug_inventory ( " .
-          "drug_id, lot_number, manufacturer, expiration, " .
-          "vendor_id, warehouse_id, on_hand " .
-          ") VALUES ( " .
-          "'" . add_escape_custom($drug_id) . "', "                            .
-          "'" . $batch. "', " .
-          "'" . $mfr . "', " .
-         "'" . $date . "', " .
-          "'" . add_escape_custom($_POST['form_vendor_id'])    . "', " .
-          "' onsite ', " .
-          "'" . $totalStock              . "' "  .
-          ")");	
-		  
-		  
-		 //$totalStock = $instock +  ($qty + $free)*$pack ; 
-	//-----------------------------Drug_sales------------------------------------------------------//	
-		 sqlInsert("INSERT INTO drug_sales ( " .
-        "drug_id, inventory_id, prescription_id, pid, encounter, user, " .
-        "sale_date, quantity, fee, xfer_inventory_id, distributor_id,rate,free,pack,vat,notes " .
-        ") VALUES ( " .
-        "'" . add_escape_custom($drug_id) . "', " .
-        "'" . add_escape_custom($lot_id) . "', '0', '0', '0', " .
-        "'" . add_escape_custom($_SESSION['authUser']) . "', " .
-        "'" . date('Y/m/d') . "', " .
-        "'" . add_escape_custom(0 - $totalStock)  . "', " .
-        "'" . add_escape_custom(0 - $total)      . "', " .
-        "'" . add_escape_custom($form_source_lot) . "', " .
-        "'" . add_escape_custom($form_distributor_id) . "', " .
-		 "'" . $total . "', " .
-		 "'" . $free . "', " .
-		 "'" . $pack . "', " .
-		 "'" . $vat . "', " .
-        "'" . add_escape_custom($form_notes) . "' )");
-
-		//-----------------------------drug_templates---------------------------------//
-		
-		
-		
-		
-		 sqlInsert("INSERT INTO drug_templates ( " .
-      "drug_id, selector,quantity,taxrates " .
-      ") VALUES ( " .
-        "'" . add_escape_custom($drug_id) . "', " .
-        "'" . mysqli_real_escape_string($con,$selected) . "', " .
-		 "'" . $totalStock . "', " .
-        "'" . add_escape_custom($form_notes) . "' )");
-		  
-
-		  
-	
-	$j++;
-		}
-			
-  }
-   
-	/*-----logic for unique primary key stats--------*/
-	
-	 
-	 $test = sqlStatement("SELECT  * FROM `list_options` WHERE `list_id`='drug_supplier' order by CONVERT(SUBSTRING(option_id, 1), SIGNED INTEGER) desc limit 1");
- while($test1 = sqlFetchArray($test)){
-
- $test2=$test1['option_id'];
- }
-  $test3= $test2+1;
-  
-	/*-------logic Ends-------------------------------*/
-	
-	
-	
-   if(isset($_POST['supplier'])&& $_POST['supplier']!=""){
-			 
-			  $sup=$_POST['supplier'];
-			
-			  
-	$valid = sqlQuery("SELECT title FROM list_options WHERE " .
-"title = '"  . $sup  . "' " );
-
-   if(!$valid)	
-   {	   
-		echo "value";	  
-   
-	$supply_id = sqlInsert("INSERT INTO list_options ( " .
-    "list_id,title,option_id " .
-    ") VALUES ( " .
-    "'" . 'drug_supplier'          . "', " .
-	 "'"  . $sup ."', " .
-	  "'" . $test3          . "' " .
-    ")");
-	
-   }
-   }
-   else{
-	   
-	    
-		$valid = sqlQuery("SELECT title FROM list_options WHERE " .
-"title = '"  . escapedff('form_supplier')  . "' " );
-
-  
-  
-        if(!$valid)
-		{
-	       
-		 
-	   $supply_id = sqlInsert("INSERT INTO list_options ( " .
-    "list_id,title,option_id " .
-    ") VALUES ( " .
-    "'" . 'drug_supplier'          . "', " .
-	 "'"  . escapedff('form_supplier') ."', " .
-	  "'" . $test3          . "' " .
-    ")");
-	   
-		}
-   }
-	
-	
-	
-	
 	
   }
 
@@ -2034,12 +1683,7 @@ if (($_POST['form_save'] || $_POST['form_delete']) && !$alertmsg) {
      // Add prices for this drug ID and selector.
      foreach ($iter['price'] as $key => $value) {
       $value = $value + 0;
-      if ($value) {
-        sqlStatement("INSERT INTO prices ( " .
-          "pr_id, pr_selector, pr_level, pr_price ) VALUES ( " .
-          "?, ?, ?, ? )",
-          array($drug_id, $selector, $key, $value));
-      }
+   
      } // end foreach price
     } // end if selector is present
    } // end for each selector
@@ -2048,11 +1692,7 @@ if (($_POST['form_save'] || $_POST['form_delete']) && !$alertmsg) {
    foreach ($_POST['form_wh_min'] as $whid => $whmin) {
     $whmin = 0 + $whmin;
     $whmax = 0 + $_POST['form_wh_max'][$whid];
-    if ($whmin != 0 || $whmax != 0) {
-      sqlStatement("INSERT INTO product_warehouse ( " .
-        "pw_drug_id, pw_warehouse, pw_min_level, pw_max_level ) VALUES ( " .
-        "?, ?, ?, ? )", array($drug_id, $whid, $whmin, $whmax));
-    }
+   
    }
   } // end if saving a drug
 
@@ -2098,18 +1738,7 @@ else {
 }
 ?>
 
-<!--form method="post" name="row" action="" >
 
-<center>
-<table  width='50%'  cellspacing="10" style="border: 1px solid black;">
-<tr> <th>
-<input type="number" name="trr" placeholder="Enter Number of Rows" max="20" size="50" pattern="\d*"></th> <th> <input type="submit" value="Enter" name="sbtrow"></th>
-</tr>
-</center>
-</table>
-
-
-</form-->
 
 
 
@@ -2124,7 +1753,7 @@ else {
  <td width="20%"  valign='top' nowrap><b><?php echo xlt('Select Supplier'); ?>:</b></td>
 	
 <td>
- <select style="width:100%;height:2em;"  name="supplier" required>
+ <select style="width:100%;height:2em;"  name="supplier" class="selectbox" required>
     
        <option value="">Select</option>
     <?php
@@ -2141,32 +1770,30 @@ else {
     </select>
  
  </td>
+ <td><a href='addnewsupplier.php'>Add New Supplier</a></td>
 
-<td><a href='addnewsupplier.php'>Add New Supplier</a></td>
+
  
  
- <!-- <tr>
-  <td valign='top' width="20%" nowrap><b><?php echo xlt('Add Supplier'); ?>:</b></td>
-  <td>
-   <input type='text' size='10' name='form_supplier' value="<?php echo $supply;?>" maxlength='80' style='width:100%' placeholder="Enter Supplier if it is not in Dropdown List" />
-  </td>
- </tr> -->
+
  
  <tr>
   <td valign='top' width="20%" nowrap><b><?php echo xlt('Invoice Number'); ?>:</b></td>
   <td>
-   <input type='text' size='10' name='invoice' value="" maxlength='80' style='width:100%' placeholder="Please Enter Invoice Number" required/>
-  </td>
+   <input type='text' size='10'  name='invoice' value="" maxlength='80' style='width:100%' placeholder="Please Enter Invoice Number" required/>
+  </td><td></td>
  </tr>
  
 </table>
  
  <br><br><br><br><br><br>
  
- <table border='0' width='100%'   id="dataTable" style=" border: 1px solid black;"> 
+ <table border='1' width='50%'   id="dataTable" style=" border: 1px solid black;"> 
  <tr>
   <th nowrap>S.No.</th>
-  <th nowrap>Name</th>
+   <th nowrap></th>
+   <th nowrap></th>
+  <th nowrap width='200px'>Medicine Name</th>
    <th nowrap>Manufacturer</th>
    
    <th nowrap>Medicine Type</th>
@@ -2182,7 +1809,7 @@ else {
    <th  nowrap>M.R.P.</th>
     
    <th  nowrap>Trade</br>Price</th>
-    <th  nowrap>Vat %</th>
+    <th  nowrap>GST %</th>
 	 <th  nowrap>Discount</br>(%)</th>
 	 <th  nowrap>Net Value</th>
  </tr>
@@ -2190,6 +1817,17 @@ else {
  
  
  <?php
+ 
+ // $last_score=0;
+  $list1 = sqlStatement("SELECT  Medicine_Name FROM `medicine_master`");
+  while($list2=sqlFetchArray($list1)) 
+  {
+    $rows[] = $list2;
+	
+  }
+ 
+  $rowCount = count($rows);
+
  $i=1;
   while($i<=10) 
   {
@@ -2197,74 +1835,108 @@ else {
      
 ?> 
  
- 
- 
  <tr>
  
    <td>
    <?php echo $i ?>
   </td> 
   
-  
- 
-  
-  
-  
-  
- <!-- <td>
-  <!-- <input type='text' name='mfr[]' maxlength='80' value='' style='width:100%' placeholder="Manufacturer Name" />-->
-   <!--input type="text" name="form_name[]" class="typeahead tt-query" autocomplete="off" spellcheck="false" placeholder="Medicine">
-  </td-->
- 
+   <td><a href="#" id="<?php echo 'toggle_doc'.$i ?>" title="Doctor Not listed? Add Doctor"><i class="fa fa-plus-circle"></i></a><td>
+  <td class='text' id="<?php echo 'input_dr'.$i ?>" style="display:none">
+	 <input type="text" name="form_name[]" disabled="disabled" style="width: 100%" >
+	 </td>
+	 
+	 
+	 
+	 <td id="<?php echo 'select_dr'.$i ?>">
+						<div>
+				<div>
+					
+				
+			     
+               
 
-<td>
- <select style="width:100%;height:2em;"  name="form_name[]" id="<?php echo 'name'.$i?>">
+			
+					<select id="<?php echo 'name'.$i ?>" placeholder="Select Medicine" style="border:1px solid white;" name='form_name[]'></select>
+				</div>
+				
+				<script>
+				
+				
+
+				$('#<?php echo 'name'.$i ?>').selectize({
+					maxItems: 1,
+					valueField: 'id',
+					labelField: 'title',
+					searchField: 'title',
+					options: 
+                      [
+					  
+					   <?php
+        
+                            for($k=0;$k<$rowCount;$k++){
+                            $id=$rows[$k]['Medicine_Name'];
+						    $id1=str_replace("'", "", $id);
+						    $title=$rows[$k]['Medicine_Name'];
+						    $title1=str_replace("'", "", $title);
+				  
+                        ?>  
+						{id: '<?php echo $id1; ?>', title: '<?php echo $title1; ?>'},
+					<?php } ?>
+					],
+					create: false
+				});
+				</script>
+			</div>
+					</td>
+                        
+	
+	<!--<td id="<!--?php echo 'select_dr'.$i ?>">
+ <select style="width:100%;height:2em;"  name="form_name[]" class="selectbox" id="<?php echo 'name'.$i?>">
     
        <option value="">Select</option>
 	   <!--<option value="add">Add New</option>-->
-    <?php
-         $list1 = sqlStatement("SELECT  Medicine_Name FROM `medicine_master`");
- while($list2 = sqlFetchArray($list1)){
+    <!--?php
+        
+      for($k=0;$k<$rowCount;$k++){
+              
+       ?> 
+            <option value="<!--?php echo $rows[$k]['Medicine_Name'];?>"> <!--?php  echo $rows[$k]['Medicine_Name'];?></option>
+       <!--?php   }?>
+ 
+    </select>
+ 
+ </td>-->
+ 
+  <td class='text' id="<?php echo 'input_dr'.$i ?>" style="display:none">
+	 <input type="text" name="mfr[]" disabled="disabled" style="width: 100%">
+	 </td>
+ <td id="<?php echo 'select_dr'.$i ?>">
+ <select style="width:100%;height:2em;border:1px solid white;"  name="mfr[]"  id="<?php echo 'manu'.$i?>" >
+    
+       
+    </select>
+ 
+ </td>
+ 
+  
+  <td class='text' id="<?php echo 'input_dr'.$i ?>" style="display:none">
+	 <input type="text" name="medType[]" disabled="disabled" style="width: 100%" >
+	 </td>
+ <td id="<?php echo 'select_dr'.$i ?>">
+ <select style="width:100%;height:2em;border:1px solid white;"  name="medType[]" id="<?php echo 'mtype'.$i?>" >
+    
+       
+    </select>
+ 
+ </td>
+ 
+ 
 
-         
- 
-   
-          ?> 
-            <option value="<?php echo $list2['Medicine_Name'];?>"> <?php echo $list2['Medicine_Name'];?></option>
-       <?php   }?>
- 
-    </select>
- 
- </td>
- 
- <td>
- <select style="width:100%;height:2em;"  name="mfr[]" id="<?php echo 'manu'.$i?>">
-    
-       
-	   
- 
-    </select>
- 
- </td>
- 
- <td>
- <select style="width:100%;height:2em;"  name="medType[]" id="<?php echo 'mtype'.$i?>">
-    
-       
-	   
- 
-    </select>
- 
- </td>
- 
- 
-<!-- <td>
-   <input type="text" name="form_name1[]" autocomplete="off" id="<?php echo 'nm'.$i?>" placeholder="Name">
-  </td>-->
  
   <td>
  
- <select name="group[]">
+ <select  style="width:100px;height:2em;border:1px solid white;"   name="group[]">
   <option value="Medical">Medical</option>
   <option value="Non-Medical">Non-Medical</option>
   <option value="Cosmetics">Cosmetics</option>
@@ -2277,33 +1949,33 @@ else {
 
 
   <td>
-   <input type='text' size="10" name='instock[]' maxlength='80' value='0' readonly class="rgt" style='width:100%' placeholder="interger" pattern="\d*"/>
+   <input type='text' name='instock[]' maxlength='80' value='0' class="rgt"  style="width:80px;height:2em;border:1px solid white;"   pattern="\d*"/>
   </td>
   
   <td>
-   <input type='text' name='batch[]' maxlength='80' value='' style='width:100%' placeholder="Batch Number" id="<?php echo 'b'.$i?>" />
+   <input type='text' name='batch[]'  style="width:80px;height:2em;border:1px solid white;"  value=''  id="<?php echo 'b'.$i?>"/>
   </td>
   
   <td>
-   <input type='text' size="10" name='qty[]' maxlength='80' value='' class="rgt" style='width:100%' id="<?php echo 'q'.$i?>"  pattern="\d*" placeholder="Integer" />
+   <input type='text' size="10" name='qty[]' maxlength='80' value='' class="rgt " style="width:80px;height:2em;border:1px solid white;"  id="<?php echo 'q'.$i?>"  pattern="\d*" />
   </td>
   
   
   <td>
-   <input type='text' size="10" name='free[]' maxlength='80' value='' class="rgt" style='width:100%' pattern="\d*" placeholder="interger" />
+   <input type='text'  name='free[]' maxlength='80' value='' class="rgt" style="width:80px;height:2em;border:1px solid white;"  pattern="\d*" />
   </td>
   
   <td>
-   <input type='text' size="10" name='pack[]' maxlength='80'  class="rgt" style='width:100%'   placeholder="interger" id="<?php echo 'p'.$i?>" />
+   <input type='text' size="10" name='pack[]' maxlength='80'  class="rgt" style="width:80px;height:2em;border:1px solid white;"  id="<?php echo 'p'.$i?>"/>
   </td>
   
    <td>
- <input type='text' size="10" name='type[]' maxlength='80'  class="rgt" style='width:100%'  placeholder="Type" />
+ <input type='text' size="10" name='type[]' maxlength='80'  class="rgt" style="width:80px;height:2em;border:1px solid white;" />
  </td>
   
   
    <td colspan>
- <select name="month[]" >
+ <select name="month[]" style="width:80px;height:2em;border:1px solid white;"  >
   <option value="01">Jan</option>
   <option value="02">Feb</option>
   <option value="03">Mar</option>
@@ -2319,7 +1991,7 @@ else {
  </td>
  
   <td>
- <select name="year[]" >
+ <select name="year[]" style="width:80px;height:2em;border:1px solid white;"  >
   <option value="2017">2017</option>
   <option value="2018">2018</option>
   <option value="2019">2019</option>
@@ -2333,26 +2005,30 @@ else {
   
  </td>
   
- <!-- <td>
-   <input type="text" size="10" name="date[]" value="" class="datepicker-example11" placeholder="MM-YYYY" id="<?php echo 'dt'.$i?>" />
-  </td-->
+ 
   
   <td>
-  <input type='text' size="10" name='mrp[]' maxlength='80' value='' class="rgt" style='width:100%'  id="<?php echo 'mrp'.$i?>" placeholder="00.00"/>
+  <input type='text' size="10" name='mrp[]' maxlength='80' value='' class="rgt" style="width:80px;height:2em;border:1px solid white;"  id="<?php echo 'mrp'.$i?>" placeholder="00.00"/>
   </td>
   
   
   
   <td>
-  <input type='text' size="10" name='trade[]' maxlength='80' value='' class="rgt" style='width:100%' id="<?php echo 'tp'.$i?>"  placeholder="00.00" />
+  <input type='text' name='trade[]' maxlength='80' value='' class="rgt" style="width:80px;height:2em;border:1px solid white;"  id="<?php echo 'tp'.$i?>"  placeholder="00.00" />
    
   </td>
   
  
-  
+   <!--<td class='text' id="<?php echo 'input_dr'.$i ?>" style="display:none">
+	 <input type="text" name="vat[]" disabled="disabled" style="width: 100%">
+	 </td>-->
   <td>
  
- <select name="vat[]" id="<?php echo 'v'.$i?>">
+ <select name="vat[]" style="width:80px;height:2em;border:1px solid white;"  id="<?php echo 'v'.$i?>">
+  <option value="12">12%</option>
+  <option value="18">18%</option>
+  <option value="28">28%</option>
+  
   
   
 </select> 
@@ -2360,11 +2036,11 @@ else {
   </td>
   
    <td>
-  <input type='text' size="10" name='discount[]'  value='' class="discount" id="<?php echo 'd'.$i; ?>" style='width:100%' placeholder="discount"   />
+  <input type='text' name='discount[]'  value='' class="discount" id="<?php echo 'd'.$i; ?>" style="width:80px;height:2em;border:1px solid white;"  />
   </td>
   
   <td>
-  <input type='number' step="any" size='10' name='total[]' maxlength='80' value='' class="sum" id="<?php echo 't'.$i?>" style='width:100%'  placeholder="00.00" />
+  <input type='number' step="any" size='10' name='total[]' maxlength='80' value='' class="sum" id="<?php echo 't'.$i?>" style="width:80px;height:2em;border:1px solid white;" />
   </td>
   
   </tr>
@@ -2380,7 +2056,8 @@ else {
 
 ?>
 
- <tr><th colspan="17" style="text-align:right">Total Amount: </th><th><input type="number" step="any" class="total" id="rgt" value="" required /></th><tr> 
+ <tr><th colspan="19" style="text-align:right">Total Amount: </th>
+ <th><input type="number" step="any" class="total" id="rgt" style="width:80px;height:2em;border:1px solid white;" value="" required /></th><tr> 
  
   
   
@@ -2405,78 +2082,6 @@ else {
 
 </center>
 </form>
-
- <script type="text/javascript" src="datepicker/public/javascript/jquery-1.12.0.js"></script>
-        <script type="text/javascript" src="public/javascript/zebra_datepicker.js"></script>
-        <script type="text/javascript" src="datepicker/public/javascript/core.js"></script>
-
-
-
- <script type="text/javascript" src="datepicker/libraries/syntaxhighlighter/public/javascript/XRegExp.js"></script>
-        <script type="text/javascript" src="datepicker/libraries/syntaxhighlighter/public/javascript/shCore.js"></script>
-        <script type="text/javascript" src="datepicker/libraries/syntaxhighlighter/public/javascript/shLegacy.js"></script>
-        <script type="text/javascript" src="datepicker/libraries/syntaxhighlighter/public/javascript/shBrushJScript.js"></script>
-        <script type="text/javascript" src="datepicker/libraries/syntaxhighlighter/public/javascript/shBrushXML.js"></script>
-
-        <script type="text/javascript">
-            SyntaxHighlighter.defaults['toolbar'] = false;
-            SyntaxHighlighter.all();
-        </script>
-		
-		
-		
-		
-
-  
-    <script src="typeahead.min.js"></script>
-    <script>
-    $(document).ready(function(){
-    $('input.typeahead').typeahead({
-        name: 'typeahead',
-        remote:'search.php?key=%QUERY',
-        limit : 3
-    });
-});
-    </script>
-    <style type="text/css">
-
-
-.typeahead {
-	background-color: #FFFFFF;
-}
-.typeahead:focus {
-	border: 2px solid #0097CF;
-}
-.tt-query {
-	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
-}
-.tt-hint {
-	color: #999999;
-}
-.tt-dropdown-menu {
-	background-color: #FFFFFF;
-	border: 1px solid rgba(0, 0, 0, 0.2);
-	border-radius: 8px;
-	box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-	margin-top: 12px;
-	padding: 8px 0;
-	width: 422px;
-}
-.tt-suggestion {
-	font-size: 24px;
-	line-height: 24px;
-	padding: 3px 20px;
-}
-.tt-suggestion.tt-is-under-cursor {
-	background-color: #0097CF;
-	color: #FFFFFF;
-}
-.tt-suggestion p {
-	margin: 0;
-}
-</style>		
-		
-		
 
 
 
