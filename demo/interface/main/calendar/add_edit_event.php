@@ -105,13 +105,13 @@ function SendSMS()
 						 curl_setopt($ch, CURLOPT_POST, true);
 						 curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
 						 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-						 echo var_dump($ch);
+						 //echo var_dump($ch);
 						 try {
 						  $response = curl_exec($ch);
-						  echo var_dump($ch);
+						  //echo var_dump($ch);
 						  curl_close($ch);
-						  echo var_dump($response);
-						  break;
+						  //echo var_dump($response);
+						  //break;
 						  echo 'Message has been sent.';
 						 }catch(Exception $e){
 						  echo 'Message: ' .$e->getMessage();
@@ -191,7 +191,7 @@ function DOBandEncounter()
 	 {
 		 $encounter = todaysEncounterCheck($_POST['form_pid'], $event_date, $_POST['form_comments'], $_POST['facility'], $_POST['billing_facility'], $_POST['form_provider'], $_POST['form_category'], false);
 		 if($encounter){
-				 $info_msg .= xl("New encounter created with id"); 
+				 $info_msg .= xl("New Visit has been created with id"); 
 				 $info_msg .= " $encounter";
 				 $pc_catid=$_POST['form_category'];
 		 }
