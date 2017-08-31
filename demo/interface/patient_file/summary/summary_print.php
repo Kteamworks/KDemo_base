@@ -118,12 +118,13 @@ sqlStatement("UPDATE form_encounter SET out_to='Examined By',out_time=NOW() wher
 	
 </section>
   <?php }?>
-<div class="container-fluid no-margin">
-	<div class="row">
-		<div class="col-md-12">
+<div class="container-fluid no-margin" id="print-page">
+
 				<div class="body">
 <div class="table-title">
 <div class="row auo-mar">
+<img WIDTH='500pt' src='../../pic/city_hospital_logo.png' style="    margin-left: 13%;
+    margin-bottom: 6%;"/>
 <p style="display:inline"><b>Serial No:</b>&nbsp;</th><td><?php echo $pserial ?></p>
 <p class="pull-right"><b>Date:</b>&nbsp;</th><td><?php echo date("d-M-y",strtotime($result_visit2['date'])) ?></p>
 </div>
@@ -1220,15 +1221,14 @@ foreach($lab as $lab1) {
 </table>
 
 </div>
-<?php }?>
+<?php } ?>
 <?php $qry2 = "SELECT *
 FROM prescriptions
 WHERE patient_id = ?
 AND encounter = ?";
           $prescription = sqlStatement($qry2, array($pid,$encounter));
            $pres=sqlFetchArray($prescription);
-          if($pres!=null){		   
-  ?>
+          if($pres!=null){ ?>
 <div class="table-title">
 <h2>Prescription</h2>
 
@@ -1281,11 +1281,55 @@ if($plan1[dictation]!=null){
 Patient is advised to visit after <?php echo $plan1['days']?> Days
 </div>
 <?php } ?>
+<?php
+ echo ("<div class='table-title signdiv'>\n");
+                echo (xl('<B> Signature') . ":________________________________<br><br>");
+				$enc=$_SESSION["encounter"];
+			    $prow = sqlQuery("SELECT reason,e.provider_id,u.username un,u.qualification ql,u.upin up FROM form_encounter e,users u " .
+			     "WHERE encounter = '$enc' and e.provider_id=u.id ");
+			   $consbrief=$prow['reason'];
+			$doctor=$prow['un'];
+			$upin=$prow['up'];
+			$qual=$prow['ql'];
+			echo $doctor;
+			echo ("</br>");
+			echo $qual;
+			echo ("</br>");
+			echo (xl('Regn No. :&nbsp;').$upin);
+			echo ("</br>");
+            echo (xl('Date') . " &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;" . date('d/M/y'));
+	        echo ("</div>\n");
+              
+				
+				
+			echo ("<div class='finalsigndiv table-title'>\n");
+			$su=$_SESSION['authUser'];
+			$footerow = sqlQuery("select fname,lname from users where username='$su'");
+			$printingperson=$footerow['fname']." ".$footerow['lname'];	
+            echo (xl('<B> Printed By: ') .$printingperson. "<br><br>");
+			
+            echo (xl(''). date('F j, Y, g:i a'));
+	        echo ("</div>\n");
+              	?>
+
   </div>
-  </div>
+  				<div style="margin-left:15px">
+					
+
+										<a href="#" class="css_button" onclick="var prtContent = document.getElementById('print-page');
+var WinPrint = window.open('', '', 'left=0,top=0,width=800,height=900,toolbar=0,scrollbars=0,status=0');
+WinPrint.document.write(prtContent.innerHTML);
+WinPrint.document.close();
+WinPrint.focus();
+WinPrint.print();
+WinPrint.close();">
+						<span>
+							Print						</span>
+					</a>
+									</div>
 </div>
+
 	</div>
-</div>
   </div>
   </body>
 </html>

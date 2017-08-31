@@ -94,7 +94,7 @@ color: #fff;
     border-left: 3px solid transparent;
 }
 .nav_new .sidebar a {
-    color: #b8c7ce;
+    color: #b8c7ce !important;
 }
 .nav_new .sidebar-menu > li > .treeview-menu {
     margin: 0 1px;

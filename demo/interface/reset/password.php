@@ -106,7 +106,7 @@ include_once("$srcdir/sql.inc");
     <a href="../login/login.php" class="text-center">I know my password</a>    
     </div>
     <div class="col-xs-8">
-        <span class="input-group-btn"><button type="button" class="btn btn-primary btn-block btn-flat" onclick="otp()">Send OTP</button></span>
+        <!--<span class="input-group-btn"><button type="button" class="btn btn-primary btn-block btn-flat" onclick="otp()">Send OTP</button></span>-->
         <span class="input-group-btn"><button type="button" style="margin-left: 10px;" class="btn btn-primary btn-block btn-flat" onclick="email()">Send Email</button></span>
         <br/>
     </div>

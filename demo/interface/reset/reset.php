@@ -9,19 +9,28 @@ include_once("$srcdir/sql.inc");
 require_once("$srcdir/authentication/common_operations.php");  
 	
 if(!empty($_POST['token'])) {
+	session_destroy();
 	    $email = $_POST['user_email'];
         $password = $_POST['user_password'];
         $token = $_POST['token'];
         $response = 'fails';
         $password_tokens = sqlQuery("SELECT * from password_resets where email='$email'");
         if ($password_tokens) {
+		
             if ($password_tokens['token'] == $token) {
-                $user = sqlQuery("SELECT * from users where email='$email'");
+				
+                $user = sqlQuery("SELECT * from users where username='$email'");
                 if ($user) {
-				$new_salt=oemr_password_salt();
-                $hash=oemr_password_hash($password,$new_salt);
-					// $hash = password_hash($password, PASSWORD_DEFAULT);
-					sqlQuery("UPADTE users SET password='$hash' where username='$email'");
+					        require_once("$srcdir/authentication/password_change.php");
+        $password_err_msg="";
+		$adminID = '1';
+		$adminpass = 'pass12';
+        $success=update_password($adminID,$user['id'],$adminpass,$password,$password_err_msg);
+
+        if(!$success)
+        {
+            error_log($password_err_msg);    
+        }
                     $response = 'success';
                 } else {
                     $response = 'fails';
@@ -30,7 +39,7 @@ if(!empty($_POST['token'])) {
         }
 
         if ($response == 'success') {
-            $_SESSION["success"] = "You have successfully changed your password.You can login now.";
+            $_SESSION["success"] = "You have successfully changed your password.Click <a href='../login/login.php'>here</a> to login.";
         } else {
             $_SESSION["failed"] = "Due to some mismatch in credentials your password could not be reset";
         }
