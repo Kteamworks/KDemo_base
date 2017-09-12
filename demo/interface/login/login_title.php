@@ -10,7 +10,7 @@ include_once("../globals.php");
 <body class="body_title">
 
 <span class="title_bar">
-<div class="title_name"><?php echo "$openemr_name" ?><a href="#" onclick="window.top.location.href = '<?php echo $GLOBALS['webroot'] ?>/patients'; " style="float:right;color:#ddd">Login as Patient</a></div>
+<div class="title_name"><?php echo "$openemr_name" ?>  Premier™ | Kavaii<a href="#" onclick="window.top.location.href = '<?php echo $GLOBALS['webroot'] ?>/patients'; " style="float:right;color:#ddd">Login as Patient</a></div>
 </span><br>
 
 </body>

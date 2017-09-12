@@ -135,6 +135,7 @@ header('location:../../patient_file/front_payment_pharmacy.php');
 		<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
 		<link rel="stylesheet" href="css/normalize.css">
 		<link rel="stylesheet" href="css/stylesheet.css">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 		<script src="js/jquery.js"></script>
 		<script src="../dist/js/standalone/selectize.js"></script>
 		<script src="js/index.js"></script>
@@ -330,10 +331,19 @@ $(document).on("focus", ".total", function() {
 });
 
 $(document).on("focus", ".net", function() {
-    var sum = $(".total").val();
-	var dis= $(".discount").val();
-	var net =  (+sum)-(+dis)
-    $(".net").val(net);
+//    var sum = $(".total").val();
+//	var dis= $(".discount").val();
+//	var net =  (+sum)-(+dis)
+//    $(".net").val(net);
+				var oldPrice = document.getElementsByName("old_price")[0].value;
+			var discountPrct = document.getElementsByName("discount")[0].value;	
+			if (!isNaN(oldPrice) && !isNaN(discountPrct)) {
+				//var discount = (oldPrice / 100) * discountPrct;
+				var count = (discountPrct / 100) * oldPrice;
+				var discount = oldPrice - count;
+				if (discount > 0)
+					document.getElementsByName("new_price")[0].value = discount;
+			}
 });
 
 
@@ -341,7 +351,7 @@ $(document).on("focus", ".net", function() {
 </script>
 
 
-
+<body>
 <form method="post" action="">
 
 
@@ -350,9 +360,9 @@ $(document).on("focus", ".net", function() {
 	  
      
 
-<div class="container col-sm-10">
+<div class="container-fluid" style="    margin-top: 20px;">
     <div class="row">
-		<div class="col-md-10">
+		<div class="col-md-9">
 		<table class="table table-bordered table-fixed" id="tab_logic">
 		<tr><th>ID</th><th>Patient Name</th><th>Visit ID</th><th>Pid</th><tr>
 		<tr><td><input type="text" style="text-align:left;" id='gchid' name='gch'  value="<?php echo $gchid ?>" class="form-control" required/></td>
@@ -488,32 +498,44 @@ $(document).on("focus", ".net", function() {
 	
 	
 
-<div class="col-sm-2">
+<div class="col-md-2">
 
 
  <table class="affix">
+ <tbody>
  <tr>
  <th class="danger">Subtotal:</th>
  <td>
- <input type="text" style="text-align:right;" class="form-control total"  name="" value=""  />
+ <input type="number" style="text-align:right;" class="form-control total" onkeydown="updateNewPrice()"  name="old_price" value=""  />
  </td>
  </tr>
  <tr>
  <th class="danger">Discount:</th>
  <td>
- <input type="text" style="text-align:right;" class="form-control discount"  name="discount" value=""  />
- </td>
+ <input type="number" style="text-align:right;" class="form-control discount" onkeydown="updateNewPrice()" name="discount" value="" placeholder="%" /></td>
  </tr>
  <tr>
  <th class="danger">Total:</th>
  <td>
- <input type="text" style="text-align:right;" class="form-control net"  name="" value=""  />
+ <input type="number" style="text-align:right;" class="form-control net"   name="new_price" value=""  />
  </td>
  </tr>
- </table><br><br>
-  
-</div><br><br><br><br><br><br><br><br><br>
- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit"  class="btn btn-primary affix" name="submit_val" value="Take Payment" />
+ </tbody>
+ </table>
+  <input type="submit"  class="btn btn-primary affix" name="submit_val" value="Take Payment" style="margin: 10% 6%;" />
+ 
+</div>
  </div></div>
  </form>
+ <script>
+$('input,select').keydown( function(e) {
+        var key = e.charCode ? e.charCode : e.keyCode ? e.keyCode : 0;
+        if(key == 13) {
+            e.preventDefault();
+            var inputs = $(this).closest('form').find(':input:visible');
+            inputs.eq( inputs.index(this)+ 1 ).focus();
+        }
+    });
+ </script>
+ </body>
  </html>

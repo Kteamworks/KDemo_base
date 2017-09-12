@@ -29,6 +29,7 @@ if(!empty($_POST['token'])) {
 
         if(!$success)
         {
+			$response = 'fails';
             error_log($password_err_msg);    
         }
                     $response = 'success';

@@ -133,6 +133,7 @@ function process_form($ar) {
     $ar['claims'] = array();
   }
   $claim_count = 0;
+  var_dump($_POST);
   foreach ($ar['claims'] as $claimid => $claim_array) {
 
     $ta = split("-",$claimid);

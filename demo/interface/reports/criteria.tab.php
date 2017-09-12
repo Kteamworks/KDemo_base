@@ -358,13 +358,31 @@ for($ThisPageSearchCriteriaIndex=0;$ThisPageSearchCriteriaIndex<sizeof($ThisPage
                         ?>
                         </select>
                         </td>
+				
                     <td valign="top"><a href="#" onClick="removeOptionSelected()"><img src="<?php echo $web_root ?>/interface/pic/Delete.gif" border="0" /></a></td>
                   </tr>
                 </table>
                 </fieldset>
             </td>
           </tr>
-        </table><?php //print_r($_REQUEST['final_this_page_criteria']); ?>
+        </table>
+		<?php if($encounter != 0) { ?>
+		<script>
+		$(document).one('ready',function(){
+			$("#choose_this_page_criteria").val('form_encounter.encounter');
+			$("#table_form_encounter.encounter").show();
+		$("#final_this_page_criteria").find('option')
+		.remove()
+		.end()
+		.append('<option value="form_encounter.encounter = \'<?php echo $encounter;?>\'">Encounter = <?php echo $encounter; ?></option>');
+		
+		});
+		//SubmitTheScreen();
+
+		
+		</script>
+		
+		<?php } //print_r($_REQUEST['final_this_page_criteria']); ?>
 <!-- ============================================================================================================================================= -->
                                                         <!-- Criteria section Ends -->
 <!-- ============================================================================================================================================= -->
