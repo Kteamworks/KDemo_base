@@ -53,36 +53,21 @@ $ires = sqlStatement("SELECT id, type, title, begdate FROM lists WHERE " .
 <head>
 <?php html_header_show();?>
 <title><?php echo xlt('Patient Visit'); ?></title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
 <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
 <link rel="stylesheet" href="<?php echo $GLOBALS['webroot'] ?>/library/js/jAlert-master/src/jAlert-v3.css" />
 <link rel="stylesheet" href="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery.treeview-1.4.1/jquery.treeview.css" />
 <link href="<?php echo $GLOBALS['webroot'] ?>/library/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <link href="<?php echo $GLOBALS['webroot'] ?>/library/css/bootstrap-datetimepicker4.7.14.min.css" rel="stylesheet" />
-<script src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-1.7.2.min.js"></script>
-<script src="<?php echo $GLOBALS['webroot'] ?>/library/js/jAlert-master/src/jAlert-v3.js"></script>
-<script src="<?php echo $GLOBALS['webroot'] ?>/library/js/jAlert-master/src/jAlert-functions.js"> //optional!!</script>
 <link rel="stylesheet" type="text/css" href="<?php echo $GLOBALS['webroot'] ?>/library/js/fancybox-1.3.4/jquery.fancybox-1.3.4.css" media="screen" />
-<!--<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-1.4.3.min.js"></script>-->
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/common.js"></script>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/fancybox-1.3.4/jquery.fancybox-1.3.4.pack.js"></script>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dialog.js"></script>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/overlib_mini.js"></script>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/textformat.js"></script>
-
-<!-- pop up calendar -->
-<style type="text/css">@import url(<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar.css);</style>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar.js"></script>
-<?php include_once("{$GLOBALS['srcdir']}/dynarch_calendar_en.inc.php"); ?>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar_setup.js"></script>
-<?php include_once("{$GLOBALS['srcdir']}/ajax/facility_ajax_jav.inc.php"); ?>
-<meta name="viewport" content="width=device-width, initial-scale=1">
 
 	<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700' rel='stylesheet' type='text/css'>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
 	<link rel="stylesheet" href="<?php echo $GLOBALS['webroot']; ?>/library/breadcrumbs/css/reset.css"> <!-- CSS reset -->
 	<link rel="stylesheet" href="<?php echo $GLOBALS['webroot']; ?>/library/breadcrumbs/css/style.css"> <!-- Resource style -->
-	<script src="<?php echo $GLOBALS['webroot']; ?>/library/breadcrumbs/js/modernizr.js"></script> <!-- Modernizr -->
+	<style type="text/css">@import url(<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar.css);</style>
+	
 <script language="JavaScript">
 
 
@@ -488,9 +473,8 @@ if ($fres) {
 	                 <div class='input-group date'  id='datetimepicker' >
                     
       <input type='text' size='10' class='form-control' name='form_date' id='form_date' <?php echo $disabled ?>
-       value='<?php echo $viewmode ? substr($result['date'], 0, 10) : date('Y-m-d'); ?>'
-       title='<?php echo xla('yyyy-mm-dd Date of service'); ?>'
-       onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' />
+       value='<?php echo $viewmode ? substr($result['date'], 0, 10) : date('Y-m-d h:i:s'); ?>'
+       title='<?php echo xla('yyyy-mm-dd Date of service'); ?>' />
 	   <span class="input-group-addon">
                         <span class="glyphicon glyphicon-calendar"></span>
                     </span>
@@ -511,8 +495,8 @@ if ($fres) {
                     
       <input type='text' size='10' class='form-control' name='form_onset_date' id='form_onset_date'
        value='<?php echo $viewmode && $result['onset_date']!='0000-00-00 00:00:00' ? substr($result['onset_date'], 0, 10) : ''; ?>' 
-       title='<?php echo xla('yyyy-mm-dd Date of onset or hospitalization'); ?>'
-       onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' />
+       title='<?php echo xla('yyyy-mm-dd Date of onset or hospitalization'); ?>' />
+      <!-- onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' -->
 	      <span class="input-group-addon">
                         <span class="glyphicon glyphicon-calendar"></span>
                     </span>
@@ -602,21 +586,21 @@ while ($irow = sqlFetchArray($ires)) {
     <div style="position: fixed;
 top: 10px;
 right: 20px;">
-      <a href="javascript:saveClicked();" class="css_button link_submit"><span><?php echo xlt('Save'); ?></span></a>
+      <a href="javascript:saveClicked();" class="btn btn-primary"><span><?php echo xlt('Save'); ?></span></a>
     </div>
 	  <?php } ?>
 	   <?php if ($viewmode || !isset($_GET["autoloaded"]) || $_GET["autoloaded"] != "1") { ?>
     <div >
   <?php if ($GLOBALS['concurrent_layout']) { ?>
       <a href="<?php echo "$rootdir/patient_file/encounter/encounter_top.php"; ?>"
-        class="css_button link_submit" onClick="top.restoreSession()"><span><?php echo xlt('Cancel'); ?></span></a>
+        class="btn btn-warning" onClick="top.restoreSession()"><span><?php echo xlt('Cancel'); ?></span></a>
   <?php } else { ?>
       <a href="<?php echo "$rootdir/patient_file/encounter/patient_encounter.php"; ?>"
-        class="css_button link_submit" target='Main' onClick="top.restoreSession()">
+        class="btn btn-warning" target='Main' onClick="top.restoreSession()">
       <span><?php echo xlt('Cancel'); ?>]</span></a>
   <?php } // end not concurrent layout ?>
   <?php } else if ($GLOBALS['concurrent_layout']) { // not $viewmode ?>
-      <a href="" class="css_button link_submit" onClick="return cancelClicked()">
+      <a href="" class="btn btn-warning" onClick="return cancelClicked()">
       <span><?php echo xlt('Cancel'); ?></span></a>
   <?php } // end not $viewmode ?>
     </div>
@@ -642,7 +626,24 @@ right: 20px;">
 		              <script src="<?php echo $GLOBALS['webroot'] ?>/library/js/moment/moment.js" ></script>
                     <script src="<?php echo $GLOBALS['webroot'] ?>/library/js/bootstrap-datetimepicker4.7.14.min.js" type="text/javascript"></script>
 					                    <script src="<?php echo $GLOBALS['webroot'] ?>/library/js/bootstrap.min.js" type="text/javascript"></script>
-</body>
+<script src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-1.7.2.min.js"></script>
+<script src="<?php echo $GLOBALS['webroot'] ?>/library/js/jAlert-master/src/jAlert-v3.js"></script>
+<script src="<?php echo $GLOBALS['webroot'] ?>/library/js/jAlert-master/src/jAlert-functions.js"> //optional!!</script>
+<!--<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-1.4.3.min.js"></script>-->
+<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/common.js"></script>
+<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/fancybox-1.3.4/jquery.fancybox-1.3.4.pack.js"></script>
+<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dialog.js"></script>
+<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/overlib_mini.js"></script>
+<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/textformat.js"></script>
+
+<!-- pop up calendar -->
+
+<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar.js"></script>
+<?php include_once("{$GLOBALS['srcdir']}/dynarch_calendar_en.inc.php"); ?>
+<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar_setup.js"></script>
+<?php include_once("{$GLOBALS['srcdir']}/ajax/facility_ajax_jav.inc.php"); ?>
+<script src="<?php echo $GLOBALS['webroot']; ?>/library/breadcrumbs/js/modernizr.js"></script> <!-- Modernizr -->
+										
 
 <script language="javascript">
 alert = function() {};
@@ -695,5 +696,5 @@ $('#billing_facility').addClass('form-control');
 $('#form_referral_source').addClass('form-control');
 
 </script>
-
+</body>
 </html>

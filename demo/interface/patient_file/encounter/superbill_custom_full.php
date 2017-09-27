@@ -426,7 +426,7 @@ foreach ($code_types as $key => $value) {
    <?php if ($mode == "modify") { ?>
      <input type='text' size='6' name='code'  readonly='readonly' value='<?php echo attr($code) ?>' />
    <?php } else { ?>
-  <input type='text'  id='code' style='display:none;' size='6' name='code'  value='<?php echo attr($code) ?>'
+  <input type='text'  id='code' size='6' name='code'  value='<?php echo attr($code) ?>'
       onkeyup='maskkeyup(this,getCTMask())'
       onblur='maskblur(this,getCTMask())'
      />

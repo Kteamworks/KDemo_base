@@ -289,7 +289,7 @@ $ip=$_SERVER['REMOTE_ADDR'];
 
                     <div class="row">
                         <div class="site-info col-md-6">
-                            <p class="text-muted">Copyright &copy; <?php echo date('Y') ?>  <a href="www.kavaii.com" target="_blank"><b>Kavaii</b></a>. All rights reserved. Powered by <a href="http://www.medsmart.co,in/"  target="_blank"><b>MedSmart</b></a></p>
+                            <p class="text-muted">Copyright &copy; <?php echo date('Y') ?>  <a href="http://kavaii.com/index.html" target="_blank"><b>Kavaii</b></a>. All rights reserved. Powered by <a href="http://www.medsmart.co.in/"  target="_blank"><b>MedSmart</b></a></p>
                         </div>
                         <div class="site-social text-right col-md-6">
 

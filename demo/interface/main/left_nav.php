@@ -597,6 +597,8 @@ if ($GLOBALS['athletic_team']) {
       </div>
       <!-- /.search form -->
       <!-- sidebar menu: : style can be found in sidebar.less -->
+	<?php  $newcrop_user_role=sqlQuery("select newcrop_user_role from users where username='".$_SESSION['authUser']."'");
+?>
       <ul class="sidebar-menu" id="navigation-slide">
         <li class="header">MAIN NAVIGATION</li>
 <?php } else { // ($GLOBALS['concurrent_layout'] == 2) ?>
@@ -605,7 +607,6 @@ if ($GLOBALS['athletic_team']) {
 
 <?php if ($GLOBALS['athletic_team']) { // Tree menu for athletic teams ?>
 
-  <?php genTreeLink('RBot','msg',xl('Messages')); ?>
   <li><a class="collapsed" id="patimg" ><span><?php xl('View','e') ?></span></a>
     <ul>
       <?php genTreeLink('RTop','ros',xl('Weekly Exposures'),true); ?>
@@ -796,8 +797,7 @@ if ($GLOBALS['athletic_team']) {
     }
   ?>
     
-<?php  $newcrop_user_role=sqlQuery("select newcrop_user_role from users where username='".$_SESSION['authUser']."'");
-  if($newcrop_user_role['newcrop_user_role']!='erxlab'){
+<?php  if($newcrop_user_role['newcrop_user_role']!='erxlab' && $newcrop_user_role['newcrop_user_role']!='erxmidlevelPrescriber'){
   ?>
   <li class="treeview active"><a href="#"><i class="fa fa-wheelchair" aria-hidden="true"></i>
 <span><?php xl('Patient','e') ?></span><span class="pull-right-container">
@@ -805,18 +805,18 @@ if ($GLOBALS['athletic_team']) {
             </span></a>
     <ul class="treeview-menu">
       <?php genMiscLink('RTop','fin','0',xl('Patients'),'main/finder/dynamic_finder.php'); ?>
-	   <?php genMiscLink('RTop','fin','0',xl('Todays Patients'),'main/finder/p_tp_dynamic_finder.php'); ?>
+	   <?php if (acl_check('admin', 'super') || $newcrop_user_role['newcrop_user_role']=='erxrep') genMiscLink('RTop','fin','0',xl('Todays Patients'),'main/finder/p_tp_dynamic_finder.php'); ?>
 	   <?php if($newcrop_user_role['newcrop_user_role']=='erxcash'){?>
 	      <?php genMiscLink('RTop','fin','0',xl('Pending Patients'),'main/finder/pa_dynamic_finder.php'); ?>
 	   <?php  }  ?>
-	   <?php if($newcrop_user_role['newcrop_user_role']=='erxdoctor' || $newcrop_user_role['newcrop_user_role']=='erxnurse') {?>
+	   <?php if($newcrop_user_role['newcrop_user_role']=='erxdoctor'|| $newcrop_user_role['newcrop_user_role']=='erxnurse') {?>
 	  <?php genMiscLink('RTop','fin','0',xl('My Patients'),'main/finder/p_dynamic_finder.php'); ?>
 	   <?php }?>
 	  <?php genMiscLink('RTop','fin','0',xl('IP Specific'),'main/finder/p_dynamic_finder_ip.php'); ?>
-      <?php genTreeLink('RTop','new',($GLOBALS['full_new_patient_form'] ? xl('New/Search') : xl('New'))); ?>
-      <?php genTreeLink('RTop','dem',xl('Summary')); ?>
-	  <?php genTreeLink('RTop','op',xl('OPD Card')); ?>
-      <li class="treeview"><a href="#"><i class="fa fa-share"></i><span><?php xl('Visits','e') ?></span><span class="pull-right-container">
+      <?php  if (acl_check('admin', 'super') || $newcrop_user_role['newcrop_user_role']=='erxrep') genTreeLink('RTop','new',($GLOBALS['full_new_patient_form'] ? xl('New/Search') : xl('New'))); ?>
+      <?php   if (acl_check('admin', 'super') || $newcrop_user_role['newcrop_user_role']=='erxrep' || $newcrop_user_role['newcrop_user_role']=='erxdoctor') genTreeLink('RTop','dem',xl('Summary')); ?>
+	  <?php   if (acl_check('admin', 'super') || $newcrop_user_role['newcrop_user_role']=='erxrep') genTreeLink('RTop','op',xl('OPD Card')); ?>
+      <?php   if (acl_check('admin', 'super') || $newcrop_user_role['newcrop_user_role']=='erxrep' || $newcrop_user_role['newcrop_user_role']=='erxdoctor') { ?><li class="treeview"><a href="#"><i class="fa fa-share"></i><span><?php xl('Visits','e') ?></span><span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span></a>
         <ul class="treeview-menu">
@@ -827,6 +827,7 @@ if ($GLOBALS['athletic_team']) {
 		  
         </ul>
       </li>
+  <?php } ?>
 <?php if (acl_check('admin', 'super')){?>
       <li  class="treeview"><a href="#"><i class="fa fa-share"></i><span><?php xl('Records','e') ?></span><span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
@@ -835,8 +836,13 @@ if ($GLOBALS['athletic_team']) {
           <?php genTreeLink('RTop','prq',xl('Patient Record Request')); ?>
         </ul>
       </li>
-<?php }?>
-<?php if ($GLOBALS['gbl_nav_visit_forms']||acl_check('admin', 'super')) { ?>
+<?php }?> 
+<?php if ($newcrop_user_role['newcrop_user_role']=='erxrep') { ?>
+
+<li><a href="" id="cod2" onclick="return loadFrame2('cod2','RBot','patient_file/encounter/load_form.php?formname=admitgen')">General IP Admission</a></li>
+
+<?php } ?>
+<?php if (acl_check('admin', 'super') || $newcrop_user_role['newcrop_user_role']=='erxdoctor') { ?>
       <li class="treeview"><a href="#"><i class="fa fa-share"></i><span><?php xl('Visit Forms','e') ?></span><span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span></a>
@@ -928,8 +934,8 @@ if (!empty($reg)) {
     </li>
 		 <?php }?>
 	  </li>
-	  <?php  $newcrop_user_role=sqlQuery("select newcrop_user_role from users where username='".$_SESSION['authUser']."'");
-  if($newcrop_user_role['newcrop_user_role']!='erxlab'){
+	  <?php 
+  if($newcrop_user_role['newcrop_user_role']!='erxlab' && $newcrop_user_role['newcrop_user_role']!='erxnurse' && $newcrop_user_role['newcrop_user_role']!='erxdoctor'  && $newcrop_user_role['newcrop_user_role']!='erxmidlevelPrescriber'){
   ?>
   <?php // TajEmo Work by CB 2012/06/21 10:41:15 AM hides fees if disabled in globals ?>
   <?php if(!isset($GLOBALS['enable_fees_in_left_menu']) || $GLOBALS['enable_fees_in_left_menu'] == 1){ ?>
@@ -1034,7 +1040,6 @@ if (!empty($reg)) {
   </li>
 <?php } ?> -->
 <?php
-$newcrop_user_role=sqlQuery("select newcrop_user_role from users where username='".$_SESSION['authUser']."'");
  if($newcrop_user_role['newcrop_user_role']=='erxmidlevelPrescriber'||acl_check('admin', 'super')){ ?>
   <li class="treeview"><a href="#" ><i class="fa fa-medkit" aria-hidden="true"></i>
 <span><?php xl('Pharmacy','e') ?></span><span class="pull-right-container">
@@ -1097,7 +1102,7 @@ $newcrop_user_role=sqlQuery("select newcrop_user_role from users where username=
     </ul>
   </li>
   <?php } ?>
-  <?php if (!$disallowed['adm']) { ?>
+  <?php if (!$disallowed['adm'] && $newcrop_user_role['newcrop_user_role']!='erxnurse') { ?>
   <li class="treeview"><a href="#" ><i class="fa fa-user-secret" aria-hidden="true"></i>
 <span><?php xl('Administration','e') ?></span><span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
@@ -1106,12 +1111,12 @@ $newcrop_user_role=sqlQuery("select newcrop_user_role from users where username=
       <?php if (acl_check('admin', 'super'    )) genMiscLink('RTop','adm','0',xl('Globals'),'super/edit_globals.php'); ?>
       <?php if (acl_check('admin', 'users'    )) genMiscLink('RTop','adm','0',xl('Facilities'),'usergroup/facilities.php'); ?>
       <?php if (acl_check('admin', 'users'    )) genMiscLink('RTop','adm','0',xl('Users'),'usergroup/usergroup_admin.php'); ?>
-      <?php if (acl_check('admin', 'practice' )) genTreeLink('RTop','adb',xl('Addr Book')); ?>
+      <?php if (acl_check('admin', 'practice' ) || $newcrop_user_role['newcrop_user_role']=='erxdoctor') genTreeLink('RTop','adb',xl('Addr Book')); ?>
 	   <?php if (acl_check('admin', 'users'    ))  genMiscLink('RTop','adm','0',xl('Allocation '), 'forms/allocation/view.php'); ?>
       <?php
 	  // Changed the target URL from practice settings -> Practice Settings - Pharmacy... Dec 09,09 .. Visolve ... This replaces empty frame with Pharmacy window
-	  if (acl_check('admin', 'practice' )) genMiscLink('RTop','adm','0',xl('Practice'),'../controller.php?practice_settings&pharmacy&action=list'); ?>
-      <?php if (acl_check('admin', 'superbill')) genTreeLink('RTop','sup',xl('Codes')); ?>
+	  if (acl_check('admin', 'super' )) genMiscLink('RTop','adm','0',xl('Practice'),'../controller.php?practice_settings&pharmacy&action=list'); ?>
+      <?php if (acl_check('admin', 'super')) genTreeLink('RTop','sup',xl('Codes')); ?>
       <?php if (acl_check('admin', 'super'    )) genMiscLink('RTop','adm','0',xl('Layouts'),'super/edit_layout.php'); ?>
       <?php if (acl_check('admin', 'super'    )) genMiscLink('RTop','adm','0',xl('Lists'),'super/edit_list.php'); ?>
       <?php if (acl_check('admin', 'acl'      )) genMiscLink('RTop','adm','0',xl('ACL'),'usergroup/adminacl.php'); ?>
@@ -1123,7 +1128,7 @@ $newcrop_user_role=sqlQuery("select newcrop_user_role from users where username=
       <?php if ( ($GLOBALS['include_de_identification']) && (acl_check('admin', 'super'    )) ) genMiscLink('RTop','adm','0',xl('De Identification'),'de_identification_forms/de_identification_screen1.php'); ?>
           <?php if ( ($GLOBALS['include_de_identification']) && (acl_check('admin', 'super'    )) ) genMiscLink('RTop','adm','0',xl('Re Identification'),'de_identification_forms/re_identification_input_screen.php'); ?>
       <?php if (acl_check('admin', 'super') && !empty($GLOBALS['code_types']['IPPF'])) genMiscLink('RTop','adm','0',xl('Export'),'main/ippf_export.php'); ?>
-      <li><a href="#"><span><?php xl('Other','e') ?></span><span class="pull-right-container">
+      <?php if (acl_check('admin', 'super'   )) { ?><li><a href="#"><span><?php xl('Other','e') ?></span><span class="pull-right-container">
                   <i class="fa fa-angle-left pull-right"></i>
                 </span></a>
         <ul class="treeview-menu">
@@ -1144,9 +1149,10 @@ $newcrop_user_role=sqlQuery("select newcrop_user_role from users where username=
 		  <?php if ($GLOBALS['enable_auditlog_encryption']) genMiscLink('RTop','rep','0',xl('Audit Log Tamper'),'reports/audit_log_tamper_report.php'); ?>
         </ul>
       </li>
+	  <?php } ?>
     </ul>
   </li>
-  <?php } ?>
+  <?php }  if (acl_check('admin', 'super'    )) { ?>
   <li class="treeview"><a href="#" ><i class="fa fa-pie-chart"></i><span><?php xl('Reports','e') ?></span><span class="pull-right-container">
                   <i class="fa fa-angle-left pull-right"></i>
                 </span></a>
@@ -1338,7 +1344,7 @@ $newcrop_user_role=sqlQuery("select newcrop_user_role from users where username=
       <?php // genTreeLink('RTop','rep','Other'); ?>
     </ul>
   </li>
-  <?php if(acl_check('admin','super')){?>
+
   <li class="treeview"><a href="#" ><i class="fa fa-bar-chart" aria-hidden="true"></i>
 <span><?php xl('Analytics','e') ?></span><span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>

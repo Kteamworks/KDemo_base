@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.3.1, created on 2015-03-02 18:29:33
+<?php /* Smarty version 2.3.1, created on 2017-09-19 07:25:32
          compiled from default/views/month/default.html */ ?>
 <?php $this->_load_plugins(array(
 array('function', 'assign', 'default/views/month/default.html', 3, false),)); ?>
@@ -28,4 +28,4 @@ $this->_smarty_include("$TPL_NAME/views/month/orig_default.html", array());
 $this->_tpl_vars = $_smarty_tpl_vars;
 unset($_smarty_tpl_vars);
  ?>
-<?php endif; ?>
+<?php endif; ?>

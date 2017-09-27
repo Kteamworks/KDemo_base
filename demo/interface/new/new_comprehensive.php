@@ -87,7 +87,11 @@ div.section {
 <style type="text/css">@import url(../../library/dynarch_calendar.css);</style>
 <link rel="stylesheet" href="<?php echo $GLOBALS['webroot'] ?>/library/js/jAlert-master/src/jAlert-v3.css" />
 <link rel="stylesheet" href="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery.treeview-1.4.1/jquery.treeview.css" />
+<link href="<?php echo $GLOBALS['webroot'] ?>/library/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+<link href="<?php echo $GLOBALS['webroot'] ?>/library/css/bootstrap-datetimepicker4.7.14.min.css" rel="stylesheet" />
+
 <script src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-1.7.2.min.js"></script>
+
 <script src="<?php echo $GLOBALS['webroot'] ?>/library/js/jAlert-master/src/jAlert-v3.js"></script>
 <script src="<?php echo $GLOBALS['webroot'] ?>/library/js/jAlert-master/src/jAlert-functions.js"> //optional!!</script>
 <script type="text/javascript" src="../../library/dialog.js"></script>
@@ -745,15 +749,17 @@ if (! $GLOBALS['simplified_demographics']) {
    <a href="javascript:popUp('../../interface/patient_file/summary/browse.php?browsenum=<?php echo $i?>')" class=text>(<?php xl('Browse','e'); ?>)</a><br />
 
    <span class=bold><?php xl('D.O.B.','e'); ?>: </span>
+        <div class='input-group date'  id='datetimepicker1' >
+          
    <input type='entry' size='11' name='i<?php echo $i?>subscriber_DOB'
     id='i<?php echo $i?>subscriber_DOB'
     value='<?php echo $result3['subscriber_DOB'] ?>'
     onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)'
     title='yyyy-mm-dd' />
-
-   <img src='../../interface/pic/show_calendar.gif' align='absbottom' width='24' height='22'
-    id='img_i<?php echo $i; ?>dob_date' border='0' alt='[?]' style='cursor:pointer'
-    title='<?php xl('Click here to choose a date','e'); ?>'>
+		      <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
 
     <script LANGUAGE="JavaScript">
     Calendar.setup({inputField:"i<?php echo $i?>subscriber_DOB", ifFormat:"%Y-%m-%d", button:"img_i<?php echo $i; ?>dob_date"});
@@ -924,6 +930,53 @@ while ($lrow = sqlFetchArray($lres)) {
 }); // end document.ready
 
 </script>
+		<script
+  src="https://code.jquery.com/jquery-2.2.4.min.js"
+  integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+  crossorigin="anonymous"></script>
+
+        <script type="text/javascript">
+
+document.getElementById("form_DOB").onblur = null;
+		$('#img_DOB').remove();
+$('#form_DOB').wrapAll("<div class='input-group date' id='datetimepicker'>"); 
+$('#form_DOB').after('<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>');
+ $('#form_DOB').css("height","28px");
+
+ $( "#form_DOB" ).blur(function () { // birthday is a date
+   var today = new Date();
+
+   var dateString = $( "#form_DOB" ).val();
+    var birthDate = new Date(dateString);
+    var age = today.getFullYear() - birthDate.getFullYear();
+    var m = today.getMonth() - birthDate.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+        age--;
+    }
+if(age !== null) {
+     document.getElementById('form_age').value = age;
+//document.getElementById('form_age').setAttribute("disabled","true");
+}
+});
+ $( "#form_age" ).blur(function () {
+    var today = new Date();
+    var currentYear = today.getFullYear() ;
+    var age = parseInt(document.getElementById('form_age').value, 10);
+    var birthdayPast = 0;
+    document.getElementById('form_DOB').value =  (currentYear - age - (birthdayPast?0:1) )+"-1-1";  
+});
+
+		var j = jQuery.noConflict();
+            j(function () {
+				                j('#datetimepicker').datetimepicker({
+                    format: 'YYYY-MM-DD'
+                });
+            });
+        </script>
+
+		              <script src="<?php echo $GLOBALS['webroot'] ?>/library/js/moment/moment.js" ></script>
+                    <script src="<?php echo $GLOBALS['webroot'] ?>/library/js/bootstrap-datetimepicker4.7.14.min.js" type="text/javascript"></script>
+					                    <script src="<?php echo $GLOBALS['webroot'] ?>/library/js/bootstrap.min.js" type="text/javascript"></script>
 
 </html>
 

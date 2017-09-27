@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.3.1, created on 2015-03-02 18:29:33
+<?php /* Smarty version 2.3.1, created on 2017-09-19 07:25:33
          compiled from default/views/month/ajax_template.html */ ?>
 <?php $this->_load_plugins(array(
 array('function', 'assign', 'default/views/month/ajax_template.html', 332, false),
@@ -675,4 +675,4 @@ foreach ($providers as $provider) {
 </script>
 
 
-</html>
+</html>

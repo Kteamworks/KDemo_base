@@ -71,7 +71,7 @@ if ($_POST['bn_save']) {
   }
   else {
     // Adding a new form.
-    $query = "INSERT INTO form_ippf_srh SET $sets";
+	$query = "INSERT INTO form_ippf_srh (activity, men_hist, men_compl, pap_hist, gyn_exams, pr_status, gest_age_by, obs_exams, pr_outcome, pr_compl, abo_exams, hiv_exams, its_exams, fer_exams, fer_causes, fer_treat, uro_exams, uro_disease) VALUES ('$activity', '$men_hist', '$men_compl', '$pap_hist', '$gyn_exams', '$pr_status', '$gest_age_by', '$obs_exams', '$pr_outcome', '$pr_compl', '$abo_exams', '$hiv_exams', '$its_exams', '$fer_exams', '$fer_causes', '$fer_treat', '$uro_exams', '$uro_disease')";
     $newid = sqlInsert($query);
     addForm($encounter, "IPPF SRH Data", $newid, "ippf_srh", $pid, $userauthorized);
   }

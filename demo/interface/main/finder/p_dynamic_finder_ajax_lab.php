@@ -87,6 +87,7 @@ for ($i = 0; $i < count($aColumns); ++$i) {
   if (isset($_GET["bSearchable_$i"]) && $_GET["bSearchable_$i"] == "true" && $_GET["sSearch_$i"] != '') {
     $where .= $where ? ' AND' : 'WHERE';
     $sSearch = add_escape_custom($_GET["sSearch_$i"]);
+
     if ($colname == 'name') {
       $where .= " ( " .
         "fname LIKE '$sSearch%' OR " .
@@ -146,9 +147,11 @@ $out = array(
   "iTotalDisplayRecords" => $iFilteredTotal,
   "aaData"               => array()
 );
-
-$query ="SELECT $sellist FROM form_encounter a,patient_data b,procedure_order c,procedure_order_code d $where where a.pid=b.pid and a.encounter=c.encounter_id and c.procedure_order_id=d.procedure_order_id and a.pid=b.pid and a.encounter=c.encounter_id and c.order_status IN ('pending','collected','received')  group by a.pid,a.encounter,c.procedure_order_id  order by c.procedure_order_id desc  $limit";
-
+if($where != "") {
+$query ="SELECT $sellist FROM form_encounter a,patient_data b,procedure_order c,procedure_order_code d $where and a.pid=b.pid and a.encounter=c.encounter_id and c.procedure_order_id=d.procedure_order_id and a.pid=b.pid and a.encounter=c.encounter_id and c.order_status IN ('pending','collected','received')  group by a.pid,a.encounter,c.procedure_order_id  order by c.procedure_order_id desc  $limit";
+} else {
+	$query = "SELECT $sellist FROM form_encounter a,patient_data b,procedure_order c,procedure_order_code d where a.pid=b.pid and a.encounter=c.encounter_id and c.procedure_order_id=d.procedure_order_id and a.pid=b.pid and a.encounter=c.encounter_id and c.order_status IN ('pending','collected','received')  group by a.pid,a.encounter,c.procedure_order_id  order by c.procedure_order_id desc  $limit";
+}
 $res = sqlStatement($query);
 while ($row = sqlFetchArray($res)) {
  
