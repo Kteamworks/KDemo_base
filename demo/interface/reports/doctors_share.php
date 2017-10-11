@@ -157,39 +157,43 @@ table{
 </head>
 <body leftmargin='0' topmargin='0' marginwidth='0' marginheight='0' class="body_top">
 
-
-<form method='post' action='bill_date_change.php' id='theform'>
-<div id="report_parameters">
-<div id="hideonprint">
-<input type='hidden' name='form_refresh' id='form_refresh' value=''/>
-<input type='hidden' name='form_csvexport' id='form_csvexport' value=''/>
-<input type='hidden' name='form_save' id='form_save' value=''/>
+<?php $qry = "select distinct b.provider_id,u.username from billing b
+join users u on b.provider_id=u.id 
+where bill_id='BL00014' and activity=1"; 
+$stst = sqlStatement($qry);
+?>
+<form method='post' action='post_doctor_share.php' id='theform'>
 Enter the Bill Number: <input type='text' name='bill_change' id='bill_change' value=''/><br/>
-Select the Doctor:   
+<?php while($doclist = sqlFetchArray($stst)) {	?>
+<div id="toAppend">
+
+Doctor:   
 <?php
-  $ures = sqlStatement("SELECT id, username, fname, lname FROM users WHERE " .
-  "authorized != 0 AND active = 1 AND newcrop_user_role='erxdoctor' ORDER BY lname, fname");
-   echo "<select name='form_provider'  onchange='getval(this);' /><option value='_blank'>Choose A Doctor</option>";
-    while ($urow = sqlFetchArray($ures)) {
-      echo "    <option value='" . attr($urow['id']) . "'";
-      if ($urow['id'] == $defaultProvider) echo " selected";
-      echo ">".text($urow['username']);
+ 
+   echo "<select name='form_provider[]'  onchange='getval(this);' />";
+
+      echo "    <option value='" . attr($doclist['provider_id']) . "'";
+
+      echo ">".text($doclist['username']);
       //if ($urow['lname']) echo " " . text($urow['lname']);
       echo "</option>\n";
-    }
+
     echo "</select>";
 ?>
-Enter the amount: <input type='text' name='amount' title='doctors share'>
+Enter the amount: <input type='text' name='amount[]' title='doctors share'><br>
+</div>
                            <a href="#" id="toggle_doc" title="Add Another Doctor"><i class="fa fa-plus-circle"></i></a><br>
-Total Bill Amount:
+
+	<div class="inputField">
+	
+</div>	
+						   Total Bill Amount:
 
 				<br/>
                         Doctor Share: <br>
+<?php } ?>
 <input type='submit' name='submit' id='submit' value='submit'/>
-</div>
  <!-- end of parameters -->
-</div>
-  
 
 </form>
 
@@ -307,5 +311,12 @@ function getval(doc){
         });
     }
 });
+        $('#toggle_doc').click(function (e)
+        {
+            e.preventDefault();
+
+                $('.inputField').append( $('#toAppend').html() );
+        });
 </script>
+
 </html>

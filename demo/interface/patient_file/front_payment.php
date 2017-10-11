@@ -31,7 +31,7 @@ $INTEGRATED_AR = $GLOBALS['oer_config']['ws_accounting']['enabled'] === 2;
 
 
  $e=$_GET["encounter"] ? $_GET["encounter"] : $GLOBALS['encounter'];
-$returnurl = $GLOBALS['concurrent_layout'] ? 'encounter_top.php' : 'patient_encounter.php';
+ $returnurl = $GLOBALS['concurrent_layout'] ? 'encounter_top.php' : 'patient_encounter.php';
  include_once("$srcdir/pid.inc");
  if ($GLOBALS['concurrent_layout'] && isset($_GET['set_pid'])) {
   include_once("$srcdir/pid.inc");
@@ -1393,7 +1393,8 @@ function validate()
   }
  if(ok==-1)
   {
-	 if(confirm("<?php echo addslashes( xl('Would you like to save?')) ?>"))
+	  
+	 if(confirm("<?php echo addslashes( xl('Confirm & Accept Payment?')) ?>"))
 	  {
 	   return true;
 	  }
@@ -2046,7 +2047,7 @@ if($FP==1 && $ins1==0)
 ?>  
 
 
-<input type='submit' name='form_save' value='<?php echo htmlspecialchars( xl('Generate Invoice'), ENT_QUOTES);?>' /> &nbsp;
+<input type='submit' name='form_save' value='<?php echo htmlspecialchars( xl('Confirm payment & Print Invoice'), ENT_QUOTES);?>' /> &nbsp;
 <input type='button' value='<?php echo xla('Cancel'); ?>' onclick='window.close()' />
 <?php  } ?>
 <input type="hidden" name="hidden_patient_code" id="hidden_patient_code" value="<?php echo attr($pid);?>"/>

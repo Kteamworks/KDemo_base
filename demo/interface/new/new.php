@@ -248,6 +248,7 @@ if ($form_pubpid) {
   echo "alert('" . xl('This patient ID is already in use!') . "');\n";
 }
 ?>
+
 </script>
 
 </body>

@@ -965,7 +965,22 @@ if(age !== null) {
     var birthdayPast = 0;
     document.getElementById('form_DOB').value =  (currentYear - age - (birthdayPast?0:1) )+"-1-1";  
 });
+$('#form_phone_cell').blur(function() {
+    if (!$.isNumeric(this.value))
+        this.value = 0;
+	var email=$("#form_phone_cell").val();// value in field email
+$.ajax({
+    type:'post',
+        url:'checkNumber.php',// put your real file name 
+        data:{email: email},
+        success:function(msg){
+			if(msg == 1) {
+				      alert("Number already exists");   
+        }
+ }
 
+});
+});
 		var j = jQuery.noConflict();
             j(function () {
 				                j('#datetimepicker').datetimepicker({

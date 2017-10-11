@@ -257,7 +257,7 @@ if ($result) {
 <input type='button' value='<?php echo htmlspecialchars( xl('Cancel'), ENT_QUOTES); ?>'
  onclick='window.close();' />
 <?php } else { ?>
-<input type='button' value='<?php echo htmlspecialchars( xl('Confirm Create New Patient'), ENT_QUOTES); ?>'
+<input type='button' id='confirm_btn' value='<?php echo htmlspecialchars( xl('Confirm Create New Patient'), ENT_QUOTES); ?>'
  onclick='opener.top.restoreSession();opener.document.forms[0].submit();window.close();' />
 <?php } ?>
 </center>
@@ -302,6 +302,7 @@ f.create.value = '<?php echo htmlspecialchars( xl('Confirm Create New Patient'),
 <?php } ?>
 
 <?php if (!count($result)) { ?>
+$("#confirm_btn").trigger('click');
 $("<td><?php echo htmlspecialchars( xl('No matches were found.'), ENT_QUOTES); ?></td>").appendTo("#searchResults tr");
 <?php } ?>
 

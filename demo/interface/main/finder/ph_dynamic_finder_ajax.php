@@ -178,7 +178,7 @@ $query ="SELECT $sellist FROM patient_data a,form_encounter b ,openemr_postcalen
 }
 else 
 {
-$query = "SELECT $sellist FROM patient_data a,form_encounter b ,openemr_postcalendar_categories c where a.pid=b.pid and c.pc_catid=b.pc_catid and date(b.date)='".$today."' order by provider_id  $limit";
+$query = "SELECT $sellist FROM patient_data a,form_encounter b ,openemr_postcalendar_categories c where a.pid=b.pid and c.pc_catid=b.pc_catid and date(b.date)='".$today."' order by encounter desc  $limit";
 }
 $res = sqlStatement($query);
 while ($row = sqlFetchArray($res)) {

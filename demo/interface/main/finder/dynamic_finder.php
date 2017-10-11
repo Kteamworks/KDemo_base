@@ -285,6 +285,17 @@ function openNewTopWindow(pid) {
 	</ul>
 </div>
 <div class="col-md-12">
+<?php 
+if (isset($_SESSION['LAST_ACTIVITY'])  && isset($_SESSION['visitID']) && (time() - $_SESSION['LAST_ACTIVITY'] < 60)) {
+?>
+        <div class="alert alert-success alert-dismissable">
+            <i class="fa  fa-check-circle"></i>
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            <b>Success!</b> New visit has been created with visit ID <?php echo $_SESSION['visitID']; ?> ?>
+        </div>
+		<?php
+}
+?>
 <div class="col-md-3">
           <!-- Info Boxes Style 2 -->
           <div class="info-box bg-yellow">

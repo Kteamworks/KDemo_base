@@ -67,7 +67,12 @@ $ires = sqlStatement("SELECT id, type, title, begdate FROM lists WHERE " .
 	<link rel="stylesheet" href="<?php echo $GLOBALS['webroot']; ?>/library/breadcrumbs/css/reset.css"> <!-- CSS reset -->
 	<link rel="stylesheet" href="<?php echo $GLOBALS['webroot']; ?>/library/breadcrumbs/css/style.css"> <!-- Resource style -->
 	<style type="text/css">@import url(<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar.css);</style>
-	
+	<style>
+	.form-group .control-label:after {
+  content:"*";
+  color:red;
+}
+	</style>
 <script language="JavaScript">
 
 
@@ -239,9 +244,9 @@ $vid=sqlStatement("SELECT form_id from forms where encounter='".$_SESSION['encou
 
     <tr<?php if ($GLOBALS['athletic_team']) echo " style='visibility:hidden;'"; ?>>
 	<div class="form-group">
-     <label class="pull-left"><?php echo xlt('Visit Category:'); ?></label>
+     <label class="pull-left control-label"><?php echo xlt('Visit Category:'); ?></label>
    
-      <select name='pc_catid'class="form-control" id='pc_catid'>
+      <select name='pc_catid'class="form-control" id='pc_catid'  required="required">
 	<option value='_blank'>-- <?php echo xlt('Select One'); ?> --</option>
 <?php
  $cres = sqlStatement("SELECT pc_catid, pc_catname " .
@@ -266,12 +271,12 @@ $vid=sqlStatement("SELECT form_id from forms where encounter='".$_SESSION['encou
 	
 		<tr>
      	<div class="form-group">
-     <label class="pull-left"><?php echo xlt('Doctor:'); ?></label>
+     <label class="pull-left control-label"><?php echo xlt('Doctor:'); ?></label>
      
 <?php
   $ures = sqlStatement("SELECT id, username, fname, lname FROM users WHERE " .
   "authorized != 0 AND active = 1 ORDER BY fname, lname");
-   echo "<select name='form_provider' class='form-control' />";
+   echo "<select name='form_provider' class='form-control'  required='required'/>";
     while ($urow = sqlFetchArray($ures)) {
       echo "    <option value='" . attr($urow['id']) . "'";
 	  if($result['provider_id']=='')
@@ -318,7 +323,7 @@ $vid=sqlStatement("SELECT form_id from forms where encounter='".$_SESSION['encou
 	
 	<tr>
 		<div class="form-group">
-     <label class="pull-left"><?php echo xlt('Rate Plan:'); ?></label>
+     <label class="pull-left control-label"><?php echo xlt('Rate Plan:'); ?></label>
 	 
 <?php
 //get default insurance data
@@ -467,7 +472,7 @@ if ($fres) {
 
     <tr>
      	<div class="form-group">
-     <label class="pull-left"><?php echo xlt('Date of Service:'); ?></label>
+     <label class="pull-left  control-label"><?php echo xlt('Date of Service:'); ?></label>
   <br>
   <br>
 	                 <div class='input-group date'  id='datetimepicker' >

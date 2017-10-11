@@ -344,7 +344,7 @@ $result4 = sqlStatement("SELECT fe.encounter,fe.date,openemr_postcalendar_catego
 <?php } ?>
  top.restoreSession();
 <?php if ($GLOBALS['concurrent_layout']) { ?>
-<?php if ($mode == 'new') { ?>
+<?php if ($mode == 'new') { $_SESSION['visitID'] = $encounter; $_SESSION['LAST_ACTIVITY'] = time(); ?>
  parent.left_nav.setEncounter(<?php echo "'" . oeFormatShortDate($date) . "', " . attr($encounter) . ", window.name"; ?>);
  parent.left_nav.setRadio(window.name, 'enc');
 <?php } // end if new encounter ?>
