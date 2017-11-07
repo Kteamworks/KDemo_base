@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.2, created on 2017-07-14 08:57:19
+<?php /* Smarty version 2.6.2, created on 2017-10-24 11:04:07
          compiled from C:%5Cxampp%5Chtdocs%5CKDemo_base%5Cdemo%5Cinterface%5Cforms%5Cvitals/templates/vitals/general_new.html */ ?>
 <?php require_once(SMARTY_DIR . 'core' . DIRECTORY_SEPARATOR . 'core.load_plugins.php');
 smarty_core_load_plugins(array('plugins' => array(array('function', 'xl', 'C:\xampp\htdocs\KDemo_base\demo\interface\forms\vitals/templates/vitals/general_new.html', 35, false),array('function', 'math', 'C:\xampp\htdocs\KDemo_base\demo\interface\forms\vitals/templates/vitals/general_new.html', 176, false),array('modifier', 'date_format', 'C:\xampp\htdocs\KDemo_base\demo\interface\forms\vitals/templates/vitals/general_new.html', 153, false),)), $this); ?>
@@ -138,11 +138,12 @@ td,th {
 
 </head>
 <body bgcolor="<?php echo $this->_tpl_vars['STYLE']['BGCOLOR2']; ?>
-">
-<section>
+" style="background-color:white"> 
+<section  style="    padding-left: 8px;">
 	<nav>
 		<ol class="cd-breadcrumb triangle custom-icons">
-		<li id="vitals" style="<?php echo $this->_tpl_vars['DISPLAYNONE1']; ?>
+		<li id="vitals" style="<?php echo $this->_tpl_vars['DISPLAYNONE']; ?>
+;<?php echo $this->_tpl_vars['DISPLAYNONE1']; ?>
 ;"><a><i class="fa fa-note" style="margin-right: 8px;"></i>Medical Issues</a></li>
 			<li id="visit" style="<?php echo $this->_tpl_vars['DISPLAYNONE']; ?>
 ;<?php echo $this->_tpl_vars['DISPLAYNONE1']; ?>
@@ -433,6 +434,32 @@ function addGCSelector()
 }
 
 $(document).ready(function(){
+
+ $( "#bps_input" ).blur(function () {
+var bp = $( "#bps_input" ).val();
+if (bp > 130) {
+$( "span" ).remove();
+ $( "#bps_input" ).after("<span style=\'color:#cc0000;\'>&#8226; Above range </span>");
+}
+else if (bp < 120) {
+$( "span" ).remove();
+ $( "#bps_input" ).after("<span style=\'color:#cc0000;\'>&#8226; Below range </span>");
+}
+else {
+$( "span" ).remove();
+}
+});
+ $( "#bpd_input" ).blur(function () {
+var bp = $( "#bpd_input" ).val();
+if (bp > 80) {
+$( "span" ).remove();
+ $( "#bpd_input" ).after("<span style=\'color:#cc0000;\'>&#8226; Above range </span>");
+}
+else {
+$( "span" ).remove();
+}
+});
+ $("dl").css(\'display\',\'none\');
     $("#growthchart").click(function() { ShowGrowthchart(); });
     $("#pdfchart").click(function() { ShowGrowthchart(1); });
     $("#htmlchart").click(function() { ShowGrowthchart(2); });

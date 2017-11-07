@@ -1,7 +1,7 @@
-<?php /* Smarty version 2.6.2, created on 2017-07-26 08:42:05
+<?php /* Smarty version 2.6.2, created on 2017-10-26 11:50:32
          compiled from C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html */ ?>
 <?php require_once(SMARTY_DIR . 'core' . DIRECTORY_SEPARATOR . 'core.load_plugins.php');
-smarty_core_load_plugins(array('plugins' => array(array('function', 'xl', 'C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html', 224, false),array('function', 'amcCollect', 'C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html', 252, false),array('function', 'html_select_date', 'C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html', 273, false),array('function', 'html_options', 'C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html', 279, false),array('function', 'html_radios', 'C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html', 367, false),)), $this); ?>
+smarty_core_load_plugins(array('plugins' => array(array('function', 'xl', 'C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html', 224, false),array('function', 'amcCollect', 'C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html', 255, false),array('function', 'html_select_date', 'C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html', 276, false),array('function', 'html_options', 'C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html', 282, false),array('function', 'html_radios', 'C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html', 370, false),)), $this); ?>
 <html>
 <head>
 <?php html_header_show(); ?>
@@ -92,7 +92,8 @@ border-radius: 4px;
 /library/breadcrumbs/css/style.css"> <!-- Resource style -->
 	<script src="<?php echo $this->_tpl_vars['WEBROOT']; ?>
 /library/breadcrumbs/js/modernizr.js"></script> <!-- Modernizr -->
-    <link data-require="bootstrap-css@*" data-semver="2.3.2" rel="stylesheet" href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" />
+    <link  rel="stylesheet" href="<?php echo $this->_tpl_vars['WEBROOT']; ?>
+/library/css/bootstrap-3-2-0.min.css" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.7/css/bootstrap-dialog.min.css" rel="stylesheet" />
 	<script src="http://code.angularjs.org/1.2.6/angular.js"></script>
     <script data-require="jquery@*" data-semver="2.0.1" src="http://code.jquery.com/jquery-2.0.1.min.js"></script>
@@ -261,6 +262,9 @@ $vid=sqlStatement("SELECT form_id from forms where encounter='".$_SESSION['encou
 /interface/patient_file/encounter/load_form.php?formname=dictation' class='css_button' id='next'><span><?php echo smarty_function_xl(array('t' => 'Next'), $this);?>
 </span></a>
 </div> -->
+<div class="container-fluid">
+<div class="row">
+<div class="col-md-7">
 <form name="prescribe" id="prescribe" method="post" action="<?php echo $this->_tpl_vars['FORM_ACTION']; ?>
 ">
 <table>
@@ -356,7 +360,7 @@ $vid=sqlStatement("SELECT form_id from forms where encounter='".$_SESSION['encou
 	<td COLSPAN="1" class="text" ALIGN="right" VALIGN="MIDDLE" >&nbsp; <?php echo smarty_function_xl(array('t' => 'in-house Drugs: '), $this);?>
  </td>
 	<td COLSPAN="2" ALIGN="LEFT" VALIGN="MIDDLE" >
-	<input type = "text" ng-model = "yourName" placeholder = "Search by drug name...">
+	<input type = "text" ng-model = "yourName" placeholder = "Search by drug name..." style="    margin-bottom: 17%;">
 		<select name="drug_id" onchange="drugselected(this)" multiple ng-model="selectedValues" ng-change="search2()">
 		<option  ng-repeat="cust in customers | filter: yourName" value="<% cust.id %>"><% cust.name %></option>
      
@@ -469,10 +473,58 @@ $vid=sqlStatement("SELECT form_id from forms where encounter='".$_SESSION['encou
 
 </script>
 </form>
+<div id="myDiv">
+</div>
+</div>
+<div class="col-md-5">
+<?php if ($this->_tpl_vars['PREVIOUS_DRUG']): ?>
+<label>Last visit prescription</label>
+
+
+<table class="table table-striped">
+<thead>
+<th>Name </th>
+<th>Time </th>
+<th>Meal </th>
+<th>Duration</th>
+</thead>
+<tbody>
+
+<td><?php echo $this->_tpl_vars['PREVIOUS_DRUG']; ?>
+ </td><td><?php echo $this->_tpl_vars['drug_intervals']; ?>
+ </td><td><?php echo $this->_tpl_vars['drug_meal_time']; ?>
+</td><td> <?php echo $this->_tpl_vars['duration']; ?>
+</td>
+</tbody>
+</table>
+<input name="click" type="checkbox"  id="check1" onchange="cTrig()"/> Continue with same prescription
+<?php endif; ?>
+</div>
+</div>
+</div>
 <?php echo '
 <!-- for the fancy jQuery stuff -->
 <script>
+function cTrig() { 
+      if (document.getElementById(\'check1\').checked == true) {
+               var box= confirm("Are you sure you want to prescribe same medicines?");
+        if (box==true) {
+            
+			document.getElementById(\'check1\').checked = true;
+			    $.ajax({
+        url: \'templates/prescription/save_last_prescription.php\',
+        success: function(result){
+        alert(JSON.stringify(result));
+    }});
+	document.getElementById(\'check1\').disabled = true;
+        } else {
+           document.getElementById(\'check1\').checked = false;
+		   }
+      } else {
 
+         return false;   
+      }
+    }
 var fiddleApp = angular.module(\'fiddleApp\', [\'ui.bootstrap\'], function($interpolateProvider) {
         $interpolateProvider.startSymbol(\'<%\');
         $interpolateProvider.endSymbol(\'%>\');
@@ -569,6 +621,10 @@ var ModalInstanceCtrl = function ($scope,$http, $modalInstance, userForm) {
 }
             $http(req).success(function(data){
                     console.log(data);
+					$.post(\'templates/prescription/getPrescription.php\', function(current) {
+					
+        $(\'#myDiv\').append(current);
+    });
 					BootstrapDialog.alert(\'The Drug has been saved as prescription!\');
                     }).error(function(error){
                     console.log(error);

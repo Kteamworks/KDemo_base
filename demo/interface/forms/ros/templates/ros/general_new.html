@@ -8,7 +8,25 @@
 	<link rel="stylesheet" href="{$FORM_ACTION}/library/breadcrumbs/css/reset.css"> <!-- CSS reset -->
 	<link rel="stylesheet" href="{$FORM_ACTION}/library/breadcrumbs/css/style.css"> <!-- Resource style -->
 	<script src="{$FORM_ACTION}/library/breadcrumbs/js/modernizr.js"></script> <!-- Modernizr -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.slim.min.js"></script>
  <style type="text/css" title="mystyles" media="all">
+ .button {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}
+.button4 {background-color: #e7e7e7; color: black;    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;}
  /* http://meyerweb.com/eric/tools/css/reset/ 
    v2.0 | 20110126
    License: none (public domain)
@@ -563,13 +581,18 @@ Add a counter to the multi-steps indicator
 }
 
 </style>
+	<script language="javascript">
+$(document).ready(function(){
+ $("dl").css('display','none');
+ });
+ </script>
 {/literal}
 </head>
-<body bgcolor="{$STYLE.BGCOLOR2}">
+<body bgcolor="{$STYLE.BGCOLOR2}" style="background-color:white"	>
 <section>
 	<nav>
 		<ol class="cd-breadcrumb triangle custom-icons" >
-		<li id="ros" style="{$DISPLAYNONE1}"><a href="{$ROS_LINK}"><i class="fa fa-note" style="margin-right: 8px;"></i>Medical Issues</a></li>
+		<li id="ros" style="{$DISPLAYNONE};{$DISPLAYNONE1}"><a href="{$ROS_LINK}"><i class="fa fa-note" style="margin-right: 8px;"></i>Medical Issues</a></li>
 			
 			<li id="visit" style="{$DISPLAYNONE};{$DISPLAYNONE1};"><a href="{$VISIT_LINK}"><i class="fa fa-note" style="margin-right: 8px;"></i>Visit Notes</a></li>
 			<li id="vitals" style="{$DISPLAYNONE1}"><a href="{$VITALS_LINK}"><i class="fa fa-note" style="margin-right: 8px;"></i>Vitals</a></li>
@@ -1119,15 +1142,17 @@ Add a counter to the multi-steps indicator
 </tr>
 <tr>
 <td>
-	<input type="submit" name="Submit" value={php} xl('Save Form','e','"','"'); {/php}
+	<input type="submit" name="Submit" class="button" value={php} xl('Save Form','e','"','"'); {/php}
 </td>
 <td>
-	<a href="{$DONT_SAVE_LINK}" class="link" onclick="top.restoreSession()">[{php} xl("Don't Save","e"); {/php}]</a>
+	<a href="{$DONT_SAVE_LINK}" class="button4" onclick="top.restoreSession()">{php} xl("Don't Save","e"); {/php}</a>
 </td>
 
 
 </tr>
 
 </table>
+
 </body>
+
 </html>

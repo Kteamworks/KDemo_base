@@ -213,9 +213,9 @@ $vid=sqlStatement("SELECT form_id from forms where encounter='".$_SESSION['encou
   <section>
 	<nav>
 		<ol class="cd-breadcrumb triangle custom-icons">
-			<li class="current"></i><em>Medical Issues</em></li>
+			
 			<?php if($vid2 == null) { ?>
-			<li><a href="../encounter/load_form.php?formname=vitals"><i class="fa fa-note" style="margin-right: 8px;"></i>Vitals</a></li>
+			<li class="current"><a href="../encounter/load_form.php?formname=vitals"><i class="fa fa-note" style="margin-right: 8px;"></i>Vitals</a></li>
 			<?php } else { ?>
 			<li><a href="../encounter/view_form.php?formname=vitals&id=<?php echo $vid2; ?>"><i class="fa fa-note" style="margin-right: 8px;"></i>Vitals</a></li>
 			<?php } if($rid2 == null) { ?>

@@ -234,7 +234,10 @@ a, a:visited, a:hover { color:#0000cc; }
 
 <script type="text/javascript" src="../../library/dialog.js"></script>
 <script type="text/javascript" src="../../library/textformat.js"></script>
-
+<script
+  src="https://code.jquery.com/jquery-3.2.1.min.js"
+  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+  crossorigin="anonymous"></script>
 <script language="JavaScript">
 
 var mypcc = '<?php echo $GLOBALS['phone_country_code'] ?>';
@@ -669,8 +672,8 @@ while ($row = sqlFetchArray($res)) {
       echo "&nbsp;--";
     }
     else {
-      echo "<input type='text' size='7' name='form_result_result[$lino]'" .
-        " class='celltext' value='" . attr($result_result) . "' " .
+      echo "<input type='text' size='7' id='range-input' name='form_result_result[$lino]'" .
+        " class='celltext range-input' value='" . attr($result_result) . "' " .
         " />";
     }
     echo "</td>\n";
@@ -683,7 +686,7 @@ while ($row = sqlFetchArray($res)) {
     echo "</td>\n";
 
     echo "  <td>";
-    echo "<input type='text' size='8' name='form_result_range[$lino]'" .
+    echo "<input type='text' size='8' id='range' name='form_result_range[$lino]'" .
       " class='celltext' value='" . attr($result_range) . "' " .
       " title='" . xl('Reference range of results') . "'" .
       " />";
@@ -813,7 +816,27 @@ for (var lino = 0; f['form_line['+lino+']']; ++lino) {
    button:'q_date_collected['+lino+']', showsTime:true});
  }
 }
-
+$("input").blur(function () {
+var txtAval=$(this).val();
+			    var rangeValue = $(this).closest("tr").find("[id=range]").val();
+var arr = rangeValue.split(' - ');
+var below = arr[0].replace(/,+/g, '');
+var above = arr[1].replace(/,+/g, '');
+if(txtAval != '' && (txtAval < parseInt(below) || txtAval > parseInt(above))) {
+	if(txtAval < parseInt(below)) {
+$(this).css({'background' : '#FF8800'});
+$(this).closest("tr").find("[class=cellselect]").val('low');
+	}
+	else {
+$(this).css({'background' : '#d9534f'});
+$(this).closest("tr").find("[class=cellselect]").val('high');
+	}
+}
+else {
+$(this).css({'background' : 'transparent'});
+$(this).closest("tr").find("[class=cellselect]").val('no');
+}
+});
 </script>
 
 </form>

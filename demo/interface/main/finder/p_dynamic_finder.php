@@ -254,7 +254,13 @@ document.location.href = "../../patient_file/summary/demographics.php?set_pid=" 
 		top.restoreSession();
 		//alert(encounter);
 		//document.location.href="../../patient_file/history/history.php?set_pid=" + newpid+'&encounter='+enc;
+		<?php 
+		  $newcrop_user_role=sqlQuery("select newcrop_user_role from users where username='".$_SESSION['authUser']."'");
+		  if($newcrop_user_role['newcrop_user_role'] == 'erxnurse') { ?>
+		document.location.href="../../patient_file/encounter/load_form.php?formname=vitals&set_pid=" +newpid+'&active='+formname+'&encounter='+enc;
+		<?php } elseif($newcrop_user_role['newcrop_user_role'] == 'erxdoctor') { ?>
 		document.location.href="../../patient_file/summary/stats_full.php?set_pid=" +newpid+'&active='+formname+'&encounter='+enc;
+		<?php } ?>
 		/*if(name=="Transfer")
 		{
 		//alert(newpid);
@@ -314,6 +320,18 @@ $res_seen1 = sqlFetchArray($res_seen);
 
 ?>
 <div class="col-md-12">
+
+<?php 
+if (isset($_SESSION['LAST_ACTIVITY_nurse'])  && isset($_SESSION['nurseVisit']) && (time() - $_SESSION['LAST_ACTIVITY_nurse'] < 60)) {
+?>
+        <div class="alert alert-success alert-dismissable">
+            <i class="fa  fa-check-circle"></i>
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            <b>Success!</b> Patient data has been recorded under visit ID <?php echo $_SESSION['nurseVisit']; ?> 
+        </div>
+		<?php
+}
+?>
 <div class="col-md-4">
           <!-- Info Boxes Style 2 -->
           <div class="info-box bg-yellow">

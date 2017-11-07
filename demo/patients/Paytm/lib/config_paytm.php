@@ -17,9 +17,9 @@ require_once("../../interface/globals.php");
 	 $env = 'TEST';
  }
 define('PAYTM_ENVIRONMENT', $env); // PROD
-define('PAYTM_MERCHANT_KEY', $GLOBALS['paytm_merchant_key']); //Change this constant's value with Merchant key downloaded from portal
-define('PAYTM_MERCHANT_MID', $GLOBALS['paytm_merchant_mid']); //Change this constant's value with MID (Merchant ID) received from Paytm
-define('PAYTM_MERCHANT_WEBSITE', $GLOBALS['paytm_merchant_website']); //Change this constant's value with Website name received from Paytm
+define('PAYTM_MERCHANT_KEY', '2z3ISloH_nFWerut'); //Change this constant's value with Merchant key downloaded from portal
+define('PAYTM_MERCHANT_MID', 'Etutor95965343424559'); //Change this constant's value with MID (Merchant ID) received from Paytm
+define('PAYTM_MERCHANT_WEBSITE', 'WEB_STAGING'); //Change this constant's value with Website name received from Paytm
 define('PAYTM_REDIRECT_URL', "http://".$_SERVER["HTTP_NAME"]."".$GLOBALS['webroot']."/patients/summary_pat_portal.php"); //Change this constant's value with Website name received from Paytm
 
 $PAYTM_DOMAIN = "pguat.paytm.com";

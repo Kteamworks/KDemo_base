@@ -3,6 +3,7 @@ require_once($GLOBALS['fileroot'] . "/interface/globals.php");
 require_once ($GLOBALS['fileroot'] . "/library/classes/Controller.class.php");
 require_once ($GLOBALS['fileroot'] . "/library/forms.inc");
 require_once ($GLOBALS['fileroot'] . "/library/patient.inc");
+require_once($GLOBALS['srcdir'].'/encounter.inc');
 require_once("FormVitals.class.php");
 
 class C_FormVitals extends Controller {
@@ -59,7 +60,10 @@ $vid=sqlStatement("SELECT form_id from forms where encounter='".$_SESSION['encou
     	$this->assign("STYLE", $GLOBALS['style']);
 		$res = sqlQuery("select * from users where username='".$_SESSION{"authUser"}."'");
 		if($res['newcrop_user_role'] == 'erxnurse'){
+			$encounter=$_GET["encounter"] ? $_GET["encounter"] : $GLOBALS['encounter'];
+setencounter($encounter);
 		$this->assign("DISPLAYNONE", "display:none");
+				$this->assign("ENCOUNTER", $_GET['encounter']);
 		}
 		if($res['newcrop_user_role'] != 'erxnurse' && $res['newcrop_user_role'] != 'erxdoctor' ){
 		$this->assign("DISPLAYNONE1", "display:none");

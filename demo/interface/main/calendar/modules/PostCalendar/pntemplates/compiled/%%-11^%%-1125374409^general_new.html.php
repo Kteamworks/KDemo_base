@@ -1,7 +1,7 @@
-<?php /* Smarty version 2.6.2, created on 2017-07-14 09:10:46
+<?php /* Smarty version 2.6.2, created on 2017-10-18 11:00:27
          compiled from C:%5Cxampp%5Chtdocs%5CKDemo_base%5Cdemo%5Cinterface%5Cforms%5Cros/templates/ros/general_new.html */ ?>
 <?php require_once(SMARTY_DIR . 'core' . DIRECTORY_SEPARATOR . 'core.load_plugins.php');
-smarty_core_load_plugins(array('plugins' => array(array('function', 'xl', 'C:\xampp\htdocs\KDemo_base\demo\interface\forms\ros/templates/ros/general_new.html', 589, false),array('function', 'html_radios', 'C:\xampp\htdocs\KDemo_base\demo\interface\forms\ros/templates/ros/general_new.html', 598, false),)), $this); ?>
+smarty_core_load_plugins(array('plugins' => array(array('function', 'xl', 'C:\xampp\htdocs\KDemo_base\demo\interface\forms\ros/templates/ros/general_new.html', 612, false),array('function', 'html_radios', 'C:\xampp\htdocs\KDemo_base\demo\interface\forms\ros/templates/ros/general_new.html', 621, false),)), $this); ?>
 <html>
 <head>
 <?php html_header_show(); ?>
@@ -12,7 +12,25 @@ smarty_core_load_plugins(array('plugins' => array(array('function', 'xl', 'C:\xa
 	<link rel="stylesheet" href="{$FORM_ACTION}/library/breadcrumbs/css/reset.css"> <!-- CSS reset -->
 	<link rel="stylesheet" href="{$FORM_ACTION}/library/breadcrumbs/css/style.css"> <!-- Resource style -->
 	<script src="{$FORM_ACTION}/library/breadcrumbs/js/modernizr.js"></script> <!-- Modernizr -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.slim.min.js"></script>
  <style type="text/css" title="mystyles" media="all">
+ .button {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}
+.button4 {background-color: #e7e7e7; color: black;    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;}
  /* http://meyerweb.com/eric/tools/css/reset/ 
    v2.0 | 20110126
    License: none (public domain)
@@ -567,15 +585,21 @@ Add a counter to the multi-steps indicator
 }
 
 </style>
+	<script language="javascript">
+$(document).ready(function(){
+ $("dl").css(\'display\',\'none\');
+ });
+ </script>
 '; ?>
 
 </head>
 <body bgcolor="<?php echo $this->_tpl_vars['STYLE']['BGCOLOR2']; ?>
-">
+" style="background-color:white"	>
 <section>
 	<nav>
 		<ol class="cd-breadcrumb triangle custom-icons" >
-		<li id="ros" style="<?php echo $this->_tpl_vars['DISPLAYNONE1']; ?>
+		<li id="ros" style="<?php echo $this->_tpl_vars['DISPLAYNONE']; ?>
+;<?php echo $this->_tpl_vars['DISPLAYNONE1']; ?>
 "><a href="<?php echo $this->_tpl_vars['ROS_LINK']; ?>
 "><i class="fa fa-note" style="margin-right: 8px;"></i>Medical Issues</a></li>
 			
@@ -1455,16 +1479,18 @@ Add a counter to the multi-steps indicator
 </tr>
 <tr>
 <td>
-	<input type="submit" name="Submit" value=<?php  xl('Save Form','e','"','"');  ?>
+	<input type="submit" name="Submit" class="button" value=<?php  xl('Save Form','e','"','"');  ?>
 </td>
 <td>
 	<a href="<?php echo $this->_tpl_vars['DONT_SAVE_LINK']; ?>
-" class="link" onclick="top.restoreSession()">[<?php  xl("Don't Save","e");  ?>]</a>
+" class="button4" onclick="top.restoreSession()"><?php  xl("Don't Save","e");  ?></a>
 </td>
 
 
 </tr>
 
 </table>
+
 </body>
+
 </html>

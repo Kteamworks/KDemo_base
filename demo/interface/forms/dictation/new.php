@@ -17,6 +17,7 @@ $returnurl = $GLOBALS['concurrent_layout'] ? 'encounter_top.php' : 'patient_enco
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
 	<link rel="stylesheet" href="<?php echo $GLOBALS['webroot']; ?>/library/breadcrumbs/css/reset.css"> <!-- CSS reset -->
 	<link rel="stylesheet" href="<?php echo $GLOBALS['webroot']; ?>/library/breadcrumbs/css/style.css"> <!-- Resource style -->
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 	<script src="<?php echo $GLOBALS['webroot']; ?>/library/breadcrumbs/js/modernizr.js"></script> <!-- Modernizr -->
 		<!--[if IE 8]><script src="js/es5.js"></script><![endif]-->
 		<script src="js/jquery.min.js"></script>
@@ -30,6 +31,9 @@ $returnurl = $GLOBALS['concurrent_layout'] ? 'encounter_top.php' : 'patient_enco
 .cd-breadcrumb.triangle li {
 	font-size: 1.6rem;
 }
+dl {
+	display:none;
+}
 body {
     font-size: 1.6rem !important;
     font-family: "Source Sans Pro", sans-serif !important;
@@ -37,7 +41,7 @@ body {
 }
 </style>
 </head>
-<body class="body_top">
+<body class="body_top" style="background: white">
 <?php $newcrop_user_role=sqlQuery("select newcrop_user_role from users where username='".$_SESSION['authUser']."'");
  ?>
   <?php if($newcrop_user_role['newcrop_user_role']=='erxdoctor') { ?>
@@ -90,8 +94,8 @@ $vid=sqlStatement("SELECT form_id from forms where encounter='".$_SESSION['encou
  onclick="top.restoreSession()"><?php echo xlt('Next'); ?></a>
  </div> -->
 <br><br>
-<span class=text><?php echo xlt('Plan: '); ?></span><br><textarea cols=80 rows=24 wrap=virtual name="dictation" ></textarea><br>
-<span class=text><?php echo xlt('Additional Notes:'); ?> </span><br><textarea cols=80 rows=8 wrap=virtual name="additional_notes" ></textarea><br><br><br>
+<span class=text><?php echo xlt('Plan: '); ?></span><br><textarea class="form-control" wrap=virtual name="dictation" ></textarea><br>
+<span class=text><?php echo xlt('Additional Notes:'); ?> </span><br><textarea class="form-control"  wrap=virtual name="additional_notes" ></textarea><br><br><br>
  Review After: <!--<input type="text" name="reviewafter"><br><br>-->
  <?php
     echo "<input type='text' size='16' name='form_date_collected' id='form_date_collected'" .

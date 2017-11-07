@@ -291,7 +291,7 @@ if (isset($_SESSION['LAST_ACTIVITY'])  && isset($_SESSION['visitID']) && (time()
         <div class="alert alert-success alert-dismissable">
             <i class="fa  fa-check-circle"></i>
             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-            <b>Success!</b> New visit has been created with visit ID <?php echo $_SESSION['visitID']; ?> ?>
+            <b>Success!</b> New visit has been created with visit ID <?php echo $_SESSION['visitID']; ?> 
         </div>
 		<?php
 }

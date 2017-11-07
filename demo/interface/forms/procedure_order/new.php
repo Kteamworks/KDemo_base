@@ -283,7 +283,12 @@ $enrow = sqlQuery("SELECT p.fname, p.mname, p.lname, fe.date FROM " .
 <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css" />
 
 <style>
-
+dl {
+	display:none;
+}
+div.faq:nth-of-type(odd) {
+    background: #e0e0e0;
+}
 td {
  font-size:10pt;
 }
@@ -450,7 +455,7 @@ function validate(f) {
 </script>
 
 </head>
-<body class="body_top">
+<body class="body_top" style="background: white">
 <?php $newcrop_user_role=sqlQuery("select newcrop_user_role from users where username='".$_SESSION['authUser']."'");
  ?>
   <?php if($newcrop_user_role['newcrop_user_role']=='erxdoctor') { ?>
@@ -654,7 +659,40 @@ generate_form_field(array('data_type'=>1,'field_id'=>'order_status',
 					create: false
 				});
 				</script>
+				<label>Frequently ordered tests</label>
+			<?php $forderqry = "SELECT a.*,b.* FROM
+(select a.provider_id,a.code_Text,count(a.code_text) No_of_tests,a.code
+from billing a, codes c,users u
+where a.code_type='Lab Test' and a.code_text=c.code and a.provider_id=u.id
+and a.provider_id=35 
+group by a.code_text
+order by No_of_tests desc)a
+LEFT JOIN
+
+(
+SELECT poc.procedure_name,poc.procedure_order_id,pt.procedure_code,pt.name,pt.procedure_type_id
+FROM procedure_order_code poc, procedure_type pt, procedure_order po
+WHERE  pt.procedure_code=poc.procedure_code and po.procedure_order_id=poc.procedure_order_id
+AND po.provider_id=?
+)b ON a.code=b.procedure_name 
+group by a.code_text
+order by a.no_of_tests desc";
+ $newcrop_user_id=sqlQuery("select * from users where username='".$_SESSION['authUser']."'");
+
+$fqry = sqlStatement($forderqry,array($newcrop_user_id['id']));
+
+while($forders = sqlFetchArray($fqry)) {
+	
+?>
+<div class="faq" style="margin-bottom: 10px;">
+<input type="checkbox" value="<?php echo $forders['procedure_type_id'] ?>" name="form_proc_type[]" style="    display: inline-block;
+    width: 75%;
+    float: right;"><?php echo $forders['code_Text']; ?>
+</div>
+<?php } ?>
 			</div>
+			
+
 			<td>
 </tr>
 <?php
@@ -734,7 +772,7 @@ if ($qoe_init_javascript)
 </table>
 
 <p>
-<input type='button' value='<?php echo xla('Add Procedure'); ?>' onclick="addProcLine()" />
+<!-- <input type='button' value='<?php echo xla('Add Procedure'); ?>' onclick="addProcLine()" /> -->
 &nbsp;
 <input type='submit' name='bn_save' value='<?php echo xla('Save'); ?>' onclick='transmitting = false;' />
 &nbsp;

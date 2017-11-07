@@ -124,11 +124,11 @@ td,th {
 {/literal}
 
 </head>
-<body bgcolor="{$STYLE.BGCOLOR2}">
-<section>
+<body bgcolor="{$STYLE.BGCOLOR2}" style="background-color:white"> 
+<section  style="    padding-left: 8px;">
 	<nav>
 		<ol class="cd-breadcrumb triangle custom-icons">
-		<li id="vitals" style="{$DISPLAYNONE1};"><a><i class="fa fa-note" style="margin-right: 8px;"></i>Medical Issues</a></li>
+		<li id="vitals" style="{$DISPLAYNONE};{$DISPLAYNONE1};"><a><i class="fa fa-note" style="margin-right: 8px;"></i>Medical Issues</a></li>
 			<li id="visit" style="{$DISPLAYNONE};{$DISPLAYNONE1};"><a><i class="fa fa-note" style="margin-right: 8px;"></i>Visit Notes</a></li>
 			<li class="current" style="{$DISPLAYNONE1};"></i><em>Vitals</em></li>
 			<li id="ros" style="{$DISPLAYNONE1};"><a><i class="fa fa-note" style="margin-right: 8px;"></i>Review of systems</a></li>
@@ -318,6 +318,32 @@ function addGCSelector()
 }
 
 $(document).ready(function(){
+
+ $( "#bps_input" ).blur(function () {
+var bp = $( "#bps_input" ).val();
+if (bp > 130) {
+$( "span" ).remove();
+ $( "#bps_input" ).after("<span style='color:#cc0000;'>&#8226; Above range </span>");
+}
+else if (bp < 120) {
+$( "span" ).remove();
+ $( "#bps_input" ).after("<span style='color:#cc0000;'>&#8226; Below range </span>");
+}
+else {
+$( "span" ).remove();
+}
+});
+ $( "#bpd_input" ).blur(function () {
+var bp = $( "#bpd_input" ).val();
+if (bp > 80) {
+$( "span" ).remove();
+ $( "#bpd_input" ).after("<span style='color:#cc0000;'>&#8226; Above range </span>");
+}
+else {
+$( "span" ).remove();
+}
+});
+ $("dl").css('display','none');
     $("#growthchart").click(function() { ShowGrowthchart(); });
     $("#pdfchart").click(function() { ShowGrowthchart(1); });
     $("#htmlchart").click(function() { ShowGrowthchart(2); });
