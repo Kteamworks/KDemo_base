@@ -944,9 +944,11 @@ $('#form_DOB').after('<span class="input-group-addon"><span class="glyphicon gly
  $('#form_DOB').css("height","28px");
 
  $( "#form_DOB" ).blur(function () { // birthday is a date
+
    var today = new Date();
 
    var dateString = $( "#form_DOB" ).val();
+    if(dateString !== "") {
     var birthDate = new Date(dateString);
     var age = today.getFullYear() - birthDate.getFullYear();
     var m = today.getMonth() - birthDate.getMonth();
@@ -955,15 +957,25 @@ $('#form_DOB').after('<span class="input-group-addon"><span class="glyphicon gly
     }
 if(age !== null) {
      document.getElementById('form_age').value = age;
+	 	document.getElementById('form_age').readOnly = true;
 //document.getElementById('form_age').setAttribute("disabled","true");
 }
+	}
 });
  $( "#form_age" ).blur(function () {
+	 if($( "#form_age" ).is('[readonly]')) {
+		 $(this).blur();
+	 } else {
     var today = new Date();
     var currentYear = today.getFullYear() ;
     var age = parseInt(document.getElementById('form_age').value, 10);
+
+	    if(document.getElementById('form_age').value !== '') {
     var birthdayPast = 0;
     document.getElementById('form_DOB').value =  (currentYear - age - (birthdayPast?0:1) )+"-1-1";  
+	document.getElementById('form_DOB').readOnly = true;
+		}
+	 }
 });
 $('#form_phone_cell').blur(function() {
     if (!$.isNumeric(this.value))

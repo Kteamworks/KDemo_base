@@ -9,15 +9,7 @@ $fake_register_globals=false;
 //
 
  require_once("../../globals.php");
-require_once("$srcdir/forms.inc");
-require_once("$srcdir/calendar.inc");
-require_once("$srcdir/acl.inc");
-require_once("$srcdir/formatting.inc.php");
-require_once("$srcdir/patient.inc");
-require_once("$srcdir/amc.php");
-require_once $GLOBALS['srcdir'].'/ESign/Api.php';
-require_once("$srcdir/../controllers/C_Document.class.php");
-
+ require_once("$srcdir/patient.inc");
    if ($GLOBALS['concurrent_layout'] && isset($_GET['set_pid'])) {
   include_once("$srcdir/pid.inc");
   setpid($_GET['set_pid']);
@@ -41,18 +33,14 @@ require_once("$srcdir/../controllers/C_Document.class.php");
 <style>
 #content {
     margin-left: 10%;
-}
-#partable {
-	margin-left: 10%;
-}
-table {
-	padding: 10px;
+    margin-top: 15%;
 }
 </style>
 </head>
 
 <body>
 <div class="container">
+
 <div class="row">
  <div id="content" class="site-content col-md-12">
  
@@ -78,7 +66,7 @@ table {
             </span>
             <span onclick="javascript: window.location.href='{{url('/knowledgebase')}}';">
                 <a href="../../main/finder/update_pending.php?encounter=<?php echo $_GET['encounter']; ?>&orderid=<?php echo $_GET['orderid'] ?>&name=Pending" class="widgetrowitem defaultwidget" style="background-image: URL('../../../images/knowledgebase.png');">
-                    <span class="widgetitemtitle">Pending Tests</span>
+                    <span class="widgetitemtitle">Panding Tests</span>
                 </a>
             </span>
 			            <span onclick="javascript: window.location.href='{{url('/knowledgebase')}}';">
@@ -100,47 +88,6 @@ table {
     </div>
 	</div>
 	</div>
-<div class="row">
-<div class="col-md-12">
-<?php
-
-  if ($result = getFormByEncounter($pid, $_GET['encounter'], "id, date, form_id, form_name, formdir, user, deleted")) {
-	  
-    echo "<table class='table table-responsive table-striped' id='partable'>";
-
-    foreach ($result as $iter) {
-
-        $formdir = $iter['formdir'];
-
-        // skip forms whose 'deleted' flag is set to 1
-        if ($iter['deleted'] == 1) continue;
-
- 
-
-        $user = getNameFromUsername($iter['user']);
-
-        $form_name = ($formdir == 'newpatient') ? xl('Patient Visit') : xl_form_title($iter['form_name']);
-
-
-        // Use the form's report.php for display.  Forms with names starting with LBF
-        // are list-based forms sharing a single collection of code.
-        //
-        if (substr($formdir,0,3) == 'LBF') {
-          include_once($GLOBALS['incdir'] . "/forms/LBF/report.php");
-          call_user_func("lbf_report", $pid, $encounter, 2, $iter['form_id'], $formdir);
-        }
-        else  {
-          include_once($GLOBALS['incdir'] . "/forms/procedure_order/report.php");
-          call_user_func($formdir . "_report", $pid, $encounter, 2, $iter['form_id']);
-        }
-
-    }
-    echo "</table>";
-}
-?>
-</div>
-</div>
-
 
 <script type="text/javascript"> $(function(){ $('.dialogerror, .dialoginfo, .dialogalert').fadeIn('slow');$("form").bind("submit", function(e){$(this).find("input:submit").attr("disabled", "disabled");});});</script>
 <script type="text/javascript" >try {if (top.location.hostname != self.location.hostname) { throw 1; }} catch (e) { top.location.href = self.location.href; }</script>

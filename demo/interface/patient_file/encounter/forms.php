@@ -367,10 +367,12 @@ if ( $esign->isButtonViewable() ) {
 <br/>
 
 <?php
+
   if ($result = getFormByEncounter($pid, $encounter, "id, date, form_id, form_name, formdir, user, deleted")) {
     echo "<table width='100%' id='partable'>";
 	$divnos=1;
     foreach ($result as $iter) {
+
         $formdir = $iter['formdir'];
 
         // skip forms whose 'deleted' flag is set to 1

@@ -93,7 +93,7 @@ while ($row = sqlFetchArray($res)) {
 <script language="JavaScript">
 
 $(document).ready(function() {
-
+	
  // Initializing the DataTable.
  //
  var oTable = $('#pt_table').dataTable( {
@@ -238,17 +238,15 @@ if( e.button == 2 ) {
   }
   else {
    top.restoreSession();
-<?php if ($GLOBALS['concurrent_layout']) { ?>
 
-document.location.href = "../../patient_file/summary/demographics.php?set_pid=" + newpid;
-   
-<?php } else { ?>
-   top.location.href = "../../patient_file/patient_file.php?set_pid=" + newpid;
-<?php } ?>
   }
 	   }
  $(document).ready(function() {
+
     $('table#pt_table.display.datatable tr').live("click", function() {
+		if($(this).hasClass('PT_INACTIVE')) {
+        e.preventDefault();
+		} else {
 		var name=$(this).text();
 		var formname='all';
 		top.restoreSession();
@@ -276,6 +274,7 @@ document.location.href = "../../patient_file/summary/demographics.php?set_pid=" 
 		top.restoreSession();
 		document.location.href="../../forms/admit/delete.php?set_pid=" + newpid+'&encounter='+encounter+'&formname='+formname;
 		}*/
+		}
     });
 
 
@@ -405,7 +404,7 @@ if (isset($_SESSION['LAST_ACTIVITY_nurse'])  && isset($_SESSION['nurseVisit']) &
   </tr>
  </thead>
  <tbody>
-  <tr>
+  <tr onclick="">
    <!-- Class "dataTables_empty" is defined in jquery.dataTables.css -->
    <td colspan="<?php echo $colcount; ?>" class="dataTables_empty">...</td>
   </tr>

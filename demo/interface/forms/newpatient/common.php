@@ -585,7 +585,7 @@ while ($irow = sqlFetchArray($ires)) {
  ?>
   <?php if($newcrop_user_role['newcrop_user_role']=='erxdoctor') { ?>
   <div style = 'float:left; margin-left:8px;margin-top:0px'>
-      <a href="javascript:saveClicked();" class="css_button link_submit"><span><?php echo xlt('Save'); ?></span></a>
+      <a href="javascript:saveClicked();" class="btn btn-primary link_submit" style="margin:10px"><span><?php echo xlt('Save'); ?></span></a>
     </div>
 	  <?php }else{?>
     <div style="position: fixed;
@@ -598,7 +598,7 @@ right: 20px;">
     <div >
   <?php if ($GLOBALS['concurrent_layout']) { ?>
       <a href="<?php echo "$rootdir/patient_file/encounter/encounter_top.php"; ?>"
-        class="btn btn-warning" onClick="top.restoreSession()"><span><?php echo xlt('Cancel'); ?></span></a>
+        class="btn btn-default" style="margin:10px" onClick="top.restoreSession()"><span><?php echo xlt('Cancel'); ?></span></a>
   <?php } else { ?>
       <a href="<?php echo "$rootdir/patient_file/encounter/patient_encounter.php"; ?>"
         class="btn btn-warning" target='Main' onClick="top.restoreSession()">

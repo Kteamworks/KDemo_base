@@ -813,7 +813,7 @@ if ($GLOBALS['athletic_team']) {
 	   <?php if($newcrop_user_role['newcrop_user_role']=='erxdoctor'|| $newcrop_user_role['newcrop_user_role']=='erxnurse') {?>
 	  <?php genMiscLink('RTop','fin','0',xl('My Patients'),'main/finder/p_dynamic_finder.php'); ?>
 	   <?php }?>
-	  <?php genMiscLink('RTop','fin','0',xl('IP Specific'),'main/finder/p_dynamic_finder_ip.php'); ?>
+	  <?php genMiscLink('RTop','fin','0',xl('IN Patient'),'main/finder/p_dynamic_finder_ip.php'); ?>
       <?php  if (acl_check('admin', 'super') || $newcrop_user_role['newcrop_user_role']=='erxrep') genTreeLink('RTop','new',($GLOBALS['full_new_patient_form'] ? xl('New/Search') : xl('New'))); ?>
       <?php   if (acl_check('admin', 'super') || $newcrop_user_role['newcrop_user_role']=='erxrep' || $newcrop_user_role['newcrop_user_role']=='erxdoctor') genTreeLink('RTop','dem',xl('Summary')); ?>
 	  <?php   if (acl_check('admin', 'super') || $newcrop_user_role['newcrop_user_role']=='erxrep') genTreeLink('RTop','op',xl('OPD Card')); ?>
@@ -1072,7 +1072,7 @@ if (!empty($reg)) {
               <i class="fa fa-angle-left pull-right"></i>
             </span></a>
     <ul class="treeview-menu">
-	  <?php genMiscLink('RTop','fin','0',xl('Lab Specific'),'main/finder/p_dynamic_finder_lab.php'); ?>
+	  <?php genMiscLink('RTop','fin','0',xl('Lab Patients'),'main/finder/p_dynamic_finder_lab.php'); ?>
 	   <?php genMiscLink('RTop','fin','0',xl('Lab Review'),'main/finder/p_dynamic_finder_lab_report_review.php'); ?>
 	   <?php genMiscLink('RTop','fin','0',xl('Lab Report'),'main/finder/p_dynamic_finder_lab_report.php'); ?>
 	     <?php genTreeLink('RTop','oro',xl('Outside Lab')); ?>
