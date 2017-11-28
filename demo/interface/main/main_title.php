@@ -110,8 +110,10 @@ $res = sqlQuery("select * from users where username='".$_SESSION{"authUser"}."'"
 	<a href="#" class="sidebar-toggle"  href="main_title.php" id='showMenuLink' title="Hide Sidebar" onclick='javascript:showhideMenu();return false;'>
         <span class="sr-only"><?php xl('Hide Menu','e'); ?></span>
       </a>
+	  <?php if($res['newcrop_user_role'] == 'erxrep') { ?>
 		<a href='' class="css_button_small" style="margin:14px;vertical-align:top;" id='new0' onClick=" return top.window.parent.left_nav.loadFrame2('new0','RTop','new/new.php')">
 		<span><?php echo htmlspecialchars( xl('NEW PATIENT'), ENT_QUOTES); ?></span></a>
+	  <?php } ?>
     </td>
     <td>
             <a href='' class="css_button_small" style="margin:0px;vertical-align:top;display:none;" id='clear_active' onClick="javascript:parent.left_nav.clearactive();return false;">

@@ -39,6 +39,7 @@ class C_FormROS extends Controller {
 		$this->assign("referral_LINK",$GLOBALS['webroot'] . "/interface/patient_file/transaction/add_transaction.php");
 		$this->assign("admission_LINK",$GLOBALS['webroot'] . "/interface/patient_file/encounter/admit_doctor_form.php");
 		$this->assign("summary_LINK",$GLOBALS['webroot'] . "/interface/patient_file/summary/summary_print.php");
+		$this->assign("redirect_LINK",$GLOBALS['webroot'] . "/interface/patient_file/summary/nurse_checkout.php");
 		$this->assign("STYLE", $GLOBALS['style']);
 		$res = sqlQuery("select * from users where username='".$_SESSION{"authUser"}."'");
 		if($res['newcrop_user_role'] == 'erxnurse'){

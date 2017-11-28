@@ -1,7 +1,7 @@
-<?php /* Smarty version 2.6.2, created on 2017-10-18 11:00:27
+<?php /* Smarty version 2.6.2, created on 2017-11-27 12:44:34
          compiled from C:%5Cxampp%5Chtdocs%5CKDemo_base%5Cdemo%5Cinterface%5Cforms%5Cros/templates/ros/general_new.html */ ?>
 <?php require_once(SMARTY_DIR . 'core' . DIRECTORY_SEPARATOR . 'core.load_plugins.php');
-smarty_core_load_plugins(array('plugins' => array(array('function', 'xl', 'C:\xampp\htdocs\KDemo_base\demo\interface\forms\ros/templates/ros/general_new.html', 612, false),array('function', 'html_radios', 'C:\xampp\htdocs\KDemo_base\demo\interface\forms\ros/templates/ros/general_new.html', 621, false),)), $this); ?>
+smarty_core_load_plugins(array('plugins' => array(array('function', 'xl', 'C:\xampp\htdocs\KDemo_base\demo\interface\forms\ros/templates/ros/general_new.html', 632, false),array('function', 'html_radios', 'C:\xampp\htdocs\KDemo_base\demo\interface\forms\ros/templates/ros/general_new.html', 641, false),)), $this); ?>
 <html>
 <head>
 <?php html_header_show(); ?>
@@ -589,7 +589,23 @@ Add a counter to the multi-steps indicator
 $(document).ready(function(){
  $("dl").css(\'display\',\'none\');
  });
- </script>
+
+				    function login() {
+				$.ajax({
+				type: \'POST\',
+                url: \'nurse_checkout.php\',
+    
+                data: \'hello\',
+        
+                success: function(response) {
+alert(\'success\');
+		
+				}
+        });
+
+  
+    }
+	</script>
 '; ?>
 
 </head>
@@ -636,6 +652,12 @@ $(document).ready(function(){
 ;<?php echo $this->_tpl_vars['DISPLAYNONE1']; ?>
 ;"><a href="<?php echo $this->_tpl_vars['summary_LINK']; ?>
 ">Summary</a></li>
+		<li>
+			<a href="<?php echo $this->_tpl_vars['redirect_LINK']; ?>
+"  style="background-color: #dd4b39 !important;
+color: #fff;<?php echo $this->_tpl_vars['DISPLAYNONE1']; ?>
+;">
+check out</a></li>
 		</ol>
 	</nav>
 </section>

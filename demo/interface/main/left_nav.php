@@ -804,14 +804,14 @@ if ($GLOBALS['athletic_team']) {
               <i class="fa fa-angle-left pull-right"></i>
             </span></a>
     <ul class="treeview-menu">
-      <?php genMiscLink('RTop','fin','0',xl('Patients'),'main/finder/dynamic_finder.php'); ?>
+      <?php if($newcrop_user_role['newcrop_user_role']=='erxdoctor') { genMiscLink('RTop','fin','0',xl('My Patients'),'main/finder/dp_dynamic_finder.php'); } else { genMiscLink('RTop','fin','0',xl('Patients'),'main/finder/dynamic_finder.php'); } ?>
 	   <?php if (acl_check('admin', 'super') || $newcrop_user_role['newcrop_user_role']=='erxrep') genMiscLink('RTop','fin','0',xl('Todays Patients'),'main/finder/p_tp_dynamic_finder.php'); ?>
 	   <?php if($newcrop_user_role['newcrop_user_role']=='erxcash'){?>
 	   <?php genMiscLink('RTop','fin','0',xl('Todays Patients'),'main/finder/p_tp_dynamic_finder.php'); ?>
 	      <?php genMiscLink('RTop','fin','0',xl('Pending Patients'),'main/finder/pa_dynamic_finder.php'); ?>
 	   <?php  }  ?>
 	   <?php if($newcrop_user_role['newcrop_user_role']=='erxdoctor'|| $newcrop_user_role['newcrop_user_role']=='erxnurse') {?>
-	  <?php genMiscLink('RTop','fin','0',xl('My Patients'),'main/finder/p_dynamic_finder.php'); ?>
+	  <?php genMiscLink('RTop','fin','0',xl('Todays Patients'),'main/finder/p_dynamic_finder.php'); ?>
 	   <?php }?>
 	  <?php genMiscLink('RTop','fin','0',xl('IN Patient'),'main/finder/p_dynamic_finder_ip.php'); ?>
       <?php  if (acl_check('admin', 'super') || $newcrop_user_role['newcrop_user_role']=='erxrep') genTreeLink('RTop','new',($GLOBALS['full_new_patient_form'] ? xl('New/Search') : xl('New'))); ?>
@@ -1089,7 +1089,7 @@ if (!empty($reg)) {
   </li>
   <?php }?>
   <?php
-  $newcrop_user_role=sqlQuery("select newcrop_user_role from users where username='".$_SESSION['authUser']."'");
+
   if($newcrop_user_role['newcrop_user_role'] && $GLOBALS['erx_enable']) { ?>
   <li><a class="collapsed" id="feeimg" ><span><?php xl('New Crop','e') ?></span></a>
     <ul>

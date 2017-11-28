@@ -585,7 +585,23 @@ Add a counter to the multi-steps indicator
 $(document).ready(function(){
  $("dl").css('display','none');
  });
- </script>
+
+				    function login() {
+				$.ajax({
+				type: 'POST',
+                url: 'nurse_checkout.php',
+    
+                data: 'hello',
+        
+                success: function(response) {
+alert('success');
+		
+				}
+        });
+
+  
+    }
+	</script>
 {/literal}
 </head>
 <body bgcolor="{$STYLE.BGCOLOR2}" style="background-color:white"	>
@@ -603,6 +619,10 @@ $(document).ready(function(){
 			<li id="referral"  style="{$DISPLAYNONE};{$DISPLAYNONE1};"><a href="{$referral_LINK}"><i class="fa fa-note" style="margin-right: 8px;"></i>Referral</a></li>
 			<li id="admission"  style="{$DISPLAYNONE};{$DISPLAYNONE1};"><a href="{$admission_LINK}"><i class="fa fa-note" style="margin-right: 8px;"></i>Admission</a></li>
 			<li id="summary"  style="{$DISPLAYNONE};{$DISPLAYNONE1};"><a href="{$summary_LINK}">Summary</a></li>
+		<li>
+			<a href="{$redirect_LINK}"  style="background-color: #dd4b39 !important;
+color: #fff;{$DISPLAYNONE1};">
+check out</a></li>
 		</ol>
 	</nav>
 </section>

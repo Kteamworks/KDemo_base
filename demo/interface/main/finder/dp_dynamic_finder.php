@@ -24,7 +24,7 @@ $header0 = "";
 $header  = "";
 $coljson = "";
 $res = sqlStatement("SELECT option_id, title FROM list_options WHERE " .
-  "list_id = 'DoctorSpecific' ORDER BY seq, title");
+  "list_id = 'DoctorPatients' ORDER BY seq, title");
 while ($row = sqlFetchArray($res)) {
   $colname = $row['option_id'];
   $title = xl_list_label($row['title']);
@@ -100,7 +100,7 @@ $(document).ready(function() {
   "bProcessing": true,
   // next 2 lines invoke server side processing
   "bServerSide": true,
-  "sAjaxSource": "p_dynamic_finder_ajax.php",
+  "sAjaxSource": "dp_dynamic_finder_ajax.php",
   // sDom invokes ColReorderWithResize and allows inclusion of a custom div
   "sDom"       : 'Rlfrt<"mytopdiv">ip',
   // These column names come over as $_GET['sColumns'], a comma-separated list of the names.
@@ -302,32 +302,17 @@ $row2=  sqlFetchArray($row1);
 $providerid=$row2['id'];
 $today = date('Y-m-d',strtotime("+0 days"));
 
-if($row2['newcrop_user_role'] == 'erxdoctor') {
 $query_seen = "select a.*, b.*,round(((b.pending_patient/a.total_no_of_patients )*100),0)pending_percent,round((((a.total_no_of_patients-b.pending_patient)/a.total_no_of_patients)*100),0)seen_percent, (a.total_no_of_patients-b.pending_patient)no_of_examined_patients
 from
 (SELECT count(b.id) total_no_of_patients 
 FROM patient_data a,form_encounter b 
-where a.pid=b.pid and b.provider_id='".$providerid."'  and date(b.date)=date('".$today."') )a,
+where a.pid=b.pid and b.provider_id='".$providerid."'  )a,
 
 (SELECT count(b.id)pending_patient
 FROM patient_data a,form_encounter b 
-where a.pid=b.pid and b.provider_id='".$providerid."'  and date(b.date)=date('".$today."') 
+where a.pid=b.pid and b.provider_id='".$providerid."'  
 and out_to is null and out_time is  null)b";
-} else if($row2['newcrop_user_role'] == 'erxnurse') {
-	$query_seen = 
-	 "select a.*, b.*,round(((b.pending_patient/a.total_no_of_patients)*100),0) pending_percent,
-round((((a.total_no_of_patients-b.pending_patient)/a.total_no_of_patients)*100),0)seen_percent, 
-(a.total_no_of_patients-b.pending_patient)no_of_examined_patients
-from
-(SELECT count(b.id) total_no_of_patients 
-FROM patient_data a,form_encounter b 
-where a.pid=b.pid and date(b.date)=date('".$today."') )a,
 
-(SELECT count(b.id)pending_patient
-FROM patient_data a,form_encounter b 
-where a.pid=b.pid and date(b.date)=date('".$today."') 
- and nurse_out_time is null)b";
-}
 //$query_seen = "SELECT  coalesce(count(b.id),0) total_no_of_patients FROM patient_data a,form_encounter b where a.pid=b.pid and b.provider_id='".$providerid."'  and date(b.date)='".$today."' and b.out_to='Examined By'";
 $res_seen = sqlStatement($query_seen);
 $res_seen1 = sqlFetchArray($res_seen);
@@ -351,7 +336,7 @@ if (isset($_SESSION['LAST_ACTIVITY_nurse'])  && isset($_SESSION['nurseVisit']) &
           <div class="info-box bg-yellow">
             <span class="info-box-icon"><i class="ion ion-ios-people-outline"></i></span>
             <div class="info-box-content">
-              <span class="info-box-text">Todays Patients</span>
+              <span class="info-box-text">All Patients</span>
 			
               <span class="info-box-number"><?php  echo $res_seen1['total_no_of_patients'];  ?></span>
 
