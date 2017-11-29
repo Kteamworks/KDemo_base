@@ -51,6 +51,20 @@ require_once("../../globals.php");
 require_once("../../../library/options.inc.php");
 include_once($GLOBALS["srcdir"] . "/api.inc");
 
+$due=sqlQuery("select sum(fee) as total from billing where pid=$pid and encounter=$encounter and activity=1");
+$total = $due['total'];
+$paid = sqlQuery("select sum(amount1+amount2) as paid from payments where pid=$pid and encounter=$encounter");
+$amount = $paid['paid'];
+if($total > $amount) {
+ $check=sqlQuery("select sum(grpbill) as grp,count(code_type) as test from billing where pid=$pid and encounter=$encounter and code_type='Lab Test'");
+ if($check['test'] > $check['grp'])
+ {
+ echo ("<script>alert('Payment is Pending')
+window.location.href='../../orders/orders_results.php';
+</script>");
+ } 
+}
+
 // Set the path to this script
 $path_to_this_script = $rootdir . "/patient_file/summary/labdata.php";
 $encounter=$GLOBALS['encounter'];

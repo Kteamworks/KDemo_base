@@ -2,6 +2,7 @@
 
 require_once ($GLOBALS['fileroot'] . "/library/classes/Controller.class.php");
 require_once ($GLOBALS['fileroot'] . "/library/forms.inc");
+
 require_once("FormROS.class.php");
 
 class C_FormROS extends Controller {
@@ -30,10 +31,10 @@ class C_FormROS extends Controller {
 		    $this->assign("ROS_LINK",$GLOBALS['webroot'] . "/interface/patient_file/summary/stats_full.php");
 			
 		$this->assign("LAB_LINK",$GLOBALS['webroot'] . "/interface/patient_file/encounter/load_form.php?formname=procedure_order");
-		$this->assign("prescription_LINK",$GLOBALS['webroot'] . "/controller.php?prescription&edit&id=&pid=".$pid);
+		$this->assign("prescription_LINK",$GLOBALS['webroot'] . "/controller.php?prescription&edit&id=&pid=".$_SESSION['pid']);
 		if($plid2 == null) {
 			$this->assign("plan_LINK",$GLOBALS['webroot'] . "/interface/patient_file/encounter/load_form.php?formname=dictation");
-		}else{
+		} else {
 			$this->assign("plan_LINK",$GLOBALS['webroot'] . "/interface/patient_file/encounter/view_form.php?formname=formname=dictation&id=".$plid2);
 		}
 		$this->assign("referral_LINK",$GLOBALS['webroot'] . "/interface/patient_file/transaction/add_transaction.php");

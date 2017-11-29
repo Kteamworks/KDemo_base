@@ -5,7 +5,7 @@
 // of the License, or (at your option) any later version.
 
 include_once("../../globals.php");
-
+require_once ($GLOBALS['fileroot'] . "/library/patient.inc");
 ?>
 <html>
 <head>

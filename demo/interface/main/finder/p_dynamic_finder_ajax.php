@@ -178,7 +178,11 @@ $query = "SELECT $sellist FROM patient_data a,form_encounter b where a.pid=b.pid
 $res = sqlStatement($query);
 while ($row = sqlFetchArray($res)) {
     // Each <tr> will have an ID identifying the patient.
-  if($row['out_to'] == 'Examined By') {
+	if($row2["newcrop_user_role"]=="erxnurse" && isset($row['nurse_out_time']))
+{
+	$arow = array('DT_RowId' => 'pid_' . $row['pid'],'DT_RowClass' => 'PT_INACTIVE');
+}
+  else if($row2["newcrop_user_role"]=="erxdoctor" && $row['out_to'] == 'Examined By') {
 	    $arow = array('DT_RowId' => 'pid_' . $row['pid'],'DT_RowClass' => 'PT_INACTIVE');
   }
   else {
