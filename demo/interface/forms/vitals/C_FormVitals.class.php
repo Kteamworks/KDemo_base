@@ -15,7 +15,6 @@ class C_FormVitals extends Controller {
 		$id=sqlStatement("SELECT id from form_encounter where encounter='".$_SESSION['encounter']."'");
 
 		$id1=sqlFetchArray($id);
-
 	$id2=$id1['id'];
 	$pid=$_SESSION['pid'];
 	$rid=sqlStatement("SELECT form_id from forms where encounter='".$_SESSION['encounter']."' and formdir='ros' order by form_id desc limit 1 ");
@@ -60,10 +59,10 @@ $vid=sqlStatement("SELECT form_id from forms where encounter='".$_SESSION['encou
     	$this->assign("STYLE", $GLOBALS['style']);
 		$res = sqlQuery("select * from users where username='".$_SESSION{"authUser"}."'");
 		if($res['newcrop_user_role'] == 'erxnurse'){
-			$encounter=$_GET["encounter"] ? $_GET["encounter"] : $GLOBALS['encounter'];
+			$encounter=$_SESSION["encounter"] ? $_SESSION["encounter"] : $GLOBALS['encounter'];
 setencounter($encounter);
 		$this->assign("DISPLAYNONE", "display:none");
-				$this->assign("ENCOUNTER", $_GET['encounter']);
+				$this->assign("ENCOUNTER", $_SESSION['encounter']);
 		}
 		if($res['newcrop_user_role'] != 'erxnurse' && $res['newcrop_user_role'] != 'erxdoctor' ){
 		$this->assign("DISPLAYNONE1", "display:none");

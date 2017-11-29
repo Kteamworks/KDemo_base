@@ -356,10 +356,10 @@ if (isset($_SESSION['LAST_ACTIVITY_nurse'])  && isset($_SESSION['nurseVisit']) &
               <span class="info-box-number"><?php  echo $res_seen1['total_no_of_patients'];  ?></span>
 
               <div class="progress">
-                <div class="progress-bar" style="width: <?php echo $res1['Total_no_of_patients']; ?>%"></div>
+                <div class="progress-bar" style="width: <?php echo $res_seen1['total_no_of_patients']; ?>%"></div>
               </div>
                   <span class="progress-description">
-                    <?php echo $res1['Total_no_of_patients']; ?>% Increase since yesterday
+                    <?php echo $res_seen1['total_no_of_patients']; ?>% Increase since yesterday
                   </span>
             </div>
             <!-- /.info-box-content -->
