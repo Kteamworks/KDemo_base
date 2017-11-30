@@ -1,7 +1,7 @@
-<?php /* Smarty version 2.6.2, created on 2017-11-27 12:44:34
+<?php /* Smarty version 2.6.2, created on 2017-11-30 08:33:03
          compiled from C:%5Cxampp%5Chtdocs%5CKDemo_base%5Cdemo%5Cinterface%5Cforms%5Cros/templates/ros/general_new.html */ ?>
 <?php require_once(SMARTY_DIR . 'core' . DIRECTORY_SEPARATOR . 'core.load_plugins.php');
-smarty_core_load_plugins(array('plugins' => array(array('function', 'xl', 'C:\xampp\htdocs\KDemo_base\demo\interface\forms\ros/templates/ros/general_new.html', 632, false),array('function', 'html_radios', 'C:\xampp\htdocs\KDemo_base\demo\interface\forms\ros/templates/ros/general_new.html', 641, false),)), $this); ?>
+smarty_core_load_plugins(array('plugins' => array(array('function', 'xl', 'C:\xampp\htdocs\KDemo_base\demo\interface\forms\ros/templates/ros/general_new.html', 635, false),array('function', 'html_radios', 'C:\xampp\htdocs\KDemo_base\demo\interface\forms\ros/templates/ros/general_new.html', 644, false),)), $this); ?>
 <html>
 <head>
 <?php html_header_show(); ?>
@@ -271,7 +271,10 @@ Basic Style
     margin: 0 1em;
   }
   .cd-breadcrumb li > *, .cd-multi-steps li > * {
-    font-size: 1.6rem;
+    font-size: 1.3rem;
+  }
+    .cd-breadcrumb li > em, .cd-multi-steps li > em {
+    font-size: 1.3rem !important;
   }
 }
 
@@ -298,7 +301,7 @@ Triangle breadcrumb
 
   .cd-breadcrumb.triangle li > * {
     position: relative;
-    padding: 1em .4em 1em 1.2em;
+    padding: 1.5em .6em 1em 1.5em;
     color: #2c3f4c;
     background-color: #edeff0;
     /* the border color is used to style its ::after pseudo-element */

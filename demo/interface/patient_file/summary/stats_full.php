@@ -26,7 +26,10 @@ require_once($GLOBALS['srcdir'].'/options.inc.php');
 $encounter=$_GET["encounter"] ? $_GET["encounter"] : $GLOBALS['encounter'];
 $e=$_GET["encounter"] ? $_GET["encounter"] : $GLOBALS['encounter'];
 setencounter($encounter);
- include_once("$srcdir/pid.inc");
+  if ($GLOBALS['concurrent_layout'] && isset($_GET['set_pid'])) {
+  include_once("$srcdir/pid.inc");
+  setpid($_GET['set_pid']);
+ }
  // Check authorization.
  if (acl_check('patients','med')) {
   $tmp = getPatientData($pid, "squad");
@@ -164,6 +167,7 @@ $(window).load(function() {
 </head>
 
 <body class="body_top">
+
 <?php $rid=sqlStatement("SELECT form_id from forms where encounter='".$_SESSION['encounter']."' and formdir='ros' order by form_id desc limit 1 ");
 		$rid1=sqlFetchArray($rid);
 		$rid2=$rid1['form_id'];

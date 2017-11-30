@@ -949,6 +949,7 @@ if (!empty($reg)) {
       <?php// if ($GLOBALS['use_charges_panel']) genTreeLink('RBot','cod',xl('Charges')); ?>
 	  <?php  $newcrop_user_role=sqlQuery("select newcrop_user_role from users where username='".$_SESSION['authUser']."'");
   if($newcrop_user_role['newcrop_user_role']=='erxcash'||acl_check('admin', 'super')){
+	  
   ?>
 	 <?php genMiscLink('RBot','voc','0',xl('Payment Voucher'),'reports/payment_voucher.php?framed=1'); ?> 
 	 <?php  //genMiscLink('RBot','pb','0',xl('Print Bills'),'reports/multiple_bills.php?framed=1'); ?> 

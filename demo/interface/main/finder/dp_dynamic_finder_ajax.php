@@ -173,7 +173,7 @@ $query ="SELECT $sellist FROM form_encounter a,patient_data b where a.pid=b.pid 
 }
 else 
 {
-$query = "SELECT $sellist FROM patient_data a,form_encounter b where a.pid=b.pid and b.provider_id='".$providerid."' order by encounter desc $limit";
+$query = "SELECT distinct $sellist FROM patient_data a,form_encounter b where a.pid=b.pid and b.provider_id='".$providerid."' group by a.pid order by encounter desc $limit";
 }
 $res = sqlStatement($query);
 while ($row = sqlFetchArray($res)) {

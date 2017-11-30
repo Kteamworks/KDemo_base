@@ -257,7 +257,8 @@ if( e.button == 2 ) {
 		  if($newcrop_user_role['newcrop_user_role'] == 'erxnurse') { ?>
 		document.location.href="../../patient_file/encounter/load_form.php?formname=vitals&set_pid=" +newpid+'&active='+formname+'&encounter='+enc;
 		<?php } elseif($newcrop_user_role['newcrop_user_role'] == 'erxdoctor') { ?>
-		document.location.href="../../patient_file/summary/stats_full.php?set_pid=" +newpid+'&active='+formname+'&encounter='+enc;
+		//document.location.href="../../patient_file/summary/stats_full.php?set_pid=" +newpid+'&active='+formname+'&encounter='+enc;
+		document.location.href = "../../patient_file/summary/demographics.php?set_pid=" + newpid;
 		<?php } ?>
 		/*if(name=="Transfer")
 		{
