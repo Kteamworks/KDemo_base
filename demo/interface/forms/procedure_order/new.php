@@ -301,7 +301,8 @@ td {
 </style>
 
 <style type="text/css">@import url(<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar.css);</style>
-
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	
 		<!--[if IE 8]><script src="js/es5.js"></script><![endif]-->
 		<script src="js/jquery.min.js"></script>
 		<script src="js/selectize.js"></script>
@@ -522,12 +523,12 @@ margin-bottom: 10px;' class="pull-right" onclick="top.restoreSession();location=
 
 </p>
 
-<center>
-
+<div class="row">
+<div class="col-md-8">
 <?php $newcrop_user_role=sqlQuery("select newcrop_user_role from users where username='".$_SESSION['authUser']."'"); ?>
 
-<p>
-<table border='1' width='95%' id='proctable'>
+
+<table class="table table-bordered" style="width:100%" id='proctable'>
 
  <tr <?php  if($newcrop_user_role['newcrop_user_role']=='erxdoctor') { ?> style="visibility:hidden;position:absolute" <?php } ?>>
   <td width='1%' valign='top' nowrap><b><?php xl('Ordering Provider','e'); ?>:</b></td>
@@ -632,9 +633,9 @@ generate_form_field(array('data_type'=>1,'field_id'=>'order_status',
   </td>
  </tr>
 <tr>
-<td> Tests</td>
+
 <td>
-			<div class="demo">
+			<div >
 				<div class="control-group">
 					<label for="select-tools">Select Investigations:</label>
 					<select id="select-tools" multiple="multiple"  name="form_proc_type[]" placeholder="Search here..."></select>
@@ -692,8 +693,7 @@ while($forders = sqlFetchArray($fqry)) {
 <?php } ?>
 			</div>
 			
-
-			<td>
+			</td>
 </tr>
 <?php
 
@@ -784,7 +784,21 @@ $pid=$_SESSION['pid'];
 <input type='button' value='<?php echo xla('Cancel'); ?>' onclick="top.restoreSession();location='<?php echo $GLOBALS['form_next_url']; ?>'" />
 </p>
 
-</center>
+</div>
+<div class="col-md-4">
+<label> Currently ordered</label>
+<ul>
+<?php 
+$lab_coder = sqlStatement("select * from procedure_order a, procedure_order_code b, form_encounter c
+where a.procedure_order_id=b.procedure_order_id and  a.encounter_id=c.encounter and c.encounter=".$_SESSION['encounter']);
+while($lab_code = sqlFetchArray($lab_coder)) {
+?>
+
+<li> <?php echo $lab_code['procedure_name']; ?> </li>
+<?php }
+?>
+</ul>
+</div></div>
 
 <script language='JavaScript'>
 Calendar.setup({inputField:'form_date_ordered', ifFormat:'%Y-%m-%d',
