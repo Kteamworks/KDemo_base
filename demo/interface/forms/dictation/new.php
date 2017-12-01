@@ -113,10 +113,9 @@ $vid=sqlStatement("SELECT form_id from forms where encounter='".$_SESSION['encou
       <img src='$rootdir/pic/show_calendar.gif' align='absbottom' width='24' height='22'
       id='img_date_collected' border='0' alt='[?]' style='cursor:pointer'"
        title='Click here to choose a date and time' />-->
-<a href="javascript:top.restoreSession();document.my_form.submit();" class="link_submit">[<?php echo xlt('Save'); ?>]</a>
-<br>
-<a href="<?php echo "$rootdir/patient_file/encounter/$returnurl";?>" class="link"
- onclick="top.restoreSession()">[<?php echo xlt('Don\'t Save'); ?>]</a>
+<a href="javascript:top.restoreSession();document.my_form.submit();" class="btn btn-primary link_submit"><?php echo xlt('Save'); ?></a>
+<a href="<?php echo "$rootdir/patient_file/encounter/$returnurl";?>" class="btn btn-warning"
+ onclick="top.restoreSession()"><?php echo xlt('Cancel'); ?></a>
  <script language='JavaScript'>
 Calendar.setup({inputField:'form_date_collected', ifFormat:'%Y-%m-%d %H:%M',
  button:'img_date_collected', showsTime:true});

@@ -48,6 +48,8 @@ if ($_POST['confirm']) {
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
 	<link rel="stylesheet" href="<?php echo $GLOBALS['webroot']; ?>/library/breadcrumbs/css/reset.css"> <!-- CSS reset -->
 	<link rel="stylesheet" href="<?php echo $GLOBALS['webroot']; ?>/library/breadcrumbs/css/style.css"> <!-- Resource style -->
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	
 	<script src="<?php echo $GLOBALS['webroot']; ?>/library/breadcrumbs/js/modernizr.js"></script> <!-- Modernizr -->
 <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
 <link rel="stylesheet" href="<?php echo $GLOBALS['webroot'] ?>/library/js/jAlert-master/src/jAlert-v3.css" />
@@ -215,7 +217,9 @@ foreach ($_GET as $key => $value) {
 $today = date('Y-m-d H:i:s',strtotime("+0 days"));
 ?>
 <tr>
-<td align="left" class="forms"><?php echo xlt('Comments'); ?>:</td>
+<td align="left" class="forms"><b><?php echo xlt('Enter your Comments'); ?>:</b></td>
+</tr>
+<tr>
 	   	<td class="forms">
 		
 			 <textarea rows='10' cols='50' name='form_related_notes'
@@ -227,8 +231,9 @@ $today = date('Y-m-d H:i:s',strtotime("+0 days"));
 </tr>
 
 </table>
-<input type="button" id="confirmbtn" name="confirmbtn" value="Admit">
-<input type="button" id="cancel" name="cancel" value="Cancel">
+<br>
+<input type="button" id="confirmbtn" class="btn btn-primary" name="confirmbtn" value="Admit">
+<input type="button" id="cancel" name="cancel" class="btn btn-warning" value="Cancel">
 </form>
 
 </body>
