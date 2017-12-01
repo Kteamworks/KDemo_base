@@ -798,6 +798,8 @@ while($lab_code = sqlFetchArray($lab_coder)) {
 <?php }
 ?>
 </ul>
+<label> Last Visit orders</label>
+
 </div></div>
 
 <script language='JavaScript'>
