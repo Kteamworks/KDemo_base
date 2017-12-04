@@ -78,22 +78,22 @@ table {
             </span>
             <span onclick="javascript: window.location.href='{{url('/knowledgebase')}}';">
                 <a href="../../main/finder/update_pending.php?encounter=<?php echo $_GET['encounter']; ?>&orderid=<?php echo $_GET['orderid'] ?>&name=Pending" class="widgetrowitem defaultwidget" style="background-image: URL('../../../images/knowledgebase.png');">
-                    <span class="widgetitemtitle">Pending Tests</span>
+                    <span class="widgetitemtitle">Pending Test List</span>
                 </a>
             </span>
 			            <span onclick="javascript: window.location.href='{{url('/knowledgebase')}}';">
                 <a href="../../main/finder/update_pending.php?encounter=<?php echo $_GET['encounter']; ?>&orderid=<?php echo $_GET['orderid'] ?>&name=Cancelled" class="widgetrowitem defaultwidget" style="background-image: URL('../../../images/knowledgebase.png');">
-                    <span class="widgetitemtitle">Cancelled Tests</span>
+                    <span class="widgetitemtitle">Mark Cancelled</span>
                 </a>
             </span>
 			            <span onclick="javascript: window.location.href='{{url('/knowledgebase')}}';">
                 <a href="../../main/finder/update_pending.php?encounter=<?php echo $_GET['encounter']; ?>&orderid=<?php echo $_GET['orderid'] ?>&name=Complete" class="widgetrowitem defaultwidget" style="background-image: URL('../../../images/knowledgebase.png');">
-                    <span class="widgetitemtitle">Completed Tests</span>
+                    <span class="widgetitemtitle">Mark Completed</span>
                 </a>
             </span>
 						            <span onclick="javascript: window.location.href='{{url('/knowledgebase')}}';">
                 <a href="../../main/finder/update_pending.php?encounter=<?php echo $_GET['encounter']; ?>&orderid=<?php echo $_GET['orderid'] ?>&name=Routed" class="widgetrowitem defaultwidget" style="background-image: URL('../../../images/knowledgebase.png');">
-                    <span class="widgetitemtitle">Routed Tests</span>
+                    <span class="widgetitemtitle">Mark Routed</span>
                 </a>
             </span>
         </div>

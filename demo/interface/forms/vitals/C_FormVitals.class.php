@@ -12,21 +12,33 @@ class C_FormVitals extends Controller {
 
     function C_FormVitals($template_mod = "general") {
     	parent::Controller();
-		$id=sqlStatement("SELECT id from form_encounter where encounter='".$_GET['encounter']."'");
+				$res = sqlQuery("select * from users where username='".$_SESSION{"authUser"}."'");
+						if($res['newcrop_user_role'] == 'erxnurse'){
+  if ($GLOBALS['concurrent_layout'] && isset($_GET['set_pid'])) {
+	  $srcdir = $GLOBALS['srcdir'];
+  include_once($GLOBALS['srcdir'].'/pid.inc');
+  setpid($_GET['set_pid']);
+ }
+			$encounter=$_GET["encounter"] ? $_GET["encounter"] : $GLOBALS['encounter'];
+setencounter($encounter);
+		$this->assign("DISPLAYNONE", "display:none");
+				$this->assign("ENCOUNTER", $_SESSION['encounter']);
+		}
+		$id=sqlStatement("SELECT id from form_encounter where encounter='".$_SESSION['encounter']."'");
 
 		$id1=sqlFetchArray($id);
 	$id2=$id1['id'];
 	$pid=$_GET['set_pid'];
-	$rid=sqlStatement("SELECT form_id from forms where encounter='".$_GET['encounter']."' and formdir='ros' order by form_id desc limit 1 ");
+	$rid=sqlStatement("SELECT form_id from forms where encounter='".$_SESSION['encounter']."' and formdir='ros' order by form_id desc limit 1 ");
 		$rid1=sqlFetchArray($rid);
 		$rid2=$rid1['form_id'];
-$vid=sqlStatement("SELECT form_id from forms where encounter='".$_GET['encounter']."' and formdir='vitals' order by form_id desc limit 1 ");
+$vid=sqlStatement("SELECT form_id from forms where encounter='".$_SESSION['encounter']."' and formdir='vitals' order by form_id desc limit 1 ");
 		$vid1=sqlFetchArray($vid);
 		$vid2=$vid1['form_id'];
-		$plid=sqlStatement("SELECT form_id from forms where encounter='".$_GET['encounter']."' and formdir='dictation' order by form_id desc limit 1 ");
+		$plid=sqlStatement("SELECT form_id from forms where encounter='".$_SESSION['encounter']."' and formdir='dictation' order by form_id desc limit 1 ");
 		$plid1=sqlFetchArray($plid);
 		$plid2=$plid1['form_id'];
-		$nvid=sqlStatement("SELECT id from form_encounter where encounter='".$_GET['encounter']."'");
+		$nvid=sqlStatement("SELECT id from form_encounter where encounter='".$_SESSION['encounter']."'");
 
   $nvid1=sqlFetchArray($nvid);
 
@@ -57,18 +69,8 @@ $vid=sqlStatement("SELECT form_id from forms where encounter='".$_GET['encounter
 		$this->assign("admission_LINK",$GLOBALS['webroot'] . "/interface/patient_file/encounter/admit_doctor_form.php");
 		$this->assign("summary_LINK",$GLOBALS['webroot'] . "/interface/patient_file/summary/summary_print.php");
     	$this->assign("STYLE", $GLOBALS['style']);
-		$res = sqlQuery("select * from users where username='".$_SESSION{"authUser"}."'");
-		if($res['newcrop_user_role'] == 'erxnurse'){
-  if ($GLOBALS['concurrent_layout'] && isset($_GET['set_pid'])) {
-	  $srcdir = $GLOBALS['srcdir'];
-  include_once($GLOBALS['srcdir'].'/pid.inc');
-  setpid($_GET['set_pid']);
- }
-			$encounter=$_GET["encounter"] ? $_GET["encounter"] : $GLOBALS['encounter'];
-setencounter($encounter);
-		$this->assign("DISPLAYNONE", "display:none");
-				$this->assign("ENCOUNTER", $_SESSION['encounter']);
-		}
+
+
 		if($res['newcrop_user_role'] != 'erxnurse' && $res['newcrop_user_role'] != 'erxdoctor' ){
 		$this->assign("DISPLAYNONE1", "display:none");
 		}

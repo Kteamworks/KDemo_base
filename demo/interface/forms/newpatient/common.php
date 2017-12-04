@@ -154,11 +154,12 @@ function getRatePlan(plan)
 <div id="overDiv" style="position:absolute; visibility:hidden; z-index:1000;"></div>
 <?php $newcrop_user_role=sqlQuery("select newcrop_user_role from users where username='".$_SESSION['authUser']."'");
  ?>
-  <?php if($newcrop_user_role['newcrop_user_role']=='erxdoctor') { ?>
-<?php 
+  <?php if($newcrop_user_role['newcrop_user_role']=='erxdoctor') { 
+  
 $rid=sqlStatement("SELECT form_id from forms where encounter='".$_SESSION['encounter']."' and formdir='ros' order by form_id desc limit 1 ");
 		$rid1=sqlFetchArray($rid);
 		$rid2=$rid1['form_id'];
+		
 $vid=sqlStatement("SELECT form_id from forms where encounter='".$_SESSION['encounter']."' and formdir='vitals' order by form_id desc limit 1 ");
 		$vid1=sqlFetchArray($vid);
 		$vid2=$vid1['form_id'];
@@ -168,7 +169,6 @@ $vid=sqlStatement("SELECT form_id from forms where encounter='".$_SESSION['encou
 		$nvid=sqlStatement("SELECT id from form_encounter where encounter='".$_SESSION['encounter']."'");
 
   $nvid1=sqlFetchArray($nvid);
-
  $nvid2=$nvid1['id'];
 		?>
 <section>

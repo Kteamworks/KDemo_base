@@ -799,6 +799,19 @@ while($lab_code = sqlFetchArray($lab_coder)) {
 ?>
 </ul>
 <label> Last Visit orders</label>
+<ul>
+<?php
+$last_lab_coder = sqlStatement("select * from procedure_order a, procedure_order_code b, form_encounter c
+where a.procedure_order_id=b.procedure_order_id and 
+a.encounter_id=c.encounter and a.patient_id =$pid 
+group by encounter_id
+order by encounter_id desc
+limit 1");
+while($last_lab_code = sqlFetchArray($last_lab_coder)) {
+?>
+<li> <?php echo $last_lab_code['procedure_name']; ?> </li>
+<?php } ?>
+</ul>
 
 </div></div>
 

@@ -24,7 +24,7 @@ require_once($GLOBALS['srcdir'].'/acl.inc');
 require_once($GLOBALS['fileroot'].'/custom/code_types.inc.php');
 require_once($GLOBALS['srcdir'].'/options.inc.php');
 $encounter=$_GET["encounter"] ? $_GET["encounter"] : $GLOBALS['encounter'];
-$e=$_GET["encounter"] ? $_GET["encounter"] : $GLOBALS['encounter'];
+
 setencounter($encounter);
   if ($GLOBALS['concurrent_layout'] && isset($_GET['set_pid'])) {
   include_once("$srcdir/pid.inc");

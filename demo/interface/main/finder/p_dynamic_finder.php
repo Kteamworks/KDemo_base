@@ -256,7 +256,7 @@ if( e.button == 2 ) {
 		  $newcrop_user_role=sqlQuery("select newcrop_user_role from users where username='".$_SESSION['authUser']."'");
 		  if($newcrop_user_role['newcrop_user_role'] == 'erxnurse') { ?>
 		document.location.href="../../patient_file/encounter/load_form.php?formname=vitals&set_pid=" +newpid+'&active='+formname+'&encounter='+enc;
-		<?php } elseif($newcrop_user_role['newcrop_user_role'] == 'erxdoctor') { ?>
+		<?php } else { ?>
 		document.location.href="../../patient_file/summary/stats_full.php?set_pid=" +newpid+'&active='+formname+'&encounter='+enc;
 		<?php } ?>
 		/*if(name=="Transfer")
