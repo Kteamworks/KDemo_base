@@ -107,7 +107,7 @@ foreach ($aColumns as $colname) {
     $sellist .= "lname, fname, mname";
   }
   else if($colname== 'provider'){
-    $sellist .="provider_id,out_time,out_to";
+    $sellist .="provider_id,out_time,out_to,nurse_out_time";
 	
   }else
   {

@@ -98,7 +98,8 @@ for ($i = 0; $i < count($aColumns); ++$i) {
 // Compute list of column names for SELECT clause.
 // Always includes pid because we need it for row identification.
 //
-$sellist = 'pid';
+$sellist = 'a.pid,b.encounter';
+$today = date('Y-m-d',strtotime("+0 days"));
 foreach ($aColumns as $colname) {
   if ($colname == 'pid') continue;
   $sellist .= ", ";
@@ -106,7 +107,7 @@ foreach ($aColumns as $colname) {
     $sellist .= "fname, lname, mname";
   }
   else {
-    $sellist .= "`" . escape_sql_column_name($colname,array('patient_data','form_encounter',)) . "`";
+    $sellist .= "`" . escape_sql_column_name($colname,array('patient_data','form_encounter','users','openemr_postcalendar_categories')) . "`";
   }
 }
 
@@ -128,7 +129,7 @@ $out = array(
   "iTotalDisplayRecords" => $iFilteredTotal,
   "aaData"               => array()
 );
-$query = "SELECT $sellist FROM patient_data where opd=1 order by genericname1 desc ";
+$query = "SELECT $sellist FROM patient_data a,form_encounter b ,openemr_postcalendar_categories c where a.pid=b.pid and c.pc_catid=b.pc_catid and date(b.date)='".$today."' order by encounter desc  $limit";
 $res = sqlStatement($query);
 while ($row = sqlFetchArray($res)) {
   // Each <tr> will have an ID identifying the patient.
@@ -148,7 +149,7 @@ while ($row = sqlFetchArray($res)) {
       if ($row['mname']) $name .= ' ' . $row['mname'];
       $arow[] = $name;
     }
-    else if ($colname == 'DOB' || $colname == 'regdate' || $colname == 'ad_reviewed' || $colname == 'userdate1') {
+    else if ($colname == 'Visit ID' || $colname == 'regdate' || $colname == 'ad_reviewed' || $colname == 'userdate1') {
       $arow[] = oeFormatShortDate($row[$colname]);
     }
     else {

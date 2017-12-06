@@ -10,6 +10,7 @@
 	<script src="{$FORM_ACTION}/library/breadcrumbs/js/modernizr.js"></script> <!-- Modernizr -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.slim.min.js"></script>
  <style type="text/css" title="mystyles" media="all">
+
  .button {
     background-color: #4CAF50; /* Green */
     border: none;
@@ -151,6 +152,7 @@ section {
   /* used just to separate different styles */
   border-bottom: 1px solid #e6e6e6;
 }
+
 section h2 {
   width: 90%;
   margin: 0 auto 2em;
@@ -582,11 +584,14 @@ Add a counter to the multi-steps indicator
     padding-top: 34px;
   }
 }
-
+label + input[type="radio"]:checked {
+  background: #000;
+}
 </style>
 	<script language="javascript">
 $(document).ready(function(){
  $("dl").css('display','none');
+ $("input[type='radio'][value='YES']:checked").parent('label').css('background-color', 'pink');
  });
 
 				    function login() {
@@ -1165,10 +1170,10 @@ check out</a></li>
 </tr>
 <tr>
 <td>
-	<input type="submit" name="Submit" class="button" value={php} xl('Save Form','e','"','"'); {/php}
+	<input type="submit" name="Submit" class="button" value={php} xl('Save & Checkout','e','"','"'); {/php}
 </td>
 <td>
-	<a href="{$DONT_SAVE_LINK}" class="button4" onclick="top.restoreSession()">{php} xl("Don't Save","e"); {/php}</a>
+	<a href="{$DONT_SAVE_LINK}" class="button4" onclick="top.restoreSession()">{php} xl("Cancel","e"); {/php}</a>
 </td>
 
 

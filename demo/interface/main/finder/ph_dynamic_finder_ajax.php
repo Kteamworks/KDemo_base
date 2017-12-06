@@ -174,7 +174,7 @@ $out = array(
 );
 if($row2["newcrop_user_role"]=="erxnurse")
 {
-$query ="SELECT $sellist FROM patient_data a,form_encounter b ,openemr_postcalendar_categories c where a.pid=b.pid and c.pc_catid=b.pc_catid and date(b.date)='".$today."' order by provider_id  $limit";
+$query ="SELECT $sellist FROM patient_data a,form_encounter b ,openemr_postcalendar_categories c where a.pid=b.pid and c.pc_catid=b.pc_catid and date(b.date)='".$today."' order by encounter desc  $limit";
 }
 else 
 {

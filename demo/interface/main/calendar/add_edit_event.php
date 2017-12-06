@@ -1532,7 +1532,7 @@ if  ($GLOBALS['select_multi_providers']) {
 <?php
 if($row['pc_apptstatus']==null)
 {
-	$row['pc_apptstatus']="@";
+	$row['pc_apptstatus']="-";
 }
 generate_form_field(array('data_type'=>1,'field_id'=>'apptstatus','list_id'=>'apptstat','empty_title'=>'SKIP'), $row['pc_apptstatus']);
 ?>

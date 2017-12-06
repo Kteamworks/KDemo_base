@@ -57,6 +57,15 @@ $pid = $_SESSION["pid"];
 					}
 					
 		   $this->assign("PREVIOUS_DRUG", $prev_drug);
+
+$lab_coder = sqlStatement("select * from procedure_order a, procedure_order_code b, form_encounter c
+where a.procedure_order_id=b.procedure_order_id and  a.encounter_id=c.encounter and c.encounter=".$_SESSION['encounter']);
+
+while($lab_code = sqlFetchArray($lab_coder)) {
+$prev_lab .=  $lab_code['procedure_name'] .'</br>';
+ }
+
+$this->assign("PREVIOUS_LAB", $prev_lab);
 		   						$this->assign("drug_intervals", $interval);
 						$this->assign("drug_meal_time", $drug_meal_time);
 						$this->assign("duration", $duration);

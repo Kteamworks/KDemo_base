@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.2, created on 2017-10-26 11:50:32
+<?php /* Smarty version 2.6.2, created on 2017-12-06 07:41:05
          compiled from C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html */ ?>
 <?php require_once(SMARTY_DIR . 'core' . DIRECTORY_SEPARATOR . 'core.load_plugins.php');
 smarty_core_load_plugins(array('plugins' => array(array('function', 'xl', 'C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html', 224, false),array('function', 'amcCollect', 'C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html', 255, false),array('function', 'html_select_date', 'C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html', 276, false),array('function', 'html_options', 'C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html', 282, false),array('function', 'html_radios', 'C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html', 370, false),)), $this); ?>
@@ -477,6 +477,15 @@ $vid=sqlStatement("SELECT form_id from forms where encounter='".$_SESSION['encou
 </div>
 </div>
 <div class="col-md-5">
+<div  id="lab-order">
+<?php if ($this->_tpl_vars['PREVIOUS_LAB']): ?>
+<label>Lab Orders</label><br>
+
+<?php echo $this->_tpl_vars['PREVIOUS_LAB']; ?>
+ <br>
+<?php endif; ?>
+</div>
+<div  id="prescription-order">
 <?php if ($this->_tpl_vars['PREVIOUS_DRUG']): ?>
 <label>Last visit prescription</label>
 
@@ -499,6 +508,7 @@ $vid=sqlStatement("SELECT form_id from forms where encounter='".$_SESSION['encou
 </table>
 <input name="click" type="checkbox"  id="check1" onchange="cTrig()"/> Continue with same prescription
 <?php endif; ?>
+</div>
 </div>
 </div>
 </div>
@@ -623,7 +633,7 @@ var ModalInstanceCtrl = function ($scope,$http, $modalInstance, userForm) {
                     console.log(data);
 					$.post(\'templates/prescription/getPrescription.php\', function(current) {
 					
-        $(\'#myDiv\').append(current);
+        $(\'#myDiv\').html(current);
     });
 					BootstrapDialog.alert(\'The Drug has been saved as prescription!\');
                     }).error(function(error){

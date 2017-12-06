@@ -24,7 +24,7 @@ $header0 = "";
 $header  = "";
 $coljson = "";
 $res = sqlStatement("SELECT option_id, title FROM list_options WHERE " .
-  "list_id = 'ptlistcols' ORDER BY seq, title");
+  "list_id = 'Pharmacy_List_Columns' ORDER BY seq, title");
 while ($row = sqlFetchArray($res)) {
   $colname = $row['option_id'];
  
@@ -140,7 +140,6 @@ $(document).ready(function() {
    }
   }
  } );
-
  // This puts our custom HTML into the table header.
  $("div.mytopdiv").html("<form name='myform'><input type='checkbox' name='form_new_window' value='1'<?php
   if (!empty($GLOBALS['gbl_pt_list_new_window'])) echo ' checked'; ?> /><?php
@@ -256,7 +255,7 @@ if( e.button == 2 ) {
 <?php if ($GLOBALS['concurrent_layout']) { ?>
 
 //document.location.href = "../../patient_file/summary/demographics.php?set_pid=" + newpid;
- document.location.href = "../../forms/fee_sheet_ph/medSale.php?set_pid=" + id; 
+ document.location.href = "../../forms/fee_sheet_ph/medSale.php?set_pid=" + id+'&encounter='+enc; 
 <?php } else { ?>
    top.location.href = "../../patient_file/patient_file.php?set_pid=" + newpid;
 <?php } ?>
@@ -304,7 +303,7 @@ function openNewTopWindow(pid) {
 <div class="col-md-3">
           <!-- Info Boxes Style 2 -->
           <div class="info-box bg-yellow">
-            <span class="info-box-icon"><i class="ion ion-ios-people-outline"></i></span>
+            <span class="info-box-icon"><i class="fa fa-medkit"></i></span>
 <?php $registration_qry = sqlStatement("Select count(pid)last_month from patient_Data
 where date between  date_sub(now(), interval 30 day ) and now()");
 
@@ -349,15 +348,15 @@ $progress_visit = sqlQuery("select count(encounter) as visit from form_encounter
 ?>
 
             <div class="info-box-content">
-              <span class="info-box-text">New Registration</span>
+              <span class="info-box-text">Total Pharmacy Sale</span>
      <?php while($registration = sqlFetchArray($registration_qry)) {  ?>
-              <span class="info-box-number"><?php echo $registration['last_month']; ?></span>
+              <span class="info-box-number">5452</span>
 <?php } ?> 
               <div class="progress">
-                <div class="progress-bar" style="width: <?php echo $progress_reg['change_percentage']; ?>%"></div>
+                <div class="progress-bar" style="width: 30%"></div>
               </div>
                   <span class="progress-description">
-                    <?php echo $progress_reg['change_percentage']; ?>% Increase in 30 Days
+                    30% Increase in 30 Days
                   </span>
             </div>
             <!-- /.info-box-content -->
@@ -366,17 +365,17 @@ $progress_visit = sqlQuery("select count(encounter) as visit from form_encounter
     </div>
     <div class="col-md-3">
           <div class="info-box bg-green">
-            <span class="info-box-icon"><i class="ion ion-ios-calendar-outline"></i></span>
+            <span class="info-box-icon"><i class="fa fa-line-chart"></i></span>
 
             <div class="info-box-content">
-              <span class="info-box-text">Total Appointments</span>
-              <span class="info-box-number"><?php echo $progress_app['last_month']; ?></span>
+              <span class="info-box-text">Drug Revenue</span>
+              <span class="info-box-number">1158</span>
 
               <div class="progress">
-                <div class="progress-bar" style="width: <?php echo $progress_app['change_percentage']; ?>%"></div>
+                <div class="progress-bar" style="width: 20%"></div>
               </div>
                   <span class="progress-description">
-                    <?php echo $progress_app['change_percentage']; ?>% Increase in 30 Days
+                    20% Increase in 30 Days
                   </span>
             </div>
             <!-- /.info-box-content -->
@@ -385,17 +384,17 @@ $progress_visit = sqlQuery("select count(encounter) as visit from form_encounter
     </div>
     <div class="col-md-3">
           <div class="info-box bg-red">
-            <span class="info-box-icon"><i class="ion ion-ios-pulse"></i></span>
+            <span class="info-box-icon"><i class="fa fa-hospital-o"></i></span>
 
             <div class="info-box-content">
-              <span class="info-box-text">Total IPD Registration</span>
-              <span class="info-box-number"><?php echo $progress_ipd['last_month']; ?></span>
+              <span class="info-box-text">Total Stock</span>
+              <span class="info-box-number">35053</span>
 
               <div class="progress">
                 <div class="progress-bar" style="width: 70%"></div>
               </div>
                   <span class="progress-description">
-                    <?php echo $progress_ipd['change_percentage']; ?>% Increase in 30 Days
+                    70% Increase in 30 Days
                   </span>
             </div>
             <!-- /.info-box-content -->
@@ -407,14 +406,14 @@ $progress_visit = sqlQuery("select count(encounter) as visit from form_encounter
             <span class="info-box-icon"><i class="ion-ios-heart-outline"></i></span>
 
             <div class="info-box-content">
-              <span class="info-box-text">Total visits</span>
+              <span class="info-box-text">Total Pharmacy visits</span>
               <span class="info-box-number"><?php echo $progress_visit['visit']; ?></span>
 
               <div class="progress">
-                <div class="progress-bar" style="width: 40%"></div>
+                <div class="progress-bar" style="width: <?php echo $progress_visit['change_percentage']; ?>%"></div>
               </div>
                   <span class="progress-description">
-                    40% Increase in 30 Days
+                    <?php echo $progress_visit['change_percentage']; ?>% Increase in 30 Days
                   </span>
             </div>
             <!-- /.info-box-content -->

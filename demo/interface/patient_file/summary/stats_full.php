@@ -23,13 +23,15 @@ require_once($GLOBALS['srcdir'].'/lists.inc');
 require_once($GLOBALS['srcdir'].'/acl.inc');
 require_once($GLOBALS['fileroot'].'/custom/code_types.inc.php');
 require_once($GLOBALS['srcdir'].'/options.inc.php');
-$encounter=$_GET["encounter"] ? $_GET["encounter"] : $GLOBALS['encounter'];
 
-setencounter($encounter);
   if ($GLOBALS['concurrent_layout'] && isset($_GET['set_pid'])) {
   include_once("$srcdir/pid.inc");
   setpid($_GET['set_pid']);
  }
+ $encounter=$_GET["encounter"] ? $_GET["encounter"] : $GLOBALS['encounter'];
+
+setencounter($encounter);
+
  // Check authorization.
  if (acl_check('patients','med')) {
   $tmp = getPatientData($pid, "squad");

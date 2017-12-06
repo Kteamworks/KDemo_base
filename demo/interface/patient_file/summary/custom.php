@@ -82,17 +82,17 @@ table {
                 </a>
             </span>
 			            <span onclick="javascript: window.location.href='{{url('/knowledgebase')}}';">
-                <a href="../../main/finder/update_pending.php?encounter=<?php echo $_GET['encounter']; ?>&orderid=<?php echo $_GET['orderid'] ?>&name=Cancelled" class="widgetrowitem defaultwidget" style="background-image: URL('../../../images/knowledgebase.png');">
+                <a href="../../main/finder/update_pending.php?encounter=<?php echo $_GET['encounter']; ?>&orderid=<?php echo $_GET['orderid'] ?>&name=Cancelled" class="widgetrowitem defaultwidget" style="background-image: URL('../../../images/knowledgebase.png');" onclick="return confirm('Are you sure you want to mark this test as canceled？')">
                     <span class="widgetitemtitle">Mark Cancelled</span>
                 </a>
             </span>
 			            <span onclick="javascript: window.location.href='{{url('/knowledgebase')}}';">
-                <a href="../../main/finder/update_pending.php?encounter=<?php echo $_GET['encounter']; ?>&orderid=<?php echo $_GET['orderid'] ?>&name=Complete" class="widgetrowitem defaultwidget" style="background-image: URL('../../../images/knowledgebase.png');">
+                <a href="../../main/finder/update_pending.php?encounter=<?php echo $_GET['encounter']; ?>&orderid=<?php echo $_GET['orderid'] ?>&name=Complete" class="widgetrowitem defaultwidget" style="background-image: URL('../../../images/knowledgebase.png');" onclick="return confirm('Are you sure you want to mark this test as completed？')">
                     <span class="widgetitemtitle">Mark Completed</span>
                 </a>
             </span>
 						            <span onclick="javascript: window.location.href='{{url('/knowledgebase')}}';">
-                <a href="../../main/finder/update_pending.php?encounter=<?php echo $_GET['encounter']; ?>&orderid=<?php echo $_GET['orderid'] ?>&name=Routed" class="widgetrowitem defaultwidget" style="background-image: URL('../../../images/knowledgebase.png');">
+                <a href="../../main/finder/update_pending.php?encounter=<?php echo $_GET['encounter']; ?>&orderid=<?php echo $_GET['orderid'] ?>&name=Routed" class="widgetrowitem defaultwidget" style="background-image: URL('../../../images/knowledgebase.png');" onclick="return confirm('Are you sure you want to route this test？')">
                     <span class="widgetitemtitle">Mark Routed</span>
                 </a>
             </span>

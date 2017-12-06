@@ -1048,7 +1048,8 @@ if (!empty($reg)) {
               <i class="fa fa-angle-left pull-right"></i>
             </span></a>
     <ul class="treeview-menu">
-	  <?php genMiscLink('RTop','fin','0',xl('Patients'),'main/finder/dynamic_finder_ph.php'); ?>
+	  <?php genMiscLink('RTop','fin','0',xl('Patients'),'main/finder/dynamic_finder.php'); ?>
+	  <?php genMiscLink('RTop','fin','0',xl('Todays Patients'),'main/finder/dynamic_finder_ph.php'); ?>
 	  <?php genTreeLink('RTop','neo',($GLOBALS['full_new_patient_form'] ? xl('Outside Patient') : xl('OPD'))); ?>
 	  <!--<?php genMiscLink('RTop','fin','0',xl('InPatients'),'main/finder/p_dynamic_finder_ip.php'); ?>-->
 	  <!--<?php genMiscLink('RTop','fin','0',xl('Todays Patients'),'main/finder/ph_dynamic_finder.php'); ?>-->

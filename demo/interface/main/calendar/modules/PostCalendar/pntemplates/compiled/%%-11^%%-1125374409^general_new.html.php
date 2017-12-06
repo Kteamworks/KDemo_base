@@ -1,7 +1,7 @@
-<?php /* Smarty version 2.6.2, created on 2017-11-30 08:33:03
+<?php /* Smarty version 2.6.2, created on 2017-12-05 13:28:48
          compiled from C:%5Cxampp%5Chtdocs%5CKDemo_base%5Cdemo%5Cinterface%5Cforms%5Cros/templates/ros/general_new.html */ ?>
 <?php require_once(SMARTY_DIR . 'core' . DIRECTORY_SEPARATOR . 'core.load_plugins.php');
-smarty_core_load_plugins(array('plugins' => array(array('function', 'xl', 'C:\xampp\htdocs\KDemo_base\demo\interface\forms\ros/templates/ros/general_new.html', 635, false),array('function', 'html_radios', 'C:\xampp\htdocs\KDemo_base\demo\interface\forms\ros/templates/ros/general_new.html', 644, false),)), $this); ?>
+smarty_core_load_plugins(array('plugins' => array(array('function', 'xl', 'C:\xampp\htdocs\KDemo_base\demo\interface\forms\ros/templates/ros/general_new.html', 640, false),array('function', 'html_radios', 'C:\xampp\htdocs\KDemo_base\demo\interface\forms\ros/templates/ros/general_new.html', 649, false),)), $this); ?>
 <html>
 <head>
 <?php html_header_show(); ?>
@@ -14,6 +14,7 @@ smarty_core_load_plugins(array('plugins' => array(array('function', 'xl', 'C:\xa
 	<script src="{$FORM_ACTION}/library/breadcrumbs/js/modernizr.js"></script> <!-- Modernizr -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.slim.min.js"></script>
  <style type="text/css" title="mystyles" media="all">
+
  .button {
     background-color: #4CAF50; /* Green */
     border: none;
@@ -155,6 +156,7 @@ section {
   /* used just to separate different styles */
   border-bottom: 1px solid #e6e6e6;
 }
+
 section h2 {
   width: 90%;
   margin: 0 auto 2em;
@@ -586,11 +588,14 @@ Add a counter to the multi-steps indicator
     padding-top: 34px;
   }
 }
-
+label + input[type="radio"]:checked {
+  background: #000;
+}
 </style>
 	<script language="javascript">
 $(document).ready(function(){
  $("dl").css(\'display\',\'none\');
+ $("input[type=\'radio\'][value=\'YES\']:checked").parent(\'label\').css(\'background-color\', \'pink\');
  });
 
 				    function login() {
@@ -1504,11 +1509,11 @@ check out</a></li>
 </tr>
 <tr>
 <td>
-	<input type="submit" name="Submit" class="button" value=<?php  xl('Save Form','e','"','"');  ?>
+	<input type="submit" name="Submit" class="button" value=<?php  xl('Save & Checkout','e','"','"');  ?>
 </td>
 <td>
 	<a href="<?php echo $this->_tpl_vars['DONT_SAVE_LINK']; ?>
-" class="button4" onclick="top.restoreSession()"><?php  xl("Don't Save","e");  ?></a>
+" class="button4" onclick="top.restoreSession()"><?php  xl("Cancel","e");  ?></a>
 </td>
 
 

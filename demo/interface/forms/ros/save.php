@@ -7,6 +7,7 @@ $url="../../patient_file/encounter/load_form.php?formname=procedure_order";
 header('Location: '.$url);
 }
 elseif($res['newcrop_user_role'] == 'erxnurse') { 
+sqlStatement("UPDATE form_encounter SET nurse_out_time=NOW() where encounter= '".$encounter."'");
 $url="../../main/finder/p_dynamic_finder.php";
 header('Location: '.$url);
  $_SESSION['nurseVisit'] = $encounter; $_SESSION['LAST_ACTIVITY_nurse'] = time();

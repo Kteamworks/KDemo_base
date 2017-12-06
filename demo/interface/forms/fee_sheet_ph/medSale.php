@@ -153,9 +153,7 @@ header('location:../../patient_file/front_payment_pharmacy.php');
 <script>
 
  $(document).ready(function(){
-	 
-	 $("#pname").focus(function()
-{
+
 	
 var id=$("#gchid").val();
 var dataString = 'id='+ id;
@@ -203,92 +201,8 @@ $("#pid").val(html);
 
 
 
-});	
-
-	 
-	 
-	 
-	 
-	 <?php  $a=1;
-	 while($a<=15) { ?>
- $("#<?php echo 'select-tools'.$a ?>").change(function()
-{
-	
-var id=$(this).val();
-var dataString = 'id='+ id;
-var tmp = 1;
-$("#<?php echo 'qty'.$a ?>").val(tmp);
-$.ajax
-({
-type: "POST",
-
-url: "ajaxMed.php",
-data: dataString+"&action=med",
-cache: false,
-success: function(html)
-{
-$("#<?php echo 'batch'.$a ?>").html(html);
-
-} 
-});
-
-$.ajax
-({
-type: "POST",
-
-url: "ajaxMed.php",
-data: dataString+"&action=medPrice",
-cache: false,
-success: function(html)
-{
-$("#<?php echo 'price'.$a ?>").val(html);
-
-} 
-});
-});
 
 
-$("#<?php echo 'batch'.$a ?>").change(function()
-{
-	
-var id=$(this).val();
-var dataString = 'id='+ id;
-
-$.ajax
-({
-type: "POST",
-
-url: "ajaxMed.php",
-data: dataString+"&action=medRate",
-cache: false,
-success: function(html)
-{
-$("#<?php echo 'price'.$a ?>").val(html);
-
-} 
-});
-
-
-});
-
-
-$(document).on("focus", "#<?php echo 'sum'.$a ?>", function() {
-   // var d = 0;
-   
-    var p = $("#<?php echo 'price'.$a ?>").val();
-	var q = $("#<?php echo 'qty'.$a ?>").val();
-	var sum = (+p)*(+q);
-	
-	
-	$("#<?php echo 'sum'.$a ?>").val(sum);
-	
-});
-
-
-
-
-		 
-	 <?php $a++; } ?>		 
 		 
 		 
       var i=1;
@@ -365,10 +279,10 @@ $(document).on("focus", ".net", function() {
 		<div class="col-md-9">
 		<table class="table table-bordered table-fixed" id="tab_logic">
 		<tr><th>ID</th><th>Patient Name</th><th>Visit ID</th><th>Pid</th><tr>
-		<tr><td><input type="text" style="text-align:left;" id='gchid' name='gch'  value="<?php echo $gchid ?>" class="form-control" required/></td>
-		<td><input type="text" style="text-align:left;" id='pname' name='patname'  value="" class="form-control"/></td>
-		<td><input type="text" style="text-align:left;" id='visitid' name='visit'  value="" class="form-control"/></td>
-		<td><input type="text" style="text-align:left;" id='pid' name='pid'  value="" class="form-control"/></td>
+		<tr><td><input type="text" style="text-align:left;" id='gchid' name='gch'  value="<?php echo $gchid ?>" class="form-control" readonly required/></td>
+		<td><input type="text" style="text-align:left;" id='pname' name='patname'  value="" class="form-control" readonly /></td>
+		<td><input type="text" style="text-align:left;" id='visitid' name='visit'  value="" class="form-control" readonly /></td>
+		<td><input type="text" style="text-align:left;" id='pid' name='pid'  value="" class="form-control" readonly /></td>
 		
 		</tr>
 		</table>
@@ -400,29 +314,16 @@ $(document).on("focus", ".net", function() {
 
 			<?php 
 			//include_once('dbconnect.php');
-			
-			 $qry = "SELECT name, drug_id  FROM drugs"; 
+			$qry = "select a.name,a.drug_id,a.quantity from drugs a,prescriptions b where a.drug_id = b.drug_id and b.encounter=".$_GET['encounter'];
+			// $qry = "SELECT name, drug_id  FROM drugs "; 
 			  $result = sqlStatement($qry);
 			$i=1;
-			while ($jarray = sqlFetchArray($result))
-             {
-              $rows[] = $jarray;
-	
-             }
+
  
-            $rowCount = count($rows);
-  
-                 for($k=0;$k<$rowCount;$k++){
-                            $id=$rows[$k]['drug_id'];
-						    $id1=str_replace("'", "", $id);
-						    $title=$rows[$k]['name'];
-						    $title1=str_replace("'", "", $title);
-			
-                      }
-			
-			
-			while($i<=15){ ?>
-					<tr id='addr0'>
+            $rowCount = sqlNumRows($result);
+
+			while($i<=$rowCount){ while ($jarray = sqlFetchArray($result)) {?>
+					<tr id='addr<?php echo $i; ?>'>
 						<td>
 						<?php echo $i; ?>
 						</td>
@@ -432,12 +333,12 @@ $(document).on("focus", ".net", function() {
 					
 				
 			     
-               
-
-			
-					<select id="<?php echo 'select-tools'.$i ?>" placeholder="Select Medicine" name='name[]' ></select>
+             
+					<select id="<?php echo 'select-tools'.$i ?>" name='name[]' >
+					
+		 </select>
 				</div>
-				
+
 				<script>
 				
 				// <select id="select-tools"></select>
@@ -452,18 +353,92 @@ $(document).on("focus", ".net", function() {
 					  
 					   <?php
         
-                            for($k=0;$k<$rowCount;$k++){
-                            $id=$rows[$k]['drug_id'];
+                      
+                            $id=$jarray['drug_id'];
 						    $id1=str_replace("'", "", $id);
-						    $title=$rows[$k]['name'];
+						    $title=$jarray['name'];
 						    $title1=str_replace("'", "", $title);
 				  
                         ?>  
 						{id: '<?php echo $id1; ?>', title: '<?php echo $title1; ?>'},
-					<?php } ?>
+				
 					],
+					items: ['<?php echo $id1; ?>'],
 					create: false
 				});
+
+var id=$('#<?php echo 'select-tools'.$i ?>').val();
+var dataString = 'id='+ id;
+var tmp = 1;
+$("#<?php echo 'qty'.$i ?>").val(tmp);
+$.ajax
+({
+type: "POST",
+
+url: "ajaxMed.php",
+data: dataString+"&action=med",
+cache: false,
+success: function(html)
+{
+$("#<?php echo 'batch'.$i ?>").html(html);
+
+} 
+});
+
+$.ajax
+({
+type: "POST",
+
+url: "ajaxMed.php",
+data: dataString+"&action=medPrice",
+cache: false,
+success: function(html)
+{
+$("#<?php echo 'price'.$i ?>").val(html);
+
+} 
+});
+
+
+
+$("#<?php echo 'batch'.$i ?>").change(function()
+{
+	
+var id=$(this).val();
+var dataString = 'id='+ id;
+
+$.ajax
+({
+type: "POST",
+
+url: "ajaxMed.php",
+data: dataString+"&action=medRate",
+cache: false,
+success: function(html)
+{
+$("#<?php echo 'price'.$i ?>").val(html);
+
+} 
+});
+
+
+});
+
+
+$(document).on("focus", "#<?php echo 'sum'.$i ?>", function() {
+   // var d = 0;
+   
+    var p = $("#<?php echo 'price'.$i ?>").val();
+	var q = $("#<?php echo 'qty'.$i ?>").val();
+	var sum = (+p)*(+q);
+	
+	
+	$("#<?php echo 'sum'.$i ?>").val(sum);
+	
+});
+
+
+	 
 				</script>
 			</div>
 					</td>
@@ -488,7 +463,7 @@ $(document).on("focus", ".net", function() {
 						</td>
 						
 					</tr>
-					<?php $i++; }  ?>
+			<?php $i++; } } ?>
                   
 				</tbody>
 			</table>

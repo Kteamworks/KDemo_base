@@ -386,6 +386,14 @@ $vid=sqlStatement("SELECT form_id from forms where encounter='".$_SESSION['encou
 </div>
 </div>
 <div class="col-md-5">
+<div  id="lab-order">
+{if $PREVIOUS_LAB}
+<label>Lab Orders</label><br>
+
+{$PREVIOUS_LAB} <br>
+{/if}
+</div>
+<div  id="prescription-order">
 {if $PREVIOUS_DRUG}
 <label>Last visit prescription</label>
 
@@ -404,6 +412,7 @@ $vid=sqlStatement("SELECT form_id from forms where encounter='".$_SESSION['encou
 </table>
 <input name="click" type="checkbox"  id="check1" onchange="cTrig()"/> Continue with same prescription
 {/if}
+</div>
 </div>
 </div>
 </div>
@@ -528,7 +537,7 @@ var ModalInstanceCtrl = function ($scope,$http, $modalInstance, userForm) {
                     console.log(data);
 					$.post('templates/prescription/getPrescription.php', function(current) {
 					
-        $('#myDiv').append(current);
+        $('#myDiv').html(current);
     });
 					BootstrapDialog.alert('The Drug has been saved as prescription!');
                     }).error(function(error){

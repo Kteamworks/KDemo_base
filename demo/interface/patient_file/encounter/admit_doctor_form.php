@@ -31,7 +31,7 @@ if ($_POST['confirm']) {
 	$form_message_status="New";
 	$form_note_type="Admit";
 	//$pid=$_SESSION['pid'];
-	$assigned_to="Receptionist";
+	$assigned_to="admission";
     addPnote($pid, $notes, $userauthorized, '1', $form_note_type, $assigned_to, '', $form_message_status);
     // redirect back to the encounter
    $address = "{$GLOBALS['rootdir']}/patient_file/summary/summary_print.php";
