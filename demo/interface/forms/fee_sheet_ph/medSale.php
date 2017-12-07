@@ -44,7 +44,8 @@ $inventory_id=111;
  $_SESSION['maxId']=$tmpid['id'];
 if (isset($_POST['submit_val'])) {
  $gch=$_POST['gch'];
- $discount=$_SESSION['dcnt']=$_POST['discount'];
+ $discounts=$_SESSION['dcnt']=$_POST['discount'];
+ $discount = ($discounts/100)*$subtotal;
  $patient=$_POST['patname'];
  $encounter=$_SESSION['visit']=$_POST['visit'];
  $pid=$_SESSION['patId']=$_POST['pid'];
