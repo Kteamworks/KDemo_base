@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.2, created on 2017-12-05 13:28:48
+<?php /* Smarty version 2.6.2, created on 2017-12-07 11:36:14
          compiled from C:%5Cxampp%5Chtdocs%5CKDemo_base%5Cdemo%5Cinterface%5Cforms%5Cros/templates/ros/general_new.html */ ?>
 <?php require_once(SMARTY_DIR . 'core' . DIRECTORY_SEPARATOR . 'core.load_plugins.php');
 smarty_core_load_plugins(array('plugins' => array(array('function', 'xl', 'C:\xampp\htdocs\KDemo_base\demo\interface\forms\ros/templates/ros/general_new.html', 640, false),array('function', 'html_radios', 'C:\xampp\htdocs\KDemo_base\demo\interface\forms\ros/templates/ros/general_new.html', 649, false),)), $this); ?>
@@ -627,15 +627,15 @@ alert(\'success\');
 "><a href="<?php echo $this->_tpl_vars['ROS_LINK']; ?>
 "><i class="fa fa-note" style="margin-right: 8px;"></i>Medical Issues</a></li>
 			
-			<li id="visit" style="<?php echo $this->_tpl_vars['DISPLAYNONE']; ?>
-;<?php echo $this->_tpl_vars['DISPLAYNONE1']; ?>
-;"><a href="<?php echo $this->_tpl_vars['VISIT_LINK']; ?>
-"><i class="fa fa-note" style="margin-right: 8px;"></i>Visit Notes</a></li>
 			<li id="vitals" style="<?php echo $this->_tpl_vars['DISPLAYNONE1']; ?>
 "><a href="<?php echo $this->_tpl_vars['VITALS_LINK']; ?>
 "><i class="fa fa-note" style="margin-right: 8px;"></i>Vitals</a></li>
 			<li class="current" style="<?php echo $this->_tpl_vars['DISPLAYNONE1']; ?>
 "></i><em>Review of systems</em></li>
+			<li id="visit" style="<?php echo $this->_tpl_vars['DISPLAYNONE']; ?>
+;<?php echo $this->_tpl_vars['DISPLAYNONE1']; ?>
+;"><a href="<?php echo $this->_tpl_vars['VISIT_LINK']; ?>
+"><i class="fa fa-note" style="margin-right: 8px;"></i>Visit Notes</a></li>
 			<li id="lab"  style="<?php echo $this->_tpl_vars['DISPLAYNONE']; ?>
 ;<?php echo $this->_tpl_vars['DISPLAYNONE1']; ?>
 ;"><a href="<?php echo $this->_tpl_vars['LAB_LINK']; ?>

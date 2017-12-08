@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.2, created on 2017-12-06 07:41:05
+<?php /* Smarty version 2.6.2, created on 2017-12-07 11:57:55
          compiled from C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html */ ?>
 <?php require_once(SMARTY_DIR . 'core' . DIRECTORY_SEPARATOR . 'core.load_plugins.php');
 smarty_core_load_plugins(array('plugins' => array(array('function', 'xl', 'C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html', 224, false),array('function', 'amcCollect', 'C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html', 255, false),array('function', 'html_select_date', 'C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html', 276, false),array('function', 'html_options', 'C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html', 282, false),array('function', 'html_radios', 'C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html', 370, false),)), $this); ?>
@@ -221,8 +221,6 @@ $vid=sqlStatement("SELECT form_id from forms where encounter='".$_SESSION['encou
 		<ol class="cd-breadcrumb triangle custom-icons">
 		   <li><a href="<?php echo $this->_tpl_vars['WEBROOT']; ?>
 /interface/patient_file/summary/stats_full.php"><i class="fa fa-note" style="margin-right: 8px;"></i>Medical Issues</a></li>
-			<li><a href="<?php echo $this->_tpl_vars['WEBROOT']; ?>
-/interface/patient_file/encounter/view_form.php?formname=newpatient&id=<?php  echo $nvid2;  ?>"><i class="fa fa-note" style="margin-right: 8px;"></i>Visit Notes</a></li>
 			<?php  if($vid2 == null) {  ?>
 			<li><a href="<?php echo $this->_tpl_vars['WEBROOT']; ?>
 /interface/patient_file/encounter/load_form.php?formname=vitals"><i class="fa fa-note" style="margin-right: 8px;"></i>Vitals</a></li>
@@ -236,6 +234,8 @@ $vid=sqlStatement("SELECT form_id from forms where encounter='".$_SESSION['encou
 			<li><a href="<?php echo $this->_tpl_vars['WEBROOT']; ?>
 /interface/patient_file/encounter/view_form.php?formname=ros&id=<?php  echo $rid2  ?>"><i class="fa fa-note" style="margin-right: 8px;"></i>Review of systems</a></li>
 			<?php  }  ?>
+			<li><a href="<?php echo $this->_tpl_vars['WEBROOT']; ?>
+/interface/patient_file/encounter/view_form.php?formname=newpatient&id=<?php  echo $nvid2;  ?>"><i class="fa fa-note" style="margin-right: 8px;"></i>Visit Notes</a></li>
 			<li><a href="<?php echo $this->_tpl_vars['WEBROOT']; ?>
 /interface/patient_file/encounter/load_form.php?formname=procedure_order"><i class="fa fa-note" style="margin-right: 8px;"></i>Lab Tests</a></li>
 			<li class="current"></i><em>Prescription</em></li>

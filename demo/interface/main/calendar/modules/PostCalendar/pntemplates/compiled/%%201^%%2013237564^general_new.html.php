@@ -1,7 +1,7 @@
-<?php /* Smarty version 2.6.2, created on 2017-11-29 08:20:24
+<?php /* Smarty version 2.6.2, created on 2017-12-07 11:35:16
          compiled from C:%5Cxampp%5Chtdocs%5CKDemo_base%5Cdemo%5Cinterface%5Cforms%5Cvitals/templates/vitals/general_new.html */ ?>
 <?php require_once(SMARTY_DIR . 'core' . DIRECTORY_SEPARATOR . 'core.load_plugins.php');
-smarty_core_load_plugins(array('plugins' => array(array('function', 'xl', 'C:\xampp\htdocs\KDemo_base\demo\interface\forms\vitals/templates/vitals/general_new.html', 35, false),array('function', 'math', 'C:\xampp\htdocs\KDemo_base\demo\interface\forms\vitals/templates/vitals/general_new.html', 176, false),array('modifier', 'date_format', 'C:\xampp\htdocs\KDemo_base\demo\interface\forms\vitals/templates/vitals/general_new.html', 153, false),)), $this); ?>
+smarty_core_load_plugins(array('plugins' => array(array('function', 'xl', 'C:\xampp\htdocs\KDemo_base\demo\interface\forms\vitals/templates/vitals/general_new.html', 35, false),array('function', 'math', 'C:\xampp\htdocs\KDemo_base\demo\interface\forms\vitals/templates/vitals/general_new.html', 184, false),array('modifier', 'date_format', 'C:\xampp\htdocs\KDemo_base\demo\interface\forms\vitals/templates/vitals/general_new.html', 153, false),)), $this); ?>
 <html>
 <head>
 <?php html_header_show(); ?>
@@ -145,13 +145,13 @@ td,th {
 		<li id="vitals" style="<?php echo $this->_tpl_vars['DISPLAYNONE']; ?>
 ;<?php echo $this->_tpl_vars['DISPLAYNONE1']; ?>
 ;"><a><i class="fa fa-note" style="margin-right: 8px;"></i>Medical Issues</a></li>
-			<li id="visit" style="<?php echo $this->_tpl_vars['DISPLAYNONE']; ?>
-;<?php echo $this->_tpl_vars['DISPLAYNONE1']; ?>
-;"><a><i class="fa fa-note" style="margin-right: 8px;"></i>Visit Notes</a></li>
 			<li class="current" style="<?php echo $this->_tpl_vars['DISPLAYNONE1']; ?>
 ;"></i><em>Vitals</em></li>
 			<li id="ros" style="<?php echo $this->_tpl_vars['DISPLAYNONE1']; ?>
 ;"><a><i class="fa fa-note" style="margin-right: 8px;"></i>Review of systems</a></li>
+			<li id="visit" style="<?php echo $this->_tpl_vars['DISPLAYNONE']; ?>
+;<?php echo $this->_tpl_vars['DISPLAYNONE1']; ?>
+;"><a><i class="fa fa-note" style="margin-right: 8px;"></i>Visit Notes</a></li>
 			<li id="lab" style="<?php echo $this->_tpl_vars['DISPLAYNONE']; ?>
 ;<?php echo $this->_tpl_vars['DISPLAYNONE1']; ?>
 ;"><a><i class="fa fa-note" style="margin-right: 8px;"></i>Lab Tests</a></li>
@@ -201,8 +201,20 @@ td,th {
 		<th class='historicalvalues'><?php echo ((is_array($_tmp=$this->_tpl_vars['result']['date'])) ? $this->_run_mod_handler('date_format', true, $_tmp, "%Y-%m-%d %H:%M") : smarty_modifier_date_format($_tmp, "%Y-%m-%d %H:%M")); ?>
 </th>
 	<?php endforeach; unset($_from); endif; ?></tr>
-	
-	<?php if ($this->_tpl_vars['units_of_measurement'] == 4): ?><tr class="hide"><?php else: ?><tr><?php endif; ?>
+		<?php if ($this->_tpl_vars['units_of_measurement'] == 3): ?><tr class="hide"><?php else: ?><tr><?php endif; ?>
+                <?php if ($this->_tpl_vars['units_of_measurement'] == 1): ?><td class="unfocus graph" id="temperature_metric"><?php else: ?><td class="graph" id="temperature_metric"><?php endif;  echo smarty_function_xl(array('t' => 'Temperature'), $this);?>
+</td>
+		<?php if ($this->_tpl_vars['units_of_measurement'] == 1): ?><td class="unfocus"><?php else: ?><td><?php endif;  echo smarty_function_xl(array('t' => "°C"), $this);?>
+</td>
+                <?php if ($this->_tpl_vars['units_of_measurement'] == 1): ?><td class="valuesunfocus"><?php else: ?><td class='currentvalues'><?php endif; ?>
+                <input type="text" size='5' name='temperature' id='temperature_input_metric' value="<?php if ($this->_tpl_vars['vitals']->get_temperature() != 0):  echo $this->_tpl_vars['vitals']->get_temperature();  endif; ?>" ;"/>
+                </td>
+        <?php if (count($_from = (array)$this->_tpl_vars['results'])):
+    foreach ($_from as $this->_tpl_vars['result']):
+?>
+                <td  class='historicalvalues'><?php if ($this->_tpl_vars['result']['temperature'] != 0):  echo $this->_tpl_vars['result']['temperature'];  endif; ?></td>
+        <?php endforeach; unset($_from); endif; ?></tr>
+	<?php if ($this->_tpl_vars['units_of_measurement'] == 4): ?><tr class="hide"><?php else: ?><tr class="hide"><?php endif; ?>
 		<?php if ($this->_tpl_vars['units_of_measurement'] == 2): ?><td class="unfocus graph" id="weight"><?php else: ?><td class="graph" id="weight"><?php endif;  echo smarty_function_xl(array('t' => 'Weight'), $this);?>
 </td>
 		<?php if ($this->_tpl_vars['units_of_measurement'] == 2): ?><td class="unfocus"><?php else: ?><td><?php endif;  echo smarty_function_xl(array('t' => 'lbs'), $this);?>

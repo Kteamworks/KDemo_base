@@ -69,17 +69,70 @@ require_once("$srcdir/patient_tracker.inc.php");
     # Gather information and send to manage tracker status.
     if ($GLOBALS['auto_create_new_encounters'] && $apptdate == date('Y-m-d') && ($status == '@') && !is_tracker_encounter_exist($apptdate,$appttime,$tkpid,$pceid))		 
 	 {	
-
         # Gather information for encounter fields
         $genenc = sqlQuery("select pc_catid as category, pc_hometext as reason, pc_aid as provider, pc_facility as facility, pc_billing_location as billing_facility " .
                            "from openemr_postcalendar_events where pc_eid =? " , array($pceid));
         $encounter = todaysEncounterCheck($tkpid, $apptdate, $genenc['reason'], $genenc['facility'], $genenc['billing_facility'], $genenc['provider'], $genenc['category'],false);
-        
+        		 	$p=sqlQuery("select date from patient_data where pid='$tkpid'");
+	sqlFetchArray($p);
+	$regdate=$p['date'];
+	$tpaid = 0;
+	$provider_id = $genenc['facility'];
+	$check = sqlInsert("INSERT INTO billing_main_copy SET " .
+      "regdate = '" . add_escape_custom($regdate) . "', " .
+      "facility_id = '" . add_escape_custom($provider_id) . "', " . 
+      "pid = '" . add_escape_custom($tkpid) . "', " .
+	  "pc_catid = '" . add_escape_custom($genenc['category']) . "', " .
+      "encounter = '" . add_escape_custom($encounter) . "', " .
+	  "encounterdt = now() , ".
+	  "tpa_id_pri = '" . add_escape_custom($tpaid) . "' ") ; 
+	  $row1=sqlStatement("Select a.service_id,code,code_type,code_text,pr_price,username from codes a,prices b, users c where a.id=b.pr_id and a.code_text=c.username and b.pr_level='standard'and  c.id='".$provider_id."'");
+	$today = date("Y-m-d H:i:s"); 
+	$time= date("H:i:s");
+	$day=sqlStatement("select dayname('$today') day");
+	$days=sqlFetchArray($day);
+	$dayy=$days['day'];
+	  	$row2=  sqlFetchArray($row1);
+  	$code=$row2['code'];
+	$codetext=$row2['code_text'];
+	$codetype="Doctor Charges";
+  	$billed=0;
+	$servicegrpid=$row2['code_type'];
+	$serviceid=$row2['service_id'];
+  	$units=1;
+  	$fee=$row2['pr_price'];
+	$authrzd=1;
+	$modif="";
+	$act=1;
+	$grpn="Default";
+	$onset_date1=date('Y-m-d H:i:s');
+sqlInsert("INSERT INTO billing SET " .
+      "date = '" . add_escape_custom($onset_date1) . "', " .
+	  "user = '" . $_SESSION["authUserID"] . "',".
+      "bill_date = '" . add_escape_custom($onset_date1) . "', " .
+	  "servicegrp_id = '" . add_escape_custom($servicegrpid) . "', " .
+      "service_id = '" . add_escape_custom($serviceid) . "', " .
+      "code_type = '" . add_escape_custom($codetype) . "', " .
+      "code = '" . add_escape_custom($code) . "', " .
+      "code_text = '" . add_escape_custom($codetext) . "', " .
+      "units = '" . add_escape_custom($units) . "', " .
+      "billed = '" . add_escape_custom($billed) . "', " .
+      "fee = '" . add_escape_custom($fee) . "', " .
+      "pid = '" . add_escape_custom($tkpid) . "', " .
+      "encounter = '" . add_escape_custom($encounter) . "', " .
+	  "modifier = '" . add_escape_custom($modif) . "', " .
+	  "authorized = '" . add_escape_custom($authrzd) . "', " .
+	  "activity = '" . add_escape_custom($act) . "', " .
+	  "groupname = '" . add_escape_custom($grpn) . "', " .
+      "provider_id = '" . add_escape_custom($provider_id) . "'");
+	  
+	  sqlQuery("Update billing_main_copy set total_charges=total_charges + ? where encounter=?",array($fee,$encounter));   
 				 if($encounter){
 				 $info_msg .= xl("New Visit has been created with id"); 
 				 $info_msg .= " $encounter";
 				   if ($info_msg) echo " alert('" . addslashes($info_msg) . "');\n";
 		 }
+
 		 # Capture the appt status and room number for patient tracker. This will map the encounter to it also.
         if (!empty($pceid)) {
         manage_tracker_status($apptdate,$appttime,$pceid,$tkpid,$_SESSION["authUser"],$status,$theroom,$encounter);

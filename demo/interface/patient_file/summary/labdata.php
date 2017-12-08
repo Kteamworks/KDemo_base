@@ -48,9 +48,19 @@
 $sanitize_all_escapes  = true;
 $fake_register_globals = false;
 require_once("../../globals.php");
+require_once($GLOBALS['srcdir'].'/patient.inc');
+require_once($GLOBALS['srcdir'].'/encounter.inc');
 require_once("../../../library/options.inc.php");
 include_once($GLOBALS["srcdir"] . "/api.inc");
+  if ($GLOBALS['concurrent_layout'] && isset($_GET['set_pid'])) {
+  include_once("$srcdir/pid.inc");
+  setpid($_GET['set_pid']);
+ }
+ if(isset($_GET['encounter'])) {
+ $encounter=$_GET["encounter"] ? $_GET["encounter"] : $GLOBALS['encounter'];
 
+setencounter($encounter);
+ }
 $due=sqlQuery("select sum(fee) as total from billing where pid=$pid and encounter=$encounter and activity=1");
 $total = $due['total'];
 $paid = sqlQuery("select sum(amount1+amount2) as paid from payments where pid=$pid and encounter=$encounter");

@@ -170,7 +170,6 @@ $vid=sqlStatement("SELECT form_id from forms where encounter='".$_SESSION['encou
 	<nav>
 		<ol class="cd-breadcrumb triangle custom-icons">
 		<li><a href="../summary/stats_full.php"><i class="fa fa-note" style="margin-right: 8px;"></i>Medical Issues</a></li>
-			<li><a href="../encounter/view_form.php?formname=newpatient&id=<?php echo $nvid2; ?>"><i class="fa fa-note" style="margin-right: 8px;"></i>Visit Notes</a></li>
 			<?php if($vid2 == null) { ?>
 			<li><a href="../encounter/load_form.php?formname=vitals"><i class="fa fa-note" style="margin-right: 8px;"></i>Vitals</a></li>
 			<?php } else { ?>
@@ -180,6 +179,7 @@ $vid=sqlStatement("SELECT form_id from forms where encounter='".$_SESSION['encou
 						<?php } else { ?>
 			<li><a href="../../patient_file/encounter/view_form.php?formname=ros&id=<?php echo $rid2 ?>"><i class="fa fa-note" style="margin-right: 8px;"></i>Review of systems</a></li>
 			<?php } ?>
+			<li><a href="../encounter/view_form.php?formname=newpatient&id=<?php echo $nvid2; ?>"><i class="fa fa-note" style="margin-right: 8px;"></i>Visit Notes</a></li>
 			<li><a href="../encounter/load_form.php?formname=procedure_order"><i class="fa fa-note" style="margin-right: 8px;"></i>Lab Tests</a></li>
 			<li><a href="../../../controller.php?prescription&edit&id=&pid=<?php echo $pid ?>"><i class="fa fa-note" style="margin-right: 8px;"></i>Prescription</a></li>
 			<?php if($plid2 == null) { ?>
