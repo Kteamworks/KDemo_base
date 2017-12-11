@@ -128,7 +128,20 @@ function checkAll(bx) {
          if (bxs[j].type=="checkbox")
             bxs[j].checked = bx.checked;
 }
+$(document).ready(function() {
+	 $("#autoClick").trigger('click');
+$("#print_view_only").hide();
+	 });
+<?php
 
+    if (isset($_GET['view_report']) && !isset($_POST['autoClick'])) { // not submitted yet
+?>
+$(document).ready(function() {
+	 $("#print-report").trigger('click');
+	 });
+<?php
+}
+?>
 // this is automatically called by swfobject.embedSWF()
 //------------------------------------------------------
 function open_flash_chart_data(){
@@ -172,7 +185,6 @@ table {
 }
 
 </style>
-<p style="margin-top:150px"></p>
 <!--<img style="position:absolute;top:0;right:0;"src=" <?php echo $GLOBALS['webroot']?>/interface/pic/logo.png" />
 <h3><?php echo text($frow['name']) ?>
 <br><?php echo text($frow['street']) ?>
@@ -181,6 +193,9 @@ table {
 <br><?php echo htmlentities($frow['phone']) ?></i></h3> -->
 <?php ##############################################################################
 echo "</head><body class='body_top'>";
+if(isset($_GET['view_report'])) {
+var_dump($_GET['view_report']);
+}
 echo "<div id='labdata'>";
 echo "<span class='text'>";
 // some patient data...
@@ -239,7 +254,7 @@ if($printable) {
 	echo "</table>";
 	}
 
-
+echo "<div id='print_view_only'>";
 echo "<div id='reports_list'>";
 if(!$printable){
 	echo "<form method='post' action='" . $path_to_this_script . "' onsubmit='return top.restoreSession()'>"; 
@@ -342,7 +357,7 @@ echo "<input type='checkbox' name='value_code[]' value=" . attr($rows[$i]['value
 	echo "</table>";
 	echo "</div>";
 	
-	?><input type='checkbox' onclick="checkAll(this)" /> <?php echo xlt('Toggle All') . "<br/>";
+	?><input type='checkbox' id="autoClick" name="autoClick" onclick="checkAll(this)" /> <?php echo xlt('Toggle All') . "<br/>";
 	echo "<table><tr>";
 	// Choose output mode [list vs. matrix]
 		echo "<td>" . xlt('Select output') . ":</td>";
@@ -365,13 +380,14 @@ echo "<input type='checkbox' name='value_code[]' value=" . attr($rows[$i]['value
     echo "<span>" . xlt('Back to Patient') . "</span></a>";
 
 	echo "</td>";
-	echo "<td><input type='submit' name='submit' value='" . xla('Submit') . "' /></td>";
+	echo "<td><input type='submit' id='print-report' name='print-report' value='" . xla('Submit') . "' /></td>";
 	echo "</tr></table>";
 	echo "</form>";
 
 } // end "if printable"
+
 	echo "<hr>";
-	
+	echo "</div>";
 // print results of patient's items
 //-------------------------------------------
 $mode = $_POST['mode'];

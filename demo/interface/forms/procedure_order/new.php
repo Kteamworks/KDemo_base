@@ -277,6 +277,7 @@ $enrow = sqlQuery("SELECT p.fname, p.mname, p.lname, fe.date FROM " .
 <html>
 <head>
 		<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+
 		<link rel="stylesheet" href="css/normalize.css">
 		<link rel="stylesheet" href="css/stylesheet.css">
 <?php html_header_show(); ?>
@@ -304,7 +305,7 @@ td {
 <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 	
 		<!--[if IE 8]><script src="js/es5.js"></script><![endif]-->
-		<script src="js/jquery.min.js"></script>
+	   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 		<script src="js/selectize.js"></script>
 		<script src="js/index.js"></script>
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar.js"></script>
@@ -313,13 +314,15 @@ td {
 
 <script type="text/javascript" src="../../../library/dialog.js"></script>
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/textformat.js"></script>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
-	<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700' rel='stylesheet' type='text/css'>
+		<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700' rel='stylesheet' type='text/css'>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
+<link rel="stylesheet" type="text/css" href="../../../library/js/fancybox/jquery.fancybox-1.2.6.css" media="screen" />
 	<link rel="stylesheet" href="<?php echo $GLOBALS['webroot']; ?>/library/breadcrumbs/css/reset.css"> <!-- CSS reset -->
 	<link rel="stylesheet" href="<?php echo $GLOBALS['webroot']; ?>/library/breadcrumbs/css/style.css"> <!-- Resource style -->
 	<script src="<?php echo $GLOBALS['webroot']; ?>/library/breadcrumbs/js/modernizr.js"></script> <!-- Modernizr -->
+
+
+	<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/fancybox/jquery.fancybox-1.2.6.js"></script> 
 <script language='JavaScript'>
 
 // This invokes the find-procedure-type popup.
@@ -523,7 +526,7 @@ margin-bottom: 10px;' class="pull-right" onclick="top.restoreSession();location=
 
 </p>
 
-<div class="row">
+<div class="">
 <div class="col-md-8">
 <?php $newcrop_user_role=sqlQuery("select newcrop_user_role from users where username='".$_SESSION['authUser']."'"); ?>
 
@@ -737,6 +740,7 @@ while($forders = sqlFetchArray($fqry)) {
     if (!empty($oprow['procedure_type_id'])) {
       $ptid = $oprow['procedure_type_id'];
     }
+
 ?>
  <!--<tr>
   <td width='1%' valign='top'><b><?php echo xl('Procedure') . ' ' . ($i + 1); ?>:</b></td>
@@ -786,33 +790,90 @@ $pid=$_SESSION['pid'];
 
 </div>
 <div class="col-md-4">
-<label> Currently ordered</label>
+<?php
+$provider_id =$_SESSION['authUserID'];   $last_lab_coder = sqlStatement("select * from procedure_order a, procedure_order_code b, form_encounter c
+where a.procedure_order_id=b.procedure_order_id and 
+a.encounter_id=c.encounter and a.patient_id =$pid and a.provider_id = $provider_id 
+group by encounter_id
+order by encounter_id desc
+limit 1"); $check_enc = sqlFetchArray($last_lab_coder); if($check_enc['encounter_id'] == $_SESSION['encounter'] ) { ?>
+
+<label> Currently ordered:</label>  <?php echo date("F jS, Y g:s a", strtotime($check_enc['date_collected'])); ?>
 <ul>
 <?php 
 $lab_coder = sqlStatement("select * from procedure_order a, procedure_order_code b, form_encounter c
-where a.procedure_order_id=b.procedure_order_id and  a.encounter_id=c.encounter and c.encounter=".$_SESSION['encounter']);
+where a.procedure_order_id=b.procedure_order_id and  a.encounter_id=c.encounter and  a.provider_id = $provider_id and c.encounter=".$_SESSION['encounter']);
 while($lab_code = sqlFetchArray($lab_coder)) {
 ?>
 
 <li> <?php echo $lab_code['procedure_name']; ?> </li>
 <?php }
+
 ?>
-</ul>
-<label> Last Visit orders</label>
-<ul>
-<?php
-$last_lab_coder = sqlStatement("select * from procedure_order a, procedure_order_code b, form_encounter c
+
+</ul><br>
+<?php $last_lab_coder = sqlStatement("select * from procedure_order a, procedure_order_code b, form_encounter c
 where a.procedure_order_id=b.procedure_order_id and 
-a.encounter_id=c.encounter and a.patient_id =$pid 
+a.encounter_id=c.encounter and a.patient_id =$pid and a.provider_id = $provider_id
 group by encounter_id
 order by encounter_id desc
-limit 1");
+limit 1,1");
+$last_lab_date = sqlStatement("select a.date_collected from procedure_order a, procedure_order_code b, form_encounter c
+where a.procedure_order_id=b.procedure_order_id and 
+a.encounter_id=c.encounter and a.patient_id =$pid and a.provider_id = $provider_id
+group by encounter_id
+order by encounter_id desc
+limit 1,1"); 
+
+?>
+<label> Last Visit orders: </label>  <?php $date = sqlFetchArray($last_lab_date); echo date("F jS, Y g:s a", strtotime($date['date_collected'])); ?>
+<ul>
+<?php
+while($last_lab_code = sqlFetchArray($last_lab_coder)) {
+
+?>
+<li> <?php echo $last_lab_code['procedure_name']; if($last_lab_code['order_status']='final') { ?> <a href="../../patient_file/summary/labdata_review.php?set_pid=<?php echo $pid ?>&encounter=<?php echo $_SESSION['encounter']?>&orderid=<?php echo $last_lab_code['procedure_order_id'] ?>" title="view results" class='iframe'><i class="fa fa-eye"></i></a> <?php } ?></li>
+<script type="text/javascript">
+  $(".iframe").fancybox( {
+  'left':10,
+	'overlayOpacity' : 0.0,
+	'showCloseButton' : true,
+	'frameHeight' : 550,
+	'frameWidth' : 850
+  });
+</script>
+<?php } ?>
+<?php } else { ?>
+<?php $last_lab_coder = sqlStatement("select * from procedure_order a, procedure_order_code b, form_encounter c
+where a.procedure_order_id=b.procedure_order_id and 
+a.encounter_id=c.encounter and a.patient_id =$pid and a.provider_id = $provider_id
+group by encounter_id
+order by encounter_id desc
+limit 1"); $last_lab_date = sqlStatement("select a.date_collected from procedure_order a, procedure_order_code b, form_encounter c
+where a.procedure_order_id=b.procedure_order_id and 
+a.encounter_id=c.encounter and a.patient_id =$pid and a.provider_id = $provider_id
+group by encounter_id
+order by encounter_id desc
+limit 1"); 
+	$date_ordered = sqlFetchArray($last_lab_date); ?>
+<label> Last Visit orders: </label>  <?php echo date("F jS, Y g:s a", strtotime($date_ordered['date_collected'])); ?>
+<ul>
+<?php
 while($last_lab_code = sqlFetchArray($last_lab_coder)) {
 ?>
-<li> <?php echo $last_lab_code['procedure_name']; ?> </li>
-<?php } ?>
-</ul>
+<li> <?php echo $last_lab_code['procedure_name']; ?> <a href="../../patient_file/summary/labdata.php?set_pid=<?php echo $pid ?>&encounter=<?php echo $last_lab_code['encounter']?>&orderid=<?php echo $last_lab_code['procedure_order_id'] ?>&view_report=1" title="view results" class='iframe'><i class="fa fa-eye"></i></a> <?php } ?></li>
+<script type="text/javascript">
+  $(".iframe").fancybox( {
+  'left':10,
+	'overlayOpacity' : 0.0,
+	'showCloseButton' : true,
+	'frameHeight' : 550,
+	'frameWidth' : 850
+  });
+</script>
 
+</ul>
+<?php } ?>
 </div></div>
 
 <script language='JavaScript'>
