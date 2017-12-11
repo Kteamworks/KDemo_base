@@ -19,6 +19,7 @@ class C_FormVitals extends Controller {
   include_once($GLOBALS['srcdir'].'/pid.inc');
   setpid($_GET['set_pid']);
  }
+ 
 			$encounter=$_GET["encounter"] ? $_GET["encounter"] : $GLOBALS['encounter'];
 setencounter($encounter);
 		$this->assign("DISPLAYNONE", "display:none");

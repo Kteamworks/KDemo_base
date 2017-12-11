@@ -11,9 +11,14 @@ class C_FormROS extends Controller {
 	
     function C_FormROS($template_mod = "general") {
     	parent::Controller();
-		$id=sqlStatement("SELECT form_id from forms where encounter='".$_SESSION['encounter']."' and formdir='vitals' order by form_id desc limit 1 ");
-		$id1=sqlFetchArray($id);
-		$id2=$id1['form_id'];
+		$vid=sqlStatement("SELECT form_id from forms where encounter='".$_SESSION['encounter']."' and formdir='vitals' order by form_id desc limit 1 ");
+		$vid1=sqlFetchArray($vid);
+		$vid2=$vid1['form_id'];
+				$nvid=sqlStatement("SELECT id from form_encounter where encounter='".$_SESSION['encounter']."'");
+
+  $nvid1=sqlFetchArray($nvid);
+
+ $nvid2=$nvid1['id'];
     	$returnurl = $GLOBALS['concurrent_layout'] ? 'encounter_top.php' : 'patient_encounter.php';
     	$this->template_mod = $template_mod;
     	$this->template_dir = dirname(__FILE__) . "/templates/ros/";
@@ -21,7 +26,7 @@ class C_FormROS extends Controller {
     	$this->assign("DONT_SAVE_LINK",$GLOBALS['webroot'] . "/interface/patient_file/encounter/$returnurl");
 		$this->assign("NEXT_LINK",$GLOBALS['webroot'] . "/interface/patient_file/encounter/load_form.php?formname=procedure_order");
     	$this->assign("BACK_LINK",$GLOBALS['webroot'] . "/interface/patient_file/encounter/view_form.php?formname=vitals&id=$id2");
-    	    $this->assign("VISIT_LINK",$GLOBALS['webroot'] . "/interface/patient_file/encounter/view_form.php?formname=newpatient&id=". $id2);
+    	    $this->assign("VISIT_LINK",$GLOBALS['webroot'] . "/interface/patient_file/encounter/view_form.php?formname=newpatient&id=". $nvid2);
 		 if($vid2 == null) {
 		    $this->assign("VITALS_LINK",$GLOBALS['webroot'] . "/interface/patient_file/encounter/load_form.php?formname=vitals");
 			} else { 

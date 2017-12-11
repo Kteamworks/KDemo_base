@@ -28,6 +28,7 @@ require_once("$srcdir/formatting.inc.php");
 require_once("../../orders/qoe.inc.php");
 require_once("../../orders/gen_hl7_order.inc.php");
 require_once("../../../custom/code_types.inc.php");
+require_once($GLOBALS['srcdir'].'/encounter.inc');
 require_once("$srcdir/patient.inc");
 
 // Defaults for new orders.
@@ -36,7 +37,6 @@ $row = array(
   'date_ordered' => date('Y-m-d'),
   'date_collected' => date('Y-m-d H:i'),
 );
-
 if (! $encounter) { // comes from globals.php
  die("Internal error: we do not seem to be in an encounter!");
 }

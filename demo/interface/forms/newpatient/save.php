@@ -54,7 +54,8 @@ else
 
 $newcrop_user_role=sqlQuery("select newcrop_user_role from users where username='".$_SESSION['authUser']."'");
  if($newcrop_user_role['newcrop_user_role']=='erxdoctor') {
-	 $normalurl = "patient_file/encounter/load_form.php?formname=vitals";
+	
+	 $normalurl = "patient_file/encounter/load_form.php?formname=procedure_order";
  }
   if($newcrop_user_role['newcrop_user_role']=='erxrep') {
 	  
