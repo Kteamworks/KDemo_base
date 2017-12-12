@@ -22,7 +22,6 @@ require_once("$srcdir/formdata.inc.php");
 
 // Some table cells will not be displayed unless insurance billing is used.
 $usbillstyle = $GLOBALS['ippf_specific'] ? " style='display:none'" : "";
-
 // This may be an error message or warning that pops up when the form is loaded.
 $alertmsg = '';
 function alphaCodeType($id) {

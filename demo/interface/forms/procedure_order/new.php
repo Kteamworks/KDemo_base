@@ -549,7 +549,7 @@ generate_form_field(array('data_type'=>10,'field_id'=>'provider_id'),
    <select name='form_lab_id' onchange='lab_id_changed()'>
  <?php
   $ppres = sqlStatement("SELECT ppid, name FROM procedure_providers " .
-    "ORDER BY name, ppid");
+    "ORDER BY ppid");
   while ($pprow = sqlFetchArray($ppres)) {
     echo "<option value='" . attr($pprow['ppid']) . "'";
     if ($pprow['ppid'] == $row['lab_id']) echo " selected";
@@ -668,7 +668,7 @@ generate_form_field(array('data_type'=>1,'field_id'=>'order_status',
 (select a.provider_id,a.code_Text,count(a.code_text) No_of_tests,a.code
 from billing a, codes c,users u
 where a.code_type='Lab Test' and a.code_text=c.code and a.provider_id=u.id
-and a.provider_id=35 
+and a.provider_id=? 
 group by a.code_text
 order by No_of_tests desc)a
 LEFT JOIN
@@ -683,7 +683,7 @@ group by a.code_text
 order by a.no_of_tests desc";
  $newcrop_user_id=sqlQuery("select * from users where username='".$_SESSION['authUser']."'");
 
-$fqry = sqlStatement($forderqry,array($newcrop_user_id['id']));
+$fqry = sqlStatement($forderqry,array($newcrop_user_id['id'],$newcrop_user_id['id']));
 
 while($forders = sqlFetchArray($fqry)) {
 	
@@ -823,10 +823,10 @@ where a.procedure_order_id=b.procedure_order_id and
 a.encounter_id=c.encounter and a.patient_id =$pid and a.provider_id = $provider_id
 group by encounter_id
 order by encounter_id desc
-limit 1,1"); 
-
+limit 1,1"); $date = sqlFetchArray($last_lab_date);
+ if(!empty($date)) {
 ?>
-<label> Last Visit orders: </label>  <?php $date = sqlFetchArray($last_lab_date); echo date("F jS, Y g:s a", strtotime($date['date_collected'])); ?>
+ <label> Last Visit orders: </label>  <?php  echo date("F jS, Y g:s a", strtotime($date['date_collected'])); } ?>
 <ul>
 <?php
 while($last_lab_code = sqlFetchArray($last_lab_coder)) {
@@ -855,8 +855,8 @@ a.encounter_id=c.encounter and a.patient_id =$pid and a.provider_id = $provider_
 group by encounter_id
 order by encounter_id desc
 limit 1"); 
-	$date_ordered = sqlFetchArray($last_lab_date); ?>
-<label> Last Visit orders: </label>  <?php echo date("F jS, Y g:s a", strtotime($date_ordered['date_collected'])); ?>
+	$date_ordered = sqlFetchArray($last_lab_date);  if(!empty($date_ordered)) { ?>
+	<label> Last Visit orders: </label>  <?php echo date("F jS, Y g:s a", strtotime($date_ordered['date_collected'])); } ?>
 <ul>
 <?php
 while($last_lab_code = sqlFetchArray($last_lab_coder)) {
