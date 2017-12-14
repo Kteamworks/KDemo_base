@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.2, created on 2017-12-07 11:36:14
+<?php /* Smarty version 2.6.2, created on 2017-12-12 14:03:22
          compiled from C:%5Cxampp%5Chtdocs%5CKDemo_base%5Cdemo%5Cinterface%5Cforms%5Cros/templates/ros/general_new.html */ ?>
 <?php require_once(SMARTY_DIR . 'core' . DIRECTORY_SEPARATOR . 'core.load_plugins.php');
 smarty_core_load_plugins(array('plugins' => array(array('function', 'xl', 'C:\xampp\htdocs\KDemo_base\demo\interface\forms\ros/templates/ros/general_new.html', 640, false),array('function', 'html_radios', 'C:\xampp\htdocs\KDemo_base\demo\interface\forms\ros/templates/ros/general_new.html', 649, false),)), $this); ?>
@@ -1509,7 +1509,7 @@ check out</a></li>
 </tr>
 <tr>
 <td>
-	<input type="submit" name="Submit" class="button" value=<?php  xl('Save & Checkout','e','"','"');  ?>
+	<input type="submit" name="Submit" class="button" value=<?php  xl('Save','e','"','"');  ?>
 </td>
 <td>
 	<a href="<?php echo $this->_tpl_vars['DONT_SAVE_LINK']; ?>

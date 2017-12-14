@@ -130,14 +130,16 @@ function checkAll(bx) {
 }
 $(document).ready(function() {
 	 $("#autoClick").trigger('click');
-$("#print_view_only").hide();
+
 	 });
 <?php
 
     if (isset($_GET['view_report']) && !isset($_POST['autoClick'])) { // not submitted yet
 ?>
 $(document).ready(function() {
+	
 	 $("#print-report").trigger('click');
+	 $("#print_view_only").hide();
 	 });
 <?php
 }
