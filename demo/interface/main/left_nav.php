@@ -814,6 +814,8 @@ if ($GLOBALS['athletic_team']) {
 	  <?php genMiscLink('RTop','fin','0',xl('Todays Patients'),'main/finder/p_dynamic_finder.php'); ?>
 	   <?php }?>
 	  <?php genMiscLink('RTop','fin','0',xl('IN Patient'),'main/finder/p_dynamic_finder_ip.php'); ?>
+	  <?php genMiscLink('RTop','rep','0',xl('IP Medication'),'reports/timeSchduler.php'); ?>
+	  <?php genMiscLink('RTop','rep','0',xl('Nurse Station'),'reports/nurseStation.php'); ?>
       <?php  if (acl_check('admin', 'super') || $newcrop_user_role['newcrop_user_role']=='erxrep') genTreeLink('RTop','new',($GLOBALS['full_new_patient_form'] ? xl('New/Search') : xl('New'))); ?>
       <?php   if (acl_check('admin', 'super') || $newcrop_user_role['newcrop_user_role']=='erxrep' || $newcrop_user_role['newcrop_user_role']=='erxdoctor') genTreeLink('RTop','dem',xl('Summary')); ?>
 	  <?php   if (acl_check('admin', 'super') || $newcrop_user_role['newcrop_user_role']=='erxrep') genTreeLink('RTop','op',xl('OPD Card')); ?>
