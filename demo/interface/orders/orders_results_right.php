@@ -98,7 +98,11 @@ if ($_POST['form_submit'] && !empty($_POST['form_line'])) {
       }
       else { // Add new report.
         $report_id = sqlInsert("INSERT INTO procedure_report SET $sets");
-      }
+	  if(oresData("form_report_status", $lino) == 'final') {
+	$status="complete";
+sqlStatement("UPDATE procedure_order SET order_status='".$status."' WHERE procedure_order_id='".$order_id."'");
+	}
+		      }
     }
 
     // If this line had report data entry fields, filled or not, set the
@@ -387,7 +391,8 @@ if ($form_batch) {
    <!-- removed by jcw -- check/submit sequece too tedious.  This is a quick fix -->
 <!--   <input type='checkbox' name='form_all' value='1' <?php if ($_POST['form_all']) echo " checked"; ?>><?php xl('Include Completed','e') ?>
    &nbsp;-->
-   <input type='submit' name='form_refresh' value=<?php xl('Refresh','e'); ?>>
+  <!-- <input type='submit' name='form_refresh' value=<?php xl('Refresh','e'); ?>> -->
+  <button onclick="window.history.go(-1);return false;">Go Back</button>
   </td>
  </tr>
 </table>
@@ -770,7 +775,7 @@ if ($form_review) {
  if ($reviewauth) {
  ?>
   <center><p>
-   <input type='submit' name='form_submit' value='<?php xl('Sign Results','e'); ?>' />
+   <input type='submit' name='form_submit' value='<?php xl('Save Results','e'); ?>' />
   </p></center>
  <?php
  }

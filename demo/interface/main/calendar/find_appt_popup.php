@@ -267,6 +267,8 @@
 
 <!-- for the pop up calendar -->
 <style type="text/css">@import url(../../../library/dynarch_calendar.css);</style>
+<link href="<?php echo $GLOBALS['webroot'] ?>/library/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+<link href="<?php echo $GLOBALS['webroot'] ?>/library/css/bootstrap-datetimepicker4.7.14.min.css" rel="stylesheet" />
 <script type="text/javascript" src="../../../library/dynarch_calendar.js"></script>
 <?php include_once("{$GLOBALS['srcdir']}/dynarch_calendar_en.inc.php"); ?>
 <script type="text/javascript" src="../../../library/dynarch_calendar_setup.js"></script>
@@ -348,11 +350,17 @@ form {
 <div id="searchCriteria">
 <form method='post' name='theform' action='find_appt_popup.php?providerid=<?php echo $providerid ?>&catid=<?php echo $input_catid ?>'>
    <?php xl('Start date:','e'); ?>
-   <input type='text' name='startdate' id='startdate' size='10' value='<?php echo $sdate ?>'
-    title='yyyy-mm-dd starting date for search' />
-   <img src='../../pic/show_calendar.gif' align='absbottom' width='24' height='22'
-    id='img_date' border='0' alt='[?]' style='cursor:pointer'
-    title='<?php xl('Click here to choose a date','e'); ?>'>
+
+		                 <div class='input-group date'  id='datetimepicker' style="display:inline-flex">
+                    
+      <input type='text' size='10' name='startdate' id='startdate'
+       value='<?php echo $sdate ?>'
+       title='<?php echo xla('yyyy-mm-dd starting date for search'); ?>' />
+	   <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+   
    <?php xl('for','e'); ?>
    <input type='text' name='searchdays' size='3' value='<?php echo $searchdays ?>'
     title='Number of days to search from the start date' />
@@ -435,6 +443,25 @@ form {
 <?php endif; ?>
 
 </form>
+		<script
+  src="https://code.jquery.com/jquery-2.2.4.min.js"
+  integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+  crossorigin="anonymous"></script>
+
+        <script type="text/javascript">
+		var j = jQuery.noConflict();
+            j(function () {
+				var currentDate = j('#form_date').val();
+				                j('#datetimepicker').datetimepicker({
+                    format: 'YYYY-MM-DD',
+					minDate:new Date()
+                });
+            });
+        </script>
+
+		              <script src="<?php echo $GLOBALS['webroot'] ?>/library/js/moment/moment.js" ></script>
+                    <script src="<?php echo $GLOBALS['webroot'] ?>/library/js/bootstrap-datetimepicker4.7.14.min.js" type="text/javascript"></script>
+					                    <script src="<?php echo $GLOBALS['webroot'] ?>/library/js/bootstrap.min.js" type="text/javascript"></script>
 </body>
 
 <!-- for the pop up calendar -->

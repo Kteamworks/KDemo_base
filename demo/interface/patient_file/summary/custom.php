@@ -58,15 +58,17 @@ table {
  
     <div id="corewidgetbox">
         <div class="widgetrow text-center">
+<?php $collection_chk = sqlQuery("select * from procedure_order_code where procedure_order_id=".$_GET['orderid']);
 
+?>
             <span onclick="javascript: window.location.href='{{url('auth/register')}}';">
-                <a href="../../main/finder/specimen_collected.php?set_pid=<?php echo $_GET['set_pid']; ?>&encounter=<?php echo $_GET['encounter']; ?>&orderid=<?php echo $_GET['orderid'] ?>" class="widgetrowitem defaultwidget" style="background-image: URL('../../../images/register.png');">
+                <a href="../../main/finder/specimen_collected.php?set_pid=<?php echo $_GET['set_pid']; ?>&encounter=<?php echo $_GET['encounter']; ?>&orderid=<?php echo $_GET['orderid'] ?>"  class="widgetrowitem defaultwidget" style="background-image: URL('../../../images/register.png');<?php if($collection_chk['sample_collected'] == 1) {?>background-color:blanchedalmond<?php } ?>">
                     <span class="widgetitemtitle"> Sample Collection</span>
                 </a>
             </span>
 
                     <span onclick="javascript: window.location.href='{!! URL::route('form') !!}';">
-                        <a href="../../main/finder/specimen_received.php?set_pid=<?php echo $_GET['set_pid']; ?>&encounter=<?php echo $_GET['encounter']; ?>&orderid=<?php echo $_GET['orderid'] ?>&name=Sample Received" class="widgetrowitem defaultwidget" style="background-image: URL('../../../images/news.png');">
+                        <a href="../../main/finder/specimen_received.php?set_pid=<?php echo $_GET['set_pid']; ?>&encounter=<?php echo $_GET['encounter']; ?>&orderid=<?php echo $_GET['orderid'] ?>&name=Sample Received" class="widgetrowitem defaultwidget" style="background-image: URL('../../../images/news.png');<?php if($collection_chk['sample_receive'] == 1) {?>background-color:blanchedalmond<?php } ?>">
                             <span class="widgetitemtitle">Sample Recieved</span>
                         </a>
                     </span>

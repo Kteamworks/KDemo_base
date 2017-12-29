@@ -6,6 +6,8 @@ $sanitize_all_escapes=true;
 
 include_once("../../globals.php");
 include_once("$srcdir/api.inc");
+require_once($GLOBALS['srcdir'].'/calendar.inc');
+
 formHeader("Form: dictation");
 $returnurl = $GLOBALS['concurrent_layout'] ? 'encounter_top.php' : 'patient_encounter.php';
 ?>
@@ -20,9 +22,12 @@ $returnurl = $GLOBALS['concurrent_layout'] ? 'encounter_top.php' : 'patient_enco
 	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 	<script src="<?php echo $GLOBALS['webroot']; ?>/library/breadcrumbs/js/modernizr.js"></script> <!-- Modernizr -->
 		<!--[if IE 8]><script src="js/es5.js"></script><![endif]-->
+
+<link href="<?php echo $GLOBALS['webroot'] ?>/library/css/bootstrap-datetimepicker4.7.14.min.css" rel="stylesheet" />
 		<script src="js/jquery.min.js"></script>
 		<script src="js/selectize.js"></script>
 		<script src="js/index.js"></script>
+		<script type="text/javascript" src="../../../library/dialog.js"></script>
 <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar.js"></script>
 <?php include_once("{$GLOBALS['srcdir']}/dynarch_calendar_en.inc.php"); ?>
@@ -86,7 +91,10 @@ $vid=sqlStatement("SELECT form_id from forms where encounter='".$_SESSION['encou
 </section>
   <?php }?>
 <form method=post action="<?php echo $rootdir;?>/forms/dictation/save.php?mode=new" name="my_form">
+
+<div class="col-md-4">
 <span class="title"><?php echo xlt('Plan Details'); ?></span>
+
 <!-- <div style="float:right;">
 <input action="action" onclick="history.go(-1);" class="css_button_small" style='height: 24px;border:none' type="button" value="Back" />
 
@@ -95,32 +103,62 @@ $vid=sqlStatement("SELECT form_id from forms where encounter='".$_SESSION['encou
  </div> -->
 <br><br>
 <span class=text><?php echo xlt('Plan: '); ?></span><br><textarea class="form-control" wrap=virtual name="dictation" ></textarea><br>
-<span class=text><?php echo xlt('Additional Notes:'); ?> </span><br><textarea class="form-control"  wrap=virtual name="additional_notes" ></textarea><br><br><br>
- Review After: <!--<input type="text" name="reviewafter"><br><br>-->
- <?php
-    echo "<input type='text' size='16' name='form_date_collected' id='form_date_collected'" .
-      " value='" . substr($row['date_collected'], 0, 16) . "'" .
-      " title='" . xl('Date and time that the sample was collected') . "'" .
-      // " onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)'" .
-      " />" .
-      "<img src='$rootdir/pic/show_calendar.gif' align='absbottom' width='24' height='22'" .
-      " id='img_date_collected' border='0' alt='[?]' style='cursor:pointer'" .
-      " title='" . xl('Click here to choose a date and time') . "' />";
-?><br><br>
+<span class=text><?php echo xlt('Additional Notes:'); ?> </span><br><textarea class="form-control"  wrap=virtual name="additional_notes" ></textarea><br>
+<div class="row"> <div class="col-md-9">
+ Next Review: <!--<input type="text" name="reviewafter"><br><br>-->
+ 	                 <div class='input-group date'  id='datetimepicker' >
+                    
+      <input type='text' size='16' class='form-control' name='form_date_collected' id='form_date_collected'
+       value=''
+       title='<?php echo xla('yyyy-mm-dd event date or starting date'); ?>' />
+	   <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>   <a href="#" value="Add" style="margin-left:20px" onclick="newEvt()" class="css_button" title="Add Appointment"><span><i style="padding:2px" class="fa fa-plus"></i></span></a>
+                </div></div>
+				</div><br>
+
 <!--<input type='text' size='16' name='form_date_collected' id='form_date_collected'
    title='Date and time that the sample was collected'
       />
       <img src='$rootdir/pic/show_calendar.gif' align='absbottom' width='24' height='22'
       id='img_date_collected' border='0' alt='[?]' style='cursor:pointer'"
        title='Click here to choose a date and time' />-->
+	   <div class="row"> <div class="col-md-6">
 <a href="javascript:top.restoreSession();document.my_form.submit();" class="btn btn-primary link_submit"><?php echo xlt('Save'); ?></a>
 <a href="<?php echo "$rootdir/patient_file/encounter/$returnurl";?>" class="btn btn-warning"
  onclick="top.restoreSession()"><?php echo xlt('Cancel'); ?></a>
+ </div></div>
  <script language='JavaScript'>
 Calendar.setup({inputField:'form_date_collected', ifFormat:'%Y-%m-%d %H:%M',
  button:'img_date_collected', showsTime:true});
 </script>
 </form>
+</div>
+
+		<script
+  src="https://code.jquery.com/jquery-2.2.4.min.js"
+  integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+  crossorigin="anonymous"></script>
+
+ <script type="text/javascript">
+  function newEvt() {
+  dlgopen('../../main/calendar/add_edit_event.php?patientid=<?php echo htmlspecialchars($pid,ENT_QUOTES); ?>', '_blank', 550, 350);
+  return false;
+ }
+		var j = jQuery.noConflict();
+            j(function () {
+				var currentDate = j('#form_date').val();
+				                j('#datetimepicker').datetimepicker({
+                    format: 'YYYY-MM-DD',
+					minDate:new Date()
+                });
+            });
+        </script>
+
+		              <script src="<?php echo $GLOBALS['webroot'] ?>/library/js/moment/moment.js" ></script>
+                    <script src="<?php echo $GLOBALS['webroot'] ?>/library/js/bootstrap-datetimepicker4.7.14.min.js" type="text/javascript"></script>
+					                    <script src="<?php echo $GLOBALS['webroot'] ?>/library/js/bootstrap.min.js" type="text/javascript"></script>
+
 <?php
 formFooter();
 ?>

@@ -29,19 +29,16 @@ require_once("$srcdir/formatting.inc.php");
 $pid = $_REQUEST['hidden_patient_code'] > 0 ? $_REQUEST['hidden_patient_code'] : $pid;
 
 $INTEGRATED_AR = $GLOBALS['oer_config']['ws_accounting']['enabled'] === 2;
- $e=$_GET["encounter"] ? $_GET["encounter"] : $GLOBALS['encounter'];
+
+$returnurl = $GLOBALS['concurrent_layout'] ? 'encounter_top.php' : 'patient_encounter.php';
+
+ if ($GLOBALS['concurrent_layout'] && isset($_GET['set_pid'])) {
+  include_once("$srcdir/pid.inc");
+  setpid($_GET['set_pid']);
+ }
+  $e=$_GET["encounter"] ? $_GET["encounter"] : $GLOBALS['encounter'];
  $encounter=$_GET["encounter"] ? $_GET["encounter"] : $GLOBALS['encounter'];
   setencounter($encounter);
- if ($GLOBALS['concurrent_layout'] && isset($_GET['set_pid'])) {
-  include_once("$srcdir/pid.inc");
-  setpid($_GET['set_pid']);
- }
-$returnurl = $GLOBALS['concurrent_layout'] ? 'encounter_top.php' : 'patient_encounter.php';
- include_once("$srcdir/pid.inc");
- if ($GLOBALS['concurrent_layout'] && isset($_GET['set_pid'])) {
-  include_once("$srcdir/pid.inc");
-  setpid($_GET['set_pid']);
- }
 ?>
 <html>
 <head>

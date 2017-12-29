@@ -925,6 +925,8 @@ td { font-size:0.8em; }
 </style>
 <link rel="stylesheet" href="<?php echo $GLOBALS['webroot'] ?>/library/js/jAlert-master/src/jAlert-v3.css" />
 <link rel="stylesheet" href="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery.treeview-1.4.1/jquery.treeview.css" />
+<link href="<?php echo $GLOBALS['webroot'] ?>/library/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+<link href="<?php echo $GLOBALS['webroot'] ?>/library/css/bootstrap-datetimepicker4.7.14.min.css" rel="stylesheet" />
 <script src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-1.7.2.min.js"></script>
 <script src="<?php echo $GLOBALS['webroot'] ?>/library/js/jAlert-master/src/jAlert-v3.js"></script>
 <script src="<?php echo $GLOBALS['webroot'] ?>/library/js/jAlert-master/src/jAlert-functions.js"> //optional!!</script>
@@ -1248,16 +1250,23 @@ $classpati='';
 
  <tr>
   <td nowrap>
-   <b><?php echo xlt('Date'); ?>:</b>
+
+     <label class="pull-left  control-label"><?php echo xlt('Date'); ?></label>
   </td>
   <td nowrap>
-   <input type='text' size='10' name='form_date' id='form_date'
-    value='<?php echo attr($date) ?>'
-    title='<?php echo xla('yyyy-mm-dd event date or starting date'); ?>'
-    onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' onchange='dateChanged()' />
-   <img src='../../pic/show_calendar.gif' align='absbottom' width='24' height='22'
-    id='img_date' border='0' alt='[?]' style='cursor:pointer;cursor:hand'
-    title='<?php echo xla('Click here to choose a date'); ?>'>
+	                 <div class='input-group date'  id='datetimepicker' >
+                    
+      <input type='text' size='10' class='form-control' name='form_date' id='form_date'
+       value='<?php if( $date > date("Y-m-d") ) { echo attr($date); } ?>'
+       title='<?php echo xla('yyyy-mm-dd event date or starting date'); ?>' />
+	   <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+       <!-- <img src='../../pic/show_calendar.gif' align='absbottom' width='24' height='22'
+        id='img_form_date' border='0' alt='[?]' style='cursor:pointer;cursor:hand'
+        title='<?php echo xla('Click here to choose a date'); ?>'> -->
+
   </td>
   <td nowrap>
    &nbsp;&nbsp;
@@ -1643,7 +1652,25 @@ if ($repeatexdate != "") {
 <input type="button" name="current_event" id="current_event" value="<?php echo xla('Current'); ?>">
 <input type="button" name="recurr_cancel" id="recurr_cancel" value="<?php echo xla('Cancel'); ?>">
 </div>
+		<script
+  src="https://code.jquery.com/jquery-2.2.4.min.js"
+  integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+  crossorigin="anonymous"></script>
 
+        <script type="text/javascript">
+		var j = jQuery.noConflict();
+            j(function () {
+				var currentDate = j('#form_date').val();
+				                j('#datetimepicker').datetimepicker({
+                    format: 'YYYY-MM-DD',
+					minDate:new Date()
+                });
+            });
+        </script>
+
+		              <script src="<?php echo $GLOBALS['webroot'] ?>/library/js/moment/moment.js" ></script>
+                    <script src="<?php echo $GLOBALS['webroot'] ?>/library/js/bootstrap-datetimepicker4.7.14.min.js" type="text/javascript"></script>
+					                    <script src="<?php echo $GLOBALS['webroot'] ?>/library/js/bootstrap.min.js" type="text/javascript"></script>
 </body>
 
 <script language='JavaScript'>
