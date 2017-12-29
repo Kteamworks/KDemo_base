@@ -1056,7 +1056,7 @@ if (!empty($reg)) {
 	  <!--<?php genMiscLink('RTop','fin','0',xl('InPatients'),'main/finder/p_dynamic_finder_ip.php'); ?>-->
 	  <!--<?php genMiscLink('RTop','fin','0',xl('Todays Patients'),'main/finder/ph_dynamic_finder.php'); ?>-->
 	  <!--<?php genMiscLink('RBot','cod','2',xl('Add Medicines'),'patient_file/encounter/load_form.php?formname=fee_sheet_ph'); ?>-->
-	  <?php genMiscLink('RBot','adm','0',xl('Sale'),'forms/fee_sheet_ph/medSale.php'); ?>
+	  <?php genMiscLink('RBot','adm','0',xl('Other Sales'),'forms/fee_sheet_ph/other_medSale.php'); ?>
 	  <!--<?php genMiscLink('RBot','pay','1',xl('Take Payment'),'patient_file/front_payment_pharmacy.php'); ?>-->
 	   <!--<?php genMiscLink('RTop','rep','0',xl('Print Bill'),'reports/custom_report_pharmacy.php'); ?>-->
 	  <?php genMiscLink('RTop','adm','0',xl('Stock Purchase'),'drugs/drug_inventory.php'); ?>
@@ -1079,16 +1079,7 @@ if (!empty($reg)) {
 	  <?php genMiscLink('RTop','fin','0',xl('Lab Patients'),'main/finder/p_dynamic_finder_lab.php'); ?>
 	   <?php genMiscLink('RTop','fin','0',xl('Lab Review'),'main/finder/p_dynamic_finder_lab_report_review.php'); ?>
 	   <?php genMiscLink('RTop','fin','0',xl('Lab Report'),'main/finder/p_dynamic_finder_lab_report.php'); ?>
-	     <?php genTreeLink('RTop','oro',xl('Outside Lab')); ?>
-      <?php genTreeLink('RTop','orl',xl('Providers')); ?>
-      <?php genTreeLink('RTop','ort',xl('Configuration')); ?>
-      <?php genTreeLink('RTop','orc',xl('Load Compendium')); ?>
-      <?php genTreeLink('RTop','orp',xl('Pending Review')); ?>
-      <?php genTreeLink('RTop','orr',xl('Patient Results')); ?>
-      <?php genTreeLink('RTop','lda',xl('Lab Overview')); ?>
-      <?php genTreeLink('RTop','orb',xl('Batch Results')); ?>
-      <?php genTreeLink('RTop','ore',xl('Electronic Reports')); ?>
-      <?php genTreeLink('RTop','dld',xl('Lab Documents'));?>
+
     </ul>
   </li>
   <?php }?>
@@ -1113,6 +1104,23 @@ if (!empty($reg)) {
               <i class="fa fa-angle-left pull-right"></i>
             </span></a>
     <ul class="treeview-menu">
+	<?php if ( $newcrop_user_role['newcrop_user_role']=='erxadmin' || $newcrop_user_role['newcrop_user_role']=='erxlab') { ?>
+	<li><a href="#"><span>Lab Admin</span><span class="pull-right-container">
+                  <i class="fa fa-angle-left pull-right"></i>
+                </span></a>
+	<ul class="treeview-menu">
+		     <?php genTreeLink('RTop','oro',xl('Outside Lab')); ?>
+      <?php genTreeLink('RTop','orl',xl('Providers')); ?>
+      <?php genTreeLink('RTop','ort',xl('Configuration')); ?>
+      <!--   <?php genTreeLink('RTop','orc',xl('Load Compendium')); ?> -->
+      <?php genTreeLink('RTop','orp',xl('Pending Review')); ?>
+      <?php genTreeLink('RTop','orr',xl('Patient Results')); ?>
+      <?php genTreeLink('RTop','lda',xl('Lab Overview')); ?>
+      <?php genTreeLink('RTop','orb',xl('Batch Results')); ?>
+      <?php genTreeLink('RTop','ore',xl('Electronic Reports')); ?>
+      <?php genTreeLink('RTop','dld',xl('Lab Documents'));?>
+	  </ul></li>
+	<?php } ?>
       <?php if (acl_check('admin', 'super'    )) genMiscLink('RTop','adm','0',xl('Globals'),'super/edit_globals.php'); ?>
       <?php if (acl_check('admin', 'users'    )) genMiscLink('RTop','adm','0',xl('Facilities'),'usergroup/facilities.php'); ?>
       <?php if (acl_check('admin', 'users'    )) genMiscLink('RTop','adm','0',xl('Users'),'usergroup/usergroup_admin.php'); ?>
@@ -2216,3 +2224,4 @@ $(document).ready(function(){
 </script>
 </body>
 </html>
+
