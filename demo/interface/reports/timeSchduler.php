@@ -49,12 +49,7 @@ $form_patient = isset($_POST['form_patient']) ? $_POST['form_patient'] : '';
 $form_pid= $_SESSION["pid"];
 if ($form_patient == '' ) $form_pid =  $_SESSION["pid"];
 //if ($form_patient == '' ) $form_pid = '';
-if(($encounter==0)||($encounter=='')){ 
-	
- echo ("<script>alert('Please select visit')
-window.location.href='../main/finder/p_dynamic_finder_ip.php';
-</script>"); 
-}
+
 
 $patient=sqlQuery("select * from t_form_admit where pid=$pid and encounter=$encounter");
 $pname=sqlQuery("select fname,sex,age from patient_data where pid=$pid");
@@ -64,11 +59,26 @@ $count=sqlQuery("select count(*) as count from medication_schduling where pid=$p
 
 $listResult = sqlStatement("SELECT  * FROM `ipschdule` where pid=$pid and  result!=''");
 
+$ward = $patient['admit_to_ward'];
+if(empty($ward)){
+	 echo ("<script>alert('Please select IP visit')
+window.location.href='../main/finder/p_dynamic_finder_ip.php';
+</script>"); 
+}
+
+
+/*if(($encounter==0)||($encounter=='')){ 
+	
+ echo ("<script>alert('Please select visit')
+window.location.href='../main/finder/p_dynamic_finder_ip.php';
+</script>"); 
+}*/
+
 
 
 //$list1 = sqlStatement("SELECT  * FROM `nurseIP`");
 
- $ward = $patient['admit_to_ward'];
+ //$ward = $patient['admit_to_ward'];
  $bed = $patient['admit_to_bed'];
 
   

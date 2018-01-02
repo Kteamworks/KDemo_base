@@ -55,7 +55,7 @@ $dmy= date('Y-m-d');
 $list1 = sqlStatement("SELECT  * FROM `ipschdule` where result='' and dated<='$dmy' order by dated,tym");
 
 
-$listResult = sqlStatement("SELECT  * FROM `ipschdule` where result!=''");
+$listResult = sqlStatement("SELECT  * FROM `ipschdule` where result!='' and dated='$dmy'");
 $totalMedBill = sqlStatement("SELECT pid,encounter, sum(fee) as fees from ipschdule where activity = 1 group by encounter");
  $p = 0;
 while($totalMBill = sqlFetchArray($totalMedBill)){
@@ -84,13 +84,13 @@ if(isset($_POST['submit'])){
 	$j=0;
 foreach($_POST['id'] as $selected) {
         
-         $res = $_POST['res'][$j]; 
-	   if(!empty($res)){
-		   $result = $res;
-	   }
-	   else {
+        // $res = $_POST['res'][$j]; 
+	  // if(!empty($res)){
+		//   $result = $res;
+	 //  }
+	 //  else {
 		     $result = $_POST['result'][$j];   
-	   }
+//}
 	   
 	   
 	   
@@ -234,7 +234,7 @@ foreach($_POST['id'] as $selected) {
 			  <option value="Completed">Completed</option>
           </select></td>
 	   <td class="form-group" id="<?php echo 'input_dr'.$i ?>" style="display:none">
-	 <input type="text" name="res[]" class='form-control' disabled="disabled" style="width: 100%" >
+	 <input type="text" name="result[]" class='form-control' disabled="disabled" style="width: 100%" >
 	 </td>
 	    <td><a href="#" id="<?php echo 'toggle_doc'.$i ?>" title="Add Result"><i class="fa fa-plus-circle"></i></a></td>
 		
@@ -273,7 +273,9 @@ $('#<?php echo "input_dr".$i ?> > input').attr("disabled",false);
 	 ?>
 	 
       <tr class='info'>
-	  <?php  $dated=date('d-M-y',strtotime($listResult1['updatedTime'])); 
+	  
+	  <?php 
+	  $dated=date('d-M-y',strtotime($listResult1['dated'])); 
 	         $tym=date('h:i:s A',strtotime($listResult1['updatedTime'])); 
                  
 	  ?>
