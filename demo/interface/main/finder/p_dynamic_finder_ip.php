@@ -211,7 +211,7 @@ if( e.button == 2 ) {
    top.restoreSession();
 <?php if ($GLOBALS['concurrent_layout']) { ?>
 
-document.location.href = "../../patient_file/summary/demographics.php?set_pid=" + newpid;
+document.location.href = "../../patient_file/encounter/forms_encounter.php?set_pid=" + newpid+'&encounter='+encounter;
    
 <?php } else { ?>
    top.location.href = "../../patient_file/patient_file.php?set_pid=" + newpid;

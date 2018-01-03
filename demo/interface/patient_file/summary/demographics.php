@@ -636,7 +636,7 @@ if ($GLOBALS['patient_id_category_name']) {
 <?php echo htmlspecialchars(xl('Report'),ENT_NOQUOTES); ?></a>
 |
 <?php //note that we have temporarily removed report screen from the modal view ?>
-<a href="../reportobs/patient_report_gends.php" onclick='top.restoreSession()'>
+<a href="../report/discharge_summary.php" onclick='top.restoreSession()'>
 <?php echo htmlspecialchars(xl('Discharge Summary'),ENT_NOQUOTES); ?></a>
 |
 <?php //note that we have temporarily removed document screen from the modal view ?>
