@@ -7,7 +7,7 @@ include_once('../globals.php');
 ?>
 <html>
 <head>
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
 <link rel="stylesheet" href="../../library/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
@@ -111,7 +111,7 @@ $res = sqlQuery("select * from users where username='".$_SESSION{"authUser"}."'"
         <span class="sr-only"><?php xl('Hide Menu','e'); ?></span>
       </a>
 	  <?php if($res['newcrop_user_role'] == 'erxrep') { ?>
-		<a href='' class="css_button_small" style="margin:14px;vertical-align:top;" id='new0' onClick=" return top.window.parent.left_nav.loadFrame2('new0','RTop','new/new.php')">
+		<a href='' class="css_button_small" style="margin-top:14px;vertical-align:top;" id='new0' onClick=" return top.window.parent.left_nav.loadFrame2('new0','RTop','new/new.php')">
 		<span><?php echo htmlspecialchars( xl('NEW PATIENT'), ENT_QUOTES); ?></span></a>
 	  <?php } ?>
     </td>

@@ -95,6 +95,10 @@ if ($_POST['form_submit'] && !empty($_POST['form_line'])) {
       if ($report_id) { // Report already exists.
         sqlStatement("UPDATE procedure_report SET $sets "  .
           "WHERE procedure_report_id = '$report_id'");
+		  	  if(oresData("form_report_status", $lino) == 'final') {
+	$status="complete";
+sqlStatement("UPDATE procedure_order SET order_status='".$status."' WHERE procedure_order_id='".$order_id."'");
+	}
       }
       else { // Add new report.
         $report_id = sqlInsert("INSERT INTO procedure_report SET $sets");

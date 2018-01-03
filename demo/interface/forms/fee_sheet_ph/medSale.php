@@ -70,7 +70,7 @@ sqlQuery("insert into ar_activity(pid,encounter,code_type,post_time,adj_amount,m
 $j=0;
 foreach($_POST['name'] as $selected){
 		
-		
+
 		 $batch= $_POST['batch'][$j];
 		 $qty = $_POST['qty'][$j];
 		 $price = $_POST['price'][$j];
@@ -81,14 +81,14 @@ foreach($_POST['name'] as $selected){
 			continue;
 		
 		
-		
+
 		
 		
 		
         $res =sqlQuery("SELECT * FROM `codes` WHERE `code_type`=11 and code=(select name from drugs where drug_id=$selected)");
   
      $servicegrp_id = $res['code_type'];
-	 
+
 	 $cod = $res['code']; 
 	 $code=str_replace("'", "", $cod);
      //$code=mysqli_real_escape_string($conn,$res['code']); 
@@ -243,7 +243,7 @@ $(document).on("focus", ".total", function() {
     $(".sum").each(function(){
         sum += +$(this).val();
     });
-    $(".total").val(sum);
+    $(".total").val(sum.toFixed(2));
 });
 
 $(document).on("focus", ".net", function() {
@@ -258,7 +258,7 @@ $(document).on("focus", ".net", function() {
 				var count = (discountPrct / 100) * oldPrice;
 				var discount = oldPrice - count;
 				if (discount > 0)
-					document.getElementsByName("new_price")[0].value = discount;
+					document.getElementsByName("new_price")[0].value = discount.toFixed(2);
 			}
 });
 
@@ -435,7 +435,7 @@ $(document).on("focus", "#<?php echo 'sum'.$i ?>", function() {
 	var sum = (+p)*(+q);
 	
 	
-	$("#<?php echo 'sum'.$i ?>").val(sum);
+	$("#<?php echo 'sum'.$i ?>").val(sum.toFixed(2));
 	
 });
 
@@ -483,18 +483,18 @@ $(document).on("focus", "#<?php echo 'sum'.$i ?>", function() {
  <tr>
  <th class="danger">Subtotal:</th>
  <td>
- <input type="number" style="text-align:right;" class="form-control total" onkeydown="updateNewPrice()"  name="old_price" value=""  />
+ <input type="number" style="text-align:right;" class="form-control total" step='0.01'onkeydown="updateNewPrice()"  name="old_price" value=""  />
  </td>
  </tr>
  <tr>
  <th class="danger">Discount:</th>
  <td>
- <input type="number" style="text-align:right;" class="form-control discount" onkeydown="updateNewPrice()" name="discount" value="" placeholder="%" /></td>
+ <input type="number" style="text-align:right;" class="form-control discount" step='0.01' onkeydown="updateNewPrice()" name="discount" value="" placeholder="%" /></td>
  </tr>
  <tr>
  <th class="danger">Total:</th>
  <td>
- <input type="number" style="text-align:right;" class="form-control net"   name="new_price" value=""  />
+ <input type="number" style="text-align:right;" class="form-control net"  step='0.01'  name="new_price" value=""  />
  </td>
  </tr>
  </tbody>

@@ -2018,6 +2018,7 @@ $discount=0;
    <input type='text' name='form_paytotal'  value=''
     style='color:#00aa00;width:50px' readonly  />
   </td>
+
  </tr>
 
 </table>
