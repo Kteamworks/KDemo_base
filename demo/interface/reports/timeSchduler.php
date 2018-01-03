@@ -329,11 +329,7 @@ $('#input_dr > input').attr("disabled",false);
 	
 	
   </script>
-  
-  
-  
-  
-
+ 
 </head>
 <body>
 <form name='' method='POST' action=''>
@@ -364,8 +360,6 @@ $('#input_dr > input').attr("disabled",false);
 	
 </table>
 </div>
-
-
 
 <div class="container col-md-offset-10">
  
