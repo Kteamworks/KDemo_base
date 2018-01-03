@@ -55,7 +55,7 @@ $dmy= date('Y-m-d');
 $list1 = sqlStatement("SELECT  * FROM `ipschdule` where result='' and dated<='$dmy' order by dated,tym");
 
 
-$listResult = sqlStatement("SELECT  * FROM `ipschdule` where result!='' and dated='$dmy'");
+$listResult = sqlStatement("SELECT  * FROM `ipschdule` where result!=''");
 $totalMedBill = sqlStatement("SELECT pid,encounter, sum(fee) as fees from ipschdule where activity = 1 group by encounter");
  $p = 0;
 while($totalMBill = sqlFetchArray($totalMedBill)){
@@ -84,41 +84,27 @@ if(isset($_POST['submit'])){
 	$j=0;
 foreach($_POST['id'] as $selected) {
         
-        // $res = $_POST['res'][$j]; 
-	  // if(!empty($res)){
-		//   $result = $res;
-	 //  }
-	 //  else {
-		     $result = $_POST['result'][$j];   
-//}
-	   
-	   
-	   
-		 //echo  $result = $_POST['result'][$j]; exit;
-		 // if(empty($result)){
-			  //echo 'abhilash'; exit;
-		   //   $result = $_POST['res'][$j];
-		//  }
-		 
-		 // print_r($result);
-		 
+		
 		  $id = $_POST['id'][$j];
+		 
 		
 		  $visit = $_POST['visit'][$j];
-		 // print_r($visit);
-		  
 		
-		
-		//$timeInterval = $_POST['timeInterval'][$j];
+        $res = $_POST['res'][$j]; 
+	   if($res!=""){
+		   //echo "update ipschdule set result='$res',updatedTime='$time', activity=1 where ID='$id'"; exit;
+		  $clinical = sqlQuery("update ipschdule set result='$res',updatedTime='$time', activity=1 where ID='$id'");
+	   }
+	   
+	   $result = $_POST['result'][$j]; 
+	   
+	   if($result!=''){
+		   //echo "update ipschdule set result='$result',updatedTime='$time', activity=1 where ID='$id'"; exit;
+		   $clinical = sqlQuery("update ipschdule set result='$result',updatedTime='$time', activity=1 where ID='$id'");
+	   }
 	
-	  
-	//echo "insert into ipschdule(pid,encounter,ward,bed,time,service,time_interval) values('$pid','$encounter','$ward','$bed','$dt','$selected','$timeInterval')";
-	//echo "update ipschdule set result='$result',updatedTime='$time' where encounter=$visit and service='$id'";
-	//exit;
 	
 	
-	//echo "update ipschdule set result='$result',updatedTime='$time', activity=1 where ID='$id'"; exit;
-	$clinical = sqlQuery("update ipschdule set result='$result',updatedTime='$time', activity=1 where ID='$id'");
 	
 	
    $j++; } 
@@ -139,6 +125,7 @@ foreach($_POST['id'] as $selected) {
 <html lang="en">
 <head>
   <title>Bootstrap Example</title>
+  <meta http-equiv="refresh" content="100">
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -234,7 +221,7 @@ foreach($_POST['id'] as $selected) {
 			  <option value="Completed">Completed</option>
           </select></td>
 	   <td class="form-group" id="<?php echo 'input_dr'.$i ?>" style="display:none">
-	 <input type="text" name="result[]" class='form-control' disabled="disabled" style="width: 100%" >
+	 <input type="text" name="res[]" class='form-control' style="width: 100%" >
 	 </td>
 	    <td><a href="#" id="<?php echo 'toggle_doc'.$i ?>" title="Add Result"><i class="fa fa-plus-circle"></i></a></td>
 		
@@ -273,9 +260,7 @@ $('#<?php echo "input_dr".$i ?> > input').attr("disabled",false);
 	 ?>
 	 
       <tr class='info'>
-	  
-	  <?php 
-	  $dated=date('d-M-y',strtotime($listResult1['dated'])); 
+	  <?php  $dated=date('d-M-y',strtotime($listResult1['updatedTime'])); 
 	         $tym=date('h:i:s A',strtotime($listResult1['updatedTime'])); 
                  
 	  ?>

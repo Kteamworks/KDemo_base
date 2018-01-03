@@ -347,6 +347,7 @@ $('#input_dr > input').attr("disabled",false);
 		<th>Age</th>
         <th>Ward</th>
         <th>Bed</th>
+		<th>Note</th>
 		<th>Detail</th>
 		</tr>
 		
@@ -356,6 +357,7 @@ $('#input_dr > input').attr("disabled",false);
 		<td><?php echo $pname['age'];?></td>
 		<td><?php echo $patient['admit_to_ward'];?></td>
         <td><?php echo $patient['admit_to_bed'];?></td>
+		<td><a href="patient_note.php?id=<?php echo $encounter; ?>">Note</a></td>
 		<td><button type="button"  data-toggle="modal" data-target="#myModal">Click Here</button> </td>
 		</tr>
 		
@@ -443,19 +445,7 @@ $('#input_dr > input').attr("disabled",false);
   </div>
   
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
+<!---------------------------------------------------------------modal------------------------------------------------------------->
 
 
 
