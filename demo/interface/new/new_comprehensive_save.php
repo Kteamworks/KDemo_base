@@ -23,7 +23,11 @@ if (!empty($_POST["form_pubpid"])) {
 require_once("../../controllers/NotificationController.php");
 require_once("$srcdir/pid.inc");
 require_once("$srcdir/patient.inc");
+require_once("$srcdir/encounter.inc");
 require_once("$srcdir/options.inc.php");
+require_once("$srcdir/forms.inc");
+require_once("$srcdir/formatting.inc.php");
+require_once("$srcdir/formdata.inc.php");
 
 // here, we lock the patient data table while we find the most recent max PID
 // other interfaces can still read the data during this lock, however
@@ -107,6 +111,46 @@ updateEmployerData1($pid, $newdata['employer_camp'], true);
 NotificationController::create($pid, $_SESSION['authUserID'], '1');
 updatePatientData($pid, $newdata['patient_data'], true);
 updateEmployerData($pid, $newdata['employer_data'], true);	
+if($_POST['form_visit_category']!=null)
+{
+	$encounter = generate_id();
+	$date= date("Y-m-d H:i:s"); 
+	$onset_date= date("Y-m-d H:i:s"); 
+	$reason='';
+	$facility='Demo';
+	$pc_catid=$_POST['form_visit_category'];
+	$facility_id=4;
+	$billing_facility=4;
+	$provider_id=$_POST['form_doctor'];
+    addForm($encounter, "New Patient Encounter",
+    sqlInsert("INSERT INTO form_encounter SET " .
+      "date = '" . add_escape_custom($date) . "', " .
+      "onset_date = '" . add_escape_custom($onset_date) . "', " .
+      "reason = '" . add_escape_custom($reason) . "', " .
+      "facility = '" . add_escape_custom($facility) . "', " .
+      "pc_catid = '" . add_escape_custom($pc_catid) . "', " .
+      "facility_id = '" . add_escape_custom($facility_id) . "', " .
+      "billing_facility = '" . add_escape_custom($billing_facility) . "', " .
+      "sensitivity = '" . add_escape_custom($sensitivity) . "', " .
+      "referral_source = '" . add_escape_custom($referral_source) . "', " .
+      "pid = '" . add_escape_custom($pid) . "', " .
+      "encounter = '" . add_escape_custom($encounter) . "', " .
+	  "tpa_id = '" . add_escape_custom($tpaid) . "', " .
+	  "package = '" . add_escape_custom($package) . "', " .
+      "provider_id = '" . add_escape_custom($provider_id) . "'"),
+      "newpatient", $pid, $userauthorized, $date);
+	$p=sqlQuery("select date from patient_data where pid='$pid'");
+	sqlFetchArray($p);
+	$regdate=$p['date'];
+	sqlInsert("INSERT INTO billing_main_copy SET " .
+      "regdate = '" . add_escape_custom($regdate) . "', " .
+      "facility_id = '" . add_escape_custom($facility_id) . "', " . 
+      "pid = '" . add_escape_custom($pid) . "', " .
+	  "pc_catid = '" . add_escape_custom($pc_catid) . "', " .
+      "encounter = '" . add_escape_custom($encounter) . "', " .
+	  "encounterdt = now() , ".
+	  "tpa_id_pri = '" . add_escape_custom($tpaid) . "' ") ;     	
+}
 		
 }
 
