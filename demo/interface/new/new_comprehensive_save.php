@@ -150,6 +150,130 @@ if($_POST['form_visit_category']!=null)
       "encounter = '" . add_escape_custom($encounter) . "', " .
 	  "encounterdt = now() , ".
 	  "tpa_id_pri = '" . add_escape_custom($tpaid) . "' ") ;     	
+	  //sqlStatement("update insurance_data set encounter=?,provider=? where pid=?",array($encounter,$tpaid,$pid));
+    $row1=sqlStatement("Select a.service_id,code,code_type,code_text,pr_price,username from codes a,prices b, users c where a.id=b.pr_id and a.code_text=c.username and b.pr_level='standard'and  c.id='".$provider_id."'");
+	$today = date("Y-m-d H:i:s"); 
+	$time= date("H:i:s");
+	$day=sqlStatement("select dayname('$today') day");
+	$days=sqlFetchArray($day);
+	$dayy=$days['day'];
+	
+	
+		if(!($pc_catid==5 || $pc_catid==12 || $pc_catid==16 || $pc_catid==17))
+	{
+	$patient=getPatientData($pid, "rateplan");
+    $rate=$patient['rateplan'];
+	if($rate=="HosInsurance")
+	{
+    $inc1=sqlStatement("Select a.service_id,code,code_type,code_text,pr_price,username from codes a,prices b, users c where a.id=b.pr_id and a.code_text=c.username and b.pr_level='HosInsurance' and  c.id='".$provider_id."'");
+	$inc2=  sqlFetchArray($inc1);
+	$servicegrpid=$inc2['code_type'];
+	$serviceid=$inc2['service_id'];
+  	$code=$inc2['code'];
+	$codetext=$inc2['code_text'];
+	$codetype="Doctor Charges";
+  	$billed=0;
+  	$units=1;
+  	$fee=$inc2['pr_price'];
+	$authrzd=1;
+	$modif="";
+	$act=1;
+	$grpn="HosInsurance";
+	$onset_date1=date('Y-m-d H:i:s');
+
+	if($pc_catid==13)
+		 {
+			$ct="CASUALTY CONSULTATION (DAY)"; 	 
+		    $cas5=sqlStatement("Select a.service_id,code,code_type,code_text,pr_price from codes a,prices b where a.id=b.pr_id and a.code='".$ct."' and a.code_type=6 and b.pr_level='HosInsurance'");
+			$cas6=sqlFetchArray($cas5);
+			$codetype="Services"; 
+			$servicegrpid=$cat6['code_type'];
+	        $serviceid=$cat6['service_id'];
+			$codetext="CASUALTY CONSULTATION (DAY)"; 
+			$code=$codetext;
+			$fee=$cas6['pr_price'];
+		 }
+		 if($pc_catid==15)
+		 {
+			$ct1="CASUALTY CONSULTATION (NIGHT)";
+		    $cas7=sqlStatement("Select a.service_id,code,code_type,code_text,pr_price from codes a,prices b where a.id=b.pr_id and a.code='".$ct1."' and a.code_type=6 and b.pr_level='HosInsurance'");
+			$cas8=sqlFetchArray($cas7);
+			$codetype="Services"; 
+			$servicegrpid=$cat8['code_type'];
+	        $serviceid=$cat8['service_id'];
+			$codetext="CASUALTY CONSULTATION (NIGHT)"; 
+			$code=$codetext;
+			$fee=$cas8['pr_price'];
+		 }
+	}
+	else
+    {
+		
+	$row2=  sqlFetchArray($row1);
+  	$code=$row2['code'];
+	$codetext=$row2['code_text'];
+	$codetype="Doctor Charges";
+  	$billed=0;
+	$servicegrpid=$row2['code_type'];
+	$serviceid=$row2['service_id'];
+  	$units=1;
+  	$fee=$row2['pr_price'];
+	$authrzd=1;
+	$modif="";
+	$act=1;
+	$grpn="Default";
+	$onset_date1=date('Y-m-d H:i:s');
+
+	if($pc_catid==13)
+		 {
+			$ct="CASUALTY CONSULTATION (DAY)"; 	 
+		    $cas1=sqlStatement("Select  a.service_id,code,code_type,code_text,pr_price from codes a,prices b where a.id=b.pr_id and a.code='".$ct."' and a.code_type=6 and b.pr_level='standard'");
+			$cas2=sqlFetchArray($cas1);
+			$codetype="Services"; 
+				$servicegrpid=$cas2['code_type'];
+	          $serviceid=$cas2['service_id'];
+			$codetext="CASUALTY CONSULTATION (DAY)"; 
+			$code=$codetext;
+			$fee=$cas2['pr_price'];
+		 }
+		 if($pc_catid==15)
+		 {
+			$ct1="CASUALTY CONSULTATION (NIGHT)";
+		    $cas3=sqlStatement("Select  a.service_id,code,code_type,code_text,pr_price from codes a,prices b where a.id=b.pr_id and a.code='".$ct1."' and a.code_type=6 and b.pr_level='standard'");
+			$cas4=sqlFetchArray($cas3);
+			$codetype="Services"; 
+			$servicegrpid=$cas4['code_type'];
+	        $serviceid=$cas4['service_id'];
+			$codetext="CASUALTY CONSULTATION (NIGHT)"; 
+			$code=$codetext;
+			$fee=$cas4['pr_price'];
+		 }
+	}	
+	if($code!=null)
+	{
+    sqlInsert("INSERT INTO billing SET " .
+      "date = '" . add_escape_custom($onset_date1) . "', " .
+	  "user = '" . $_SESSION["authUserID"] . "',".
+      "bill_date = '" . add_escape_custom($onset_date1) . "', " .
+	  "servicegrp_id = '" . add_escape_custom($servicegrpid) . "', " .
+      "service_id = '" . add_escape_custom($serviceid) . "', " .
+      "code_type = '" . add_escape_custom($codetype) . "', " .
+      "code = '" . add_escape_custom($code) . "', " .
+      "code_text = '" . add_escape_custom($codetext) . "', " .
+      "units = '" . add_escape_custom($units) . "', " .
+      "billed = '" . add_escape_custom($billed) . "', " .
+      "fee = '" . add_escape_custom($fee) . "', " .
+      "pid = '" . add_escape_custom($pid) . "', " .
+      "encounter = '" . add_escape_custom($encounter) . "', " .
+	  "modifier = '" . add_escape_custom($modif) . "', " .
+	  "authorized = '" . add_escape_custom($authrzd) . "', " .
+	  "activity = '" . add_escape_custom($act) . "', " .
+	  "groupname = '" . add_escape_custom($grpn) . "', " .
+      "provider_id = '" . add_escape_custom($provider_id) . "'");
+	  
+	  sqlQuery("Update billing_main_copy set total_charges=total_charges + ? where encounter=?",array($fee,$encounter));   
+	}
+	}
 }
 		
 }
