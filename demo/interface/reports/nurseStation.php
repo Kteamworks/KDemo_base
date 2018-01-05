@@ -147,6 +147,73 @@ foreach($_POST['id'] as $selected) {
 
 <body>
 <form method='POST' action=''>
+<div class="container">
+  <h2>Nurse Station</h2>
+  
+  <div class='row'>
+  <div class="col-md-4">
+  <label>Name:</label> Abbas sharma
+  <label>Ward No: </label> IP-201
+  <table class="table table-striped  table-condensed table-responsive">
+    <thead>
+      <tr class='active'>
+	    <th>Date</th>
+        <th>Time</th>
+		<th>Service</th>
+		<th>Value / Status </th>
+		</tr>
+		</thead>
+		<tbody>
+		<tr>
+		<td class="table-active">21-04-2014</td>
+		<td class="table-active">10:20</td>
+		<td class="table-active">injection</td>
+		<td class="table-active">Yes</td>
+		</tr>
+		</tbody>
+		</table>
+  </div>
+    <div class="col-md-4">
+    <table class="table table-striped  table-condensed table-responsive">
+    <thead>
+      <tr class='active'>
+	    <th>Name</th>
+        <th>Time</th>
+		<th>Service</th>
+		<th>Value / Status </th>
+		</tr>
+		</thead>
+		<tbody>
+		<tr>
+		<td class="table-active">21-04-2014</td>
+		<td class="table-active">10:20</td>
+		<td class="table-active">injection</td>
+		<td class="table-active">Yes</td>
+		</tr>
+		</tbody>
+		</table>
+  </div>
+    <div class="col-md-4">
+    <table class="table table-striped  table-condensed table-responsive">
+    <thead>
+  
+	    <th>Name</th>
+        <th>Time</th>
+		<th>Service</th>
+		<th>Value / Status </th>
+
+		</thead>
+		<tbody>
+		<tr>
+		<td class="table-active">21-04-2014</td>
+		<td class="table-active">10:20</td>
+		<td class="table-active">injection</td>
+		<td class="table-active">Yes</td>
+		</tr>
+		</tbody>
+		</table>
+  </div>
+  </div>
 <div class="container clo-md-12">
   <h2>Nurse Station</h2>
   
@@ -197,7 +264,7 @@ foreach($_POST['id'] as $selected) {
     echo "document.getElementById('xyz').play();";
 	//echo "setTimeout(function(){alert('Thank you!')},6000);";
 	echo "setTimeout(function(){";
-   echo "alert('";
+  // echo "alert('";
   
    echo $list2['service'];
    echo " time for Bed No. ";

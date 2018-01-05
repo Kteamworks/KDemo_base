@@ -93,7 +93,7 @@ $ip_note=$visit_data['ip_note'];
 <p><label>DOD</label>  &nbsp;  :  <?php echo date('Y-m-d H:i:s',strtotime($discharge_date)) ?> </p>
 </div>
 </div>
-</div>
+
 <h1 style="text-align:center">DEPARTMENT OF MEDICINE</h1>
 <div class="table-title">
 <?php $qry2 = "SELECT title FROM lists WHERE pid = ? AND encounter = ?";
@@ -125,7 +125,7 @@ $ip_note=$visit_data['ip_note'];
 <?php $qry2 = "SELECT reason FROM form_encounter WHERE pid = ? AND encounter = ?";
    $notes= sqlStatement($qry2, array($pid,$encounter));
    $note=sqlFetchArray($notes);
-   if($note!=null){
+   if($note['reason']!=null){
    ?>
    
 <h2>HISTORY OF PRESENTING ILLNESS –</h2>
@@ -139,7 +139,7 @@ $ip_note=$visit_data['ip_note'];
   echo "<hr />";
             echo "<div class='text history' id='HIS'>\n";
             
-                print "<h1>".xl('History Data').":</h1>";
+                print "<h2>".xl('History Data').":</h2>";
                 $result1 = getHistoryData($pid);
                 echo "   <table>\n";
                 display_layout_rows('HIS', $result1);
@@ -147,7 +147,7 @@ $ip_note=$visit_data['ip_note'];
             
             echo "</div>";
    ?>
-<?php $qry2 = "SELECT * FROM lists WHERE pid = ? AND encounter = ?";
+<?php $qry2 = "SELECT * FROM lists WHERE pid = ? AND encounter != ?";
    $issues = sqlStatement($qry2, array($pid,$encounter));
 $issues1=sqlFetchArray($issues);
    
@@ -1195,16 +1195,16 @@ if($vitals1!=null){   ?>
 <p><label>Temperature</label>  &nbsp;&nbsp; :   <?php echo $vitals1['temperature']; ?></p>
 <?php }?>
 <?php if($vitals1['weight']!=null){?>
-<p><label>Weight</label>  &nbsp;&nbsp; :   <?php echo $vitals1['weight']; ?></p>
+<p><label>Weight</label>  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :   <?php echo $vitals1['weight']; ?></p>
 <?php }?>
 <?php if($vitals1['height']!=null){?>
-<p><label>Height</label>  &nbsp;&nbsp; :   <?php echo $vitals1['height']; ?></p>
+<p><label>Height</label>  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :   <?php echo $vitals1['height']; ?></p>
 <?php }?>
 <?php if($vitals1['bps']!=null||$vitals1['bpd']!=null){?>
-<p><label>BP</label>  &nbsp;&nbsp; :   <?php echo $vitals1['bps']; ?>/<?php echo $vitals1['bpd']; ?></p>
+<p><label>BP</label>  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :   <?php echo $vitals1['bps']; ?>/<?php echo $vitals1['bpd']; ?></p>
 <?php }?>
 <?php }?>
-
+</div>
    <div class="table-title">
 <?php $qry2 = "SELECT reason FROM form_encounter WHERE pid = ? AND encounter = ?";
    $notes= sqlStatement($qry2, array($pid,$encounter));
@@ -1229,7 +1229,7 @@ AND encounter = ?";
 		  <div class="table-title">
 <h2>ADVISE ON DISCHARGE</h2>
 
-<table class="table-fill">
+<table class="table table-striped table-inverse">
 <thead>
 <tr>
 <th class="text-left">Drug</th>
@@ -1328,7 +1328,7 @@ WinPrint.close();">
 					</a>
 									</div>
 </div>
-
+</div>
 	</div>
   </div>
   </body>
