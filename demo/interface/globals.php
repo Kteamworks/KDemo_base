@@ -107,9 +107,11 @@ if (empty($_SESSION['site_id']) || !empty($_GET['site'])) {
     $tmp = $_GET['site'];
   }
   else {
-    if (!$ignoreAuth) die("Site ID is missing from session data!");
-    $tmp = $_SERVER['HTTP_HOST'];
-    if (!is_dir($GLOBALS['OE_SITES_BASE'] . "/$tmp")) $tmp = "default";
+	  $tmp = "default";
+	   header('Location: ../login/login_frame.php?site='.$tmp);
+   // if (!$ignoreAuth) die("Site ID is missing from session data!");
+    //$tmp = $_SERVER['HTTP_HOST'];
+    //if (!is_dir($GLOBALS['OE_SITES_BASE'] . "/$tmp")) $tmp = "default";
   }
   if (empty($tmp) || preg_match('/[^A-Za-z0-9\\-.]/', $tmp))
     die("Site ID '". htmlspecialchars($tmp,ENT_NOQUOTES) . "' contains invalid characters.");
