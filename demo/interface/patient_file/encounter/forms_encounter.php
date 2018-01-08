@@ -478,8 +478,7 @@ if ( $esign->isButtonViewable() ) {
         } else {
             if($formdir!="admit")
 		   {
-            echo "<a class='css_button_small form-edit-button' id='form-edit-button-".attr($formdir)."-".attr($iter['id'])."' target='".
-                    ($GLOBALS['concurrent_layout'] ? "_parent" : "Main") .
+            echo "<a class='css_button_small form-edit-button' id='form-edit-button-".attr($formdir)."-".attr($iter['id']).
                     "' href='$rootdir/patient_file/encounter/view_form.php?" .
                     "formname=" . attr($formdir) . "&id=" . attr($iter['form_id']) .
                     "' onclick='top.restoreSession()'>";
