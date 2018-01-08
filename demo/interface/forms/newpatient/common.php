@@ -212,7 +212,7 @@ $vid=sqlStatement("SELECT form_id from forms where encounter='".$_SESSION['encou
 			<?php } ?>
 			<li class="current"></i><em>Visit Notes</em></li>
 			<li>
-			<a href="{$redirect_LINK}"  style="background-color: #dd4b39 !important;
+			<a href="../../patient_file/summary/nurse_checkout.php"  style="background-color: #dd4b39 !important;
 color: #fff;{$DISPLAYNONE1};">
 check out</a></li>
 		
