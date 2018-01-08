@@ -153,7 +153,7 @@ function getRatePlan(plan)
 <div id="overDiv" style="position:absolute; visibility:hidden; z-index:1000;"></div>
 <?php $newcrop_user_role=sqlQuery("select newcrop_user_role from users where username='".$_SESSION['authUser']."'");
  ?>
-  <?php if($newcrop_user_role['newcrop_user_role']=='erxdoctor') { 
+  <?php 
   
 $rid=sqlStatement("SELECT form_id from forms where encounter='".$_SESSION['encounter']."' and formdir='ros' order by form_id desc limit 1 ");
 		$rid1=sqlFetchArray($rid);
@@ -169,7 +169,7 @@ $vid=sqlStatement("SELECT form_id from forms where encounter='".$_SESSION['encou
 
   $nvid1=sqlFetchArray($nvid);
  $nvid2=$nvid1['id'];
-		?>
+		if($newcrop_user_role['newcrop_user_role']=='erxdoctor') { ?>
 <section>
 	<nav>
 		<ol class="cd-breadcrumb triangle custom-icons">
@@ -197,7 +197,29 @@ $vid=sqlStatement("SELECT form_id from forms where encounter='".$_SESSION['encou
 		</ol>
 	</nav>
 </section>
-  <?php }?>
+  <?php } else if($newcrop_user_role['newcrop_user_role']=='erxnurse'){?>
+	<section>
+	<nav>
+		<ol class="cd-breadcrumb triangle custom-icons">
+       <?php if($vid2 == null) { ?>
+			<li><a href="../encounter/load_form.php?formname=vitals"><i class="fa fa-note" style="margin-right: 8px;"></i>Vitals</a></li>
+			<?php } else { ?>
+			<li><a href="../encounter/view_form.php?formname=vitals&id=<?php echo $vid2; ?>"><i class="fa fa-note" style="margin-right: 8px;"></i>Vitals</a></li>
+			<?php } if($rid2 == null) { ?>
+			<li><a href="../../patient_file/encounter/load_form.php?formname=ros"><i class="fa fa-note" style="margin-right: 8px;"></i>Review of systems</a></li>
+						<?php } else { ?>
+			<li><a href="../../patient_file/encounter/view_form.php?formname=ros&id=<?php echo $rid2 ?>"><i class="fa fa-note" style="margin-right: 8px;"></i>Review of systems</a></li>
+			<?php } ?>
+			<li class="current"></i><em>Visit Notes</em></li>
+			<li>
+			<a href="{$redirect_LINK}"  style="background-color: #dd4b39 !important;
+color: #fff;{$DISPLAYNONE1};">
+check out</a></li>
+		
+	</ol>
+	</nav>
+</section>  
+ <?php }?>
 <form method='post' action="<?php echo $rootdir ?>/forms/newpatient/save.php" name='new_encounter'
  <?php if (!$GLOBALS['concurrent_layout']) echo "target='Main'"; ?>>
 
@@ -216,7 +238,7 @@ $vid=sqlStatement("SELECT form_id from forms where encounter='".$_SESSION['encou
 
 	<?php
      $newcrop_user_role=sqlQuery("select newcrop_user_role from users where username='".$_SESSION['authUser']."'");
-     if($newcrop_user_role['newcrop_user_role']=='erxdoctor'){
+     if($newcrop_user_role['newcrop_user_role']=='erxdoctor'|| $newcrop_user_role['newcrop_user_role']=='erxnurse'){
 	?>
 	<!--<div style="float:right; margin-top:-3px">
  <a href='<?php echo "$rootdir/patient_file/summary/stats_full.php"; ?>' class='css_button' id='back'><span><?php echo htmlspecialchars( xl('Back'), ENT_NOQUOTES); ?></span></a>
@@ -234,11 +256,13 @@ $vid=sqlStatement("SELECT form_id from forms where encounter='".$_SESSION['encou
  <tr>
 
   <td width='33%' nowrap class='bold' 
-   <?php if($newcrop_user_role['newcrop_user_role']!='erxdoctor') { ?>
+   <?php if($newcrop_user_role['newcrop_user_role']!='erxdoctor' && $newcrop_user_role['newcrop_user_role']!='erxnurse') { ?>
   style="display:none"
-   <?php  } ?>><?php echo xlt('Consultation Brief Description'); ?>:</td>
+   <?php  } ?>>
+   
+   <?php echo xlt('Consultation Brief Description'); ?>:</td>
 
-  <td width='34%' rowspan='2' align='center' valign='center' class='text' <?php  if($newcrop_user_role['newcrop_user_role']=='erxdoctor') { ?> style="visibility:hidden;position:absolute" <?php } ?>>
+  <td width='34%' rowspan='2' align='center' valign='center' class='text' <?php  if($newcrop_user_role['newcrop_user_role']=='erxdoctor' || $newcrop_user_role['newcrop_user_role']=='erxnurse') { ?> style="visibility:hidden;position:absolute" <?php } ?>>
    <table>
 
     <tr<?php if ($GLOBALS['athletic_team']) echo " style='visibility:hidden;'"; ?>>
@@ -527,7 +551,7 @@ if ($fres) {
   </td>
 
   <td class='bold' width='33%'
-  <?php  if($newcrop_user_role['newcrop_user_role']!='erxdoctor') { ?> style="visibility:hidden;position:absolute" <?php } else { ?> style="float:left" <?php } ?> nowrap>
+  <?php  if($newcrop_user_role['newcrop_user_role']!='erxdoctor' && $newcrop_user_role['newcrop_user_role']!='erxnurse') { ?> style="visibility:hidden;position:absolute" <?php } else { ?> style="float:left" <?php } ?> nowrap>
     <div style='float:left'>
    <?php echo xlt('Issues (Injuries/Medical/Allergy)'); ?>
     </div>
@@ -543,7 +567,7 @@ if ($fres) {
   </td>
  </tr>
 
- <tr <?php  if($newcrop_user_role['newcrop_user_role']!='erxdoctor') { ?> style="visibility:hidden;position:absolute" <?php } ?>>
+ <tr <?php  if($newcrop_user_role['newcrop_user_role']!='erxdoctor'&& $newcrop_user_role['newcrop_user_role']!='erxnurse') { ?> style="visibility:hidden;position:absolute" <?php } ?>>
   <td class='text' valign='top'>
    <textarea name='reason' cols='40' rows='12' wrap='virtual' style='width:96%'
     ><?php echo $viewmode ? text($result['reason']) : text($GLOBALS['default_chief_complaint']); ?></textarea>
@@ -582,7 +606,7 @@ while ($irow = sqlFetchArray($ires)) {
 </table>
 <?php $newcrop_user_role=sqlQuery("select newcrop_user_role from users where username='".$_SESSION['authUser']."'");
  ?>
-  <?php if($newcrop_user_role['newcrop_user_role']=='erxdoctor') { ?>
+  <?php if($newcrop_user_role['newcrop_user_role']=='erxdoctor'||$newcrop_user_role['newcrop_user_role']=='erxnurse') { ?>
   <div style = 'float:left; margin-left:8px;margin-top:0px'>
       <a href="javascript:saveClicked();" class="btn btn-primary link_submit" style="margin:10px"><span><?php echo xlt('Save'); ?></span></a>
     </div>
