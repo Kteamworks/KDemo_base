@@ -2,7 +2,7 @@
 include_once("../../globals.php");
 include_once("$srcdir/api.inc");
 $res = sqlQuery("select * from users where username='".$_SESSION{"authUser"}."'");
-if($res['newcrop_user_role'] == 'erxdoctor' ){
+if($res['newcrop_user_role'] == 'erxdoctor' || $res['newcrop_user_role'] == 'erxnurse' ){
  $rid=sqlStatement("SELECT form_id from forms where encounter='".$_SESSION['encounter']."' and formdir='ros' order by form_id desc limit 1 ");
 		$rid1=sqlFetchArray($rid);
 		$rid2=$rid1['form_id'];
@@ -21,12 +21,7 @@ $vid=sqlStatement("SELECT form_id from forms where encounter='".$_SESSION['encou
 $url="../../patient_file/encounter/view_form.php?formname=newpatient&id=$nvid2";
 header('Location: '.$url);
 }
-elseif($res['newcrop_user_role'] == 'erxnurse') { 
-sqlStatement("UPDATE form_encounter SET nurse_out_time=NOW() where encounter= '".$encounter."'");
-$url="../../main/finder/p_dynamic_finder.php";
-header('Location: '.$url);
- $_SESSION['nurseVisit'] = $encounter; $_SESSION['LAST_ACTIVITY_nurse'] = time();
-}
+
 require ("C_FormROS.class.php");
 $c = new C_FormROS();
 echo $c->default_action_process($_POST);

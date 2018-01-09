@@ -62,6 +62,13 @@ $newcrop_user_role=sqlQuery("select newcrop_user_role from users where username=
 	 $normalurl = "main/finder/dynamic_finder.php";
 	 
  }
+ 
+ if($newcrop_user_role['newcrop_user_role'] == 'erxnurse') { 
+sqlStatement("UPDATE form_encounter SET nurse_out_time=NOW() where encounter= '".$encounter."'");
+$url="../../main/finder/p_dynamic_finder.php";
+header('Location: '.$url);
+ $_SESSION['nurseVisit'] = $encounter; $_SESSION['LAST_ACTIVITY_nurse'] = time();
+}
 /* if($pc_catid==10)
 {
 	$normalurl = "patient_file/front_payment.php";
