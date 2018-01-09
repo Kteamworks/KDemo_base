@@ -58,6 +58,9 @@ $ip_note=$visit_data['ip_note'];
 	.cd-breadcrumb.triangle li > * {
     padding: 1em 0.3em 1em 1.4em !important;
 	}
+	.label {
+	color: black;
+	}
 	</style>
 <script type="text/javascript" src="../../../library/textformat.js"></script>
 <script type="text/javascript" src="../../../library/dynarch_calendar.js"></script>

@@ -52,10 +52,9 @@ if ($form_patient == '' ) $form_pid =  $_SESSION["pid"];
 
 $dmy= date('Y-m-d');
 
-$list1 = sqlStatement("SELECT  * FROM `ipschdule` where result='' and dated<='$dmy' order by dated,tym");
+$list1 = sqlStatement("SELECT  * FROM `ipschdule` where result='' and dated<='$dmy' group by bed");
 
-
-$listResult = sqlStatement("SELECT  * FROM `ipschdule` where result!=''");
+//$listResult = sqlStatement("SELECT  * FROM `ipschdule` where result!='' group by bed order by dated, tym");
 $totalMedBill = sqlStatement("SELECT pid,encounter, sum(fee) as fees from ipschdule where activity = 1 group by encounter");
  $p = 0;
 while($totalMBill = sqlFetchArray($totalMedBill)){
@@ -102,15 +101,16 @@ foreach($_POST['id'] as $selected) {
 		   //echo "update ipschdule set result='$result',updatedTime='$time', activity=1 where ID='$id'"; exit;
 		   $clinical = sqlQuery("update ipschdule set result='$result',updatedTime='$time', activity=1 where ID='$id'");
 	   }
-	
-	
-	
-	
-	
+
    $j++; } 
    
    
-   
+  
+	session_start();
+	// Storing session data
+	$bed_no = sqlQuery("select bed from ipschdule where ID='$id'");
+	$_SESSION["bed_id"] = $bed_no['ward'].'/'.$bed_no['bed'];
+	$_SESSION['LAST_BED_ACTIVITY'] = time();
   header('Location:nurseStation.php');
 }
 
@@ -129,16 +129,28 @@ foreach($_POST['id'] as $selected) {
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
-
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.7/css/bootstrap-dialog.min.css" rel="stylesheet" />
+	
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  
+  <style>
+  .fix { 
+      background: bisque;
+    padding: 5px;
+  }
+  </style>
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.7/js/bootstrap-dialog.min.js" type="text/javascript"></script>
 
+<script type="text/javascript">
+        BootstrapDialog.show({
+            title: 'Say-hello dialog',
+            message: 'Hi Apple!'
+        });
+</script>
 <audio id="xyz" src="alert_tones.mp3" preload="auto"></audio>
 </head>
 
@@ -146,107 +158,36 @@ foreach($_POST['id'] as $selected) {
 
 
 <body>
-<form method='POST' action=''>
-<div class="container">
-  <h2>Nurse Station</h2>
-  
-  <div class='row'>
-  <div class="col-md-4">
-  <label>Name:</label> Abbas sharma
-  <label>Ward No: </label> IP-201
-  <table class="table table-striped  table-condensed table-responsive">
-    <thead>
-      <tr class='active'>
-	    <th>Date</th>
-        <th>Time</th>
-		<th>Service</th>
-		<th>Value / Status </th>
-		</tr>
-		</thead>
-		<tbody>
-		<tr>
-		<td class="table-active">21-04-2014</td>
-		<td class="table-active">10:20</td>
-		<td class="table-active">injection</td>
-		<td class="table-active">Yes</td>
-		</tr>
-		</tbody>
-		</table>
-  </div>
-    <div class="col-md-4">
-    <table class="table table-striped  table-condensed table-responsive">
-    <thead>
-      <tr class='active'>
-	    <th>Name</th>
-        <th>Time</th>
-		<th>Service</th>
-		<th>Value / Status </th>
-		</tr>
-		</thead>
-		<tbody>
-		<tr>
-		<td class="table-active">21-04-2014</td>
-		<td class="table-active">10:20</td>
-		<td class="table-active">injection</td>
-		<td class="table-active">Yes</td>
-		</tr>
-		</tbody>
-		</table>
-  </div>
-    <div class="col-md-4">
-    <table class="table table-striped  table-condensed table-responsive">
-    <thead>
-  
-	    <th>Name</th>
-        <th>Time</th>
-		<th>Service</th>
-		<th>Value / Status </th>
 
-		</thead>
-		<tbody>
-		<tr>
-		<td class="table-active">21-04-2014</td>
-		<td class="table-active">10:20</td>
-		<td class="table-active">injection</td>
-		<td class="table-active">Yes</td>
-		</tr>
-		</tbody>
-		</table>
-  </div>
-  </div>
-<div class="container clo-md-12">
+<div class="container-fluid">
   <h2>Nurse Station</h2>
-  
+  <?php 
+  if (isset($_SESSION['LAST_BED_ACTIVITY']) && (time() - $_SESSION['LAST_BED_ACTIVITY'] > 120)) 
+{
+    unset($_SESSION['bed_id']);
+    unset($_SESSION['LAST_BED_ACTIVITY']);
+
+}
+?>
+<?php if(isset($_SESSION["bed_id"])) { ?>
+<div class="alert alert-info alert-dismissable">
+  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+  <strong>Info!</strong> <?php echo $_SESSION["bed_id"] ?> is service completed.
+</div>
+<script type='text/javascript'>  setTimeout(function() {
+    $('.alert').fadeOut('slow');}, 920
+  );</script>
+<?php } ?>
   <div class='row'>
-  <div class='col-md-10'>
- 
-<table class="table table-striped  table-condensed table-responsive">
-    <thead>
-      <tr class='active'>
-	    <th>Name</th>
-        <th>Ward/Bed</th>
-		<th>Date</th>
-        <th>Time</th>
-        <th>Services</th>
-		<th>Value / Status </th>
-		<th></th>
-		
-		
-		
-      </tr>
-    </thead>
-    <tbody>
-	<?php $i=1;
-	 while($list2=sqlFetchArray($list1))  { ?>
-      <tr>
-	 
-	 
+  	<?php $i=1;
+	 while($list2=sqlFetchArray($list1))  {  ?>
+      
 	  
 	  <?php
 	         $patID = $list2['pid'];
-	         $pname = sqlQuery("SELECT  * FROM `patient_data` where pid='$patID'");
-			 
+	         $pname = sqlQuery("SELECT  * FROM patient_data where pid='$patID'");
 	         $dated=date('d-M-y',strtotime($list2['dated']));
+			 $bed = $list2['bed'];
              $tym=date('h:i:s A',strtotime($list2['tym']));
 			 if($tym == '12:00:00 AM')
 				 continue;
@@ -264,24 +205,50 @@ foreach($_POST['id'] as $selected) {
     echo "document.getElementById('xyz').play();";
 	//echo "setTimeout(function(){alert('Thank you!')},6000);";
 	echo "setTimeout(function(){";
-  // echo "alert('";
-  
+   echo "BootstrapDialog.show({
+            title: 'Alert!',
+            message: '";
    echo $list2['service'];
    echo " time for Bed No. ";
    echo $list2['bed'];
-	 echo "')},600);";
+   echo "'}); },100);";
    echo "</script>";
  }
  
 	  ?>
-	 
+  	  
 	  
-        <td class="table-active"><?php echo $pname['fname']; ?></td>
-	    <td class="table-active"><?php echo $list2['ward'].'/'. $list2['bed']; ?></td>
-		<td class="table-active"><?php echo $dated; ?></td>
-		<td class="table-active"><?php echo $tym; ?></td>
-		<td class="table-active"><?php echo $list2['service']; ?></td>
-		<!--<td class="table-active"><input type='text'  name='result[]' ></td>-->
+
+	
+	
+
+  <div class="col-md-6">
+  <form method='POST' action=''>
+  <div class="fix">
+  <label>Name:</label> <?php echo $pname['fname']; ?> &nbsp;
+  <label>Ward / Bed No: </label> <?php echo  $list2['ward'].' / '.$list2['bed']; ?>
+
+<input type='submit'  class=' pull-right' value='Save' name='submit'>
+</div>
+  <table class="table table-striped  table-condensed table-responsive">
+    <thead>
+      <tr class='active'>
+	    <th>Date</th>
+        <th>Time</th>
+		<th>Service</th>
+		<th>Value / Status </th>
+		<th><i class="fa fa-cog fa-spin fa-fw"></i>
+<span class="sr-only">Loading...</span></th>
+		</tr>
+		</thead>
+		<tbody>
+		<?php	$service_list_qry = sqlStatement("SELECT  * FROM `ipschdule` where bed='$bed' and activity=0 order by dated, tym" ); while($service_list = sqlFetchArray($service_list_qry)) { ?>
+
+		<tr class="<?php if($currentTime>=$service_list['tym'])
+	 {  echo "danger"; } ?>">
+		<td class="table-active"><?php echo $service_list['dated']; ?></td>
+		<td class="table-active"><?php echo $service_list['tym']; ?></td>
+		<td class="table-active"><?php echo $service_list['service']; ?></td>
 		<td id="<?php echo 'select_dr'.$i ?>">
 		  <select name='result[]' class="form-control">
               <option value="">Pending</option>
@@ -295,10 +262,9 @@ foreach($_POST['id'] as $selected) {
 		
 		<input type='hidden' value='<?php echo $list2['encounter']; ?>' name='visit[]'>
 		<input type='hidden' value='<?php echo $list2['ID']; ?>' name='id[]'>
-	
-      </tr>  
-	  
-	  <script language="JavaScript">
+		</tr>
+		<?php } ?>
+			<script language="JavaScript">
 
 
 $(document).ready(function()
@@ -314,51 +280,16 @@ $('#<?php echo "input_dr".$i ?> > input').attr("disabled",false);
    });
 	
 });
-</script>	  
-	  
+</script>	 
+		</tbody>
+		</table>
+		  </form>
+  </div>
+
 	<?php $i++; } ?> 
-	
-	
-	<?php $i=1;
-	 while($listResult1=sqlFetchArray($listResult))  { 
-	  $patID1 = $listResult1['pid'];
-	         $pname1 = sqlQuery("SELECT  * FROM `patient_data` where pid='$patID1'");
-	
-	 ?>
-	 
-      <tr class='info'>
-	  <?php  $dated=date('d-M-y',strtotime($listResult1['updatedTime'])); 
-	         $tym=date('h:i:s A',strtotime($listResult1['updatedTime'])); 
-                 
-	  ?>
-	  
-	  
-        <td class="table-active"><?php echo $pname1['fname']; ?></td>
-	    <td class="table-active"><?php echo $listResult1['ward'].'/'. $listResult1['bed']; ?></td>
-		<td class="table-active"><?php echo $dated; ?></td>
-		<td class="table-active"><?php echo $tym; ?></td>
-		<td class="table-active"><?php echo $listResult1['service']; ?></td>
-		<td class="table-active"><?php echo $listResult1['result'];   ?></td>
-		<td></td>
-		
-		
-        
-	
-      </tr>  
-	<?php $i++; } ?> 
-	
-	
-	
-    </tbody>
-  </table>
-</div>
-<div class='col-md-2'>
-<input type='submit'  class='affix' value='Save' name='submit'>
 
-</div>
+  </div>
 
-
-</div>
 </div>
 
 
@@ -418,7 +349,7 @@ $('#<?php echo "input_dr".$i ?> > input').attr("disabled",false);
 
 
 
-</form>
+
 </body>
 </html>
 
