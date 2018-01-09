@@ -29,9 +29,8 @@ require_once($GLOBALS['srcdir'].'/options.inc.php');
   setpid($_GET['set_pid']);
  }
  $encounter=$_GET["encounter"] ? $_GET["encounter"] : $GLOBALS['encounter'];
-
+$e=$_GET["encounter"] ? $_GET["encounter"] : $GLOBALS['encounter'];
 setencounter($encounter);
-
  // Check authorization.
  if (acl_check('patients','med')) {
   $tmp = getPatientData($pid, "squad");
