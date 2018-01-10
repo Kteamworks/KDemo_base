@@ -32,8 +32,20 @@ echo "<table>";
 
 
     $sql="SELECT * FROM list_options WHERE list_id ='".$q."' AND is_default IN(0,3)";
+	$patient=getPatientData($pid, "rateplan");
+    $rate=$patient['rateplan'];
+	 if($rate=="TPAInsurance")
+	{
+	$row1=sqlStatement("SELECT a.service_id service_id,a.code_type code_type,a.code,a.code_text,sum(b.pr_price) price from codes a,prices b  where a.id=b.pr_id and a.code_type=9 and b.pr_level='Insurance' and a.code like '".$q."%' and b.pr_price!=0");
+	$row2=sqlFetchArray($row1);
+	}else{
+	$row1=sqlStatement("SELECT a.service_id service_id,a.code_type code_type,a.code,a.code_text,sum(b.pr_price) price from codes a,prices b  where a.id=b.pr_id and a.code_type=9 and b.pr_level='standard' and a.code like '".$q."%' and b.pr_price!=0");
+	$row2=sqlFetchArray($row1);
+	}
 	$result = sqlStatement($sql);
 	$i=0;
+	
+	echo "<i>"."Estimated Bed Charges per night '"."<b>".$row2['price']."Rs/-</b>"."'"."</i>";
 	while($row=sqlFetchArray($result))
 	{
     echo "<tr>";
