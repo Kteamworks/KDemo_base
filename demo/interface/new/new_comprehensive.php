@@ -277,7 +277,10 @@ function validate(f) {
       else if(f[i].name == 'form_phone_cell')
       {
        alertMsg += checkPhone(f[i].name,f[i].value);
-      }
+      }else if(f[i].name == 'form_postal_code')
+	  {
+		  alertMsg += checkpostalcode(f[i].name,f[i].value);
+	  }
     }
   }
   if(alertMsg)

@@ -55,6 +55,17 @@ function checkFacilityName(eleName,eleVal)
     return m;
 }
 
+
+function checkpostalcode(eleName,eleVal)
+{
+    var regE = /^([1-9])([0-9]){5}$/;
+    var m='';
+	if(regE.test(eleVal)==false)
+        m += '<?php echo xl("Invalid")." "?>'+eleName.toUpperCase()+"\n";
+    return m;
+}
+
+
 function checkPhone(eleName,eleVal)
 {
     var regE = /[^0-9']/;
