@@ -427,9 +427,9 @@ date_sub(now(), interval 30 day)  and activity=1 )b"); ?>
 <!-- Class "display" is defined in demo_table.css -->
 <table cellpadding="0" cellspacing="0" border="0" class="display" id="pt_table">
  <thead>
-  <tr>
+ <!-- <tr>
 <?php echo $header0; ?>
-  </tr>
+  </tr> -->
   <tr>
 <?php echo $header; ?>
   </tr>

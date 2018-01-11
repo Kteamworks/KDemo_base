@@ -261,7 +261,7 @@ $ip=$_SERVER['REMOTE_ADDR'];
     <div class="col-xs-6">
 
             <label>
-                <input type="checkbox" name="remember"> Remember me
+             <!--   <input type="checkbox" name="remember"> Remember me -->
             </label>
         </div>
     <!-- /.col -->
@@ -295,13 +295,13 @@ $ip=$_SERVER['REMOTE_ADDR'];
 
                             <ul class="list-inline hidden-print">
 
-                                <li><a href="" class="btn btn-social btn-facebook" target="_blank"><i class="fa fa-facebook fa-fw"></i></a></li>
+                                <li><a href="https://www.facebook.com/Kavaii-Inc-Passion-for-Data-103624693070885" class="btn btn-social btn-facebook" target="_blank"><i class="fa fa-facebook fa-fw"></i></a></li>
 
-                                <li><a href="" class="btn btn-social btn-twitter" target="_blank"><i class="fa fa-twitter fa-fw"></i></a></li>
+                                <li><a href="https://twitter.com/kavaiianalytics" class="btn btn-social btn-twitter" target="_blank"><i class="fa fa-twitter fa-fw"></i></a></li>
 
-                                <li><a href="" class="btn btn-social btn-google-plus" target="_blank"><i class="fa fa-google-plus fa-fw"></i></a></li>
+                            <!--    <li><a href="" class="btn btn-social btn-google-plus" target="_blank"><i class="fa fa-google-plus fa-fw"></i></a></li>  -->
 
-                                <li><a href="" class="btn btn-social btn-linkedin" target="_blank"><i class="fa fa-linkedin fa-fw"></i></a></li>
+                                <li><a href="https://www.linkedin.com/company/1030463/" class="btn btn-social btn-linkedin" target="_blank"><i class="fa fa-linkedin fa-fw"></i></a></li>
 
                             </ul>
                         </div>
