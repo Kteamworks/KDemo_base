@@ -322,7 +322,8 @@ a, a:visited {
   font-size: 10pt;
   color: #880000;
   font-weight: bold; }
-
+ .required:after { 
+ content:" *"; }
 .bold {
   font-weight: bold; }
 
