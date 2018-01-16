@@ -578,6 +578,12 @@ $GLOBALS_METADATA = array(
       '1',                              // default = true
       xl('Do not require patient notes to be authorized')
     ),
+	'payment_after_visit_creation' => array(
+      xl('Enable Pre Payment'),
+      'bool',                           // data type
+      '0',                              // default = true
+      xl('Payment to be done as soon as visit is created')
+    ),
 
     'support_encounter_claims' => array(
       xl('Allow Encounter Claims'),

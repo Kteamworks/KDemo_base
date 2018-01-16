@@ -54,10 +54,10 @@ if (isset($_POST["privatemode"]) && $_POST["privatemode"] =="user_admin") {
         $tqvar = formData('state_license_number','P');
         sqlStatement("update users set state_license_number='$tqvar' where id={$_POST["id"]}");
       }
-      if ($_POST["drugid"]) {
-        $tqvar = formData('drugid','P');
+      /*if ($_POST["federaldrugid"]) {
+        $tqvar  = $_POST["federaldrugid"] ? 0 : 1;
         sqlStatement("update users set federaldrugid='$tqvar' where id={$_POST["id"]}");
-      }
+      }*/
       if ($_POST["upin"]) {
         $tqvar = formData('upin','P');
         sqlStatement("update users set upin='$tqvar' where id={$_POST["id"]}");
@@ -174,9 +174,10 @@ if (isset($_POST["privatemode"]) && $_POST["privatemode"] =="user_admin") {
       $tqvar  = $_POST["authorized"] ? 1 : 0;
       $actvar = $_POST["active"]     ? 1 : 0;
       $calvar = $_POST["calendar"]   ? 1 : 0;
-  
+	  $cashho = $_POST["federaldrugid"] ? 1 : 0;
+      
       sqlStatement("UPDATE users SET authorized = $tqvar, active = $actvar, " .
-        "calendar = $calvar, see_auth = '" . $_POST['see_auth'] . "' WHERE " .
+        "calendar = $calvar, federaldrugid=$cashho, see_auth = '" . $_POST['see_auth'] . "' WHERE " .
         "id = {$_POST["id"]}");
       //Display message when Emergency Login user was activated 
       $bg_count=count($_POST['access_group']);
@@ -220,6 +221,7 @@ if (isset($_POST["mode"])) {
     // $_POST["info"] = addslashes($_POST["info"]);
 
     $calvar = $_POST["calendar"] ? 1 : 0;
+	 $cashho = $_POST["federaldrugid"] ? 1 : 0;
 
     $res = sqlStatement("select distinct username from users where username != ''");
     $doit = true;
@@ -256,7 +258,7 @@ if (isset($_POST["mode"])) {
             "', newcrop_user_role = '"  . trim(formData('erxrole' )) .
             "', authorized = '"    . trim(formData('authorized'   )) .
             "', info = '"          . trim(formData('info'         )) .
-            "', federaldrugid = '" . trim(formData('federaldrugid')) .
+            "', federaldrugid = '" . $cashho.
             "', upin = '"          . trim(formData('upin'         )) .
             "', npi  = '"          . trim(formData('npi'          )).
             "', taxonomy = '"      . trim(formData('taxonomy'     )) .

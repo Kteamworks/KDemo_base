@@ -206,6 +206,8 @@ foreach ($result2 as $iter) {
  <input type='checkbox' name='authorized' id='authorized' value='1' onclick='authorized_clicked()' />
  &nbsp;&nbsp;<span class='text'><?php xl('Calendar','e'); ?>:
  <input type='checkbox' name='calendar' disabled />
+ &nbsp;&nbsp;<span class='text'><?php xl('Cash HO','e'); ?>:
+ <input type='checkbox' name='federaldrugid' id='federaldrugid' value='1' />
 </td>
 </tr>
 <tr>
@@ -294,7 +296,7 @@ while ($orow = sqlFetchArray($ores)) {
 </tr>
 <tr>
 <td><span class="text"><?php xl('Pan Number','e'); ?>: </span></td><td><input type=entry name='federaltaxid' id='federaltaxid'  style="width:120px;"></td>
-<td><span class="text"><?php xl('Federal Drug ID','e'); ?>: </span></td><td><input type=entry name='federaldrugid' style="width:120px;"></td>
+<!--<td><span class="text"><?php xl('Federal Drug ID','e'); ?>: </span></td><td><input type=entry name='federaldrugid' style="width:120px;"></td>-->
 </tr>
 <tr>
 <td><span class="text"><?php xl('MCI No','e'); ?>: </span></td><td><input type="entry" name="upin" style="width:120px;"></td>

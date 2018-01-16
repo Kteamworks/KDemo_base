@@ -400,6 +400,12 @@ $bg_count=count($acl_name);
   if (!$iter["authorized"]) echo " disabled"; ?> />
  &nbsp;&nbsp;<span class='text'><?php xl('Active','e'); ?>:
  <input type="checkbox" name="active"<?php if ($iter["active"]) echo " checked"; ?> />
+  &nbsp;&nbsp;<span class='text'><?php xl('Cash HO','e'); ?>:
+  <input type="checkbox" name="federaldrugid" id="federaldrugid" <?php
+  if ($iter["federaldrugid"]) echo " checked"; ?> />
+ <!--<input type="checkbox" name="federaldrugid"<?php
+  //if ($iter["federaldrugid"]==1) echo "checked";
+  //if ($iter["federaldrugid"]==0) echo " disabled"; ?> />-->
 </TD>
 </TR>
 <tr>
