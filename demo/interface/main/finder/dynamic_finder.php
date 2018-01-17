@@ -300,64 +300,90 @@ if (isset($_SESSION['LAST_ACTIVITY'])  && isset($_SESSION['visitID']) && (time()
           <!-- Info Boxes Style 2 -->
           <div class="info-box bg-yellow">
             <span class="info-box-icon"><i class="ion ion-ios-people-outline"></i></span>
-<?php $registration_qry = sqlStatement("Select count(pid)last_month from patient_Data
-where date between  date_sub(now(), interval 30 day ) and now()");
+<?php 
 
-$progress_reg = sqlQuery("SELECT a.last_month,b.two_months,b.two_months-a.last_month change_value,round(((a.last_month-b.two_months)*100)/b.two_months ,0)change_percentage
-FROM 
-(
-Select count(pid)last_month from patient_Data
-where date between  date_sub(now(), interval 30 day ) and now())a,
-(select count(pid)two_months
-from patient_data
-where date between date_sub(date_sub(now(), interval 30 day ),interval 30 day) and
-date_sub(now(), interval 30 day ))b");
+ $progress_reg = sqlQuery("
+SELECT a.current_month,b.last_month,a.current_month-b.last_month change_value,
 
-$progress_app = sqlQuery("SELECT a.last_month,b.two_months,b.two_months-a.last_month change_value,
-round(((a.last_month-b.two_months)*100)/b.two_months ,2)change_percentage
-FROM 
-(
-Select count(pc_eid)last_month from openemr_postcalendar_events
-where pc_time between  date_sub(now(), interval 30 day) and now()
-and pc_eventstatus=1)a,
-(select count(pc_eid)two_months
-from openemr_postcalendar_events
-where pc_time between date_sub(date_sub(now(), interval 30 day ),interval 30 day) and
-date_sub(now(), interval 30 day)  and pc_eventstatus=1 )b");
+round(((a.current_month-b.last_month)/b.last_month)*100,0) as change_percentage
 
-$progress_ipd = sqlQuery("SELECT a.last_month,b.two_months,b.two_months-a.last_month change_value,
-round(((a.last_month-b.two_months)*100)/b.two_months ,2)change_percentage
 FROM 
 (
-Select count(id)last_month from form_encounter
-where date between  date_sub(now(), interval 30 day) and now()
-and pc_catid=12)a,
-(select count(id)two_months
-from form_encounter
-where date between date_sub(date_sub(now(), interval 30 day ),interval 30 day) and
-date_sub(now(), interval 30 day)  and pc_catid=12)b"); 
-$progress_bed = sqlQuery("SELECT a.last_month,b.two_months,b.two_months-a.last_month change_value,
-round(((a.last_month-b.two_months)*100)/b.two_months ,2)change_percentage
+      SELECT count(pid)current_month 
+      FROM patient_Data
+      WHERE date BETWEEN date_format(LAST_DAY(NOW() - INTERVAL 1 MONTH),'%Y-%m-01') 
+              AND LAST_DAY(NOW() - INTERVAL 1 MONTH)
+      )a,
+      (
+        SELECT count(pid)last_month
+        FROM patient_data
+        WHERE date BETWEEN DATE_FORMAT(NOW() ,'%Y-%m-01') 
+              AND NOW() 
+       )b
+ ");
+
+ $progress_app = sqlQuery("SELECT a.current_month,b.last_month,a.current_month-b.last_month change_value,
+round(((a.current_month-b.last_month)/b.last_month)*100,0) as change_percentage
 FROM 
 (
-Select count(id)last_month from t_form_admit
-where date(admit_date) between  date_sub(now(), interval 30 day) and now()
-and activity=1)a,
-(select count(id)two_months
-from t_form_admit
-where date(admit_date) between date_sub(date_sub(now(), interval 30 day ),interval 30 day) and
-date_sub(now(), interval 30 day)  and activity=1 )b"); ?>
+  SELECT count(pc_eid)current_month -- cmpc
+      FROM openemr_postcalendar_events
+  WHERE pc_time BETWEEN DATE_FORMAT(NOW() ,'%Y-%m-01') 
+                    AND NOW() 
+                    AND pc_eventstatus=1)a,
+(
+  SELECT count(pc_eid)last_month -- lmpc
+      FROM openemr_postcalendar_events
+  WHERE pc_time BETWEEN date_format(LAST_DAY(NOW() - INTERVAL 1 MONTH),'%Y-%m-01') 
+                   AND LAST_DAY(NOW() - INTERVAL 1 MONTH)
+                   AND pc_eventstatus=1 )b
+ ");
+
+ $progress_ipd = sqlQuery("SELECT a.current_month,b.last_month,a.current_month-b.last_month change_value,
+round(((a.current_month-b.last_month)/b.last_month)*100,0)  as change_percentage
+FROM 
+(
+  SELECT count(id)current_month 
+  FROM form_encounter
+       WHERE date(date) BETWEEN  DATE_FORMAT(NOW() ,'%Y-%m-01') 
+                    AND NOW() 
+       AND pc_catid=12)a,
+(
+  SELECT count(id)last_month
+    FROM form_encounter
+    WHERE date(date) BETWEEN date_format(LAST_DAY(NOW() - INTERVAL 1 MONTH),'%Y-%m-01') 
+                         AND LAST_DAY(NOW() - INTERVAL 1 MONTH)
+                         AND pc_catid=12
+   )b  "); 
+
+
+$progress_bed = sqlQuery("SELECT a.current_month,b.last_month,a.current_month-b.last_month change_value,
+round(((a.current_month-b.last_month)/b.last_month)*100,0) as change_percentage
+      FROM 
+          (
+            SELECT count(id)current_month 
+              FROM t_form_admit
+            WHERE date(admit_date) BETWEEN  DATE_FORMAT(NOW() ,'%Y-%m-01') 
+                                    AND NOW() 
+                                    AND activity=1)a,
+          (
+            SELECT count(id)last_month
+            FROM t_form_admit
+            WHERE date(admit_date) BETWEEN date_format(LAST_DAY(NOW() - INTERVAL 1 MONTH),'%Y-%m-01') 
+                         AND LAST_DAY(NOW() - INTERVAL 1 MONTH)
+                                     AND activity=1 )
+                                     b"); ?>
 
             <div class="info-box-content">
-              <span class="info-box-text">New Registration</span>
-			  <?php while($registration = sqlFetchArray($registration_qry)) {  ?>
-              <span class="info-box-number"><?php echo $registration['last_month']; ?></span>
-<?php } ?> 
+              <span class="info-box-text">Registrations</span>
+
+              <span class="info-box-number"><?php echo $progress_reg['current_month']; ?></span>
+
               <div class="progress">
                 <div class="progress-bar" style="width: <?php echo $progress_reg['change_percentage']; ?>%"></div>
               </div>
                   <span class="progress-description">
-                    <?php echo $progress_reg['change_percentage']; ?>% Increase in 30 Days
+                    <?php echo $progress_reg['change_percentage']; ?>%(<?php echo $progress_reg['last_month']; ?>) <?php if($progress_reg['change_value'] < 0) { echo "<i class='fa fa-arrow-down' aria-hidden='true'></i>"; } else { echo "<i class='fa fa-arrow-up' aria-hidden='true'></i>"; } ?> from <?php $date = date('F', strtotime('-1 month')); echo $date; ?>
                   </span>
             </div>
             <!-- /.info-box-content -->
@@ -369,14 +395,14 @@ date_sub(now(), interval 30 day)  and activity=1 )b"); ?>
             <span class="info-box-icon"><i class="ion ion-ios-calendar-outline"></i></span>
 
             <div class="info-box-content">
-              <span class="info-box-text">Total Appointments</span>
-              <span class="info-box-number"><?php echo $progress_app['last_month']; ?></span>
+              <span class="info-box-text">Appointments</span>
+              <span class="info-box-number"><?php echo $progress_app['current_month']; ?></span>
 
               <div class="progress">
                 <div class="progress-bar" style="width: <?php echo $progress_app['change_percentage']; ?>%"></div>
               </div>
                   <span class="progress-description">
-                    <?php echo $progress_app['change_percentage']; ?>% Increase in 30 Days
+                    <?php echo $progress_app['change_percentage']; ?>%  (<?php echo $progress_app['last_month']; ?>) <?php if($progress_app['change_value'] < 0) { echo "<i class='fa fa-arrow-down' aria-hidden='true'></i>"; } else { echo "<i class='fa fa-arrow-up' aria-hidden='true'></i>"; } ?> from <?php $date = date('F', strtotime('-1 month')); echo $date; ?>
                   </span>
             </div>
             <!-- /.info-box-content -->
@@ -388,14 +414,14 @@ date_sub(now(), interval 30 day)  and activity=1 )b"); ?>
             <span class="info-box-icon"><i class="ion ion-ios-pulse"></i></span>
 
             <div class="info-box-content">
-              <span class="info-box-text">Total IPD Registration</span>
-              <span class="info-box-number"><?php echo $progress_ipd['last_month']; ?></span>
+              <span class="info-box-text">IPD Registrations</span>
+              <span class="info-box-number"><?php echo $progress_ipd['current_month']; ?></span>
 
               <div class="progress">
-                <div class="progress-bar" style="width: 70%"></div>
+                <div class="progress-bar" style="width: <?php echo $progress_ipd['change_percentage']; ?>%"></div>
               </div>
                   <span class="progress-description">
-                    <?php echo $progress_ipd['change_percentage']; ?>% Increase in 30 Days
+                    <?php echo $progress_ipd['change_percentage']; ?>% (<?php echo $progress_ipd['last_month']; ?>) <?php if($progress_ipd['change_value'] < 0) { echo "<i class='fa fa-arrow-down' aria-hidden='true'></i>"; } else { echo "<i class='fa fa-arrow-up' aria-hidden='true'></i>"; } ?> from <?php $date = date('F', strtotime('-1 month')); echo $date; ?>
                   </span>
             </div>
             <!-- /.info-box-content -->
@@ -407,14 +433,14 @@ date_sub(now(), interval 30 day)  and activity=1 )b"); ?>
             <span class="info-box-icon"><i class="fa fa-bed"></i></span>
 
             <div class="info-box-content">
-              <span class="info-box-text">Total Bed Occupancy</span>
-              <span class="info-box-number"><?php echo $progress_bed['last_month']; ?></span>
+              <span class="info-box-text">Bed Occupancy</span>
+              <span class="info-box-number"><?php echo $progress_bed['current_month']; ?></span>
 
               <div class="progress">
-                <div class="progress-bar" style="width: 40%"></div>
+                <div class="progress-bar" style="width: <?php echo $progress_bed['change_percentage']; ?>%"></div>
               </div>
                   <span class="progress-description">
-                    <?php echo $progress_bed['change_percentage']; ?>% Increase in 30 Days
+                    <?php echo $progress_bed['change_percentage']; ?>% (<?php echo $progress_bed['last_month']; ?>) <?php if($progress_bed['change_value'] < 0) { echo "<i class='fa fa-arrow-down' aria-hidden='true'></i>"; } else { echo "<i class='fa fa-arrow-up' aria-hidden='true'></i>"; } ?> from <?php $date = date('F', strtotime('-1 month')); echo $date; ?>
                   </span>
             </div>
             <!-- /.info-box-content -->

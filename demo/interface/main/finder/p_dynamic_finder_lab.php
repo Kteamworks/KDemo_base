@@ -307,7 +307,7 @@ function openNewTopWindow(pid) {
 <div class="col-md-3">
           <!-- Info Boxes Style 2 -->
           <div class="info-box bg-yellow">
-            <span class="info-box-icon"><i class="ion ion-ios-people-outline"></i></span>
+            <span class="info-box-icon"><i class="fa fa-flask" aria-hidden="true"></i></span>
 <?php 
 $today=date("Y-m-d");
 $orders_qry = sqlStatement("Select count(procedure_order_id) id from procedure_order where date_ordered='".$today."'");
@@ -325,33 +325,33 @@ $orders_report1=sqlFetchArray($orders_report);
  <div class="info-box-content">
               <span class="info-box-text">Total Orders Today</span>
 			  <?php while($orders_qry1 = sqlFetchArray($orders_qry)) {  ?>
-              <span class="info-box-number"><?php echo $orders_qry1['id']; ?></span>
+              <span class="info-box-number"><h1 style="    font-weight: 300;margin:10"><?php echo $orders_qry1['id']; ?></h1></span>
 <?php } ?> 
-              <div class="progress">
+           <!--   <div class="progress">
                 <div class="progress-bar" style="width: <?php echo $progress_reg['change_percentage']; ?>%"></div>
               </div>
                   <span class="progress-description">
                     <?php echo $progress_reg['change_percentage']; ?>% Increase in 30 Days
-                  </span>
+                  </span> -->
             </div>
             <!-- /.info-box-content -->
           </div>
           <!-- /.info-box -->
 		  </div>
 		  <div class="col-md-3">
-          <div class="info-box bg-green">
-            <span class="info-box-icon"><i class="ion ion-ios-calendar-outline"></i></span>
+          <div class="info-box bg-red">
+            <span class="info-box-icon"><i class="fa fa-clock-o" aria-hidden="true"></i></span>
 
             <div class="info-box-content">
               <span class="info-box-text">Orders Pending</span>
-              <span class="info-box-number"><?php echo $orders_pending1['id']; ?></span>
+              <span class="info-box-number"><h1 style="    font-weight: 300;margin:10"><?php echo $orders_pending1['id']; ?></h1></span>
 
-              <div class="progress">
+            <!--  <div class="progress">
                 <div class="progress-bar" style="width: <?php echo $progress_app['change_percentage']; ?>%"></div>
               </div>
                   <span class="progress-description">
                     <?php echo $progress_app['change_percentage']; ?>% Increase in 30 Days
-                  </span>
+                  </span> -->
             </div>
             <!-- /.info-box-content -->
           </div>
@@ -359,37 +359,37 @@ $orders_report1=sqlFetchArray($orders_report);
 		  </div>
 		  <div class="col-md-3">
           <div class="info-box bg-green">
-            <span class="info-box-icon"><i class="ion ion-ios-calendar-outline"></i></span>
+            <span class="info-box-icon"><i class="fa fa-hourglass" aria-hidden="true"></i></span>
 
             <div class="info-box-content">
               <span class="info-box-text">Review State</span>
-              <span class="info-box-number"><?php echo $orders_review1['id']; ?></span>
+              <span class="info-box-number"><h1 style="    font-weight: 300;margin:10"><?php echo $orders_review1['id']; ?></h1></span>
 
-              <div class="progress">
+             <!-- <div class="progress">
                 <div class="progress-bar" style="width: 70%"></div>
               </div>
                   <span class="progress-description">
                     <?php echo $progress_ipd['change_percentage']; ?>% Increase in 30 Days
-                  </span>
+                  </span> -->
             </div>
             <!-- /.info-box-content -->
           </div>
 		  </div>
           <!-- /.info-box -->
 		  <div class="col-md-3">
-          <div class="info-box bg-green">
-            <span class="info-box-icon"><i class="ion ion-ios-calendar-outline"></i></span>
+          <div class="info-box bg-blue">
+            <span class="info-box-icon"><i class="fa fa-external-link" aria-hidden="true"></i></span>
 
             <div class="info-box-content">
-              <span class="info-box-text">Report Publish</span>
-              <span class="info-box-number"><?php echo $orders_report1['id']; ?></span>
+              <span class="info-box-text">Reports Published</span>
+              <span class="info-box-number"><h1 style="    font-weight: 300;margin:10"><?php echo $orders_report1['id']; ?></h1></span>
 
-              <div class="progress">
+              <!-- <div class="progress">
                 <div class="progress-bar" style="width: 40%"></div>
               </div>
                   <span class="progress-description">
                     <?php echo $progress_bed['change_percentage']; ?>% Increase in 30 Days
-                  </span>
+                  </span> -->
             </div>
             <!-- /.info-box-content -->
           </div>
@@ -401,9 +401,9 @@ $orders_report1=sqlFetchArray($orders_report);
 <!-- Class "display" is defined in demo_table.css -->
 <table cellpadding="0" cellspacing="0" border="0" class="display" id="pt_table">
  <thead>
-  <tr>
+ <!-- <tr>
 <?php echo $header0; ?>
-  </tr>
+  </tr> -->
   <tr>
 <?php echo $header; ?>
   </tr>

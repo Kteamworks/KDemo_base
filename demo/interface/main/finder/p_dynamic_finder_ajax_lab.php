@@ -72,6 +72,10 @@ if (isset($_GET['sSearch']) && $_GET['sSearch'] !== "") {
         "mname LIKE '$sSearch%' OR " .
         "lname LIKE '$sSearch%' ";
     }
+	/*	    if ($colname == 'procedure_order_id') {
+      $where .= " ( " .
+        "c.procedure_order_id LIKE '$sSearch%')";
+    } */
     else {
       $where .= "`" . escape_sql_column_name($colname,array('patient_data','form_encounter','procedure_order','procedure_order_code')) . "` LIKE '$sSearch%' ";
     }
