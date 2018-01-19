@@ -336,7 +336,7 @@ form {
 <body class="body_top">
 
 <div id="searchCriteria">
-<form method='post' name='theform' action='find_appt_popup.php?providerid=<?php echo $providerid ?>&catid=<?php echo $input_catid ?>'>
+<form method='post' name='theform' action='find_appt_popup_user.php?providerid=<?php echo $providerid ?>&catid=<?php echo $input_catid ?>'>
    <input type="hidden" name='bypatient' />
 
    <?php xl('Start date:','e'); ?>

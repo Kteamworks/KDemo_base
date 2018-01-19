@@ -197,6 +197,19 @@ $(document).ready(function(){
                   }
           });
       });
+	   $("#prescriptionlist_ps_expand").load("get_prescription.php", { 'embeddedScreen' : true  }, function() {
+          // (note need to place javascript code here also to get the dynamic link to work)
+          $(".medium_modal").fancybox( {
+                  'overlayOpacity' : 0.0,
+                  'showCloseButton' : true,
+                  'frameHeight' : 500,
+                  'frameWidth' : 800,
+                  'centerOnScroll' : false,
+                  'callbackOnClose' : function()  {
+                  refreshme();
+                  }
+          });
+      });
       $("#medicationlist_ps_expand").load("get_medications.php", { 'embeddedScreen' : true  }, function() {
           // (note need to place javascript code here also to get the dynamic link to work)
           $(".medium_modal").fancybox( {
@@ -816,6 +829,27 @@ expand_collapse_widget($widgetTitle, $widgetLabel, $widgetButtonLabel,
 // medication list expand collapse widget
 $widgetTitle = xl("Medication List");
 $widgetLabel = "medicationlist";
+$widgetButtonLabel = xl("");
+$widgetButtonClass = "hidden";
+$linkMethod = "html";
+$bodyClass = "notab";
+$widgetAuth = false;
+$fixedWidth = true;
+expand_collapse_widget($widgetTitle, $widgetLabel, $widgetButtonLabel,
+  $widgetButtonLink, $widgetButtonClass, $linkMethod, $bodyClass,
+  $widgetAuth, $fixedWidth);
+?>
+                    <br/>
+                    <div style='margin-left:10px' class='text'><img src='images/ajax-loader.gif'/></div><br/>
+                </div>
+     </td>
+    </tr>		
+<tr>
+       <td width='650px'>
+<?php
+// medication list expand collapse widget
+$widgetTitle = xl("Prescription List");
+$widgetLabel = "prescriptionlist";
 $widgetButtonLabel = xl("");
 $widgetButtonClass = "hidden";
 $linkMethod = "html";
