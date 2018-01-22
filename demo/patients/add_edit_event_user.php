@@ -915,7 +915,7 @@ if($eid) {
 <input type='button' class='btn btn-danger' value='<?php echo xla('Delete');?>' onclick='deleteEvent()' />
 &nbsp;
 <?php } ?>
-<input type='button' class='btn btn-warning' value='<?php echo xla('Cancel');?>' onclick='parent.$.fn.fancybox.close()' />
+<input type='button' class='btn btn-warning' value='<?php echo xla('Cancel');?>' onclick='document.location.href="../patients/summary_pat_portal.php"' />
 </p>
 
 

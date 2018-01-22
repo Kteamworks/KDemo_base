@@ -171,6 +171,7 @@
     
 </head>
 <body>
+<img style="max-width: 100%;position:absolute;top:0;left:0;"src=" <?php echo $GLOBALS['webroot']?>/interface/pic/logo.gif" />
 <br><br>
     <center>
 
@@ -262,6 +263,7 @@
     
         <div class="copyright"><?php echo htmlspecialchars( xl('Powered by'), ENT_NOQUOTES);?> MedSmart</div>
       </div>
+	  
     <?php } ?>
 
     </center>
