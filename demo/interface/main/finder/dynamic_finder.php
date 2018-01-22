@@ -304,26 +304,25 @@ if (isset($_SESSION['LAST_ACTIVITY'])  && isset($_SESSION['visitID']) && (time()
 
  $progress_reg = sqlQuery("
 SELECT a.current_month,b.last_month,a.current_month-b.last_month change_value,
-
-round(((a.current_month-b.last_month)/b.last_month)*100,0) as change_percentage
+round(((a.current_month-b.last_month)/b.last_month)*100,0)  as change_percentage
 
 FROM 
 (
-      SELECT count(pid)current_month 
+      SELECT count(pid)last_month 
       FROM patient_Data
       WHERE date BETWEEN date_format(LAST_DAY(NOW() - INTERVAL 1 MONTH),'%Y-%m-01') 
-              AND LAST_DAY(NOW() - INTERVAL 1 MONTH)
-      )a,
+              AND (date(NOW()) - INTERVAL 1 MONTH)
+      )b,
       (
-        SELECT count(pid)last_month
+        SELECT count(pid)current_month
         FROM patient_data
         WHERE date BETWEEN DATE_FORMAT(NOW() ,'%Y-%m-01') 
               AND NOW() 
-       )b
+       )a
  ");
 
  $progress_app = sqlQuery("SELECT a.current_month,b.last_month,a.current_month-b.last_month change_value,
-round(((a.current_month-b.last_month)/b.last_month)*100,0) as change_percentage
+round(((a.current_month-b.last_month)/b.last_month)*100,0)  as change_percentage
 FROM 
 (
   SELECT count(pc_eid)current_month -- cmpc
@@ -335,12 +334,12 @@ FROM
   SELECT count(pc_eid)last_month -- lmpc
       FROM openemr_postcalendar_events
   WHERE pc_time BETWEEN date_format(LAST_DAY(NOW() - INTERVAL 1 MONTH),'%Y-%m-01') 
-                   AND LAST_DAY(NOW() - INTERVAL 1 MONTH)
+                   AND (date(NOW()) - INTERVAL 1 MONTH)
                    AND pc_eventstatus=1 )b
  ");
 
  $progress_ipd = sqlQuery("SELECT a.current_month,b.last_month,a.current_month-b.last_month change_value,
-round(((a.current_month-b.last_month)/b.last_month)*100,0)  as change_percentage
+round(((a.current_month-b.last_month)/b.last_month)*100,0)  as change_percentage 
 FROM 
 (
   SELECT count(id)current_month 
@@ -352,13 +351,13 @@ FROM
   SELECT count(id)last_month
     FROM form_encounter
     WHERE date(date) BETWEEN date_format(LAST_DAY(NOW() - INTERVAL 1 MONTH),'%Y-%m-01') 
-                         AND LAST_DAY(NOW() - INTERVAL 1 MONTH)
+                         AND (date(NOW()) - INTERVAL 1 MONTH)
                          AND pc_catid=12
    )b  "); 
 
 
 $progress_bed = sqlQuery("SELECT a.current_month,b.last_month,a.current_month-b.last_month change_value,
-round(((a.current_month-b.last_month)/b.last_month)*100,0) as change_percentage
+ round(((a.current_month-b.last_month)/b.last_month)*100,0) as change_percentage
       FROM 
           (
             SELECT count(id)current_month 
@@ -370,7 +369,7 @@ round(((a.current_month-b.last_month)/b.last_month)*100,0) as change_percentage
             SELECT count(id)last_month
             FROM t_form_admit
             WHERE date(admit_date) BETWEEN date_format(LAST_DAY(NOW() - INTERVAL 1 MONTH),'%Y-%m-01') 
-                         AND LAST_DAY(NOW() - INTERVAL 1 MONTH)
+                         AND (date(NOW()) - INTERVAL 1 MONTH)
                                      AND activity=1 )
                                      b"); ?>
 

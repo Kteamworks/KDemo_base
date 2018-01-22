@@ -138,6 +138,11 @@ foreach($_POST['id'] as $selected) {
       background: bisque;
     padding: 5px;
   }
+  .max-list-height {
+  height: 250px;
+  overflow-y: scroll;
+  margin-bottom: 10px;
+  }
   </style>
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -222,7 +227,7 @@ foreach($_POST['id'] as $selected) {
 	
 	
 
-  <div class="col-md-6">
+  <div class="col-md-6 max-list-height">
   <form method='POST' action=''>
   <div class="fix">
   <label>Name:</label> <?php echo $pname['fname']; ?> &nbsp;
