@@ -320,7 +320,7 @@ sqlInsert("INSERT INTO openemr_postcalendar_events ( " .
   if ($prow['phone_biz']) $patienttitle  .= " W=" . $prow['phone_biz'];
  }
  // Get the providers list.
- $ures = sqlStatement("SELECT id, username, fname, lname FROM users WHERE " .
+ $ures = sqlStatement("SELECT id, username, fname, lname,specialty FROM users WHERE " .
   "authorized != 0 AND active = 1 ORDER BY lname, fname");
  //-------------------------------------
  //(CHEMED)
@@ -386,6 +386,13 @@ sqlInsert("INSERT INTO openemr_postcalendar_events ( " .
 .img-circle {
 	    background-color: white;
 }
+.height-dev {
+	height: 100%;
+}
+.logo {
+	background: transparent !important;
+}
+
 * {
     box-sizing: border-box;
 }
@@ -702,7 +709,7 @@ ul.price li {
     <nav class="navbar navbar-static-top">
       <div class="container">
         <div class="navbar-header">
-          <a href="#" class="navbar-brand"><b>Med</b>Smart</a>
+          <a href="summary_pat_portal.php" class="logo"><img src="../images/logo.png" class="img-responsive height-dev"></a>
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
             <i class="fa fa-bars"></i>
           </button>
@@ -887,7 +894,7 @@ ul.price li {
             if ($urow['id'] == $defaultProvider) echo " selected";
             #if (($urow['id'] == $_GET['userid'])||($urow['id']== $userid)) echo " selected"; 
             echo ">" . text($urow['fname']);
-            if ($urow['fname']) echo " " . text($urow['lname']);
+            if ($urow['fname']) echo " " . text($urow['lname']). " (" . text($urow['specialty'] . ")");
             echo "</option>\n";
         }
         echo "</select>";
@@ -932,7 +939,7 @@ if($eid) {
       <div class="pull-right hidden-xs">
         <b>Version</b> 1.3
       </div>
-      <strong>Copyright &copy; 2013-2017 <a href="http://medsmart.com">MedSmart</a>.</strong> All rights
+      <strong>Copyright &copy; 2013-2018 <a href="http://medsmart.com">MedSmart</a>.</strong> All rights
       reserved.
     </div>
     <!-- /.container -->

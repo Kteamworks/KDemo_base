@@ -94,6 +94,13 @@ $pn_no=$pn['phone_cell'];
 .img-circle {
 	    background-color: white;
 }
+.height-dev {
+	height: 100%;
+}
+.logo {
+	background: transparent !important;
+}
+
 .small {
 	font-size: 100%;
 }
@@ -452,7 +459,7 @@ $(document).ready(function(){
     <nav class="navbar navbar-static-top">
       <div class="container">
         <div class="navbar-header">
-          <a href="#" class="navbar-brand"><b>Med</b>Smart</a>
+          <a href="summary_pat_portal.php" class="logo"><img src="../images/logo.png" class="img-responsive height-dev"></a>
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
             <i class="fa fa-bars"></i>
           </button>
