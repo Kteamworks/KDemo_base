@@ -1029,13 +1029,13 @@ if ( $insurance_count > 0 ) {
 // Notes expand collapse widget
 $widgetTitle = xl("Notes");
 $widgetLabel = "pnotes";
-$widgetButtonLabel = xl("Edit");
-$widgetButtonLink = "pnotes_full.php?form_active=1";
-$widgetButtonClass = "";
-$linkMethod = "html";
-$bodyClass = "notab";
-$widgetAuth = true;
-$fixedWidth = true;
+$widgetButtonLabel = xl("Add");
+$widgetButtonLink = "pnotes_full_add.php?docid=0&orderid=0";
+$widgetButtonClass = "css_button iframe";
+    $linkMethod = "html";
+    $bodyClass = "notab";
+    $widgetAuth = true;
+    $fixedWidth = false;
 expand_collapse_widget($widgetTitle, $widgetLabel, $widgetButtonLabel,
   $widgetButtonLink, $widgetButtonClass, $linkMethod, $bodyClass,
   $widgetAuth, $fixedWidth);

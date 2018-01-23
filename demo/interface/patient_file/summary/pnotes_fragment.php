@@ -128,7 +128,7 @@ $fake_register_globals=false;
         <span class='text'>
 	    <?php echo htmlspecialchars(xl('Displaying the following number of most recent notes:'),ENT_NOQUOTES); ?> 
 	    <b><?php echo $N;?></b><br>
-	    <a href='pnotes_full.php?s=0' onclick='top.restoreSession()'><?php echo htmlspecialchars(xl('Click here to view them all.'),ENT_NOQUOTES); ?></a>
+	    <a href='pnotes_full.php?s=0' onclick='top.restoreSession()'><?php echo htmlspecialchars(xl('Click here to view/edit them all.'),ENT_NOQUOTES); ?></a>
         </span>
         <?php
     } ?>
