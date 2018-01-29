@@ -102,6 +102,7 @@ $sellist = 'a.pid,b.encounter';
 $today = date('Y-m-d',strtotime("+0 days"));
 foreach ($aColumns as $colname) {
   if ($colname == 'pid') continue;
+    if ($colname == 'encounter') continue;
   $sellist .= ", ";
   if ($colname == 'name') {
     $sellist .= "fname, lname, mname";
@@ -129,7 +130,14 @@ $out = array(
   "iTotalDisplayRecords" => $iFilteredTotal,
   "aaData"               => array()
 );
-$query = "SELECT $sellist FROM patient_data a,form_encounter b ,openemr_postcalendar_categories c where a.pid=b.pid and c.pc_catid=b.pc_catid and date(b.date)='".$today."' order by encounter desc  $limit";
+$query = "SELECT $sellist FROM  prescriptions d LEFT JOIN 
+form_encounter b ON d.encounter=b.encounter
+ LEFT JOIN patient_data a 
+  ON b.pid = a.pid
+LEFT JOIN openemr_postcalendar_categories c 
+ON c.pc_catid=b.pc_catid 
+ WHERE date(b.date)='".$today."' 
+order by b.encounter desc  $limit";
 $res = sqlStatement($query);
 while ($row = sqlFetchArray($res)) {
   // Each <tr> will have an ID identifying the patient.
