@@ -1,16 +1,22 @@
 <?php
-require_once("../../globals.php");
+include_once("../../globals.php");
+include_once("$srcdir/api.inc");
+include_once("$srcdir/forms.inc");
+require_once("$srcdir/formdata.inc.php");
 require_once("$srcdir/patient.inc");
-require_once("$srcdir/encounter.inc");
+include_once("$srcdir/encounter.inc");
+require_once("$srcdir/patient.inc");
 require_once("$srcdir/acl.inc");
+require_once("$srcdir/options.inc.php");
 require_once("$srcdir/formatting.inc.php");
-if ($GLOBALS['concurrent_layout'] && isset($_GET['set_pid'])) {
+require_once("$srcdir/erx_javascript.inc.php");
+ if ($GLOBALS['concurrent_layout'] && isset($_GET['set_pid'])) {
   include_once("$srcdir/pid.inc");
   setpid($_GET['set_pid']);
  }
+ $e=$_GET["encounter"] ? $_GET["encounter"] : $GLOBALS['encounter'];
  $encounter=$_GET["encounter"] ? $_GET["encounter"] : $GLOBALS['encounter'];
-
-setencounter($encounter);
+  setencounter($encounter);
 $result_patient = getPatientData($pid, "*, DATE_FORMAT(DOB,'%Y-%m-%d') as DOB_YMD");
 $result_visit="SELECT * from form_encounter where pid=? and encounter=?";
 $result_visit1 = sqlStatement($result_visit, array($pid,$encounter)); 
@@ -26,6 +32,7 @@ $pmob = $result_patient['phone_cell'];
 
 <head>
 <?php html_header_show();?>
+<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700' rel='stylesheet' type='text/css'>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
@@ -49,10 +56,8 @@ function setMyPatient() {
   return;
  }
 <?php 
-
  $result = getPatientData($pid, "*, DATE_FORMAT(DOB,'%Y-%m-%d') as DOB_YMD");
  if (isset($_GET['set_pid'])) { ?>
-  alert('Hi');
  parent.left_nav.setPatient(<?php echo "'" . htmlspecialchars(($result['fname']) . " " . ($result['lname']),ENT_QUOTES) .
    "'," . htmlspecialchars($pid,ENT_QUOTES) . ",'" . htmlspecialchars(($result['genericname1']),ENT_QUOTES) .
    "','', ' " . htmlspecialchars(xl('DOB') . ": " . oeFormatShortDate($result['DOB_YMD']) . " " . xl('Age') . ": " . getPatientAgeDisplay($result['DOB_YMD']), ENT_QUOTES) . "'"; ?>);
@@ -79,7 +84,7 @@ function setMyPatient() {
  parent.left_nav.setPatientEncounter(EncounterIdArray,EncounterDateArray,CalendarCategoryArray);
   <?php
   $test = sqlStatement("SELECT fe.encounter,fe.encounter_ipop,fe.date,openemr_postcalendar_categories.pc_catname FROM form_encounter AS fe ".
-    " left join openemr_postcalendar_categories on fe.pc_catid=openemr_postcalendar_categories.pc_catid  WHERE fe.pid = ? and  fe.encounter=? order by fe.date desc", array($pid,$encounter));
+    " left join openemr_postcalendar_categories on fe.pc_catid=openemr_postcalendar_categories.pc_catid  WHERE fe.pid = ? and  fe.encounter=? order by fe.date desc", array($pid,$e));
 	 $test1=sqlFetchArray($test);
 ?>
  EncounterIdArray1= '<?php echo htmlspecialchars($test1['encounter'], ENT_QUOTES); ?>';
@@ -158,7 +163,7 @@ $(window).load(function() {
      <i class="fa fa-birthday-cake"></i>
         
        </div>
-       <input id="Age" name="age" type="text" placeholder="Age" class="form-control input-md" value="<?php echo $age; ?>" readonly>
+       <input id="Age" name="age" type="text" placeholder="Age" class="form-control input-md" value="<?php echo $page; ?>" readonly>
       </div>
   
     
@@ -170,15 +175,15 @@ $(window).load(function() {
   <label class="col-md-4 control-label" for="Gender">Gender</label>
   <div class="col-md-4"> 
     <label class="radio-inline" for="Gender-0">
-      <input type="radio" name="Gender" id="Gender-0" value="1" checked="<?php if($pgender == 'male') { echo "checked"; } ?>">
+      <input type="radio" name="Gender" id="Gender-0" value="1" checked="<?php if($pgender == 'Male') { echo "checked"; } ?>">
       Male
     </label> 
     <label class="radio-inline" for="Gender-1">
-      <input type="radio" name="Gender" id="Gender-1" value="2" checked="<?php if($pgender == 'female') { echo "checked"; } ?>">
+      <input type="radio" name="Gender" id="Gender-1" value="2" checked="<?php if($pgender == 'Female') { echo "checked"; } ?>">
       Female
     </label> 
     <label class="radio-inline" for="Gender-2">
-      <input type="radio" name="Gender" id="Gender-2" value="3" checked="<?php if($pgender == 'other') { echo "checked"; } ?>">
+      <input type="radio" name="Gender" id="Gender-2" value="3" checked="<?php if($pgender == 'Other') { echo "checked"; } ?>">
       Other
     </label>
   </div>
@@ -200,7 +205,18 @@ $(window).load(function() {
   
   </div>
 </div>
-
+<div class="form-group">
+   <label class="col-md-4 control-label" for="Working Experience (time period)">OT Rooms</label>                                           
+  <div class="dropdown">
+    <button class="btn btn-default dropdown-toggle" type="button" id="menu1" data-toggle="dropdown">Rooms
+    <span class="caret"></span></button>
+    <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
+      <li role="presentation"><a role="menuitem" tabindex="-1" href="#">HTML</a></li>
+      <li role="presentation"><a role="menuitem" tabindex="-1" href="#">CSS</a></li>
+      <li role="presentation"><a role="menuitem" tabindex="-1" href="#">JavaScript</a></li>
+    </ul>
+  </div>
+</div>
                     <!-- Text input-->
 <div class="form-group">
   <label class="col-md-4 control-label" for="Working Experience (time period)">OT Appointment (time period)</label>  
@@ -214,7 +230,7 @@ $(window).load(function() {
                 </div>
 				</div>
 				<div class="col-md-4">
-				<a href="#">Find available OT Slots</a>
+				<a href="../../main/calendar/find_appt_popup_ot.php">Find available OT Slots</a>
 				</div>
  </div>
 <!-- Text input-->

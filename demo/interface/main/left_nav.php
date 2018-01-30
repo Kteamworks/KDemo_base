@@ -315,7 +315,7 @@ $future_app = $appointments['future'];
 function genPopupsList($style='') {
   global $disallowed, $webserver_root;
 ?>
-<!-- <select name='popups' onchange='selpopup(this)' style='background-color:transparent;font-size:9pt;<?php echo $style; ?>'>
+<select name='popups' onchange='selpopup(this)' style='background-color:transparent;font-size:9pt;<?php echo $style; ?>'>
  <option value=''><?php xl('Popups','e'); ?></option>
 <?php if (!$disallowed['iss']) { ?>
  <option value='../patient_file/problem_encounter.php'><?php xl('Issues','e'); ?></option>
@@ -352,7 +352,7 @@ function genPopupsList($style='') {
 <?php if ($GLOBALS['addr_label_type']) { ?>
 <option value='../patient_file/addr_label.php'><?php xl('Address Label','e'); ?></option>
 <?php } ?>
-</select> -->
+</select> 
 <?php
 }
 

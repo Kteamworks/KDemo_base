@@ -263,6 +263,13 @@ document.location.href = "../../patient_file/encounter/forms_encounter.php?set_p
 		top.restoreSession();
 		document.location.href="../../patient_file/pos_checkout1_right.php?encounter="+encounter+'&set_pid='+newpid+'&framed='+framed;
 		}
+		else
+		if(name=="OT Transfer")
+		{
+		//alert(encounter);
+		top.restoreSession();
+		document.location.href="../../patient_file/encounter/ot_form.php?encounter="+encounter+'&set_pid='+newpid;
+		}
     });
 
 
@@ -284,6 +291,7 @@ function openNewTopWindow(pid) {
 <div class="menu">
 	<ul class="menu1">
 		<li><a href="#">Transfer</a></li>
+		<li><a href="#">OT Transfer</a></li>
 		<li><a href="#">Discharge</a></li>
 		<li><a href="#">Delete</a></li>
 		<li><a href="#">Provisional Bill</a></li>
