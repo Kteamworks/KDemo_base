@@ -248,7 +248,7 @@ $today = date('Y-m-d H:i:s',strtotime("+0 days"));
 //var $j = jQuery.noConflict();
 $(document).ready(function(){
     $("#confirmbtn").click(function() { return ConfirmDelete(); });
-    $("#cancel").click(function() { location.href='<?php echo "$rootdir/patient_file/encounter/$returnurl";?>'; });
+    $("#cancel").click(function() { location.href='<?php echo "$rootdir/patient_file/summary/summary_print.php";?>'; });
 });
 
 function ConfirmDelete() {

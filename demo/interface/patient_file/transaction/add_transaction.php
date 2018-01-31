@@ -358,9 +358,15 @@ $vid=sqlStatement("SELECT form_id from forms where encounter='".$_SESSION['encou
                 </a>
             </td>-->
              <td>
+			 <?php if($newcrop_user_role['newcrop_user_role']!='erxdoctor' && $newcrop_user_role['newcrop_user_role']!='erxnurse') {?>
                 <a href="transactions.php"  <?php if (!$GLOBALS['concurrent_layout']) echo "target='Main'"; ?> class="css_button" onclick="top.restoreSession()">
                     <span><?php echo htmlspecialchars( xl('Cancel'), ENT_NOQUOTES); ?></span>
                 </a>
+			 <?php }else{?>
+			 <a href="../../patient_file/encounter/admit_doctor_form.php"  <?php if (!$GLOBALS['concurrent_layout']) echo "target='Main'"; ?> class="css_button" onclick="top.restoreSession()">
+                    <span><?php echo htmlspecialchars( xl('Cancel'), ENT_NOQUOTES); ?></span>
+                </a>
+			 <?php } ?>
             </td>
         </tr>
 	</table>

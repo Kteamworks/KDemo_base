@@ -23,7 +23,12 @@ class C_FormROS extends Controller {
     	$this->template_mod = $template_mod;
     	$this->template_dir = dirname(__FILE__) . "/templates/ros/";
     	$this->assign("FORM_ACTION", $GLOBALS['web_root']);
+		if($res['newcrop_user_role'] != 'erxnurse' && $res['newcrop_user_role'] != 'erxdoctor' ){
     	$this->assign("DONT_SAVE_LINK",$GLOBALS['webroot'] . "/interface/patient_file/encounter/$returnurl");
+		}else
+		{
+		$this->assign("DONT_SAVE_LINK",$GLOBALS['webroot'] . "/interface/patient_file/encounter/view_form.php?formname=newpatient&id=". $nvid2);
+		}
 		$this->assign("NEXT_LINK",$GLOBALS['webroot'] . "/interface/patient_file/encounter/load_form.php?formname=procedure_order");
     	$this->assign("BACK_LINK",$GLOBALS['webroot'] . "/interface/patient_file/encounter/view_form.php?formname=vitals&id=$id2");
     	    $this->assign("VISIT_LINK",$GLOBALS['webroot'] . "/interface/patient_file/encounter/view_form.php?formname=newpatient&id=". $nvid2);

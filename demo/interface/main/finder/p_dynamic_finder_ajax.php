@@ -169,7 +169,7 @@ $out = array(
 );
 if($row2["newcrop_user_role"]=="erxnurse")
 {
-$query ="SELECT $sellist FROM form_encounter a,patient_data b where a.pid=b.pid and date(a.date)='".$today."' order by encounter desc $limit";
+$query ="SELECT $sellist FROM form_encounter a,patient_data b where a.pid=b.pid and date(a.date)='".$today."' and a.provider_id IN ($X) order by encounter desc $limit";
 }
 else 
 {

@@ -125,8 +125,13 @@ $vid=sqlStatement("SELECT form_id from forms where encounter='".$_SESSION['encou
        title='Click here to choose a date and time' />-->
 	   <div class="row"> <div class="col-md-6">
 <a href="javascript:top.restoreSession();document.my_form.submit();" class="btn btn-primary link_submit"><?php echo xlt('Save'); ?></a>
+<?php if($newcrop_user_role['newcrop_user_role']!='erxdoctor' && $newcrop_user_role['newcrop_user_role']!='erxnurse') {?>
 <a href="<?php echo "$rootdir/patient_file/encounter/$returnurl";?>" class="btn btn-warning"
  onclick="top.restoreSession()"><?php echo xlt('Cancel'); ?></a>
+<?php }else{?>
+<a href="<?php echo "$rootdir/patient_file/transaction/add_transaction.php";?>" class="btn btn-warning"
+ onclick="top.restoreSession()"><?php echo xlt('Cancel'); ?></a>
+<?php } ?>
  </div></div>
  <script language='JavaScript'>
 Calendar.setup({inputField:'form_date_collected', ifFormat:'%Y-%m-%d %H:%M',

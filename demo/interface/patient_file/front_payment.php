@@ -2058,7 +2058,7 @@ if($FP==1 && $ins1==0)
 
 
 <input type='submit' name='form_save' value='<?php echo htmlspecialchars( xl('Confirm payment & Print Invoice'), ENT_QUOTES);?>' /> &nbsp;
-<input type='button' value='<?php echo xla('Cancel'); ?>' onclick='window.close()' />
+<input type='button' value='<?php echo xla('Cancel'); ?>' onclick='document.location.href="../patient_file/encounter/forms.php"' />
 <?php  } ?>
 <input type="hidden" name="hidden_patient_code" id="hidden_patient_code" value="<?php echo attr($pid);?>"/>
 <input type='hidden' name='ajax_mode' id='ajax_mode' value='' />

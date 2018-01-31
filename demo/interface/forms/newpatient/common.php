@@ -619,9 +619,15 @@ right: 20px;">
 	  <?php } ?>
 	   <?php if ($viewmode || !isset($_GET["autoloaded"]) || $_GET["autoloaded"] != "1") { ?>
     <div >
-  <?php if ($GLOBALS['concurrent_layout']) { ?>
+  <?php if ($GLOBALS['concurrent_layout']) {
+if($newcrop_user_role['newcrop_user_role']!='erxdoctor' && $newcrop_user_role['newcrop_user_role']!='erxnurse') {	  ?>
+  
       <a href="<?php echo "$rootdir/patient_file/encounter/encounter_top.php"; ?>"
         class="btn btn-default" style="margin:10px" onClick="top.restoreSession()"><span><?php echo xlt('Cancel'); ?></span></a>
+<?php }else {?>
+     <a href="<?php echo "$rootdir/patient_file/encounter/load_form.php?formname=procedure_order"; ?>"
+        class="btn btn-default" style="margin:10px" onClick="top.restoreSession()"><span><?php echo xlt('Cancel'); ?></span></a>
+<?php }?>
   <?php } else { ?>
       <a href="<?php echo "$rootdir/patient_file/encounter/patient_encounter.php"; ?>"
         class="btn btn-warning" target='Main' onClick="top.restoreSession()">
