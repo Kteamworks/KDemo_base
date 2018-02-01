@@ -356,19 +356,19 @@ check out</a></li>
    echo "<select name='rateplan' class='form-control' id='rateplan' onChange='getRatePlan(this.value)' />";
    
     while ($urow = sqlFetchArray($ures)) {
-	  /*if($getins['provider']>0  & $urow['title']=="TPA Insurance") { 
+	  if($getins['provider']>0  & $urow['title']=="TPA Insurance") { 
 	  echo "<option selected value='" . attr($urow['title']) . "'";
       echo ">" . text($urow['title']);
 	  echo "</option>\n";
-	  }	*/
-	/*else
-	{*/
+	  }	
+	else
+	{
       echo "    <option value='" . attr($urow['title']) . "'";
-      //if ($urow['id'] == $defaultProvider) echo " selected";
+      //if ($urow['title'] == $defaultProvider) echo " selected";
       echo ">" . text($urow['title']);
     
       echo "</option>\n";
-	/*}*/
+	}
 	}		
     echo "</select>";
 ?>
@@ -383,7 +383,7 @@ check out</a></li>
 <?php
 
 	$ures = sqlStatement("select distinct name, id from insurance_companies ");
-	echo "<select name='instpa'/ class='form-control'>";
+	echo "<select name='instpa' class='form-control'>";
 	 if($getins['provider']>0){
      echo "<option value='".attr($getins['provider'])."'";
 	 echo ">" . attr($getins['name']);

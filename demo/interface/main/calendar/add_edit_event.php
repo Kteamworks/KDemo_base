@@ -59,11 +59,11 @@ require_once($GLOBALS['srcdir'].'/patient_tracker.inc.php');
  else
   $date = date("Y-m-d");
  //
- $starttimem = '00';
- if (isset($_GET['starttimem']))
+ $starttimem = date("i");
+ if (!isset($_GET['starttimem']))
   $starttimem = substr('00' . $_GET['starttimem'], -2);
  //
- if (isset($_GET['starttimeh'])) {
+ if (!isset($_GET['starttimeh'])) {
   $starttimeh = $_GET['starttimeh'];
   if (isset($_GET['startampm'])) {
    if ($_GET['startampm'] == '2' && $starttimeh < 12)
