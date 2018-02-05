@@ -1944,7 +1944,10 @@ function clearactive() {
  //It is called when a new patient is create/selected from the search menu.
   var str = '<Select class="text" id="EncounterHistory" onchange="{top.restoreSession();toencounter(this.options[this.selectedIndex].value)}">';
   str+='<option value=""><?php echo htmlspecialchars( xl('Visit History'), ENT_QUOTES) ?></option>';
+  <?php $res = sqlQuery("select * from users where username='".$_SESSION{"authUser"}."'");
+  if($res['newcrop_user_role'] != 'erxdoctor' && $res['newcrop_user_role'] != 'erxnurse' ) {?>
   str+='<option value="New Encounter"><?php echo htmlspecialchars( xl('New Visit'), ENT_QUOTES) ?></option>';
+  <?php }?>
   str+='<option value="Past Encounter List"><?php echo htmlspecialchars( xl('Past Visit List'), ENT_QUOTES) ?></option>';
   for(CountEncounter=0;CountEncounter<EncounterDateArray.length;CountEncounter++)
    {
