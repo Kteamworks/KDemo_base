@@ -104,9 +104,7 @@ $ires = sqlStatement("SELECT id, type, title, begdate FROM lists WHERE " .
   f.submit();
  }
 
-$(document).ready(function(){
-  enable_big_modals();
-});
+
 function bill_loc(){
 var pid=<?php echo attr($pid);?>;
 var dte=document.getElementById('form_date').value;
@@ -127,15 +125,31 @@ function cancelClicked() {
  }
  return false;
 }
+
 function getRatePlan(plan)
 {
-	var plan= document.getElementById('rateplan').value;
+	var plan= document.getElementById('rateplans').value;
 	if(plan=="TPA Insurance")
 	{
 		document.getElementById('instpa').style.display = '';
 	}
 	else
 	{
+		document.getElementById('instpa').style.display = 'none';
+	}
+	
+}
+function getCatId(id)
+{
+	if(id=="12")
+	{
+		document.getElementById('hospa').style.display = '';
+		document.getElementById('rplan').style.display = '';
+	}
+	else
+	{
+		document.getElementById('hospa').style.display = 'none';
+		document.getElementById('rplan').style.display = 'none';
 		document.getElementById('instpa').style.display = 'none';
 	}
 	
@@ -269,7 +283,7 @@ check out</a></li>
 	<div class="form-group">
      <label class="pull-left control-label"><?php echo xlt('Visit Category:'); ?></label>
    
-      <select name='pc_catid'class="form-control" id='pc_catid'  required="required">
+      <select name='pc_catid'class="form-control" id='pc_catid'  required="required" onChange='getCatId(this.value);' />
 	<option value='_blank'>-- <?php echo xlt('Select One'); ?> --</option>
 <?php
  $cres = sqlStatement("SELECT pc_catid, pc_catname " .
@@ -345,7 +359,7 @@ check out</a></li>
 	
 	
 	<tr>
-		<div class="form-group">
+		<div class="form-group" style='display:none' id='rplan'>
      <label class="pull-left control-label"><?php echo xlt('Rate Plan:'); ?></label>
 	 
 <?php
@@ -353,7 +367,7 @@ check out</a></li>
 	$getdefins = sqlStatement("select provider,name from insurance_data a, insurance_companies b where pid='$pid' and a.provider = b.id");
 	$getins = sqlFetchArray($getdefins);
   $ures = sqlStatement("select * from list_options where list_id='RatePlan' ");
-   echo "<select name='rateplan' class='form-control' id='rateplan' onChange='getRatePlan(this.value)' />";
+   echo "<select name='rateplan' class='form-control' id='rateplans' onChange='getRatePlan(this.value);' />";
    
     while ($urow = sqlFetchArray($ures)) {
 	  if($getins['provider']>0  & $urow['title']=="TPA Insurance") { 
@@ -376,8 +390,8 @@ check out</a></li>
 	</tr>
 	
 
-   <tr style='display:none' id='instpa'>
-  	<div class="form-group">
+   <tr>
+  	<div class="form-group" style='display:none' id='instpa'>
      <label class="pull-left"><?php echo xlt('TPA:'); ?></label>
 	 
 <?php
@@ -410,7 +424,7 @@ check out</a></li>
 	</tr>
 
     <tr>
-     	<div class="form-group">
+     	<div class="form-group" style='visibility:hidden;position:absolute'>
      <label class="pull-left"><?php echo xlt('Facility:'); ?></label>
 
       <select name='facility_id' class='form-control' onChange="bill_loc()">
@@ -439,7 +453,7 @@ if ($fres) {
      </div>
     </tr>
 	<tr>
-			<div class="form-group">
+			<div class="form-group" style='visibility:hidden;position:absolute'>
      <label class="pull-left"><?php echo xlt('Billing Facility'); ?>:</label>
 	
 			<div id="ajaxdiv">
@@ -455,7 +469,7 @@ if ($fres) {
  if ($sensitivities && count($sensitivities)) {
   usort($sensitivities, "sensitivity_compare");
 ?>
-    	<div class="form-group">
+    	<div class="form-group" style='visibility:hidden;position:absolute'>
      <label class="pull-left"><?php echo xlt('Sensitivity:'); ?></label>
      
       <select name='form_sensitivity' class='form-control'>
@@ -514,7 +528,7 @@ if ($fres) {
     </tr>
 
     <tr<?php if ($GLOBALS['ippf_specific'] || $GLOBALS['athletic_team']) echo " style='visibility:hidden;'"; ?>>
-   	<div class="form-group">
+   	<div class="form-group" style='display:none' id='hospa'>
      <label class="pull-left"><?php echo xlt('Onset/hosp. date:'); ?></label>
    <!-- default is blank so that while generating claim the date is blank. -->
      <br>
@@ -728,7 +742,9 @@ if (!$viewmode) { ?>
 ?>
 $('#billing_facility').addClass('form-control');
 $('#form_referral_source').addClass('form-control');
-
+$(document).ready(function(){
+  enable_big_modals();
+});
 </script>
 </body>
 </html>
