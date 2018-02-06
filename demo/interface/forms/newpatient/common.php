@@ -129,7 +129,7 @@ function cancelClicked() {
 function getRatePlan(plan)
 {
 	var plan= document.getElementById('rateplans').value;
-	if(plan=="TPA Insurance")
+	if(plan=="TPAInsurance")
 	{
 		document.getElementById('instpa').style.display = '';
 	}
@@ -346,7 +346,7 @@ check out</a></li>
    echo "<select name='package' class='form-control' />  <option value='0'></option>";
     while ($urow = sqlFetchArray($ures)) {
       echo "    <option value='" . attr($urow['name']) . "'";
-     if ($urow['id'] == $defaultProvider);
+    // if ($urow['id'] == $defaultProvider);
       echo ">" . text($urow['name']);
     
       echo "</option>\n";
@@ -371,13 +371,13 @@ check out</a></li>
    
     while ($urow = sqlFetchArray($ures)) {
 	  if($getins['provider']>0  & $urow['title']=="TPA Insurance") { 
-	  echo "<option selected value='" . attr($urow['title']) . "'";
+	  echo "<option selected value='" . attr($urow['option_id']) . "'";
       echo ">" . text($urow['title']);
 	  echo "</option>\n";
 	  }	
 	else
 	{
-      echo "    <option value='" . attr($urow['title']) . "'";
+      echo "    <option value='" . attr($urow['option_id']) . "'";
       //if ($urow['title'] == $defaultProvider) echo " selected";
       echo ">" . text($urow['title']);
     

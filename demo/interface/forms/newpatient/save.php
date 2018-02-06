@@ -41,6 +41,7 @@ $mode             = (isset($_POST['mode']))                 ? $_POST['mode'] : '
 $provider_id      = (isset($_POST['form_provider'])) ? $_POST['form_provider'] : '';
 $referral_source  = (isset($_POST['form_referral_source'])) ? $_POST['form_referral_source'] : '';
 $tpaid            = (isset($_POST['instpa'])) ? $_POST['instpa'] : '';
+$rateplan           = (isset($_POST['rateplan'])) ? $_POST['rateplan'] : '';
 $package          = (isset($_POST['package'])) ? $_POST['package'] : '';
 
 $facilityresult = sqlQuery("select name FROM facility WHERE id = ?", array($facility_id));
@@ -107,9 +108,12 @@ if ($mode == 'new')
       "pid = '" . add_escape_custom($pid) . "', " .
       "encounter = '" . add_escape_custom($encounter) . "', " .
 	  "tpa_id = '" . add_escape_custom($tpaid) . "', " .
+	  "rateplan = '" . add_escape_custom($rateplan) . "', " .
 	  "package = '" . add_escape_custom($package) . "', " .
       "provider_id = '" . add_escape_custom($provider_id) . "'"),
       "newpatient", $pid, $userauthorized, $date);
+	   sqlQuery("Update patient_data set rateplan=? where pid=?",array($rateplan,$pid)); 
+	   sqlQuery("Update insurance_data set provider=? where id=?",array($tpaid,$pid));
 	$p=sqlQuery("select date from patient_data where pid='$pid'");
 	sqlFetchArray($p);
 	$regdate=$p['date'];
@@ -269,11 +273,14 @@ else if ($mode == 'update')
     "billing_facility = '" . add_escape_custom($billing_facility) . "', " .
     "sensitivity = '" . add_escape_custom($sensitivity) . "', " .
 	"provider_id = '" . add_escape_custom($provider_id) . "', " .
+	"rateplan = '" . add_escape_custom($rateplan) . "', " .
 	"tpa_id = '" . add_escape_custom($tpaid) . "', " .
 	"package = '" . add_escape_custom($package) . "', " .
     "referral_source = '" . add_escape_custom($referral_source) . "' " .
     "WHERE id = '" . add_escape_custom($id) . "'");
-
+	
+    sqlQuery("Update patient_data set rateplan=? where pid=?",array($rateplan,$pid));
+ sqlQuery("Update insurance_data set provider=? where id=?",array($tpaid,$pid));	
 	// billing_main_copy needs to be changed here / updated. 
 	
 	}
