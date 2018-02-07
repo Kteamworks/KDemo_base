@@ -19,6 +19,8 @@
  */
 
 require_once("$srcdir/options.inc.php");
+ require_once("../../globals.php");
+ require_once("$srcdir/patient.inc");
 
 $months = array("01","02","03","04","05","06","07","08","09","10","11","12");
 $days = array("01","02","03","04","05","06","07","08","09","10","11","12","13","14",
@@ -71,6 +73,43 @@ $ires = sqlStatement("SELECT id, type, title, begdate FROM lists WHERE " .
   content:"*";
   color:red;
 }
+
+        h1 {
+            font-size: 20px;
+            color: #111;
+        }
+
+        .content {
+            width: 80%;
+            margin: 0 auto;
+            margin-top: 50px;
+        }
+
+        .tt-hint,
+        .city {
+            border: 2px solid #CCCCCC;
+            border-radius: 8px 8px 8px 8px;
+            font-size: 24px;
+            height: 45px;
+            line-height: 30px;
+            outline: medium none;
+            padding: 8px 12px;
+            width: 400px;
+        }
+
+        .tt-dropdown-menu {
+            width: 400px;
+            margin-top: 5px;
+            padding: 8px 12px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border: 1px solid rgba(0, 0, 0, 0.2);
+            border-radius: 8px 8px 8px 8px;
+            font-size: 18px;
+            color: #111;
+            background-color: #F1F1F1;
+        }
+   
 	</style>
 <script language="JavaScript">
 
@@ -154,6 +193,39 @@ function getCatId(id)
 	}
 	
 }
+function setMyPatient() {
+alert('yes');
+ // Avoid race conditions with loading of the left_nav or Title frame.
+ if (!parent.allFramesLoaded()) {
+  setTimeout("setMyPatient()", 500);
+  return;
+ }
+<?php $result  = getPatientData($pid, "*, DATE_FORMAT(DOB,'%Y-%m-%d') as DOB_YMD"); ?>
+ parent.left_nav.setPatient(<?php echo "'" . htmlspecialchars(($result['fname']) . " " . ($result['lname']),ENT_QUOTES) .
+   "'," . htmlspecialchars($pid,ENT_QUOTES) . ",'" . htmlspecialchars(($result['genericname1']),ENT_QUOTES) .
+   "','', ' " . htmlspecialchars(xl('DOB') . ": " . oeFormatShortDate($result['DOB_YMD']) . " " . xl('Age') . ": " . getPatientAgeDisplay($result['DOB_YMD']), ENT_QUOTES) . "'"; ?>);
+ var EncounterDateArray = new Array;
+ var CalendarCategoryArray = new Array;
+ var EncounterIdArray = new Array;
+ var Count = 0;
+<?php
+  //Encounter details are stored to javacript as array.
+  $result4 = sqlStatement("SELECT fe.encounter,fe.encounter_ipop,fe.date,openemr_postcalendar_categories.pc_catname FROM form_encounter AS fe ".
+    " left join openemr_postcalendar_categories on fe.pc_catid=openemr_postcalendar_categories.pc_catid  WHERE fe.pid = ? order by fe.date desc", array($pid));
+  if(sqlNumRows($result4)>0) {
+    while($rowresult4 = sqlFetchArray($result4)) {
+?>
+ EncounterIdArray[Count] = '<?php echo htmlspecialchars($rowresult4['encounter'], ENT_QUOTES); ?>';
+ EncounterDateArray[Count] = '<?php echo htmlspecialchars(oeFormatShortDate(date("Y-m-d", strtotime($rowresult4['date']))), ENT_QUOTES); ?>';
+ CalendarCategoryArray[Count] = '<?php echo htmlspecialchars(xl_appt_category($rowresult4['pc_catname']), ENT_QUOTES); ?>';
+ Count++;
+<?php
+    }
+  }
+?>
+ parent.left_nav.setPatientEncounter(EncounterIdArray,EncounterDateArray,CalendarCategoryArray);
+
+}
 </script>
 
 </head>
@@ -163,9 +235,16 @@ function getCatId(id)
 <?php } else { ?>
 <body class="body_top" onload="javascript:document.new_encounter.reason.focus();">
 <?php } ?>
+    <div class="">
+
+        <form>
+            <h1>Patient Search</h1>
+            <input type="text" name="city" size="30" class="city" id="TypeAheadInput" placeholder="Please Enter Patient Name or MRN">
+        </form>
+    </div>
 <!-- Required for the popup date selectors -->
 <div id="overDiv" style="position:absolute; visibility:hidden; z-index:1000;"></div>
-<?php $newcrop_user_role=sqlQuery("select newcrop_user_role from users where username='".$_SESSION['authUser']."'");
+<?php var_dump($pid);$newcrop_user_role=sqlQuery("select newcrop_user_role from users where username='".$_SESSION['authUser']."'");
  ?>
   <?php 
   
@@ -419,6 +498,7 @@ check out</a></li>
 		}
     }
     echo "</select>";
+	
 	?>
 	</div>
 	</tr>
@@ -669,11 +749,137 @@ if($newcrop_user_role['newcrop_user_role']!='erxdoctor' && $newcrop_user_role['n
                     format: 'YYYY-MM-DD HH:mm:ss'
                 });
             });
+			j(document).ready(function(){
+	            j('input.city').typeahead({
+                name: 'genericname1',
+                remote: 'mysql.php?query=%QUERY',
+			
+            });
+			j("#TypeAheadInput").on("typeahead:selected typeahead:autocompleted", function(e,datum) { var str = datum.label; var str_array = str.split(','); var MRN =str_array[0];      
+			$.ajax({
+        type:"GET",
+        cache:false,
+        url:"serPatient.php",
+        data:{ mrn : MRN },    // multiple data sent using ajax
+        success: function (html) {
+			console.log(html);
+var result = $.parseJSON(html);
+console.log(result[4]);
+var date= result[4];
+var dateAr = date.split('-');
+var newDate = dateAr[2] + '/' + dateAr[1] + '/' + dateAr[0];
+var age = getAge(newDate);
+console.log(result[1] +' '+result[2],result[0],result[3],'DOB: '+newDate+' Age: '+age);
+ parent.left_nav.setPatient(result[1] +' '+result[2],result[0],result[3],+' ',+'DOB: '+newDate+' Age: '+age);
+ var EncounterDateArray = new Array;
+ var CalendarCategoryArray = new Array;
+ var EncounterIdArray = new Array;
+ var Count = 0;
+ <?php
+  //Encounter details are stored to javacript as array.
+  $result4 = sqlStatement("SELECT fe.encounter,fe.encounter_ipop,fe.date,openemr_postcalendar_categories.pc_catname FROM form_encounter AS fe ".
+    " left join openemr_postcalendar_categories on fe.pc_catid=openemr_postcalendar_categories.pc_catid  WHERE fe.pid = ? order by fe.date desc", array($pid));
+  if(sqlNumRows($result4)>0) {
+    while($rowresult4 = sqlFetchArray($result4)) {
+?>
+ EncounterIdArray[Count] = '<?php echo htmlspecialchars($rowresult4['encounter'], ENT_QUOTES); ?>';
+ EncounterDateArray[Count] = '<?php echo htmlspecialchars(oeFormatShortDate(date("Y-m-d", strtotime($rowresult4['date']))), ENT_QUOTES); ?>';
+ CalendarCategoryArray[Count] = '<?php echo htmlspecialchars(xl_appt_category($rowresult4['pc_catname']), ENT_QUOTES); ?>';
+ Count++;
+<?php
+    }
+  }
+?>
+ parent.left_nav.setPatientEncounter(EncounterIdArray,EncounterDateArray,CalendarCategoryArray);
+        }
+      });
+ });
+			//console.log(j('.tt-input').typeahead('label')); // and works as you'd expect
+
+  enable_big_modals();
+});
+function getAge(dateString) {
+  var now = new Date();
+  var today = new Date(now.getYear(),now.getMonth(),now.getDate());
+
+  var yearNow = now.getYear();
+  var monthNow = now.getMonth();
+  var dateNow = now.getDate();
+
+  var dob = new Date(dateString.substring(6,10),
+                     dateString.substring(0,2)-1,                   
+                     dateString.substring(3,5)                  
+                     );
+
+  var yearDob = dob.getYear();
+  var monthDob = dob.getMonth();
+  var dateDob = dob.getDate();
+  var age = {};
+  var ageString = "";
+  var yearString = "";
+  var monthString = "";
+  var dayString = "";
+
+
+  yearAge = yearNow - yearDob;
+
+  if (monthNow >= monthDob)
+    var monthAge = monthNow - monthDob;
+  else {
+    yearAge--;
+    var monthAge = 12 + monthNow -monthDob;
+  }
+
+  if (dateNow >= dateDob)
+    var dateAge = dateNow - dateDob;
+  else {
+    monthAge--;
+    var dateAge = 31 + dateNow - dateDob;
+
+    if (monthAge < 0) {
+      monthAge = 11;
+      yearAge--;
+    }
+  }
+
+  age = {
+      years: yearAge,
+      months: monthAge,
+      days: dateAge
+      };
+
+  if ( age.years > 1 ) yearString = " years";
+  else yearString = " year";
+  if ( age.months> 1 ) monthString = " months";
+  else monthString = " month";
+  if ( age.days > 1 ) dayString = " days";
+  else dayString = " day";
+
+
+  if ( (age.years > 0) && (age.months > 0) && (age.days > 0) )
+    ageString = age.years + yearString + ", " + age.months + monthString + ", and " + age.days + dayString + " old.";
+  else if ( (age.years == 0) && (age.months == 0) && (age.days > 0) )
+    ageString = "Only " + age.days + dayString + " old!";
+  else if ( (age.years > 0) && (age.months == 0) && (age.days == 0) )
+    ageString = age.years + yearString + " old. Happy Birthday!!";
+  else if ( (age.years > 0) && (age.months > 0) && (age.days == 0) )
+    ageString = age.years + yearString + " and " + age.months + monthString + " old.";
+  else if ( (age.years == 0) && (age.months > 0) && (age.days > 0) )
+    ageString = age.months + monthString + " and " + age.days + dayString + " old.";
+  else if ( (age.years > 0) && (age.months == 0) && (age.days > 0) )
+    ageString = age.years + yearString + " and " + age.days + dayString + " old.";
+  else if ( (age.years == 0) && (age.months > 0) && (age.days == 0) )
+    ageString = age.months + monthString + " old.";
+  else ageString = "Oops! Could not calculate age!";
+
+  return yearAge;
+}
         </script>
 
 		              <script src="<?php echo $GLOBALS['webroot'] ?>/library/js/moment/moment.js" ></script>
                     <script src="<?php echo $GLOBALS['webroot'] ?>/library/js/bootstrap-datetimepicker4.7.14.min.js" type="text/javascript"></script>
 					                    <script src="<?php echo $GLOBALS['webroot'] ?>/library/js/bootstrap.min.js" type="text/javascript"></script>
+<script src="//netsh.pp.ua/upwork-demo/1/js/typeahead.js"></script>
 <script src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-1.7.2.min.js"></script>
 <script src="<?php echo $GLOBALS['webroot'] ?>/library/js/jAlert-master/src/jAlert-v3.js"></script>
 <script src="<?php echo $GLOBALS['webroot'] ?>/library/js/jAlert-master/src/jAlert-functions.js"> //optional!!</script>
@@ -742,9 +948,7 @@ if (!$viewmode) { ?>
 ?>
 $('#billing_facility').addClass('form-control');
 $('#form_referral_source').addClass('form-control');
-$(document).ready(function(){
-  enable_big_modals();
-});
+
 </script>
 </body>
 </html>

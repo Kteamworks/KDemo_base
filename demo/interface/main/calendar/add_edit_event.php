@@ -1682,7 +1682,7 @@ if ($repeatexdate != "") {
  set_allday();
  set_repeat();
 
- Calendar.setup({inputField:"form_date", ifFormat:"%Y-%m-%d", button:"img_date"});
+// Calendar.setup({inputField:"form_date", ifFormat:"%Y-%m-%d", button:"img_date"});
  Calendar.setup({inputField:"form_enddate", ifFormat:"%Y-%m-%d", button:"img_enddate"});
  Calendar.setup({inputField:"form_dob", ifFormat:"%Y-%m-%d", button:"img_dob"});
 </script>
