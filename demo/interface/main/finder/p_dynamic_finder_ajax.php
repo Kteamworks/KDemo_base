@@ -49,7 +49,7 @@ if (isset($_GET['iSortCol_0'])) {
         $orderby .= "lname $sSortDir, fname $sSortDir, mname $sSortDir";
       }
       else {
-        $orderby .= "`" . escape_sql_column_name($aColumns[$iSortCol],array('patient_data','form_encounter','users')) . "` $sSortDir";
+        $orderby .= "`" . escape_sql_column_name($aColumns[$iSortCol],array('patient_data','form_encounter','users','billing')) . "` $sSortDir";
       }
 		}
 	}
@@ -69,7 +69,7 @@ if (isset($_GET['sSearch']) && $_GET['sSearch'] !== "") {
         "mname LIKE '$sSearch%' ";
     }
     else {
-      $where .= "`" . escape_sql_column_name($colname,array('patient_data','form_encounter','users')) . "` LIKE '$sSearch%' ";
+      $where .= "`" . escape_sql_column_name($colname,array('patient_data','form_encounter','users','billing')) . "` LIKE '$sSearch%' ";
     }
   }
   if ($where) $where .= ")";
@@ -89,7 +89,7 @@ for ($i = 0; $i < count($aColumns); ++$i) {
         "mname LIKE '$sSearch%' )";
     }
     else {
-      $where .= " `" . escape_sql_column_name($colname,array('patient_data','form_encounter','users')) . "` LIKE '$sSearch%'";
+      $where .= " `" . escape_sql_column_name($colname,array('patient_data','form_encounter','users','billing')) . "` LIKE '$sSearch%'";
     }
   }
 }
@@ -97,21 +97,22 @@ for ($i = 0; $i < count($aColumns); ++$i) {
 // Compute list of column names for SELECT clause.
 // Always includes pid because we need it for row identification.
 //
-$sellist = 'a.pid,b.id';
+$sellist = 'a.pid,b.id,b.encounter,b.provider_id';
 foreach ($aColumns as $colname) {
   if ($colname == 'pid') continue;
   if ($colname == 'id') continue;
-
+if ($colname == 'encounter') continue;
+if ($colname == 'provider_id') continue;
   $sellist .= ", ";
   if ($colname == 'name') {
     $sellist .= "lname, fname, mname";
   }
   else if($colname== 'provider'){
-    $sellist .="provider_id,out_time,out_to,nurse_out_time";
+    $sellist .="b.provider_id,out_time,out_to,nurse_out_time";
 	
   }else
   {
-    $sellist .= "`" . escape_sql_column_name($colname,array('patient_data','form_encounter','users')) . "`";
+    $sellist .= "`" . escape_sql_column_name($colname,array('patient_data','form_encounter','users','billing')) . "`";
   }
 }
 
@@ -169,11 +170,23 @@ $out = array(
 );
 if($row2["newcrop_user_role"]=="erxnurse")
 {
-$query ="SELECT $sellist FROM form_encounter a,patient_data b where a.pid=b.pid and date(a.date)='".$today."' and a.provider_id IN ($X) order by encounter desc $limit";
+	if(!isset($GLOBALS['payment_after_visit_creation']) || $GLOBALS['payment_after_visit_creation'] == 1){
+$query ="SELECT $sellist FROM form_encounter b,patient_data a,billing c  where a.pid=b.pid and b.encounter=c.encounter and c.activity=1 and c.billed=1 and date(b.date)='".$today."' and b.provider_id IN ($X) order by b.encounter desc $limit";
+	}
+	else
+	{
+		$query ="SELECT $sellist FROM form_encounter b,patient_data a where a.pid=b.pid and date(b.date)='".$today."' and b.provider_id IN ($X) order by b.encounter desc $limit";
+
+	}
 }
-else 
+else
 {
-$query = "SELECT $sellist FROM patient_data a,form_encounter b where a.pid=b.pid and b.provider_id='".$providerid."'  and date(b.date)='".$today."' order by encounter desc $limit";
+	if(!isset($GLOBALS['payment_after_visit_creation']) || $GLOBALS['payment_after_visit_creation'] == 1){
+     $query = "SELECT $sellist FROM patient_data a,form_encounter b,billing c where a.pid=b.pid and b.encounter=c.encounter and c.activity=1 and c.billed=1 and   b.provider_id='".$providerid."'  and date(b.date)='".$today."' order by b.encounter desc $limit";
+	}else
+	{
+	$query = "SELECT $sellist FROM patient_data a,form_encounter b where a.pid=b.pid and b.provider_id='".$providerid."'  and date(b.date)='".$today."' order by encounter desc $limit";	
+	}
 }
 $res = sqlStatement($query);
 while ($row = sqlFetchArray($res)) {

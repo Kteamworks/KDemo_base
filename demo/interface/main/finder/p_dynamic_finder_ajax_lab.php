@@ -108,11 +108,11 @@ for ($i = 0; $i < count($aColumns); ++$i) {
 // Compute list of column names for SELECT clause.
 // Always includes pid because we need it for row identification.
 //
-$sellist = 'a.pid,a.encounter,c.order_status,c.procedure_order_id,count(d.procedure_order_id) total_tests,count(d.sample_collected) sample_collected';
+$sellist = 'b.pid,c.encounter_id,c.order_status,c.procedure_order_id,count(d.procedure_order_id) total_tests,count(d.sample_collected) sample_collected';
 
 foreach ($aColumns as $colname) {
   if ($colname == 'pid') continue;
-  if($colname=='encounter') continue;
+  if($colname=='encounter_id') continue;
   if($colname=='order_status') continue;
    if($colname=='procedure_order_id') continue;
    if($colname=='total_tests') continue;
@@ -130,7 +130,7 @@ foreach ($aColumns as $colname) {
 // Get total number of rows in the table.
 //
 
-$row = sqlQuery("SELECT COUNT(distinct(c.procedure_order_id)) AS count FROM form_encounter a,patient_data b,procedure_order  c ,procedure_order_code d where a.pid=b.pid and a.encounter=c.encounter_id and c.procedure_order_id=d.procedure_order_id and  c.order_status IN ('pending','collected','received')");
+$row = sqlQuery("SELECT COUNT(distinct(c.procedure_order_id)) AS count FROM patient_data b,procedure_order  c ,procedure_order_code d where c.patient_id=b.pid  and c.procedure_order_id=d.procedure_order_id and  c.order_status IN ('pending','collected','received')");
 
 $iTotal = $row['count'];
 
@@ -138,7 +138,7 @@ $iTotal = $row['count'];
 //
 
 
-$row = sqlQuery("SELECT COUNT(distinct(c.procedure_order_id)) AS count FROM form_encounter a,patient_data b,procedure_order  c ,procedure_order_code d where a.pid=b.pid and a.encounter=c.encounter_id and c.procedure_order_id=d.procedure_order_id and c.order_status IN ('pending','collected','received')");
+$row = sqlQuery("SELECT COUNT(distinct(c.procedure_order_id)) AS count FROM patient_data b,procedure_order  c ,procedure_order_code d where c.patient_id=b.pid and c.procedure_order_id=d.procedure_order_id and c.order_status IN ('pending','collected','received')");
 
 
 $iFilteredTotal = $row['count'];
@@ -152,9 +152,9 @@ $out = array(
   "aaData"               => array()
 );
 if($where != "") {
-$query ="SELECT $sellist FROM form_encounter a,patient_data b,procedure_order c,procedure_order_code d $where and a.pid=b.pid and a.encounter=c.encounter_id and c.procedure_order_id=d.procedure_order_id and a.pid=b.pid and a.encounter=c.encounter_id and c.order_status IN ('pending','collected','received')  group by a.pid,a.encounter,c.procedure_order_id  order by c.procedure_order_id desc  $limit";
+$query ="SELECT $sellist FROM patient_data b,procedure_order c,procedure_order_code d $where and c.patient_id=b.pid and c.procedure_order_id=d.procedure_order_id and c.order_status IN ('pending','collected','received')  group by b.pid,c.encounter_id,c.procedure_order_id  order by c.procedure_order_id desc  $limit";
 } else {
-	$query = "SELECT $sellist FROM form_encounter a,patient_data b,procedure_order c,procedure_order_code d where a.pid=b.pid and a.encounter=c.encounter_id and c.procedure_order_id=d.procedure_order_id and a.pid=b.pid and a.encounter=c.encounter_id and c.order_status IN ('pending','collected','received')  group by a.pid,a.encounter,c.procedure_order_id  order by c.procedure_order_id desc  $limit";
+	$query = "SELECT $sellist FROM patient_data b,procedure_order c,procedure_order_code d where c.patient_id=b.pid and c.procedure_order_id=d.procedure_order_id and c.order_status IN ('pending','collected','received')  group by b.pid,c.encounter_id,c.procedure_order_id  order by c.procedure_order_id desc  $limit";
 }
 $res = sqlStatement($query);
 while ($row = sqlFetchArray($res)) {
