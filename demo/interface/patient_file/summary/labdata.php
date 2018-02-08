@@ -61,10 +61,16 @@ include_once($GLOBALS["srcdir"] . "/api.inc");
 
 setencounter($encounter);
  }
+ 
+ 
 $due=sqlQuery("select sum(fee) as total from billing where pid=$pid and encounter=$encounter and activity=1");
 $total = $due['total'];
 $paid = sqlQuery("select sum(amount1+amount2) as paid from payments where pid=$pid and encounter=$encounter");
-$amount = $paid['paid'];
+$discount = sqlQuery("select sum(adj_amount) as discount from ar_activity where pid=$pid and encounter=$encounter");
+$discount_given = $discount['discount'];
+$amount1 = $paid['paid']; 
+$amount = $amount1 + $discount_given; 
+
 if($total > $amount) {
  $check=sqlQuery("select sum(grpbill) as grp,count(code_type) as test from billing where pid=$pid and encounter=$encounter and code_type='Lab Test'");
  if($check['test'] > $check['grp'])
