@@ -205,22 +205,22 @@ $(window).load(function() {
   
   </div>
 </div>
-<div class="form-group">
-   <label class="col-md-4 control-label" for="Working Experience (time period)">OT Rooms</label>                                           
-  <div class="dropdown">
-    <button class="btn btn-default dropdown-toggle" type="button" id="menu1" data-toggle="dropdown">Rooms
-    <span class="caret"></span></button>
-    <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
-      <li role="presentation"><a role="menuitem" tabindex="-1" href="#">HTML</a></li>
-      <li role="presentation"><a role="menuitem" tabindex="-1" href="#">CSS</a></li>
-      <li role="presentation"><a role="menuitem" tabindex="-1" href="#">JavaScript</a></li>
-    </ul>
-  </div>
-</div>
                     <!-- Text input-->
 <div class="form-group">
   <label class="col-md-4 control-label" for="Working Experience (time period)">OT Appointment (time period)</label>  
   <div class="col-md-4">
+  <input type=hidden name ="adm_to" value=<?php echo $_POST['adm_to']; ?> > </input>
+	<?
+	$bid23=$_POST['adm_to'];
+	$quer23="select * FROM list_options where option_id='".$bid23."'";
+
+	$res23 = sqlStatement($quer23);
+	$result23 = sqlFetchArray($res23);
+	$admwdd=$result23['list_id'];
+	$admbd=$result23['option_id'];
+	echo "<td>"."<input type=\"text\" name=\"admit_to_ward\" value=\"$admwdd\" readonly>"."</input></td>";
+	echo "<td>"."<input type=\"text\" name=\"admit_to_bed\" value=\"$admbd\" readonly></input>"."</td>"; 
+	?>
   <div class="input-group date"  id='datetimepicker' >
 
       <input type='text' size='10' class='form-control' name='form_date' id='form_date' title='<?php echo xla('yyyy-mm-dd OT Appointment'); ?>' />
@@ -230,7 +230,7 @@ $(window).load(function() {
                 </div>
 				</div>
 				<div class="col-md-4">
-				<a href="../../main/calendar/find_appt_popup_ot.php">Find available OT Slots</a>
+				<a href="../../patient_file/encounter/emptyot.php">Find available OT Slots</a>
 				</div>
  </div>
 <!-- Text input-->

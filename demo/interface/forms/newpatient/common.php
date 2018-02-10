@@ -21,6 +21,7 @@
 require_once("$srcdir/options.inc.php");
  require_once("../../globals.php");
  require_once("$srcdir/patient.inc");
+ require_once("$srcdir/acl.inc");
 
 $months = array("01","02","03","04","05","06","07","08","09","10","11","12");
 $days = array("01","02","03","04","05","06","07","08","09","10","11","12","13","14",
@@ -236,11 +237,8 @@ alert('yes');
 <body class="body_top" onload="javascript:document.new_encounter.reason.focus();">
 <?php } ?>
     <div class="">
-
-        <form>
             <h1>Patient Search</h1>
             <input type="text" name="city" size="30" class="city" id="TypeAheadInput" placeholder="Please Enter Patient Name or MRN">
-        </form>
     </div>
 <!-- Required for the popup date selectors -->
 <div id="overDiv" style="position:absolute; visibility:hidden; z-index:1000;"></div>
@@ -411,8 +409,6 @@ check out</a></li>
 ?>
      </div>
     </tr>
-
-	
 	<tr>
    <div class='form-group'>
    <label class='pull-left'><?php echo xlt('Package:'); ?></label>
@@ -704,13 +700,21 @@ while ($irow = sqlFetchArray($ires)) {
   <div style = 'float:left; margin-left:8px;margin-top:0px'>
       <a href="javascript:saveClicked();" class="btn btn-primary link_submit" style="margin:10px"><span><?php echo xlt('Save'); ?></span></a>
     </div>
-	  <?php }else{?>
+	  <?php }else{
+		  if (acl_check('acct', 'rep')) {	?>
     <div style="position: fixed;
+top: 10px;
+right: 20px;">
+      <a href="javascript:saveClicked();" class="btn btn-primary"><span><?php echo xlt('Save and Pay'); ?></span></a>
+    </div>
+	  <?php }else{	  ?>
+	  <div style="position: fixed;
 top: 10px;
 right: 20px;">
       <a href="javascript:saveClicked();" class="btn btn-primary"><span><?php echo xlt('Save'); ?></span></a>
     </div>
-	  <?php } ?>
+	  <?php }
+	  }?>
 	   <?php if ($viewmode || !isset($_GET["autoloaded"]) || $_GET["autoloaded"] != "1") { ?>
     <div >
   <?php if ($GLOBALS['concurrent_layout']) {

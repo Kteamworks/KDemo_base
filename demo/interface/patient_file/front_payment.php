@@ -112,17 +112,17 @@ function echoLine($iname,$date, $charges, $ptpaid, $inspaid,$discount, $duept,$e
   echo "  <td class='detail' align='center' id='td_ptpaid_$var_index' >" . htmlspecialchars(bucks($ptpaid*-1), ENT_QUOTES) . "</td>\n";
   echo "  <td class='detail' align='center' id='dis_charges_$var_index' >" . htmlspecialchars(bucks($discount), ENT_QUOTES) . "</td>\n";
   //echo "  <td class='detail' align='center' id='balance_$var_index'>" . htmlspecialchars(bucks($balance), ENT_QUOTES) . "</td>\n"; //This was Insurance Balance
-  echo "  <td class='detail' align='center' id='duept_$var_index'>" . htmlspecialchars(bucks(round($duept,2)*1), ENT_QUOTES) . "</td>\n"; //Patient Balance
+  echo "<td class='detail1' align='center' id='duept_$var_index'>" . htmlspecialchars(bucks(round($duept,2)*1), ENT_QUOTES) . "</td>\n"; //Patient Balance
   if($encounter==$en)
   {
-  echo "  <td class='detail' align='right'><input type='text' name='".attr($iname)."'  id='paying_".attr($var_index)."' " .
+  echo " <td class='detail' align='right'><input type='text' name='".attr($iname)."'  id='paying_".attr($var_index)."' " .
     " value='" .  $duept . "' onchange='coloring();calctotal()'  autocomplete='off' " .
-    "onkeyup='calctotal()'  style='width:50px'/></td>\n";
+    "onkeyup='calctotal()'  style='width:50px'/></td></b>\n";
   }else
   {
-	  echo "  <td class='detail' align='right'><input type='text' name='".attr($iname)."'  id='paying_".attr($var_index)."' " .
+	  echo " <td class='detail' align='right'><input type='text' name='".attr($iname)."'  id='paying_".attr($var_index)."' " .
     " value='" . '' . "' onchange='coloring();calctotal()'  autocomplete='off' " .
-    "onkeyup='calctotal()'  style='width:50px'/></td>\n";
+    "onkeyup='calctotal()'  style='width:50px'/></td></b>\n";
   }
   echo " </tr>\n";
   }
@@ -1137,6 +1137,7 @@ $age_days=$age_days;
  body    { font-family:sans-serif; font-size:10pt; font-weight:normal }
  .dehead { color:#000000; font-family:sans-serif; font-size:10pt; font-weight:bold }
  .detail { color:#000000; font-family:sans-serif; font-size:10pt; font-weight:normal }
+  .detail1 { color:#000000; font-family:sans-serif; font-size:10pt; font-weight:bold }
 #ajax_div_patient {
 	position: absolute;
 	z-index:10;
