@@ -109,8 +109,8 @@ if(isset($_POST['submit'])){
 	 $speServ = $_POST['specialService']; 
 	
 	
-	$service1 = $_POST['service'];
-	 
+    $service1 = $_POST['service'];
+	
 	
 	
 	 
@@ -160,9 +160,9 @@ if(isset($_POST['submit'])){
 	    date_default_timezone_set('Asia/Kolkata');
         $time = date('H:i');
 		
-		
-  $medication = sqlInsert("insert into medication_schduling(pid,encounter,ward,bed,service,dated,frequency,days) 
-		            values('$pid','$encounter','$ward','$bed','$service','$dt','$hours','$days')");	
+  		
+  $medication = sqlInsert("insert into medication_schduling(pid,encounter,ward,bed,category,service,dated,frequency,days) 
+		            values('$pid','$encounter','$ward','$bed','$service1','$service','$dt','$hours','$days')");	
 
 					
 	$chkMed = sqlQuery("select count(code) as chkMed from billing where encounter = '$encounter' and code='MEDICINE CHARGES' and activity=1");
@@ -586,6 +586,16 @@ $('#input_dr > input').attr("disabled",false);
   
 </div>
 
+<div class="container col-md-2">
+
+	<iframe src="patient_note.php"  width = "350" height = "250"></iframe>
+	 
+
+
+</div>
+
+
+
 <!-----------------------------------------------right side ------------------------------------------------->
 <?php
    if($count['count']>=1){
@@ -593,7 +603,7 @@ $('#input_dr > input').attr("disabled",false);
      ?>
 
 
-<div class="container col-md-offset-3 col-md-5 well">
+<div class="container col-md-offset-2 col-md-5 well">
 <table class="table table-striped  table-condensed">
     <thead>
       <tr class='active'>
@@ -610,10 +620,20 @@ $('#input_dr > input').attr("disabled",false);
 	<?php $i=1;
 	 while($infoResult=sqlFetchArray($Info))  {  ?>
 	 <tr>
+	     <?php $rep_time = $infoResult['frequency'].' '.'Hours'; 
+		  $category = $infoResult['category'];
+		  $no_of_days = $infoResult['days'];
+		  if($category=='Special Services'){
+			  $rep_time = '------';
+			  $no_of_days = '------';
+		  }
+
+
+		 ?>
 	     <td class="table-active"><?php echo $infoResult['service']; ?></td>
          <td class="table-active"><?php echo $infoResult['dated']; ?></td>
-	     <td class="table-active"><?php echo $infoResult['frequency'].' '.'Hours'; ?></td>
-         <td class="table-active"><?php echo $infoResult['days']; ?></td>
+	     <td class="table-active"><?php echo $rep_time; ?></td>
+         <td class="table-active"><?php echo $no_of_days ?></td>
 	 </tr>
 	<?php  $i++;  
 	 }  ?>

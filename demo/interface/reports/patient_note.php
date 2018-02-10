@@ -57,7 +57,7 @@ if(isset($_POST['submit'])){
 	 $note = $_POST['note'];
 	
 	 $clinical = sqlQuery("update t_form_admit set ip_note='$note' where encounter='$encounter'");
-	 header('location:timeSchduler.php');
+	 header('location:patient_note.php');
 }
 
 
@@ -84,25 +84,11 @@ if(isset($_POST['submit'])){
 <div class="container col-md-3 col-lg-3 well">
 
  
-  <div class="form-group">
-    <label for="exampleFormControlSelect1">Patient Name</label>
-	<input type='text' class='form-control' value='<?php echo $pname['fname'];?>' disabled>
-	
-    
-  </div>
-  <div class="form-group">
-    <label for="exampleFormControlSelect2">Gender</label>
-	<input type='text' class='form-control' value='<?php echo $pname['sex'];?>' disabled>    
-  </div>
   
-  <div class="form-group">
-    <label for="exampleFormControlSelect2">Age</label>
-	<input type='text' class='form-control' value='<?php echo $pname['age'];?>' disabled>    
-  </div>
   
   <div class="form-group">
     <label for="exampleFormControlTextarea1">Note</label>
-    <textarea class="form-control" name='note'  rows="4"><?php echo $patient['ip_note'];  ?></textarea>
+    <textarea class="form-control" name='note'  rows="6"><?php echo $patient['ip_note'];  ?></textarea>
   </div>
   
   <button type="submit" name='submit' class="btn btn-default">Save</button>
