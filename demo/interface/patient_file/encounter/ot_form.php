@@ -121,7 +121,7 @@ $(window).load(function() {
 <fieldset>
 
 <!-- Form Name -->
-<legend>OT form requirement</legend>
+<legend>OT Form</legend>
 
 <!-- Text input-->
 
@@ -136,7 +136,7 @@ $(window).load(function() {
         <i class="fa fa-user">
         </i>
        </div>
-       <input id="Name (Full name)" name="Name (Full name)" type="text" placeholder="Name (Full name)" class="form-control input-md" value="<?php echo $pfname. $pmname. $plname ?>" readonly>
+       <input id="Name (Full name)" name="client_name" type="text" placeholder="Name (Full name)" class="form-control input-md" value="<?php echo $pfname. $pmname. $plname ?>" readonly>
       </div>
 
     
@@ -221,16 +221,16 @@ $(window).load(function() {
 	echo "<td>"."<input type=\"text\" name=\"admit_to_ward\" value=\"$admwdd\" readonly>"."</input></td>";
 	echo "<td>"."<input type=\"text\" name=\"admit_to_bed\" value=\"$admbd\" readonly></input>"."</td>"; 
 	?>
-  <div class="input-group date"  id='datetimepicker' >
+  <!--<div class="input-group date"  id='datetimepicker' >
 
       <input type='text' size='10' class='form-control' name='form_date' id='form_date' title='<?php echo xla('yyyy-mm-dd OT Appointment'); ?>' />
 	   <span class="input-group-addon">
                         <span class="glyphicon glyphicon-calendar"></span>
                     </span>
-                </div>
-				</div>
+                </div> -->
+				</div> 
 				<div class="col-md-4">
-				<a href="../../patient_file/encounter/emptyot.php">Find available OT Slots</a>
+				<a href="../../patient_file/encounter/emptyot.php" class="btn btn-default">Find available OT Slots</a>
 				</div>
  </div>
 <!-- Text input-->
@@ -242,7 +242,7 @@ $(window).load(function() {
      <i class="fa fa-clock-o"></i>
         
        </div>
-    <input id="Working Experience (time period)" name="Working Experience" type="text" placeholder="Enter time period " class="form-control input-md">
+    <input id="Working Experience (time period)" name="operation_duration" type="text" placeholder="Enter time period " class="form-control input-md">
     
     
       </div>
@@ -251,18 +251,18 @@ $(window).load(function() {
 </div>
 
 <!-- Textarea -->
-<div class="form-group">
+<!-- <div class="form-group">
   <label class="col-md-4 control-label" for="Overview (max 200 words)">Overview (max 200 words)</label>
   <div class="col-md-4">                     
     <textarea class="form-control" rows="10"  id="Overview (max 200 words)" name="Overview (max 200 words)">Overview</textarea>
   </div>
-</div>
+</div> -->
 
 <!-- Textarea -->
 <div class="form-group">
   <label class="col-md-4 control-label" for="Special (max 200 words)">Special Instructions </label>
   <div class="col-md-4">                     
-    <textarea class="form-control" rows="10"  id="Special (max 200 words)" name="special_instruction">Special Instructions</textarea>
+    <textarea class="form-control" rows="10"  id="Special (max 200 words)" name="OT_instructions">Special Instructions</textarea>
   </div>
 </div>
 
