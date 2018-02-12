@@ -175,15 +175,15 @@ $(window).load(function() {
   <label class="col-md-4 control-label" for="Gender">Gender</label>
   <div class="col-md-4"> 
     <label class="radio-inline" for="Gender-0">
-      <input type="radio" name="Gender" id="Gender-0" value="1" checked="<?php if($pgender == 'Male') { echo "checked"; } ?>">
+      <input type="radio" name="Gender" id="Gender-0" value="1" <?php  if($pgender == 'Male') { echo "checked"; } ?>>
       Male
     </label> 
     <label class="radio-inline" for="Gender-1">
-      <input type="radio" name="Gender" id="Gender-1" value="2" checked="<?php if($pgender == 'Female') { echo "checked"; } ?>">
+      <input type="radio" name="Gender" id="Gender-1" value="2" <?php if($pgender == 'Female') { echo "checked"; } ?>>
       Female
     </label> 
     <label class="radio-inline" for="Gender-2">
-      <input type="radio" name="Gender" id="Gender-2" value="3" checked="<?php if($pgender == 'Other') { echo "checked"; } ?>">
+      <input type="radio" name="Gender" id="Gender-2" value="3" <?php if($pgender == 'Other') { echo "checked"; } ?>>
       Other
     </label>
   </div>
@@ -218,8 +218,8 @@ $(window).load(function() {
 	$result23 = sqlFetchArray($res23);
 	$admwdd=$result23['list_id'];
 	$admbd=$result23['option_id'];
-	echo "<td>"."<input type=\"text\" name=\"admit_to_ward\" value=\"$admwdd\" readonly>"."</input></td>";
-	echo "<td>"."<input type=\"text\" name=\"admit_to_bed\" value=\"$admbd\" readonly></input>"."</td>"; 
+	echo "<td>"."<input type=\"text\" name=\"admit_to_ot_room\" value=\"$admwdd\" readonly required>"."</input></td>";
+	echo "<td>"."<input type=\"text\" name=\"appointment_date\" value=\"$admbd\" readonly required></input>"."</td>"; 
 	?>
   <!--<div class="input-group date"  id='datetimepicker' >
 
@@ -242,7 +242,7 @@ $(window).load(function() {
      <i class="fa fa-clock-o"></i>
         
        </div>
-    <input id="Working Experience (time period)" name="operation_duration" type="text" placeholder="Enter time period " class="form-control input-md">
+    <input id="Working Experience (time period)" name="e_o_t" type="text" placeholder="Enter time period in hours" class="form-control input-md">
     
     
       </div>
@@ -262,7 +262,7 @@ $(window).load(function() {
 <div class="form-group">
   <label class="col-md-4 control-label" for="Special (max 200 words)">Special Instructions </label>
   <div class="col-md-4">                     
-    <textarea class="form-control" rows="10"  id="Special (max 200 words)" name="OT_instructions">Special Instructions</textarea>
+    <textarea class="form-control" rows="10"  id="Special (max 200 words)" name="ot_instructions">Special Instructions</textarea>
   </div>
 </div>
 
