@@ -63,6 +63,12 @@ function getAdmitData($pid, $given = "*, DATE_FORMAT(DOB,'%m/%d/%Y') as DOB_TS")
     $sql = "select $given from t_form_admit where pid=? and encounter='".$e."' order by date DESC limit 0,1";
     return sqlQuery($sql, array($pid) );
 }
+
+function getOTData($pid, $given = "*, DATE_FORMAT(DOB,'%m/%d/%Y') as DOB_TS") {
+     $e=$GLOBALS['encounter'];
+    $sql = "select $given from t_form_ot where pid=? and encounter='".$e."' order by date DESC limit 0,1";
+    return sqlQuery($sql, array($pid) );
+}
 function getDiagnosis($pid, $given = "*, DATE_FORMAT(DOB,'%m/%d/%Y') as DOB_TS") {
      $sql= "select  a.list_id, b.title from issue_encounter a,lists b where a.list_id=b.id and a.pid=? order by date DESC";
 	  return sqlQuery($sql, array($pid) );
