@@ -23,6 +23,7 @@ $returnurl = $GLOBALS['concurrent_layout'] ? 'encounter_top.php' : 'patient_enco
 if ($_POST['confirm']) {
        // set the deleted flag of the indicated form
    sqlStatement("update list_options set is_default=0 where list_id='".$_POST['admit_to_ot_room']."' and option_id='".$_POST['appointment_date']."'");
+   sqlStatement("update t_form_ot set status=0 where admit_to_ot_room='".$_POST['admit_to_ot_room']."' and appointment_date='".$_POST['appointment_date']."' and encounter='".$e."'");
     $admit_to_ot_room=$_POST['admit_to_ot_room'];	
 	$appointment_date=$_POST['appointment_date'];
 	
@@ -209,7 +210,7 @@ $(window).load(function() {
 
 <span class="title">Transfer</span>
 
-<form method="post" action="<?php echo $rootdir;?>/patient_file/encounter/transfer_form.php" name="my_form" id="my_form">
+<form method="post" action="<?php echo $rootdir;?>/patient_file/encounter/transfer_ot.php" name="my_form" id="my_form">
 <?php
 // output each GET variable as a hidden form input
 foreach ($_GET as $key => $value) {
@@ -238,7 +239,7 @@ foreach ($_GET as $key => $value) {
 <input type="hidden" id="appointment_date" name="appointment_date" value='<?php echo attr($appointment_date);?>'>
 
 <p>
-You are about to Transfer a Patient From '<?php echo attr($admit_to_ot_room);?>' To <a href='bedtrans.php?encounter=<?php echo $encounter?>';>Find Beds</a>
+You are about to Transfer a Patient From '<?php echo attr($admit_to_ot_room);?>' To <a href='bedtrans_ot.php?encounter=<?php echo $encounter?>';>Find Beds</a>
 <tr>
 	<td> <b><?php echo xlt('Selected'); ?>:</b></td>
 	<input type=hidden name ="adm_to" value=<?php echo $_POST['adm_to']; ?> > </input>
