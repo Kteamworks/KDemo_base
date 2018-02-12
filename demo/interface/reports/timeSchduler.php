@@ -291,7 +291,18 @@ if(isset($_POST['submit'])){
 			  $("#reqSpe").attr("required",false);
 			  
       	      }
-	
+	if(sel=='Surgery Kits'){
+	 $(".surgerykit").css("display","");
+	 $("#reqSpe").attr("required","required");
+	 $(".hideitem").css("display",'none');
+	 
+	 
+	}
+	else{
+              $(".surgerykit").css("display","none");
+			  $("#reqSpe").attr("required",false);
+			  
+      	      }
 	
 	if(sel=='General Services'){
 	 $(".hideGenService").css("display","");
@@ -517,6 +528,7 @@ $(window).load(function() {
         <select class="form-control" onchange='set_medicine()' id="serviceName" name='service' required>
 		<option value="">Select</option>
 		<option value="General Services">General Services</option>
+		<option value="Surgery Kits">Surgery Kits</option>
 		<option value="Special Services">Special Services</option>
 		<option value="Medicine">Medicines</option>
 		
@@ -583,6 +595,25 @@ $(window).load(function() {
      
 	  </div>
     </div>
+	<div class="form-group surgerykit" style="display:none">
+      <label for="Surgery Kits">Surgery Kits</label>
+	  <div class="form-group">
+	  
+	 
+
+        <select class="selectpicker" data-show-subtext="true" data-live-search="true" name="surgerykit" id='surgerykit'>
+		<option value="">Select</option>
+		 <?php
+          $kitList = sqlStatement("SELECT ct_key,ct_id,ct_label,ct_active FROM code_types WHERE ct_active=1 AND ct_key like '%kit%' ORDER BY ct_id");
+		  while($kitList1 = sqlFetchArray($kitList)){
+	  ?>
+        <option value="<?php echo $kitList1['ct_key']; ?>"> <?php echo $kitList1['ct_label'];  ?></option>
+		  <?php  }  ?>	
+              </select>
+	  
+     
+	  </div>
+    </div>
 <!--------------------------------------------------------------------------------------------------------------->	
 
 <!--------------------------------------------------------------------------------------------------------------->	
@@ -614,7 +645,6 @@ $(window).load(function() {
 	
     <div class="form-group">
 	<?php
-	date_default_timezone_set('Asia/Kolkata');
    $tym=date('G:i');
 	
         
