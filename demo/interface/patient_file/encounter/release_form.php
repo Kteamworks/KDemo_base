@@ -28,7 +28,7 @@ $e=$_GET["encounter"] ? $_GET["encounter"] : $GLOBALS['encounter'];
 if ($_POST['confirm']) {
     // set the discharge flag of the indicated form
 	 	$admit_to_ot_room=$_POST['admit_to_ot_room'];
-	 sqlStatement("update list_options set is_default=4 where list_id='".$_POST['admit_to_ot_room']."'
+	 sqlStatement("update list_options set is_default=0 where list_id='".$_POST['admit_to_ot_room']."'
 	and option_id='".$_POST['appointment_date']."'");
 
      $status=0;
