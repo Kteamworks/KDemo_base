@@ -245,7 +245,6 @@ alert('yes');
 <?php $newcrop_user_role=sqlQuery("select newcrop_user_role from users where username='".$_SESSION['authUser']."'");
  ?>
   <?php 
-  date_default_timezone_set('Asia/Kolkata');
 $rid=sqlStatement("SELECT form_id from forms where encounter='".$_SESSION['encounter']."' and formdir='ros' order by form_id desc limit 1 ");
 		$rid1=sqlFetchArray($rid);
 		$rid2=$rid1['form_id'];
