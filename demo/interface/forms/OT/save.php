@@ -70,7 +70,7 @@ else {
 
 $_SESSION["encounter"] = $encounter;
 formHeader("Redirecting....");
-formJump();
+formJump("../../main/finder/p_dynamic_finder_ot.php");
 formFooter();
 ?>
 
