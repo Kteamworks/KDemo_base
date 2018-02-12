@@ -10,6 +10,8 @@ require_once("$srcdir/acl.inc");
 require_once("$srcdir/options.inc.php");
 require_once("$srcdir/formatting.inc.php");
 require_once("$srcdir/erx_javascript.inc.php");
+$formid = 0 + (isset($_GET['id']) ? $_GET['id'] : '');
+$obj = $formid ? formFetch("t_form_ot", $formid) : array();
  if ($GLOBALS['concurrent_layout'] && isset($_GET['set_pid'])) {
   include_once("$srcdir/pid.inc");
   setpid($_GET['set_pid']);
@@ -117,7 +119,7 @@ $(window).load(function() {
    <div class="container">
 <div class="row">
 <div class="col-md-12">
-<form class="form-horizontal">
+<form class="form-horizontal" method='post' action="<?php echo '../../forms/OT/save.php?id='. $formid; ?>">
 <fieldset>
 
 <!-- Form Name -->
@@ -269,7 +271,7 @@ $(window).load(function() {
 <div class="form-group">
   <label class="col-md-4 control-label" ></label>  
   <div class="col-md-4">
-  <a href="#" class="btn btn-success"><span class="glyphicon glyphicon-thumbs-up"></span> Submit</a>
+  <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-thumbs-up"></span> Submit</button>
   <a href="#" class="btn btn-danger" value=""><span class="glyphicon glyphicon-remove-sign"></span> Clear</a>
     
   </div>
