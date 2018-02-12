@@ -228,7 +228,7 @@ document.location.href = "../../reports/timeSchduler.php?set_pid=" + newpid+'&en
 		//alert(newpid);
 		 top.restoreSession();
 		 //alert(encounter);
-		document.location.href="../../patient_file/encounter/transfer_form.php?set_pid=" + newpid+'&encounter='+encounter;
+		document.location.href="../../patient_file/encounter/transfer_ot.php?set_pid=" + newpid+'&encounter='+encounter;
 		}else if(name=="Release")
 		{
 		top.restoreSession();
