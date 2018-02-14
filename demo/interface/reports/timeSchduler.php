@@ -148,9 +148,9 @@ if(isset($_POST['submit'])){
 		 		 $serv_ids = sqlStatement("SELECT a.service_id service_id,a.code_type code_type,a.code,a.code_text,b.pr_price from codes a,prices b  where a.id=b.pr_id and a.code_type=".$service." and b.pr_level='standard' and b.pr_price!=0");
 	
 while($serv_id = sqlFetchArray($serv_ids)) {
-	$codetype=sqlStatement("select ct_label from code_types where ct_key=$service");
+	$codetype=sqlStatement("select ct_key from code_types where ct_id=$service");
 	$codetype1 = sqlFetchArray($codetype);
-	$codetype2 = $codetype1['ct_label'];
+	$codetype2 = $codetype1['ct_key'];
 	$code=$serv_id['code'];
  $codetext=$serv_id['code_text'];
  $service_id=$serv_id['service_id'];
@@ -167,7 +167,7 @@ while($serv_id = sqlFetchArray($serv_ids)) {
       "date = NOW(), " .
    "user = '" . $_SESSION["authUserID"] . "',".
       "bill_date = '" . add_escape_custom($onset_date) . "', " .
-      "code_type = '" . add_escape_custom($codetype) . "', " .
+      "code_type = '" . add_escape_custom($codetype2) . "', " .
     "service_id = '" . add_escape_custom($service_id) . "', " .
       "servicegrp_id = '" . add_escape_custom($servicegrp_id) . "', " .
       "code = '" . add_escape_custom($code) . "', " .
@@ -758,10 +758,10 @@ $(window).load(function() {
 		  }
 		  if($category=='Surgery Kits'){
 			  
-	$dcodetype=sqlStatement("select ct_label from code_types where ct_key=".$infoResult['service']);
+	$dcodetype=sqlStatement("select ct_key from code_types where ct_id=".$infoResult['service']);
 	$dcodetype1 = sqlFetchArray($dcodetype);
-	$infoService = $dcodetype1['ct_label'];
-	var_dump($dcodetype1);
+	$infoService = $dcodetype1['ct_key'];
+	//var_dump($infoService);
 		  }
 $infoService = $infoResult['service'];
 
