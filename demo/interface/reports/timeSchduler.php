@@ -752,21 +752,20 @@ $(window).load(function() {
 	     <?php $rep_time = $infoResult['frequency'].' '.'Hours'; 
 		  $category = $infoResult['category'];
 		  $no_of_days = $infoResult['days'];
-		  if($category=='Special Services' && $category=='Surgery Kits'){
+		  if($category=='Special Services' || $category=='Surgery Kits'){
 			  $rep_time = '------';
 			  $no_of_days = '------';
 		  }
-		  if($category=='Surgery Kits'){
-			  
-	$dcodetype=sqlStatement("select ct_key from code_types where ct_id=".$infoResult['service']);
-	$dcodetype1 = sqlFetchArray($dcodetype);
-	$infoService = $dcodetype1['ct_key'];
-	//var_dump($infoService);
-		  }
+
 $infoService = $infoResult['service'];
 
 		 ?>
-	     <td class="table-active"><?php echo $infoService; ?></td>
+	     <td class="table-active"><?php 		  if($infoResult['category']=='Surgery Kits'){
+			  
+	$dcodetype=sqlStatement("select ct_label from code_types where ct_id=".$infoResult['service']);
+	$dcodetype1 = sqlFetchArray($dcodetype);
+	echo $dcodetype1['ct_label'];
+		  } else { echo $infoService; } ?></td>
          <td class="table-active"><?php echo $infoResult['dated']; ?></td>
 	     <td class="table-active"><?php echo $rep_time; ?></td>
          <td class="table-active"><?php echo $no_of_days ?></td>
