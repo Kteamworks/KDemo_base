@@ -123,7 +123,7 @@ $(window).load(function() {
 <fieldset>
 
 <!-- Form Name -->
-<legend>OT Form</legend>
+<legend>OT Allocation</legend>
 
 <!-- Text input-->
 
@@ -220,8 +220,8 @@ $(window).load(function() {
 	$result23 = sqlFetchArray($res23);
 	$admwdd=$result23['list_id'];
 	$admbd=$result23['option_id'];
-	echo "<td>"."<input type=\"text\" name=\"admit_to_ot_room\" value=\"$admwdd\" readonly required>"."</input></td>";
-	echo "<td>"."<input type=\"text\" name=\"appointment_date\" value=\"$admbd\" readonly required></input>"."</td>"; 
+	echo "<td>"."<input type=\"text\" name=\"admit_to_ot_room\" class=\"form-control\" value=\"$admwdd\" readonly required>"."</input></td>";
+	echo "<td>"."<input type=\"text\" name=\"appointment_date\" class=\"form-control\" value=\"$admbd\" readonly required></input>"."</td>"; 
 	?>
   <!--<div class="input-group date"  id='datetimepicker' >
 
@@ -272,7 +272,7 @@ $(window).load(function() {
   <label class="col-md-4 control-label" ></label>  
   <div class="col-md-4">
   <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-thumbs-up"></span> Submit</button>
-  <a href="#" class="btn btn-danger" value=""><span class="glyphicon glyphicon-remove-sign"></span> Clear</a>
+  <a href="#" class="btn btn-danger" onclick="history.go(-1);" value=""><span class="glyphicon glyphicon-remove-sign"></span> Cancel</a>
     
   </div>
 </div>

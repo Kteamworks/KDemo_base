@@ -37,6 +37,7 @@ $obj = $formid ? formFetch("t_form_ot", $formid) : array();
 ?>
 <html>
 <head>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <?php html_header_show();?>
 <script type="text/javascript" src="../../../library/dialog.js"></script>
 <!-- pop up calendar -->
@@ -76,10 +77,11 @@ function showUser(str) {
 </head>
 
 <body class="body_top">
-<p><span class="forms-title"><?php echo xlt('Position of Empty Beds'); ?></span></p>
+<h2><span class="forms-title"><?php echo xlt('Position of Empty Beds'); ?></span></h2>
 </br>
-
-<select name="abc" onchange="showUser(this.value)">
+<div class="">
+<div class="col-md-6">
+<select name="abc" onchange="showUser(this.value)" class="form-control">
 	<option value="">Choose:</option>
    
 	<option value="OT1">OT Room1</option>
@@ -100,10 +102,12 @@ echo "<form method='post' name='my_form' " .
 echo "<div id=\"txtHint\"></div>";
 
 ?>
-<b><center><input type="submit" name="" value="Admit" onclick="top.restoreSession();location='<?php echo "$rootdir/patient_file/encounter/$returnurl" ?>'"></input></center>
+<b><input type="submit" class="btn btn-info" style="margin-top:15px" name="" value="Save" onclick="top.restoreSession();location='<?php echo "$rootdir/patient_file/encounter/$returnurl" ?>'"></input>
 <?php
 echo "</div>";
 mysqli_close($con);
 ?>
+</div>
+</div>
 </body>
 </html>
