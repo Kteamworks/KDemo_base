@@ -114,8 +114,7 @@ if(isset($_POST['submit'])){
 	 $med = $_POST['medicine']; 
 	 $genServ = $_POST['generalService']; 
 	 $speServ = $_POST['specialService']; 
-	
-	
+	 $surgicalKits = $_POST['surgeryKit'];	
     $service1 = $_POST['service'];
 	
 	
@@ -143,6 +142,47 @@ if(isset($_POST['submit'])){
 		 
 	$service_charges = sqlInsert("insert into billing(pid,encounter,date,code_type,code,code_text,activity,fee,service_id,servicegrp_id,groupname,authorized,billed,bill_date,payout) 
 		          values('$pid','$encounter','$dt','Services','$service','$service','1','$service_price','$speSreId','6','Default','1','0','$dateTime','0')");	 
+	 }
+	 	else if($service1=='Surgery Kits'){
+		 $service = $surgicalKits; 
+		 		 $serv_ids = sqlStatement("SELECT a.service_id service_id,a.code_type code_type,a.code,a.code_text,b.pr_price from codes a,prices b  where a.id=b.pr_id and a.code_type=".$service." and b.pr_level='standard' and b.pr_price!=0");
+	
+while($serv_id = sqlFetchArray($serv_ids)) {
+	$codetype=sqlStatement("select ct_label from code_types where ct_key=$service");
+	$codetype1 = sqlFetchArray($codetype);
+	$codetype2 = $codetype1['ct_label'];
+	$code=$serv_id['code'];
+ $codetext=$serv_id['code_text'];
+ $service_id=$serv_id['service_id'];
+ $servicegrp_id=$serv_id['code_type'];
+   $billed=0;
+   $units=1;
+   $fee=$serv_id['pr_price'];
+ $authrzd=1;
+ $modif="";
+ $act=1;
+ $grpn="Default";
+ $onset_date=date('Y-m-d H:i:s');
+  sqlInsert("INSERT INTO billing SET " .
+      "date = NOW(), " .
+   "user = '" . $_SESSION["authUserID"] . "',".
+      "bill_date = '" . add_escape_custom($onset_date) . "', " .
+      "code_type = '" . add_escape_custom($codetype) . "', " .
+    "service_id = '" . add_escape_custom($service_id) . "', " .
+      "servicegrp_id = '" . add_escape_custom($servicegrp_id) . "', " .
+      "code = '" . add_escape_custom($code) . "', " .
+      "code_text = '" . add_escape_custom($codetext) . "', " .
+      "units = '" . add_escape_custom($units) . "', " .
+      "billed = '" . add_escape_custom($billed) . "', " .
+      "fee = '" . add_escape_custom($fee) . "', " .
+      "pid = '" . add_escape_custom($pid) . "', " .
+      "encounter = '" . add_escape_custom($encounter) . "', " .
+   "modifier = '" . add_escape_custom($modif) . "', " .
+   "authorized = '" . add_escape_custom($authrzd) . "', " .
+   "activity = '" . add_escape_custom($act) . "', " .
+   "groupname = '" . add_escape_custom($grpn) . "', " .
+      "provider_id = '" . add_escape_custom($provider_id) . "'");
+		 }
 	 }
 	// else if($service1=='General Services'){
 		else $service= $genServ;
@@ -293,14 +333,14 @@ if(isset($_POST['submit'])){
       	      }
 	if(sel=='Surgery Kits'){
 	 $(".surgerykit").css("display","");
-	 $("#reqSpe").attr("required","required");
+	 $("#surgerykit").attr("required","required");
 	 $(".hideitem").css("display",'none');
 	 
 	 
 	}
 	else{
               $(".surgerykit").css("display","none");
-			  $("#reqSpe").attr("required",false);
+			  $("#surgerykit").attr("required",false);
 			  
       	      }
 	
@@ -601,13 +641,13 @@ $(window).load(function() {
 	  
 	 
 
-        <select class="selectpicker" data-show-subtext="true" data-live-search="true" name="surgerykit" id='surgerykit'>
+        <select class="selectpicker" data-show-subtext="true" data-live-search="true" name="surgeryKit" id='surgerykit'>
 		<option value="">Select</option>
 		 <?php
           $kitList = sqlStatement("SELECT ct_key,ct_id,ct_label,ct_active FROM code_types WHERE ct_active=1 AND ct_key like '%kit%' ORDER BY ct_id");
 		  while($kitList1 = sqlFetchArray($kitList)){
 	  ?>
-        <option value="<?php echo $kitList1['ct_key']; ?>"> <?php echo $kitList1['ct_label'];  ?></option>
+        <option value="<?php echo $kitList1['ct_id']; ?>"> <?php echo $kitList1['ct_label'];  ?></option>
 		  <?php  }  ?>	
               </select>
 	  
@@ -712,14 +752,21 @@ $(window).load(function() {
 	     <?php $rep_time = $infoResult['frequency'].' '.'Hours'; 
 		  $category = $infoResult['category'];
 		  $no_of_days = $infoResult['days'];
-		  if($category=='Special Services'){
+		  if($category=='Special Services' && $category=='Surgery Kits'){
 			  $rep_time = '------';
 			  $no_of_days = '------';
 		  }
-
+		  if($category=='Surgery Kits'){
+			  
+	$dcodetype=sqlStatement("select ct_label from code_types where ct_key=".$infoResult['service']);
+	$dcodetype1 = sqlFetchArray($dcodetype);
+	$infoService = $dcodetype1['ct_label'];
+	var_dump($dcodetype1);
+		  }
+$infoService = $infoResult['service'];
 
 		 ?>
-	     <td class="table-active"><?php echo $infoResult['service']; ?></td>
+	     <td class="table-active"><?php echo $infoService; ?></td>
          <td class="table-active"><?php echo $infoResult['dated']; ?></td>
 	     <td class="table-active"><?php echo $rep_time; ?></td>
          <td class="table-active"><?php echo $no_of_days ?></td>
