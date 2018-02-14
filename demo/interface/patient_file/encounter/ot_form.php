@@ -244,7 +244,7 @@ $(window).load(function() {
      <i class="fa fa-clock-o"></i>
         
        </div>
-    <input id="Working Experience (time period)" name="e_o_t" type="text" placeholder="Enter time period in hours" class="form-control input-md">
+    <input id="Working Experience (time period)" name="e_o_t" type="text" placeholder="Enter time period in hours" class="form-control input-md" value="4">
     
     
       </div>
