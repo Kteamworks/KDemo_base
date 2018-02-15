@@ -222,7 +222,7 @@ foreach ($_GET as $key => $value) {
     
     $result = getOTData($pid, "*");
 	$e=$_GET["encounter"] ? $_GET["encounter"] : $GLOBALS['encounter'];
-	$result1=sqlStatement("select * from t_form_ot where encounter='".$e."'");
+	$result1=sqlStatement("select * from t_form_ot where encounter='".$e."' and status=1");
 	$result2=sqlFetchArray($result1);
   }
    $pid=($result2['pid']);

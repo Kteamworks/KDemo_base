@@ -704,7 +704,7 @@ while ($irow = sqlFetchArray($ires)) {
     <div style="position: fixed;
 top: 10px;
 right: 20px;">
-      <a href="javascript:saveClicked();" class="btn btn-primary"><span><?php echo xlt('Save and Pay'); ?></span></a>
+      <a href="javascript:saveClicked();"  target="_blank" class="btn btn-primary"><span><?php echo xlt('Save and Pay'); ?></span></a>
     </div>
 	  <?php }else{	  ?>
 	  <div style="position: fixed;
