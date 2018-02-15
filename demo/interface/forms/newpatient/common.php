@@ -765,34 +765,38 @@ if($newcrop_user_role['newcrop_user_role']!='erxdoctor' && $newcrop_user_role['n
         url:"serPatient.php",
         data:{ mrn : MRN },    // multiple data sent using ajax
         success: function (html) {
-			console.log(html);
+		//	console.log(html);
 var result = $.parseJSON(html);
-console.log(result[4]);
-var date= result[4];
+
+var date= result['fruits'][4];
 var dateAr = date.split('-');
 var newDate = dateAr[2] + '/' + dateAr[1] + '/' + dateAr[0];
 var age = getAge(newDate);
-console.log(result[1] +' '+result[2],result[0],result[3],'DOB: '+newDate+' Age: '+age);
- parent.left_nav.setPatient(result[1] +' '+result[2],result[0],result[3],+' ',+'DOB: '+newDate+' Age: '+age);
+//console.log(result[1] +' '+result[2],result[0],result[3],'DOB: '+newDate+' Age: '+age);
+ parent.left_nav.setPatient(result['fruits'][1] +' '+result['fruits'][2],result['fruits'][0],result['fruits'][3],+' ',+'DOB: '+newDate+' Age: '+age);
  var EncounterDateArray = new Array;
  var CalendarCategoryArray = new Array;
  var EncounterIdArray = new Array;
  var Count = 0;
- <?php
-  //Encounter details are stored to javacript as array.
-  $result4 = sqlStatement("SELECT fe.encounter,fe.encounter_ipop,fe.date,openemr_postcalendar_categories.pc_catname FROM form_encounter AS fe ".
-    " left join openemr_postcalendar_categories on fe.pc_catid=openemr_postcalendar_categories.pc_catid  WHERE fe.pid = ? order by fe.date desc", array($pid));
-  if(sqlNumRows($result4)>0) {
-    while($rowresult4 = sqlFetchArray($result4)) {
-?>
- EncounterIdArray[Count] = '<?php echo htmlspecialchars($rowresult4['encounter'], ENT_QUOTES); ?>';
- EncounterDateArray[Count] = '<?php echo htmlspecialchars(oeFormatShortDate(date("Y-m-d", strtotime($rowresult4['date']))), ENT_QUOTES); ?>';
- CalendarCategoryArray[Count] = '<?php echo htmlspecialchars(xl_appt_category($rowresult4['pc_catname']), ENT_QUOTES); ?>';
+ $.each(result['animals'], function(bb) {
+	 EncounterIdArray[Count] = result['animals'][bb].encounter;
+	 var dt = new Date(result['animals'][bb].date);
+
+var edate = dt.getDate();
+var emon = dt.getMonth() + 1;
+if (emon.toString().length == 1) {
+emon = "0" + emon;
+}
+if (edate.toString().length == 1) {
+edate = "0" + edate;
+}
+var eyr = dt.getFullYear();
+ EncounterDateArray[Count] = edate+'/'+emon+'/'+eyr;
+ CalendarCategoryArray[Count] = result['animals'][bb].pc_catname;
  Count++;
-<?php
-    }
-  }
-?>
+ 
+
+});
  parent.left_nav.setPatientEncounter(EncounterIdArray,EncounterDateArray,CalendarCategoryArray);
         }
       });

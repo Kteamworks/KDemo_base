@@ -77,7 +77,7 @@ function showUser(str) {
 </head>
 
 <body class="body_top">
-<h2><span class="forms-title"><?php echo xlt('Position of Empty Beds'); ?></span></h2>
+<h2><span class="forms-title"><?php echo xlt('Available OT Room Slots'); ?></span></h2>
 </br>
 <div class="">
 <div class="col-md-6">
