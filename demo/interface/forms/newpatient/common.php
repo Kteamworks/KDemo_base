@@ -235,11 +235,12 @@ alert('yes');
 <body class="body_top">
 <?php } else { ?>
 <body class="body_top" onload="javascript:document.new_encounter.reason.focus();">
-<?php } ?>
-    <div class="">
+<?php } if (acl_check('acct', 'rep')) {	 ?>
+    <div class="container" style="margin-bottom:15px">
             <h1>Select Patient</h1>
             <input type="text" name="city" size="30" class="city" id="TypeAheadInput" placeholder="Please Enter Patient Name or MRN">
     </div>
+<?php } ?>
 <!-- Required for the popup date selectors -->
 <div id="overDiv" style="position:absolute; visibility:hidden; z-index:1000;"></div>
 <?php $newcrop_user_role=sqlQuery("select newcrop_user_role from users where username='".$_SESSION['authUser']."'");
