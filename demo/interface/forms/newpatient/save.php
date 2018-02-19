@@ -274,7 +274,9 @@ if ($mode == 'new')
       "provider_id = '" . add_escape_custom($provider_id) . "'");
 	  
 	  sqlQuery("Update billing_main_copy set total_charges=total_charges + ? where encounter=?",array($fee,$encounter)); 
-if (acl_check('acct', 'rep')) {	  
+	  
+if (acl_check('acct', 'rep')) {	
+if(isset($_POST['pay'])){
   $time = date('Y-m-d H:i:s');
   $payment_id = idSqlStatement("insert into ar_session set "    .
 					"payer_id = ?"       .
@@ -914,8 +916,9 @@ $age_days=$age_days;
 </div>
 </body>
 <?php
-}
 	}
+}
+}
 	}
 	
 }
@@ -1031,7 +1034,7 @@ $result4 = sqlStatement("SELECT fe.encounter,fe.date,openemr_postcalendar_catego
  parent.left_nav.setEncounter(<?php echo "'" . oeFormatShortDate($date) . "', " . attr($encounter) . ", window.name"; ?>);
  parent.left_nav.setRadio(window.name, 'enc');
 <?php } // end if new encounter ?>
-<?php if($pc_catid==10){?>
+<?php if(isset($_POST['pay'])){?>
 window.print();
  parent.left_nav.loadFrame('enc2', window.name,printme());
 <?php }else{?>
