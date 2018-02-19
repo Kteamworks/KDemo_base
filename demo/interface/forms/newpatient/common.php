@@ -70,6 +70,52 @@ $ires = sqlStatement("SELECT id, type, title, begdate FROM lists WHERE " .
 	<link rel="stylesheet" href="<?php echo $GLOBALS['webroot']; ?>/library/breadcrumbs/css/style.css"> <!-- Resource style -->
 	<style type="text/css">@import url(<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar.css);</style>
 	<style>
+	/* Create three columns of equal width */
+.columns {
+    float: right;
+    padding: 8px;
+	    margin-bottom: 15px;
+}
+
+/* Style the list */
+.price {
+    list-style-type: none;
+    border: 1px solid #eee;
+    margin: 0;
+    padding: 0;
+    -webkit-transition: 0.3s;
+    transition: 0.3s;
+}
+
+/* Add shadows on hover */
+.price:hover {
+    box-shadow: 0 8px 12px 0 rgba(0,0,0,0.2)
+}
+ul.price li {
+	display:inline;
+}
+/* Pricing header */
+.price .header {
+    background-color: #111;
+    color: white;
+    font-size: 15px;
+}
+
+/* List items */
+.price li {
+    border-bottom: 1px solid #eee;
+    padding: 14px;
+    text-align: center;
+}
+
+/* Grey list item */
+.price .grey {
+    background-color: #eee;
+    font-size: 15px;
+}
+.price .grey:hover {
+    background-color: #ccc;
+}
 	.form-group .control-label:after {
   content:"*";
   color:red;
@@ -194,6 +240,31 @@ function getCatId(id)
 	}
 	
 }
+ function change_provider(doctor){
+	 var sel = doctor.value;
+	 		        $.ajax({
+                // Where to send request
+                url: 'doctor.price.php',
+                // What to send
+                data: { did: sel },
+                // How to send
+                type: 'post',
+                // What to do when request succeeds
+                success: function(response) {
+                    // Save the contents of the response into
+                    // whatever has the id="list"
+					if(response) {
+
+                    $("#price").html(response);
+									//		$("#save_btn").prop("disabled",true);
+					}
+					else {
+					//	$("#save_btn").prop("disabled",false);
+					//	$("#doctor_price_list").remove();
+					}
+                }
+        });
+ }
 function setMyPatient() {
 alert('yes');
  // Avoid race conditions with loading of the left_nav or Title frame.
@@ -388,9 +459,9 @@ check out</a></li>
      <label class="pull-left control-label"><?php echo xlt('Doctor:'); ?></label>
      
 <?php
-  $ures = sqlStatement("SELECT id, username, fname, lname FROM users WHERE " .
+  $ures = sqlStatement("SELECT id, username, fname, lname, specialty FROM users WHERE " .
   "authorized != 0 AND active = 1 ORDER BY fname, lname");
-   echo "<select name='form_provider' class='form-control'  required='required'/>";
+   echo "<select name='form_provider' class='form-control'  required='required' onchange='change_provider(this);'/>";
     while ($urow = sqlFetchArray($ures)) {
       echo "    <option value='" . attr($urow['id']) . "'";
 	  if($result['provider_id']=='')
@@ -402,11 +473,12 @@ check out</a></li>
   }
      // if ($urow['id'] == $defaultProvider) echo " selected";
       echo ">" . "".text($urow['fname']);
-      if ($urow['lname']) echo " " . text($urow['lname']);
+      if ($urow['lname']) echo " " . text($urow['lname']). " (" . text($urow['specialty'] . ")");;
       echo "</option>\n";
     }
     echo "</select>";
 ?>
+
      </div>
     </tr>
 	<tr>
@@ -704,7 +776,8 @@ while ($irow = sqlFetchArray($ires)) {
 		  if (acl_check('acct', 'rep')) {	?>
     <div style="position: fixed;
 top: 10px;
-right: 20px;">
+right: 20px;"><div class="columns row" id="price">
+</div>
       <a href="javascript:saveClicked();"  target="_blank" class="btn btn-primary"><span><?php echo xlt('Save and Pay'); ?></span></a>
     </div>
 	  <?php }else{	  ?>
