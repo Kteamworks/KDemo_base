@@ -383,7 +383,7 @@ check out</a></li>
 </section>  
  <?php }?>
 <form method='post' action="<?php echo $rootdir ?>/forms/newpatient/save.php" name='new_encounter'
- <?php if (!$GLOBALS['concurrent_layout']) echo "target='Main'"; ?>>
+ <?php if (!$GLOBALS['concurrent_layout']) echo "target='Main'";  if (acl_check('acct', 'rep')) { echo "target='_blank'"; } ?> >
 
 
 <div class='container'>
@@ -778,7 +778,7 @@ while ($irow = sqlFetchArray($ires)) {
 top: 10px;
 right: 20px;"><div class="columns row" id="price">
 </div>
-      <a href="javascript:saveClicked();"  target="_blank" class="btn btn-primary"><span><?php echo xlt('Save and Pay'); ?></span></a>
+     <div> <a href="javascript:saveClicked();"  target="_blank" class="btn btn-primary"><span><?php echo xlt('Save and Pay'); ?></span></a></div>
     </div>
 	  <?php }else{	  ?>
 	  <div style="position: fixed;
