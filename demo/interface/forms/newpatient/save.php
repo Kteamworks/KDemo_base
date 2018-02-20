@@ -82,10 +82,6 @@ $url="../../main/finder/p_dynamic_finder.php";
 header('Location: '.$url);
  $_SESSION['nurseVisit'] = $encounter; $_SESSION['LAST_ACTIVITY_nurse'] = time();
 }
- if($pc_catid==10)
-{
-	$normalurl = "patient_file/front_payment.php";
-} 
 
 if($pc_catid==16)
 {

@@ -1137,7 +1137,7 @@ $age_days=$age_days;
  body    { font-family:sans-serif; font-size:10pt; font-weight:normal }
  .dehead { color:#000000; font-family:sans-serif; font-size:10pt; font-weight:bold }
  .detail { color:#000000; font-family:sans-serif; font-size:10pt; font-weight:normal }
-  .detail1 { color:#000000; font-family:sans-serif; font-size:10pt; font-weight:bold }
+  .detail1 { color:#ff0000; font-family:sans-serif; font-size:10pt; font-weight:bold }
 #ajax_div_patient {
 	position: absolute;
 	z-index:10;

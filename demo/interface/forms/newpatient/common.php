@@ -383,7 +383,7 @@ check out</a></li>
 </section>  
  <?php }?>
 <form method='post' action="<?php echo $rootdir ?>/forms/newpatient/save.php" name='new_encounter'
- <?php if (!$GLOBALS['concurrent_layout']) echo "target='Main'";  if (acl_check('acct', 'rep')) { echo "target='_blank'"; } ?> >
+ <?php if (!$GLOBALS['concurrent_layout']) echo "target='Main'"; ?> >
 
 
 <div class='container'>
@@ -776,17 +776,17 @@ while ($irow = sqlFetchArray($ires)) {
 		  if (acl_check('acct', 'rep')) {	?>
     <div style="position: fixed;
 top: 10px;
-right: 20px;"><div class="columns row" id="price">
+right: 80px;"><div class="columns row" id="price">
 </div>
-     <div> <a href="javascript:saveClicked();"  target="_blank" class="btn btn-primary"><span><?php echo xlt('Save and Pay'); ?></span></a></div>
+     <div>  <input type="submit" name="pay" onclick="javascript:saveClicked();"  class="btn btn-primary"  value="Save and Pay" formtarget="_blank"></input></div>
     </div>
-	  <?php }else{	  ?>
+	  <?php }	  ?>
 	  <div style="position: fixed;
 top: 10px;
 right: 20px;">
-      <a href="javascript:saveClicked();" class="btn btn-primary"><span><?php echo xlt('Save'); ?></span></a>
+      <input type="submit" name="submit" onclick="javascript:saveClicked();" class="btn btn-primary" value="Save"></input>
     </div>
-	  <?php }
+	  <?php 
 	  }?>
 	   <?php if ($viewmode || !isset($_GET["autoloaded"]) || $_GET["autoloaded"] != "1") { ?>
     <div >
