@@ -158,7 +158,7 @@ if ($mode == 'new')
   	$code=$inc2['code'];
 	$codetext=$inc2['code_text'];
 	$codetype="Doctor Charges";
-	if (acl_check('acct', 'rep'))
+	if(isset($_POST['pay']))
 	{
 		$billed=1;
 	}else
@@ -205,7 +205,7 @@ if ($mode == 'new')
   	$code=$row2['code'];
 	$codetext=$row2['code_text'];
 	$codetype="Doctor Charges";
-	if($pc_catid==10)
+	if(isset($_POST['pay']))
 	{
   	$billed=1;
 	}else
