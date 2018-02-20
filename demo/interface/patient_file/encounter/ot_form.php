@@ -245,7 +245,7 @@ $(window).load(function() {
      <i class="fa fa-clock-o"></i>
         
        </div>
-    <input id="Working Experience (time period)" name="e_o_t" type="text" placeholder="Enter time period in hours" class="form-control input-md" value="4">
+    <input id="Working Experience (time period)" name="e_o_t" type="text" onchange="handleChange(this);" placeholder="Time period in hours (max: 24hrs)" class="form-control input-md" value="4">
     
     
       </div>
@@ -292,6 +292,12 @@ $(window).load(function() {
   src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
 
         <script type="text/javascript">
+
+  function handleChange(input) {
+    if (input.value < 0) input.value = 0;
+    if (input.value > 24) input.value = 24;
+  }
+
 		var j = jQuery.noConflict();
             j(function () {
                 j('#datetimepicker').datetimepicker({
