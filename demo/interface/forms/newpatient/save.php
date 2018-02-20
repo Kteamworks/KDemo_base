@@ -928,6 +928,16 @@ else if ($mode == 'update')
   $encounter = $result['encounter'];
   // See view.php to allow or disallow updates of the encounter date.
   $datepart = acl_check('encounters', 'date_a') ? "date = '" . add_escape_custom($date) . "', " : "";
+  if($newcrop_user_role['newcrop_user_role'] == 'erxdoctor')
+   {
+	   sqlStatement("UPDATE form_encounter SET " .
+    "date = now(), " .
+    "onset_date = '" . add_escape_custom($onset_date) . "', " .
+    "reason = '" . add_escape_custom($reason) . "', " .
+	 "referral_source = '" . add_escape_custom($referral_source) . "' " .
+    "WHERE id = '" . add_escape_custom($id) . "'");
+	   
+   }else{
   sqlStatement("UPDATE form_encounter SET " .
     $datepart .
     "onset_date = '" . add_escape_custom($onset_date) . "', " .
@@ -947,7 +957,7 @@ else if ($mode == 'update')
     sqlQuery("Update patient_data set rateplan=? where pid=?",array($rateplan,$pid));
  sqlQuery("Update insurance_data set provider=? where id=?",array($tpaid,$pid));	
 	// billing_main_copy needs to be changed here / updated. 
-	
+   }
 	}
 else {
   die("Unknown mode '" . text($mode) . "'");
