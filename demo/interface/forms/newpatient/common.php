@@ -266,16 +266,15 @@ function getCatId(id)
         });
  }
 function setMyPatient() {
-alert('yes');
  // Avoid race conditions with loading of the left_nav or Title frame.
  if (!parent.allFramesLoaded()) {
   setTimeout("setMyPatient()", 500);
   return;
  }
-<?php $result  = getPatientData($pid, "*, DATE_FORMAT(DOB,'%Y-%m-%d') as DOB_YMD"); ?>
- parent.left_nav.setPatient(<?php echo "'" . htmlspecialchars(($result['fname']) . " " . ($result['lname']),ENT_QUOTES) .
-   "'," . htmlspecialchars($pid,ENT_QUOTES) . ",'" . htmlspecialchars(($result['genericname1']),ENT_QUOTES) .
-   "','', ' " . htmlspecialchars(xl('DOB') . ": " . oeFormatShortDate($result['DOB_YMD']) . " " . xl('Age') . ": " . getPatientAgeDisplay($result['DOB_YMD']), ENT_QUOTES) . "'"; ?>);
+<?php $result1  = getPatientData($pid, "*, DATE_FORMAT(DOB,'%Y-%m-%d') as DOB_YMD"); ?>
+ parent.left_nav.setPatient(<?php echo "'" . htmlspecialchars(($result1['fname']) . " " . ($result1['lname']),ENT_QUOTES) .
+   "'," . htmlspecialchars($pid,ENT_QUOTES) . ",'" . htmlspecialchars(($result1['genericname1']),ENT_QUOTES) .
+   "','', ' " . htmlspecialchars(xl('DOB') . ": " . oeFormatShortDate($result1['DOB_YMD']) . " " . xl('Age') . ": " . getPatientAgeDisplay($result1['DOB_YMD']), ENT_QUOTES) . "'"; ?>);
  var EncounterDateArray = new Array;
  var CalendarCategoryArray = new Array;
  var EncounterIdArray = new Array;
@@ -662,7 +661,7 @@ if ($fres) {
 	                 <div class='input-group date'  id='datetimepicker' >
                     
       <input type='text' size='10' class='form-control' name='form_date' id='form_date' <?php echo $disabled ?>
-       value='<?php echo $viewmode ? substr($result['date'], 0, 10) : date('Y-m-d h:i:s'); ?>'
+       value='<?php echo $viewmode ? date("d-m-Y h:i:s", strtotime($result['date'])) : date('d-m-Y h:i:s'); ?>'
        title='<?php echo xla('yyyy-mm-dd Date of service'); ?>' />
 	   <span class="input-group-addon">
                         <span class="glyphicon glyphicon-calendar"></span>
@@ -683,7 +682,7 @@ if ($fres) {
    <div class='input-group date'  id='datetimepicker1' >
                     
       <input type='text' size='10' class='form-control' name='form_onset_date' id='form_onset_date'
-       value='<?php echo $viewmode && $result['onset_date']!='0000-00-00 00:00:00' ? substr($result['onset_date'], 0, 10) : ''; ?>' 
+       value='<?php echo $viewmode && $result['onset_date']!='00-00-0000 00:00:00' ? date("d-m-Y h:i:s", strtotime($result['onset_date'])) : ''; ?>' 
        title='<?php echo xla('yyyy-mm-dd Date of onset or hospitalization'); ?>' />
       <!-- onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' -->
 	      <span class="input-group-addon">
@@ -815,10 +814,10 @@ if($newcrop_user_role['newcrop_user_role']!='erxdoctor' && $newcrop_user_role['n
 		var j = jQuery.noConflict();
             j(function () {
                 j('#datetimepicker1').datetimepicker({
-                    format: 'YYYY-MM-DD HH:mm:ss'
+                    format: 'DD-MM-YYYY HH:mm:ss'
                 });
 				                j('#datetimepicker').datetimepicker({
-                    format: 'YYYY-MM-DD HH:mm:ss'
+                    format: 'DD-MM-YYYY HH:mm:ss'
                 });
             });
 			j(document).ready(function(){

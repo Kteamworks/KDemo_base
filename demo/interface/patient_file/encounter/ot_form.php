@@ -265,7 +265,7 @@ $(window).load(function() {
 <div class="form-group">
   <label class="col-md-4 control-label" for="Special (max 200 words)">Special Instructions </label>
   <div class="col-md-4">                     
-    <textarea class="form-control" rows="10"  id="Special (max 200 words)" name="ot_instructions">Special Instructions</textarea>
+    <textarea class="form-control" rows="10"  id="Special (max 200 words)" name="ot_instructions"></textarea>
   </div>
 </div>
 
