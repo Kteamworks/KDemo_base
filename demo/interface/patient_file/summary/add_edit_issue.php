@@ -470,7 +470,7 @@ div.section {
  }
 
  function closeme() {
-    if (parent.$) parent.$.fancybox.close();
+  //  if (parent.$) parent.$.fancybox.close();
     window.close();
  }
 

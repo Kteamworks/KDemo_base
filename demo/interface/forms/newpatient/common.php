@@ -306,7 +306,8 @@ alert('yes');
 <body class="body_top">
 <?php } else { ?>
 <body class="body_top" onload="javascript:document.new_encounter.reason.focus();">
-<?php } if (acl_check('acct', 'rep')) {	 ?>
+<?php } $newcrop_user_role=sqlQuery("select newcrop_user_role from users where username='".$_SESSION['authUser']."'"); 
+		if($newcrop_user_role['newcrop_user_role']!='erxdoctor' && $newcrop_user_role['newcrop_user_role']!='erxnurse') { 	 ?>
     <div class="container" style="margin-bottom:15px">
             <h1>Select Patient</h1>
             <input type="text" name="city" size="30" class="city" id="TypeAheadInput" placeholder="Please Enter Patient Name or MRN">
@@ -314,8 +315,6 @@ alert('yes');
 <?php } ?>
 <!-- Required for the popup date selectors -->
 <div id="overDiv" style="position:absolute; visibility:hidden; z-index:1000;"></div>
-<?php $newcrop_user_role=sqlQuery("select newcrop_user_role from users where username='".$_SESSION['authUser']."'");
- ?>
   <?php 
 $rid=sqlStatement("SELECT form_id from forms where encounter='".$_SESSION['encounter']."' and formdir='ros' order by form_id desc limit 1 ");
 		$rid1=sqlFetchArray($rid);
@@ -773,19 +772,15 @@ while ($irow = sqlFetchArray($ires)) {
       <a href="javascript:saveClicked();" class="btn btn-primary link_submit" style="margin:10px"><span><?php echo xlt('Save'); ?></span></a>
     </div>
 	  <?php }else{
-		  if (acl_check('acct', 'rep')) {	?>
+		  ?>
     <div style="position: fixed;
 top: 10px;
 right: 80px;"><div class="columns row" id="price">
 </div>
-     <div>  <input type="submit" name="pay" onclick="javascript:saveClicked();"  class="btn btn-primary"  value="Save and Pay" formtarget="_blank"></input></div>
+     <div><input type="submit" name="submit" onclick="javascript:saveClicked();" class="btn btn-primary" value="Save" style="margin-right: 15px;"></input>
+	 <?php if (acl_check('acct', 'rep')) {	?>  <input type="submit" name="pay" onclick="javascript:saveClicked();"  class="btn btn-primary"  value="Save and Pay" formtarget="_blank"></input><?php }	  ?></div>
     </div>
-	  <?php }	  ?>
-	  <div style="position: fixed;
-top: 10px;
-right: 20px;">
-      <input type="submit" name="submit" onclick="javascript:saveClicked();" class="btn btn-primary" value="Save"></input>
-    </div>
+
 	  <?php 
 	  }?>
 	   <?php if ($viewmode || !isset($_GET["autoloaded"]) || $_GET["autoloaded"] != "1") { ?>
