@@ -928,7 +928,7 @@ else if ($mode == 'update')
   $encounter = $result['encounter'];
   // See view.php to allow or disallow updates of the encounter date.
   $datepart = acl_check('encounters', 'date_a') ? "date = '" . add_escape_custom($date) . "', " : "";
-  if($newcrop_user_role['newcrop_user_role'] == 'erxdoctor')
+  if($newcrop_user_role['newcrop_user_role'] == 'erxdoctor' || $newcrop_user_role['newcrop_user_role'] == 'erxnurse' )
    {
 	   sqlStatement("UPDATE form_encounter SET " .
     "date = now(), " .
