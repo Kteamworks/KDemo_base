@@ -144,7 +144,12 @@ $res = sqlQuery("select * from users where username='".$_SESSION{"authUser"}."'"
             <span class='text'><?php xl('Selected Visit','e'); ?>:&nbsp;</span><span class='title_bar_top' id="current_encounter"><b><?php xl('None','e'); ?></b></span> 
 		</div></td></tr></table>
 </td>
-<td align="right">
+<td align="right" style="vertical-align:top;" class="i-pad">
+		<a href="../logout.php" target="_top" id="logout_link" onclick="top.restoreSession()" title="Logout"><i class="fa fa-sign-out"></i></a>
+		<!--<a href="../logout.php" target="_top" class="css_button_small" style='float:right;' id="logout_link" onclick="top.restoreSession()" >
+			<span><?php echo htmlspecialchars( xl('Logout'), ENT_QUOTES) ?></span></a> -->
+			</td>
+<td align="right" class="non-pad">
 	<table cellspacing="0" cellpadding="1" style="margin:0px 3px 0px 0px;">    
 		<?php
 
