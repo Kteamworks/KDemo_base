@@ -43,6 +43,9 @@ require_once("$srcdir/classes/Note.class.php");
 
 
 $date             = (isset($_POST['form_date']))            ? $_POST['form_date'] : '';
+if($date) {
+$date = date("Y-m-d h:i:s", strtotime($_POST['form_date']));
+}
 $onset_date       = (isset($_POST['form_onset_date']))      ? $_POST['form_onset_date'] : '';
 $sensitivity      = (isset($_POST['form_sensitivity']))     ? $_POST['form_sensitivity'] : '';
 $pc_catid         = (isset($_POST['pc_catid']))             ? $_POST['pc_catid'] : '';
