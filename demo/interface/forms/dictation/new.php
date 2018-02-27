@@ -44,6 +44,12 @@ body {
     font-family: "Source Sans Pro", sans-serif !important;
 	margin-left: 15px !important;
 }
+.cd-breadcrumb.triangle li > * {
+    padding: 1em .4em 0.8em 1.5em;
+}
+a {
+color: white;
+}
 </style>
 </head>
 <body class="body_top" style="background: white">

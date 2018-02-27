@@ -143,6 +143,9 @@ foreach($_POST['id'] as $selected) {
   overflow-y: scroll;
   margin-bottom: 10px;
   }
+  body {
+    overflow-y: auto !important;
+}
   </style>
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
