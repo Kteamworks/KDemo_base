@@ -245,7 +245,8 @@ You are about to Transfer a Patient From '<?php echo attr($admit_to_ot_room);?>'
 	<input type=hidden name ="adm_to" value=<?php echo $_POST['adm_to']; ?> > </input>
 	<?
 	$bid23=$_POST['adm_to'];
-	$quer23="select * FROM list_options where option_id='".$bid23."'";
+	$bid24=$_POST['admit_to_ward'];
+	$quer23="select * FROM list_options where list_id='".$bid24."' and option_id='".$bid23."'";
 
 	$res23 = sqlStatement($quer23);
 	$result23 = sqlFetchArray($res23);
