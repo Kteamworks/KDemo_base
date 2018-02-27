@@ -141,7 +141,7 @@ foreach($_POST['id'] as $selected) {
   .max-list-height {
   height: 250px;
   overflow-y: scroll;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
   }
   body {
     overflow-y: auto !important;
