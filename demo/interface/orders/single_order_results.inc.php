@@ -170,9 +170,9 @@ function educlick(codetype, codevalue) {
  </tr>
  <tr bgcolor='#cccccc'>
   <td nowrap><?php echo xlt('Patient Name'); ?></td>
-  <td><?php echo myCellText($orow['lname'] . ', ' . $orow['fname'] . ' ' . $orow['mname']); ?></td>
+  <td><?php echo myCellText($orow['fname'] . ' ' . $orow['mname'] . ' ' . $orow['lname']); ?></td>
   <td nowrap><?php echo xlt('Ordered By'); ?></td>
-  <td><?php echo myCellText($orow['ulname'] . ', ' . $orow['ufname'] . ' ' . $orow['umname']); ?></td>
+  <td><?php echo myCellText($orow['ufname'] . ' ' . $orow['umname'] . ' ' . $orow['ulname']); ?></td>
  </tr>
  <tr bgcolor='#cccccc'>
   <td nowrap><?php echo xlt('Order Date'); ?></td>

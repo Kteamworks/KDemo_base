@@ -148,9 +148,9 @@ function generate_order_summary($orderid) {
 <table width='100%' cellpadding='2' cellspacing='0'>
  <tr bgcolor='#cccccc'>
   <td nowrap><?php echo xlt('Patient Name'); ?></td>
-  <td><?php echo myCellText($orow['lname'] . ', ' . $orow['fname'] . ' ' . $orow['mname']); ?></td>
+  <td><?php echo myCellText($orow['fname'] . ' ' . $orow['mname'] . ' ' . $orow['lname']); ?></td>
   <td nowrap><?php echo xlt('Ordered By'); ?></td>
-  <td><?php echo myCellText($orow['ulname'] . ', ' . $orow['ufname'] . ' ' . $orow['umname']); ?></td>
+  <td><?php echo myCellText($orow['ufname'] . ' ' . $orow['umname'] . ' ' . $orow['ulname']); ?></td>
  </tr>
  <tr bgcolor='#cccccc'>
   <td width='5%' nowrap><?php echo xlt('MRN (pid)'); ?></td>
