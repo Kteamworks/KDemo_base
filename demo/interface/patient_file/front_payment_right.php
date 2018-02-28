@@ -100,6 +100,7 @@ function echoLine($iname,$date, $charges, $ptpaid, $inspaid,$discount, $duept,$e
   }else{
   if($duept>0)
   {
+	  $en=$_SESSION['encounter'];
   echo " <tr id='tr_".attr($var_index)."' >\n";
   echo "  <td class='detail'>" . text(oeFormatShortDate($date)) . "</td>\n";
   echo "  <td class='detail' id='".attr($date)."' align='center'>" . htmlspecialchars($encounter, ENT_QUOTES) . "</td>\n";
@@ -113,9 +114,17 @@ function echoLine($iname,$date, $charges, $ptpaid, $inspaid,$discount, $duept,$e
   echo "  <td class='detail' align='center' id='dis_charges_$var_index' >" . htmlspecialchars(bucks($discount), ENT_QUOTES) . "</td>\n";
   //echo "  <td class='detail' align='center' id='balance_$var_index'>" . htmlspecialchars(bucks($balance), ENT_QUOTES) . "</td>\n"; //This was Insurance Balance
   echo "  <td class='detail' align='center' id='duept_$var_index'>" . htmlspecialchars(bucks(round($duept,2)*1), ENT_QUOTES) . "</td>\n"; //Patient Balance
-  echo "  <td class='detail' align='right'><input type='text' name='".attr($iname)."'  id='paying_".attr($var_index)."' " .
+  if($encounter==$en)
+  {
+  echo " <td class='detail' align='right'><input type='text' name='".attr($iname)."'  id='paying_".attr($var_index)."' " .
     " value='" .  $duept . "' onchange='coloring();calctotal()'  autocomplete='off' " .
-    "onkeyup='calctotal()'  style='width:50px'/></td>\n";
+    "onkeyup='calctotal()'  style='width:50px'/></td></b>\n";
+  }else
+  {
+	  echo " <td class='detail' align='right'><input type='text' name='".attr($iname)."'  id='paying_".attr($var_index)."' " .
+    " value='" . '' . "' onchange='coloring();calctotal()'  autocomplete='off' " .
+    "onkeyup='calctotal()'  style='width:50px'/></td></b>\n";
+  }
   echo " </tr>\n";
   }
 }
@@ -194,7 +203,7 @@ if ($_POST['form_save']) {
   if( $form_towards==2 && $encc2==12 && $status!='discharge')
   {
 	  
-	  $address = "{$GLOBALS['rootdir']}/patient_file/front_payment.php";
+	  $address = "{$GLOBALS['rootdir']}/patient_file/front_payment_right.php";
       $message="Please Discharge the Patient for the Settlement";
       echo"<script type='text/javascript'>alert('$message');top.restoreSession();window.location='$address';</script>";
 	  
@@ -1131,6 +1140,7 @@ $age_days=$age_days;
  body    { font-family:sans-serif; font-size:10pt; font-weight:normal }
  .dehead { color:#000000; font-family:sans-serif; font-size:10pt; font-weight:bold }
  .detail { color:#000000; font-family:sans-serif; font-size:10pt; font-weight:normal }
+   .detail1 { color:#ff0000; font-family:sans-serif; font-size:10pt; font-weight:bold }
 #ajax_div_patient {
 	position: absolute;
 	z-index:10;
