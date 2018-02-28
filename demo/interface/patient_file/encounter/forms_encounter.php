@@ -498,9 +498,7 @@ if ( $esign->isButtonViewable() ) {
 			 if(!($result['status']=='discharge'|| $result['status']=='left'))
 			 {
                 // a link to delete the form from the encounter
-                echo "<a target='".
-                    ($GLOBALS['concurrent_layout'] ? "_parent" : "Main") .
-                    "' href='$rootdir/patient_file/encounter/discharge_form.php?" .
+                echo "<a href='$rootdir/patient_file/encounter/discharge_form.php?" .
                     "formname=" . $formdir .
                     "&id=" . $iter['id'] .
                     "&encounter=". $encounter.
@@ -520,9 +518,7 @@ if ( $esign->isButtonViewable() ) {
 			 if(!($result['status']=='discharge'|| $result['status']=='left'))
 			 {
                 // a link to delete the form from the encounter
-                echo "<a target='".
-                    ($GLOBALS['concurrent_layout'] ? "_parent" : "Main") .
-                    "' href='$rootdir/patient_file/encounter/transfer_form.php?" .
+                echo "<a href='$rootdir/patient_file/encounter/transfer_form.php?" .
                     "formname=" . $formdir .
                     "&id=" . $iter['id'] .
                     "&encounter=". $encounter.
@@ -542,9 +538,7 @@ if ( $esign->isButtonViewable() ) {
 			 {
 				 if (acl_check('admin', 'super')||$id['id']==97) { 
                 // a link to delete the form from the encounter
-                echo "<a target='".
-                    ($GLOBALS['concurrent_layout'] ? "_parent" : "Main") .
-                    "' href='$rootdir/patient_file/encounter/edit_form.php?" .
+                echo "<a href='$rootdir/patient_file/encounter/edit_form.php?" .
                     "formname=" . $formdir .
                     "&id=" . $iter['id'] .
                     "&encounter=". $encounter.
