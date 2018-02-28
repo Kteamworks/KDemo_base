@@ -171,21 +171,21 @@ $out = array(
 if($row2["newcrop_user_role"]=="erxnurse")
 {
 	if(!isset($GLOBALS['payment_after_visit_creation']) || $GLOBALS['payment_after_visit_creation'] == 1){
-$query ="SELECT $sellist FROM form_encounter b,patient_data a,billing c  where a.pid=b.pid and b.encounter=c.encounter and c.activity=1 and c.billed=1 and date(b.date)='".$today."' and b.provider_id IN ($X) order by b.encounter desc $limit";
+$query ="SELECT $sellist FROM form_encounter b,patient_data a,billing c  where a.pid=b.pid and b.encounter=c.encounter and c.activity=1 and c.billed=1 and date(b.date)='".$today."' and b.pc_catid!=12 and b.provider_id IN ($X) order by b.encounter desc $limit";
 	}
 	else
 	{
-		$query ="SELECT $sellist FROM form_encounter b,patient_data a where a.pid=b.pid and date(b.date)='".$today."' and b.provider_id IN ($X) order by b.encounter desc $limit";
+		$query ="SELECT $sellist FROM form_encounter b,patient_data a where a.pid=b.pid and date(b.date)='".$today."' and b.pc_catid!=12 and b.provider_id IN ($X) order by b.encounter desc $limit";
 
 	}
 }
 else
 {
 	if(!isset($GLOBALS['payment_after_visit_creation']) || $GLOBALS['payment_after_visit_creation'] == 1){
-     $query = "SELECT $sellist FROM patient_data a,form_encounter b,billing c where a.pid=b.pid and b.encounter=c.encounter and c.activity=1 and c.billed=1 and   b.provider_id='".$providerid."'  and date(b.date)='".$today."' order by b.encounter desc $limit";
+     $query = "SELECT $sellist FROM patient_data a,form_encounter b,billing c where a.pid=b.pid and b.encounter=c.encounter and c.activity=1 and c.billed=1 and   b.provider_id='".$providerid."'  and b.pc_catid!=12 and date(b.date)='".$today."' order by b.encounter desc $limit";
 	}else
 	{
-	$query = "SELECT $sellist FROM patient_data a,form_encounter b where a.pid=b.pid and b.provider_id='".$providerid."'  and date(b.date)='".$today."' order by encounter desc $limit";	
+	$query = "SELECT $sellist FROM patient_data a,form_encounter b where a.pid=b.pid and b.provider_id='".$providerid."' and b.pc_catid!=12  and date(b.date)='".$today."' order by encounter desc $limit";	
 	}
 }
 $res = sqlStatement($query);

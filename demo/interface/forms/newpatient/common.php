@@ -238,6 +238,16 @@ function getCatId(id)
 		document.getElementById('rplan').style.display = 'none';
 		document.getElementById('instpa').style.display = 'none';
 	}
+	if(id=="10")
+	{
+		document.getElementById('price').style.display =  '';
+		document.getElementById('pay').style.display =  '';
+	
+	}else
+	{
+		document.getElementById('price').style.display = 'none';
+		document.getElementById('pay').style.display = 'none';
+	}
 	
 }
  function change_provider(doctor){
@@ -772,12 +782,12 @@ while ($irow = sqlFetchArray($ires)) {
     </div>
 	  <?php }else{
 		  ?>
-    <div style="position: fixed;
+    <div style="position: fixed; style='display:none' ;
 top: 10px;
-right: 80px;"><div class="columns row" id="price">
+right: 80px;"><div class="columns row" id="price" >
 </div>
      <div><input type="submit" name="submit" onclick="javascript:saveClicked();" class="btn btn-primary" value="Save" style="margin-right: 15px;"></input>
-	 <?php if (acl_check('acct', 'rep')) {	?>  <input type="submit" name="pay" onclick="javascript:saveClicked();"  class="btn btn-primary"  value="Save and Pay" formtarget="_blank"></input><?php }	  ?></div>
+	 <?php if (acl_check('acct', 'rep')) {	?>  <input type="submit" name="pay" id="pay" style='display:none' onclick="javascript:saveClicked();"  class="btn btn-primary"  value="Save and Pay" formtarget="_blank"></input><?php }	  ?></div>
     </div>
 
 	  <?php 
