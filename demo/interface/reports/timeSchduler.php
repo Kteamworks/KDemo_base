@@ -145,7 +145,7 @@ if(isset($_POST['submit'])){
 	 }
 	 	else if($service1=='Surgery Kits'){
 		 $service = $surgicalKits; 
-		 		 $serv_ids = sqlStatement("SELECT a.service_id service_id,a.code_type code_type,a.code,a.code_text,b.pr_price from codes a,prices b  where a.id=b.pr_id and a.code_type=".$service." and b.pr_level='standard' and b.pr_price!=0");
+		 		 $serv_ids = sqlStatement("SELECT a.service_id service_id,a.code_type code_type,a.code,a.code_text,b.pr_price from codes a,prices b  where a.id=b.pr_id and a.code_type='$service' and b.pr_level='standard' and b.pr_price!=0");
 	
 while($serv_id = sqlFetchArray($serv_ids)) {
 	$codetype=sqlStatement("select ct_key from code_types where ct_id=$service");
@@ -255,7 +255,7 @@ while($serv_id = sqlFetchArray($serv_ids)) {
         $newTime = date('Y-m-d H:i', strtotime($time. " + {$addedTime} hours"));
 		
 		
-		if($service1=='Special Services'){
+		if(($service1=='Special Services')||($service1=='Surgery Kits')){
            $Nurse = sqlInsert("insert into ipschdule(pid,encounter,ward,bed,tym,service,dated,fee,activity,result,updatedTime) 
 		            values('$pid','$encounter','$ward','$bed','$t','$service','$date','$fees','1','Completed','$t')");
 
@@ -577,7 +577,7 @@ $(window).load(function() {
 	  
     
 	  </div>
-	  <?php echo $nameErr;  ?>
+	  
 	  
     </div>
 	
@@ -647,7 +647,7 @@ $(window).load(function() {
           $kitList = sqlStatement("SELECT ct_key,ct_id,ct_label,ct_active FROM code_types WHERE ct_active=1 AND ct_key like '%kit%' ORDER BY ct_id");
 		  while($kitList1 = sqlFetchArray($kitList)){
 	  ?>
-        <option value="<?php echo $kitList1['ct_id']; ?>"> <?php echo $kitList1['ct_label'];  ?></option>
+        <option value="<?php echo $kitList1['ct_label']; ?>"> <?php echo $kitList1['ct_label'];  ?></option>
 		  <?php  }  ?>	
               </select>
 	  
@@ -760,12 +760,13 @@ $(window).load(function() {
 $infoService = $infoResult['service'];
 
 		 ?>
-	     <td class="table-active"><?php 		  if($infoResult['category']=='Surgery Kits'){
+	     <td class="table-active"><?php /*if($infoResult['category']=='Surgery Kits'){
+			 $sel_service = $infoResult['service'];
 			  
-	$dcodetype=sqlStatement("select ct_label from code_types where ct_id=".$infoResult['service']);
+	$dcodetype=sqlStatement("select ct_label from code_types where ct_id= '$sel_service'");
 	$dcodetype1 = sqlFetchArray($dcodetype);
 	echo $dcodetype1['ct_label'];
-		  } else { echo $infoService; } ?></td>
+		  } else */  echo $infoService; ?></td>
          <td class="table-active"><?php echo $infoResult['dated']; ?></td>
 	     <td class="table-active"><?php echo $rep_time; ?></td>
          <td class="table-active"><?php echo $no_of_days ?></td>
