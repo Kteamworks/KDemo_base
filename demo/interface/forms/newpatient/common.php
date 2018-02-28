@@ -254,12 +254,12 @@ function getCatId(id)
                     // Save the contents of the response into
                     // whatever has the id="list"
 					if(response) {
-
+if(document.getElementById('pc_catid').value == 10) {
                     $("#price").html(response);
 
 		document.getElementById('pay').style.display = '';
 	
-	
+}
 									//		$("#save_btn").prop("disabled",true);
 					}
 					else {
