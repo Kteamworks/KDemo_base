@@ -300,6 +300,20 @@ $user=  $_SESSION["authUser"];
 $row1 = sqlStatement("SELECT id,newcrop_user_role,specialty,facility_id from users where username='".$user."'");
 $row2=  sqlFetchArray($row1);
 $providerid=$row2['id'];
+$specialty=$row2['specialty'];
+$new=sqlStatement("SELECT * from users where specialty='".$specialty."' and authorized=1");
+$new2=sqlStatement("SELECT count(*) as c from users where specialty='".$specialty."' and authorized=1");
+$co=sqlFetchArray($new2);
+$co=$co['c'];
+//$row3=sqlFetchArray($new);
+$X=array();
+ while($row3=sqlFetchArray($new))
+{
+  $X[]=$row3['id'];
+	
+}
+$X = "'" . implode("', '", $X) . "'";
+
 $today = date('Y-m-d',strtotime("+0 days"));
 
 if($row2['newcrop_user_role'] == 'erxdoctor') {
@@ -321,11 +335,11 @@ round((((a.total_no_of_patients-b.pending_patient)/a.total_no_of_patients)*100),
 from
 (SELECT count(b.id) total_no_of_patients 
 FROM patient_data a,form_encounter b 
-where a.pid=b.pid and date(b.date)=date('".$today."') )a,
+where a.pid=b.pid and b.provider_id IN ($X) and date(b.date)=date('".$today."') )a,
 
 (SELECT count(b.id)pending_patient
 FROM patient_data a,form_encounter b 
-where a.pid=b.pid and date(b.date)=date('".$today."') 
+where a.pid=b.pid and b.provider_id IN ($X) and date(b.date)=date('".$today."') 
  and nurse_out_time is null)b";
 }
 //$query_seen = "SELECT  coalesce(count(b.id),0) total_no_of_patients FROM patient_data a,form_encounter b where a.pid=b.pid and b.provider_id='".$providerid."'  and date(b.date)='".$today."' and b.out_to='Examined By'";
