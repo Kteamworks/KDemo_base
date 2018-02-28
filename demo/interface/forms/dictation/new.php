@@ -47,9 +47,9 @@ body {
 .cd-breadcrumb.triangle li > * {
     padding: 1em .4em 0.8em 1.5em;
 }
-a {
-color: white;
-}
+.btn-warning {
+	    color: #fff !important;
+	}
 </style>
 </head>
 <body class="body_top" style="background: white">

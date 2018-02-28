@@ -41,6 +41,13 @@ body {
     font-family: "Source Sans Pro", sans-serif !important;
 	margin-left: 15px !important;
 }
+
+.cd-breadcrumb.triangle li > * {
+    padding: 1em .0em 0.8em 1.6em;
+}
+.btn-warning {
+	    color: #fff !important;
+	}
 </style>
 </head>
 <body class="body_top" style="background: white">
@@ -94,15 +101,15 @@ $obj = formFetch("form_dictation", $_GET["id"]);
 <form method=post action="<?php echo $rootdir?>/forms/dictation/save.php?mode=update&id=<?php echo attr($_GET["id"]);?>" name="my_form">
 <div class="col-md-4">
 <span class="title"><?php echo xlt('Plan Details'); ?></span><Br><br>
-<span class=text><?php echo xlt('Plan: '); ?></span><br><textarea cols=80 rows=24 wrap=virtual name="dictation" ><?php echo text($obj{"dictation"});?></textarea><br>
-<span class=text><?php echo xlt('Additional Notes: '); ?></span><br><textarea cols=80 rows=8 wrap=virtual name="additional_notes" ><?php echo text($obj{"additional_notes"});?></textarea><br>
+<span class=text><?php echo xlt('Plan: '); ?></span><br><textarea class="form-control"  wrap=virtual name="dictation" ><?php echo text($obj{"dictation"});?></textarea><br>
+<span class=text><?php echo xlt('Additional Notes: '); ?></span><br><textarea class="form-control"  wrap=virtual name="additional_notes" ><?php echo text($obj{"additional_notes"});?></textarea><br>
 <br>
 <div class="row"> <div class="col-md-9">
  Next Review: <!--<input type="text" name="reviewafter"><br><br>-->
  	                 <div class='input-group date'  id='datetimepicker' >
                     
       <input type='text' size='16' class='form-control' name='form_date_collected' id='form_date_collected'
-       value=''
+       value='" . substr($obj{"form_date_collected"}, 0, 16) . "'
        title='<?php echo xla('yyyy-mm-dd event date or starting date'); ?>' />
 	   <span class="input-group-addon">
                         <span class="glyphicon glyphicon-calendar"></span>
@@ -119,14 +126,10 @@ $obj = formFetch("form_dictation", $_GET["id"]);
  onclick="top.restoreSession()"><?php echo xlt('Cancel'); ?></a>
 <?php } ?>
  </div></div>
-</form>
-<script language='JavaScript'>
-Calendar.setup({inputField:'form_date_collected', ifFormat:'%Y-%m-%d %H:%M',
- button:'img_date_collected', showsTime:true});
-</script>
-</form>
-</div>
 
+
+</div>
+</form>
 		<script
   src="https://code.jquery.com/jquery-2.2.4.min.js"
   integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="

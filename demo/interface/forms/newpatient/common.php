@@ -238,17 +238,7 @@ function getCatId(id)
 		document.getElementById('rplan').style.display = 'none';
 		document.getElementById('instpa').style.display = 'none';
 	}
-	if(id=="10")
-	{
-		document.getElementById('price').style.display =  '';
-		document.getElementById('pay').style.display =  '';
-	
-	}else
-	{
-		document.getElementById('price').style.display = 'none';
-		document.getElementById('pay').style.display = 'none';
-	}
-	
+
 }
  function change_provider(doctor){
 	 var sel = doctor.value;
@@ -266,11 +256,16 @@ function getCatId(id)
 					if(response) {
 
                     $("#price").html(response);
+
+		document.getElementById('pay').style.display = '';
+	
+	
 									//		$("#save_btn").prop("disabled",true);
 					}
 					else {
 					//	$("#save_btn").prop("disabled",false);
-					//	$("#doctor_price_list").remove();
+						$("#price").remove();
+					document.getElementById('pay').style.display = 'none';
 					}
                 }
         });
@@ -787,7 +782,7 @@ top: 10px;
 right: 80px;"><div class="columns row" id="price" >
 </div>
      <div><input type="submit" name="submit" onclick="javascript:saveClicked();" class="btn btn-primary" value="Save" style="margin-right: 15px;"></input>
-	 <?php if (acl_check('acct', 'rep')) {	?>  <input type="submit" name="pay" id="pay" style='display:none' onclick="javascript:saveClicked();"  class="btn btn-primary"  value="Save and Pay" formtarget="_blank"></input><?php }	  ?></div>
+	 <?php if (acl_check('acct', 'rep')) {	?>  <input type="submit" name="pay" id="pay" style="display:none" onclick="javascript:saveClicked();"  class="btn btn-primary"  value="Save and Pay" formtarget="_blank"></input><?php }	  ?></div>
     </div>
 
 	  <?php 
