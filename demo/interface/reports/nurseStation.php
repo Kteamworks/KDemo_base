@@ -250,45 +250,46 @@ foreach($_POST['id'] as $selected) {
 		</tr>
 		</thead>
 		<tbody>
-		<?php	$service_list_qry = sqlStatement("SELECT  * FROM `ipschdule` where bed='$bed' and activity=0 order by dated, tym" ); while($service_list = sqlFetchArray($service_list_qry)) { ?>
+		<?php	$service_list_qry = sqlStatement("SELECT  * FROM `ipschdule` where bed='$bed' and activity=0 order by dated, tym" ); $a =1; while($service_list = sqlFetchArray($service_list_qry)) { ?>
 
 		<tr class="<?php if($currentTime>=$service_list['tym'])
 	 {  echo "danger"; } ?>">
 		<td class="table-active"><?php echo $service_list['dated']; ?></td>
 		<td class="table-active"><?php echo $service_list['tym']; ?></td>
 		<td class="table-active"><?php echo $service_list['service']; ?></td>
-		<td id="<?php echo 'select_dr'.$i ?>">
+		<td id="<?php echo 'select_dr'.$i.$a ?>">
 		  <select name='result[]' class="form-control">
               <option value="">Pending</option>
 			  <option value="Completed">Completed</option>
           </select></td>
-	   <td class="form-group" id="<?php echo 'input_dr'.$i ?>" style="display:none">
+	   <td class="form-group" id="<?php echo 'input_dr'.$i.$a ?>" style="display:none">
 	 <input type="text" name="res[]" class='form-control' style="width: 100%" >
 	 </td>
-	    <td><a href="#" id="<?php echo 'toggle_doc'.$i ?>" title="Add Result"><i class="fa fa-plus-circle"></i></a></td>
+	    <td><a href="#" id="<?php echo 'toggle_doc'.$i.$a ?>" title="Add Result"><i class="fa fa-plus-circle"></i></a></td>
 		
 		
-		<input type='hidden' value='<?php echo $list2['encounter']; ?>' name='visit[]'>
-		<input type='hidden' value='<?php echo $list2['ID']; ?>' name='id[]'>
+		<input type='hidden' value='<?php echo $service_list['encounter']; ?>' name='visit[]'>
+		<input type='hidden' value='<?php echo $service_list['ID']; ?>' name='id[]'>
 		</tr>
-		<?php } ?>
-			<script language="JavaScript">
+		<script language="JavaScript">
 
 
 $(document).ready(function()
 {
 	
-	$('#<?php echo "toggle_doc".$i ?>').click(function() { 
+	$('#<?php echo "toggle_doc".$i.$a ?>').click(function() { 
 	
 		
-$('#<?php echo "input_dr".$i ?> > input').attr("disabled",false);
+$('#<?php echo "input_dr".$i.$a ?> > input').attr("disabled",false);
 	$(this).find('i').toggleClass('fa-plus-circle fa-minus-circle');
-	$('#<?php echo "select_dr".$i ?>, #<?php echo "input_dr".$i ?>').toggle();
+	$('#<?php echo "select_dr".$i.$a ?>, #<?php echo "input_dr".$i.$a ?>').toggle();
 
    });
 	
 });
 </script>	 
+		<?php $a++; } ?>
+			
 		</tbody>
 		</table>
 		  </form>
