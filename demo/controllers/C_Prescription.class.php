@@ -59,7 +59,7 @@ $pid = $_SESSION["pid"];
 		   $this->assign("PREVIOUS_DRUG", $prev_drug);
 
 $lab_coder = sqlStatement("select * from procedure_order a, procedure_order_code b, form_encounter c
-where a.procedure_order_id=b.procedure_order_id and  a.encounter_id=c.encounter and c.encounter=".$_SESSION['encounter']);
+where a.procedure_order_id=b.procedure_order_id and  a.encounter_id=c.encounter and c.encounter='".$_SESSION['encounter']."'");
 
 while($lab_code = sqlFetchArray($lab_coder)) {
 $prev_lab .=  $lab_code['procedure_name'] .'</br>';
@@ -337,18 +337,16 @@ $this->assign("PREVIOUS_LAB", $prev_lab);
 		$pdf->ezText('',10);
 	}
 
-        function multiprintcss_header($p) {
+          function multiprintcss_header($p) {
                 echo("<div class='paddingdiv'>\n");
                 $this->providerid = $p->provider->id;
-				
-				
-	        echo ("<table cellspacing='0'  RULES=GROUPS  FRAME=BOX  cellpadding='0' width='100%'>  <COLGROUP></COLGROUP> \n");
+	        echo ("<table cellspacing='0' cellpadding='0' class='table table-responsive'>\n");
 	        echo ("<tr>\n");
 	       // echo ("<td></td>\n");
-	        echo ("<td colspan=2>\n");
+	        echo ("<td>\n");
                 echo ("<img WIDTH='500pt' src='./interface/pic/city_hospital_logo.png' />");
                 echo ("</td>\n");
-				
+				echo ("<td></td>\n");
 	        echo ("</tr>\n");
 	        //echo ("<tr>\n");
 	        //echo ("<td>\n");
@@ -385,44 +383,67 @@ $this->assign("PREVIOUS_LAB", $prev_lab);
                        echo ('<b><span class="large">' . xl('State Lic. #') . ':</span></b> ________________________<br>');
                    }
                }
-			   
-			$enc=$_SESSION["encounter"];
+			 $enc=$_SESSION["encounter"];
 			$prow = sqlQuery("SELECT reason,e.provider_id,u.username un FROM form_encounter e,users u " .
 			"WHERE encounter = '$enc' and e.provider_id=u.id ");
 			$consbrief=$prow['reason'];
 			$doctor=$prow['un'];
 	        echo ("</td>\n");
 	        echo ("</tr>\n");
+			echo("<br>");
+			echo("<br>");
+			echo ("<tr>\n");
+			echo("<td align='left'>\n");
+			  echo ('<b><span class="small" >' . xl('Serial No: ').'</b>' . str_pad($p->patient->get_genericname1(), 20, " ", STR_PAD_LEFT) .'</span></b>' . '<br>');
+			   echo("</td>\n"); 
+			   echo("<td class='right'>\n");
+			  echo ('<b><span class="small" >' . xl('Date: ').'</b>' . date('d/m/Y H:i:s') .'</span></b>' . '<br>');
+			   echo("</td>\n");
+			   echo ("</tr>\n");
+			echo ("<tr>\n");
+			echo("<td align='center'>\n");
+			$enc=$_SESSION["encounter"];
+			    $prow = sqlQuery("SELECT reason,e.provider_id,u.username un,u.qualification ql,u.upin up FROM form_encounter e,users u " .
+			     "WHERE encounter = '$enc' and e.provider_id=u.id ");
+			   $consbrief=$prow['reason'];
+			$doctor=$prow['un'];
+			$upin=$prow['up'];
+			$qual=$prow['ql'];
+			   echo ('<b style="float:middle"><span class="small" >' . $doctor . ' '.$qual . '</span></b>'. '<br>');
+			   echo("</td>\n");
+			echo ("</tr>\n");
+			echo ("<tr>\n");
+			echo("<td align='center'>\n");
+			echo ('<b style="float:middle"><span class="small" >' . xl('Registration No:') .' '.$upin.'</span></b>'. '<br>');
+		 echo("</td>\n");
+			 echo ("</tr>\n");
 	        echo ("<tr>\n");
-	        echo ("<td rowspan='4' class='bordered'>\n");
-                echo ('<b><span class="small">' . xl('Address &nbsp;&nbsp;&nbsp;&nbsp;: ') . '</span></b>'. '');
+			echo ("<td >");
+                echo ('<b><span class="small" >' . xl('Patient Name: ').'</b>' . $p->patient->get_name_display() .'</span></b>' . '<br>');
+                //echo ('<span class="small">'.$p->patient->get_name_display() .'</span>');
+	        echo ("</td>\n");
+			echo("</tr>\n");
+			echo("<tr>\n");
+	        echo ("<td>\n");
+             echo ('<b><span class="small">' . xl('Patient Address and Telephone No&nbsp;&nbsp;&nbsp;&nbsp;:') . '</span></b>'. '');
                 //echo ('<span class="small">'.$p->patient->get_name_display() . '</span><br>');
-                $res = sqlQuery("SELECT  concat(street,'\n','<B>','City   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: ','</B>',city,', ',state,' ',postal_code,'\n','<B>','Tel   &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: ','</B>',if(phone_home!='',phone_home,if(phone_cell!='',phone_cell,if(phone_biz!='',phone_biz,'')))) addr,sex from patient_data where pid =". mysql_real_escape_string ($p->patient->id));
-                $patterns = array ('/\n/');
+               //$res = sqlQuery("SELECT  concat('\n','&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;',street,'<B>','\n ','&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;','</B>',city,', ',state,' ',postal_code,'\n','<B>','Tel   &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: ','</B>',if(phone_home!='',phone_home,if(phone_cell!='',phone_cell,if(phone_biz!='',phone_biz,'')))) addr,sex from patient_data where pid =". mysql_real_escape_string ($p->patient->id));
+            $res = sqlQuery("SELECT  concat('\n','<br>','&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;',street,'<B>','\n ','&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;','</B>',city,', ',state,' ',postal_code,',','\n','<B>','&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;','</B>',if(phone_home!='',phone_home,if(phone_cell!='',phone_cell,if(phone_biz!='',phone_biz,'')))) addr,sex,age from patient_data where pid =". mysql_real_escape_string ($p->patient->id));    
+			$patterns = array ('/\n/');
 	        $replace = array ('<br>');
 	        $res = preg_replace($patterns, $replace, $res);
                 echo ('<span class="small">'.$res['addr'].'</span>');
 	        echo ("</td>\n");
-			echo ("<td class='bordered'>");
-                echo ('<b><span class="small" >' . xl('Patient Name: ').'</b>' . $p->patient->get_name_display() .'</span></b>' . '<br>');
-                //echo ('<span class="small">'.$p->patient->get_name_display() .'</span>');
-	        echo ("</td>\n");
-			echo ("</tr>\n");
+			echo("</tr>\n");
 			echo ("<tr>\n");
-	        echo ("<td class='bordered'>\n");
-                echo ('<b><span class="small">' . xl('Date of Birth&nbsp;: ') .'</b>' .$p->patient->date_of_birth . '</span>' . '<br>');
+	        echo ("<td >\n");
+                echo ('<b><span class="small">' . xl('Age&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: ') .'</b>' .$res['age'] . '</span>' . '<br>');
                 //echo ('<span class="small">'.$p->patient->date_of_birth .'</span>');
 	        echo ("</td>\n");
 			echo ("</tr>\n");
 			echo ("<tr>\n");
-			echo ("<td class='bordered'>\n");
-                echo ('<b><span class="small">' . xl('MRN&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: ') .'</span></b>' .str_pad($p->patient->get_genericname1(), 20, " ", STR_PAD_LEFT). '/'.$enc.'<br>');
-                //echo ('<span class="small">'.str_pad($p->patient->get_genericname1(), 10, " ", STR_PAD_LEFT).'</span>');
-	        echo ("</td>\n");
-	        echo ("</tr>\n");
-			echo ("<tr>\n");
-			echo ("<td class='bordered'>\n");
-                echo ('<b><span class="small">' . xl('Sex&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: ') .'</span></b>' .$res['sex']. '<br>');
+			echo ("<td>\n");
+                echo ('<b><span class="small">' . xl('Gender&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: ') .'</span></b>' .$res['sex']. '<br>');
                 //echo ('<span class="small">'.str_pad($p->patient->get_genericname1(), 10, " ", STR_PAD_LEFT).'</span>');
 	        echo ("</td>\n");
 	        echo ("</tr>\n");
@@ -431,7 +452,7 @@ $this->assign("PREVIOUS_LAB", $prev_lab);
 	        echo ("</tr>\n");
 	        echo ("<tr>\n");
 	        echo ("<td colspan='2' class='bordered' valign='bottom' text-align='center'>\n");
-            echo ('<b><span class="small"> <CENTER >' . xl('PATIENT ADVICE') . '</span></CENTER></b>');
+           // echo ('<b><span class="small"> <CENTER >' . xl('PATIENT ADVICE') . '</span></CENTER></b>');
 	        echo ("</td>\n");
 	        echo ("</tr>\n");
 	        echo ("</table>\n");
@@ -525,7 +546,7 @@ $this->assign("PREVIOUS_LAB", $prev_lab);
 		$pdf->ezText("\n\n\n\n" . xl('Signature') . ":________________________________\n" . xl('Date') . ": " . date('Y-m-d'),12);
 	}
 
-        function multiprintcss_footer() {
+      /*   function multiprintcss_footer() {
 	        echo ("<div class='signdiv'>\n");
                 echo (xl('<B> Signature') . ":________________________________<br><br>");
 				$enc=$_SESSION["encounter"];
@@ -556,8 +577,16 @@ $this->assign("PREVIOUS_LAB", $prev_lab);
 	        echo ("</div>\n");
                 echo ("</div>\n");	
 				
-        }
+        } */
 
+		 function multiprintcss_footer() {
+	        echo ("<div class='signdiv'>\n");
+                echo (xl('Signature') . ":         ________________________________<br><br>");
+				echo (xl('Dispensed By').": &nbsp;&nbsp;&nbsp;<br><br>");
+                echo (xl('Date of Dispensing') . ": &nbsp;&nbsp;&nbsp;" . date('d/M/y'));
+	        echo ("</div>\n");
+                echo ("</div>\n");
+        }
         function multiprintcss_postfooter() {
                 echo("<script language='JavaScript'>\n");
                 echo("window.print();\n");
@@ -565,41 +594,39 @@ $this->assign("PREVIOUS_LAB", $prev_lab);
                 echo("</body>\n");
                 echo("</html>\n");
         }
-
 	function get_prescription_body_text($p) {
-		$body ='</br><b><span class="small">'.xl(' Rx ').'</span></b><br>';
-		$enc=$_SESSION["encounter"];
-			$prow = sqlQuery("SELECT reason,e.provider_id,u.username un,u.qualification ql,u.upin up FROM form_encounter e,users u " .
-			"WHERE encounter = '$enc' and e.provider_id=u.id ");
-			$consbrief=$prow['reason'];
-			$doctor=$prow['un'];
-			$upin=$prow['up'];
-			$qual=$prow['ql'];
-		$body .='</br><b><span class="small">'.xl('Advice : ').'</span></b>';
-		$body .="\n$consbrief\n";
+		if($p->get_form()==1)
+		{
+			$form="Tablet";
+		}else if($p->get_form()==2)
+		{
+			$form="Syrup";
+		}else  if($p->get_form()==3)
+		{
+			$form="Injection";
+		}
 		
-		$body .= '<b>' . xl('adv') . ': ' . $p->get_drug() . ' ' . $p->get_size() . ' ' . $p->get_unit_display();
-		//if ($p->get_form()) $body .= ' [' . $p->form_array[$p->get_form()] . "]";
+		$body = '<b>' . $form . ': ' . $p->get_drug() . ' ' . $p->get_size() . ' ' . $p->get_unit_display().' '.$p->get_drug_intervals().' '.'('.$p->get_drug_meal_time().')'.' '.'for'.' '.$p->get_duration().' '.'Weeks';
+		/*if ($p->get_form()) $body .= ' [' . $p->form_array[$p->get_form()] . "]";*/
 		$body .= "</b>     <i>" .
 			$p->substitute_array[$p->get_substitute()] . "</i>\n" .
-			'<b>' . xl('Disp #') . ':</b> <u>' . $p->get_quantity() . "</u>\n" .
-			'<b>' . xl('Sig') . ':</b> ' . $p->get_dosage() . ' ' . $p->form_array[$p->get_form()] . ' ' .
+			//'<b>' . xl('Drug Intervals') . ':</b> <u>' . '1-0-1' . "</u>\n" .
+			//'<b>' . xl('Sig') . ':</b> ' . $p->get_dosage() . ' ' . $p->form_array[$p->get_form()] . ' ' .
 			$p->route_array[$p->get_route()] . ' ' . $p->interval_array[$p->get_interval()] . "\n";
-		/* if ($p->get_refills() > 0) {
+		if ($p->get_refills() > 0) {
 			//$body .= "\n<b>" . xl('Refills') . ":</b> <u>" .  $p->get_refills();
 			if ($p->get_per_refill()) {
-				$body .= " " . xl('of quantity') . " " . $p->get_per_refill();
+				//$body .= " " . xl('of quantity') . " " . $p->get_per_refill();
 			}
 			$body .= "</u>\n";
 		}
 		else {
 			//$body .= "\n<b>" . xl('Refills') . ":</b> <u>0 (" . xl('Zero') . ")</u>\n";
-		} */
+		}
 		$note = $p->get_note();
 		if ($note != '') {
-			$body .= "\n$note\n</br>";
+			$body .= "\n$note\n";
 		}
-		
 		return $body;
 	}
 

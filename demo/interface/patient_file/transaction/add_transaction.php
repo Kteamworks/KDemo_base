@@ -85,9 +85,9 @@ if ($mode) {
 
   if ($GLOBALS['concurrent_layout'])
 	  
-    $body_onload_code = "javascript:location.href='../../forms/admit/new.php';";
+    $body_onload_code = "javascript:location.href='../../patient_file/encounter/admit_doctor_form.php';";
   else
-    $body_onload_code = "javascript:parent.Transactions.location.href='../../forms/admit/new.php;";
+    $body_onload_code = "javascript:parent.Transactions.location.href='../../patient_file/encounter/admit_doctor_form.php";
 }
 
 /************************************
