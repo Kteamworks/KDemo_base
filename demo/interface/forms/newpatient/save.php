@@ -92,7 +92,7 @@ if($pc_catid==16)
 	$normalurl = "patient_file/encounter/load_form.php?formname=procedure_order";
 
 }
-if($pc_catid==12)
+if($pc_catid==12 && ($newcrop_user_role['newcrop_user_role']!='erxrep'))
 {
 	
 	$normalurl = "patient_file/encounter/load_form.php?formname=admit";
