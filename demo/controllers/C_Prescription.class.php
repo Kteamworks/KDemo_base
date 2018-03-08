@@ -52,8 +52,21 @@ $pid = $_SESSION["pid"];
 						$prev_drug .= $pres['drug'] .'  <br>';
 						$drug_meal_time .= $pres['drug_meal_time'] .' <br>';
 						$interval .= $pres['drug_intervals'] .'  <br>';
-						$duration .= $pres['duration'] .'  Weeks<br>';
-						
+						$duration .= $pres['duration'] .' <br>';
+if($pres['time_frame'] == 0) {
+$time_frame .= 'N/A <br>';
+} elseif($pres['time_frame'] == 1) {
+	$time_frame .= 'Day(s) <br>';
+}
+elseif($pres['time_frame'] == 2) {
+	$time_frame .= 'Weeks(s) <br>';
+}
+elseif($pres['time_frame'] == 3) {
+	$time_frame .= 'Month(s) <br>';
+}
+elseif($pres['time_frame'] == 4) {
+	$time_frame .= 'Year(s) <br>';
+}
 					}
 					
 		   $this->assign("PREVIOUS_DRUG", $prev_drug);
@@ -69,6 +82,7 @@ $this->assign("PREVIOUS_LAB", $prev_lab);
 		   						$this->assign("drug_intervals", $interval);
 						$this->assign("drug_meal_time", $drug_meal_time);
 						$this->assign("duration", $duration);
+						$this->assign("time_frame", $time_frame);
 			$res = sqlStatement("SELECT d.name, d.ndc_number, d.form, d.size, " .
 				"d.unit, d.route, d.substitute, t.drug_id, t.selector, t.dosage, " .
 				"t.period, t.quantity, t.refills " .

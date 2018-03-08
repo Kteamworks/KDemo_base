@@ -1,7 +1,7 @@
-<?php /* Smarty version 2.6.2, created on 2017-12-07 11:57:55
+<?php /* Smarty version 2.6.2, created on 2018-03-07 12:23:37
          compiled from C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html */ ?>
 <?php require_once(SMARTY_DIR . 'core' . DIRECTORY_SEPARATOR . 'core.load_plugins.php');
-smarty_core_load_plugins(array('plugins' => array(array('function', 'xl', 'C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html', 224, false),array('function', 'amcCollect', 'C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html', 255, false),array('function', 'html_select_date', 'C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html', 276, false),array('function', 'html_options', 'C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html', 282, false),array('function', 'html_radios', 'C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html', 370, false),)), $this); ?>
+smarty_core_load_plugins(array('plugins' => array(array('function', 'xl', 'C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html', 274, false),array('function', 'amcCollect', 'C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html', 305, false),array('function', 'html_select_date', 'C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html', 326, false),array('function', 'html_options', 'C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html', 332, false),array('function', 'html_radios', 'C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html', 420, false),)), $this); ?>
 <html>
 <head>
 <?php html_header_show(); ?>
@@ -78,7 +78,55 @@ a.radio-fx span, a.radio-fx {
 border: 1px solid;
 border-radius: 4px;
 }
+#tab {
+    position: absolute;
 
+    height: 40px;
+    /* border-radius: 50%; */
+    opacity: 0;
+    width: 45px;
+}
+#tab ~ span {
+margin-right: 10px;
+ color: #A9A9A9;
+}
+.value:hover #tab ~ span {
+color: #2196F3;
+}
+
+#syrup {
+    position: absolute;
+    height: 45px;
+    width: 50px;
+    opacity: 0;
+	}
+	#syrup ~ span {
+margin-right: 10px;
+ color: #A9A9A9;
+}
+.value:hover #syrup ~ span {
+color: #2196F3;
+}
+#syringe {
+    position: absolute;
+    width: 50px;
+    height: 45px;
+    opacity: 0;
+	}
+		#syringe ~ span {
+margin-right: 10px;
+ color: #A9A9A9;
+}
+.value:hover #syringe ~ span {
+color: #2196F3;
+}
+.value input:checked ~ span {
+color: #2196F3 !important;
+
+}
+.cd-breadcrumb.triangle li > * {
+    padding: 1em .4em 1em 2em;
+	}
 </style>
 '; ?>
 
@@ -86,6 +134,7 @@ border-radius: 4px;
 
 	<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700' rel='stylesheet' type='text/css'>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
+
 	<link rel="stylesheet" href="<?php echo $this->_tpl_vars['WEBROOT']; ?>
 /library/breadcrumbs/css/reset.css"> <!-- CSS reset -->
 	<link rel="stylesheet" href="<?php echo $this->_tpl_vars['WEBROOT']; ?>
@@ -100,6 +149,7 @@ border-radius: 4px;
     <script data-require="bootstrap@2.3.2" data-semver="2.3.2" src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
 			<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.7/js/bootstrap-dialog.min.js" type="text/javascript"></script>
     <script data-require="ui-bootstrap@0.3.0" data-semver="0.3.0" src="http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.9.0.min.js"></script>
+<script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
 <script language="Javascript">
 <?php echo '
 		function my_process () {
@@ -220,36 +270,36 @@ $vid=sqlStatement("SELECT form_id from forms where encounter='".$_SESSION['encou
 	<nav>
 		<ol class="cd-breadcrumb triangle custom-icons">
 		   <li><a href="<?php echo $this->_tpl_vars['WEBROOT']; ?>
-/interface/patient_file/summary/stats_full.php"><i class="fa fa-note" style="margin-right: 8px;"></i>Medical Issues</a></li>
+/interface/patient_file/summary/stats_full.php">Medical Issues</a></li>
 			<?php  if($vid2 == null) {  ?>
 			<li><a href="<?php echo $this->_tpl_vars['WEBROOT']; ?>
-/interface/patient_file/encounter/load_form.php?formname=vitals"><i class="fa fa-note" style="margin-right: 8px;"></i>Vitals</a></li>
+/interface/patient_file/encounter/load_form.php?formname=vitals">Vitals</a></li>
 			<?php  } else {  ?>
 			<li><a href="<?php echo $this->_tpl_vars['WEBROOT']; ?>
-/interface/patient_file/encounter/view_form.php?formname=vitals&id=<?php  echo $vid2;  ?>"><i class="fa fa-note" style="margin-right: 8px;"></i>Vitals</a></li>
+/interface/patient_file/encounter/view_form.php?formname=vitals&id=<?php  echo $vid2;  ?>">Vitals</a></li>
 			<?php  } if($rid2 == null) {  ?>
 			<li><a href="<?php echo $this->_tpl_vars['WEBROOT']; ?>
-/interface/patient_file/encounter/load_form.php?formname=ros"><i class="fa fa-note" style="margin-right: 8px;"></i>Review of systems</a></li>
+/interface/patient_file/encounter/load_form.php?formname=ros">Review of systems</a></li>
 						<?php } else {  ?>
 			<li><a href="<?php echo $this->_tpl_vars['WEBROOT']; ?>
-/interface/patient_file/encounter/view_form.php?formname=ros&id=<?php  echo $rid2  ?>"><i class="fa fa-note" style="margin-right: 8px;"></i>Review of systems</a></li>
+/interface/patient_file/encounter/view_form.php?formname=ros&id=<?php  echo $rid2  ?>">Review of systems</a></li>
 			<?php  }  ?>
 			<li><a href="<?php echo $this->_tpl_vars['WEBROOT']; ?>
-/interface/patient_file/encounter/view_form.php?formname=newpatient&id=<?php  echo $nvid2;  ?>"><i class="fa fa-note" style="margin-right: 8px;"></i>Visit Notes</a></li>
+/interface/patient_file/encounter/view_form.php?formname=newpatient&id=<?php  echo $nvid2;  ?>">Visit Notes</a></li>
 			<li><a href="<?php echo $this->_tpl_vars['WEBROOT']; ?>
-/interface/patient_file/encounter/load_form.php?formname=procedure_order"><i class="fa fa-note" style="margin-right: 8px;"></i>Lab Tests</a></li>
+/interface/patient_file/encounter/load_form.php?formname=procedure_order">Lab Tests</a></li>
 			<li class="current"></i><em>Prescription</em></li>
 						<?php  if($plid2 == null) {  ?>
 			<li><a href="<?php echo $this->_tpl_vars['WEBROOT']; ?>
-/interface/patient_file/encounter/load_form.php?formname=dictation"><i class="fa fa-note" style="margin-right: 8px;"></i>Plan</a></li>
+/interface/patient_file/encounter/load_form.php?formname=dictation">Plan</a></li>
 									<?php  } else {  ?>
 									<li><a href="<?php echo $this->_tpl_vars['WEBROOT']; ?>
-/interface/patient_file/encounter/view_form.php?formname=dictation&id=<?php  echo $plid2  ?>"><i class="fa fa-note" style="margin-right: 8px;"></i>Plan</a></li>
+/interface/patient_file/encounter/view_form.php?formname=dictation&id=<?php  echo $plid2  ?>">Plan</a></li>
 									<?php  }  ?>
 			<li><a href="<?php echo $this->_tpl_vars['WEBROOT']; ?>
-/interface/patient_file/transaction/add_transaction.php"><i class="fa fa-note" style="margin-right: 8px;"></i>Referral</a></li>
+/interface/patient_file/transaction/add_transaction.php">Referral</a></li>
 			<li><a href="<?php echo $this->_tpl_vars['WEBROOT']; ?>
-/interface/patient_file/encounter/admit_doctor_form.php"><i class="fa fa-note" style="margin-right: 8px;"></i>Admission</a></li>
+/interface/patient_file/encounter/admit_doctor_form.php">Admission</a></li>
 			<li><a href="<?php echo $this->_tpl_vars['WEBROOT']; ?>
 /interface/patient_file/summary/summary_print.php">Summary</a></li>
 		</ol>
@@ -503,6 +553,7 @@ $vid=sqlStatement("SELECT form_id from forms where encounter='".$_SESSION['encou
  </td><td><?php echo $this->_tpl_vars['drug_intervals']; ?>
  </td><td><?php echo $this->_tpl_vars['drug_meal_time']; ?>
 </td><td> <?php echo $this->_tpl_vars['duration']; ?>
+</td><td> <?php echo $this->_tpl_vars['time_frame']; ?>
 </td>
 </tbody>
 </table>
@@ -619,7 +670,8 @@ var ModalInstanceCtrl = function ($scope,$http, $modalInstance, userForm) {
 	  \'take3\' : this.form.userForm.take3.$modelValue,
 	  \'duration\' : this.form.userForm.duration.$modelValue,
 	  \'note\' : this.form.userForm.note.$modelValue,
-	  \'take\' : this.form.userForm.email.$modelValue
+	  \'take\' : this.form.userForm.email.$modelValue,
+	  	  \'time_frame\' : this.form.userForm.time_frame.$modelValue,
     };
 	var req = {
  method: \'POST\',
