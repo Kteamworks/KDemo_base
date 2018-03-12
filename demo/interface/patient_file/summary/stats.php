@@ -421,7 +421,7 @@ echo $c->act(array("prescription" => "", "fragment" => "", "patient_id" => $pid)
 } ?>
 	
 </td></tr>
-<tr><td colspan='<?php echo $numcols ?>' class='issuetitle'>
+<!--<tr><td colspan='<?php echo $numcols ?>' class='issuetitle'>
 
 <?php if ($_POST['embeddedScreen']) {
     $widgetTitle = 'Services';
@@ -434,7 +434,7 @@ echo $c->act(array("prescription" => "", "fragment" => "", "patient_id" => $pid)
     $bodyClass = "summary_item small";
     $fixedWidth = false;
     expand_collapse_widget($widgetTitle, $widgetLabel, $widgetButtonLabel , $widgetButtonLink, $widgetButtonClass, $linkMethod, $bodyClass, $widgetAuth, $fixedWidth);
-}
+}``
 ?>
 
 <?php
@@ -463,7 +463,7 @@ while($row_currentMed=sqlFetchArray($res))
     </tr>
 <?php
 }
-?>
+?> -->
 </table>
 </td></tr>
 <?php } ?>

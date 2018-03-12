@@ -159,12 +159,13 @@ $(document).ready(function(){
        <!-- TajEmo Changes 2012/06/14 02:01:43 PM by CB added Heading for checkbox column -->   
         <th width="8px">&nbsp;</th>
 		    <th width="8px">&nbsp;</th>
-        <th width="180px">{xl t='Drug'}</th>
+        <th width="150px">{xl t='Medicine Name'}</th>
         <th>{xl t='Created'}<br />{xl t='Changed'}</th>
-        <th>{xl t='Dosage'}</th>
-        <th>{xl t='Qty'}.</th>
-        <th>{xl t='Unit'}</th>
-        <th>{xl t='Provider'}</th>
+        <th>{xl t='Time'}</th>
+        <th>{xl t='Meal'}.</th>
+        <th>{xl t='Duration'}</th>
+        <th>{xl t='Quantity'}</th>
+		   <th>{xl t='Created By'}</th>
     </tr>
 
 	{foreach from=$prescriptions item=prescription} 
@@ -181,11 +182,11 @@ $(document).ready(function(){
       --> 
     </td>
 	<td class="editscript"  id="{$prescription->id}">
-	{if $prescription->active > 0}<b>{/if}{$prescription->drug}{if $prescription->active > 0}</b>{/if}&nbsp;
+	{if $prescription->active > 0}<b>{/if}{$prescription->drug}({$prescription->dosage}{$prescription->get_unit_display()}){if $prescription->active > 0}</b>{/if}&nbsp;
     </td>
 	{else}
     <td id="{$prescription->id}">
-	{if $prescription->active > 0}<b>{/if}{$prescription->drug}{if $prescription->active > 0}</b>{/if}&nbsp;
+	{if $prescription->active > 0}<b>{/if}{$prescription->drug}{$prescription->dosage} {$prescription->get_unit_display()}{if $prescription->active > 0}</b>{/if}&nbsp;
     </td>
 	{/if}
     <td id="{$prescription->id}">
@@ -193,19 +194,28 @@ $(document).ready(function(){
       {$prescription->date_modified}&nbsp;
     </td>
     <td id="{$prescription->id}">
-      {$prescription->get_dosage_display()} &nbsp;
+      {$prescription->get_drug_intervals()} &nbsp;
     </td>
-	{if $prescription->erx_source==0}
+
     <td class="editscript" id="{$prescription->id}">
-      {$prescription->quantity} &nbsp;
+      {$prescription->get_drug_meal_time()} &nbsp;
     </td>
-	{else}
+
 	<td id="{$prescription->id}">
-      {$prescription->quantity} &nbsp;
+      {$prescription->get_duration()} 
+	  {if $prescription->get_time_frame() == 1}
+	  {xl t='Days'}&nbsp;
+	  {/if}
+	  {if $prescription->get_time_frame() == 2}
+	  {xl t='Months'}&nbsp;
+	  {/if}
+	  {if $prescription->get_time_frame() == 3}
+	  {xl t='Years'}&nbsp;
+	  {/if}
     </td>
-	{/if}
-    <td id="{$prescription->id}">
-       {$prescription->get_size()} {$prescription->get_unit_display()}&nbsp;
+	
+	<td id="{$prescription->id}">
+       {$prescription->get_days()} &nbsp;
     </td>
     <td id="{$prescription->id}">
       {$prescription->provider->get_name_display()}&nbsp;

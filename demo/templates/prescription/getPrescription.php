@@ -13,6 +13,7 @@ $pid = $_SESSION["pid"];
 <th>Time </th>
 <th>Meal </th>
 <th>Duration</th>
+<th>Quantity</th>
 </thead>
 <tbody>';
 		   			while ( $pres=sqlFetchArray($prescription)) {
@@ -21,6 +22,7 @@ $pid = $_SESSION["pid"];
 						$interval = $pres['drug_intervals'];
 						$duration = $pres['duration'];
 						$time_frame = $pres['time_frame'];
+						$days = $pres['days'];
 if($time_frame == 0) {
 $time = 'N/A';
 } elseif($time_frame == 1) {
@@ -36,7 +38,7 @@ elseif($time_frame == 4) {
 	$time = 'Year(s)';
 }
 $data .=
-'<tr><td> '.$prev_drug.'</td><td>'.$interval.' </td><td>'.$drug_meal_time.'</td><td> '.$duration.' '.$time.'</td><tr>';
+'<tr><td> '.$prev_drug.'</td><td>'.$interval.' </td><td>'.$drug_meal_time.'</td><td> '.$duration.' '.$time.'</td><td>'.$days.'</td><tr>';
 
 					}
 					$data .='</tbody></table>';
