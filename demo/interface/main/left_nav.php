@@ -972,6 +972,7 @@ if (!empty($reg)) {
 	  <?php if (! $GLOBALS['simplified_demographics']) genTreeLink('RTop','bil',xl('Billing')); ?>
 	  <?php // genTreeLink('RTop','npa',xl('Batch Payments'),false,2);?>
       <?php if ($GLOBALS['enable_edihistory_in_left_menu'] && acl_check('acct', 'eob')) // genTreeLink('RTop','edi',xl('EDI History'),false,2);?>
+	   <?php genMiscLink('RTop','rep','0',xl('Insurance Bill'),'reports/custom_report_ins.php'); ?>
 	  <?php genMiscLink('RTop','rep','0',xl('Provisional Bill'),'reports/custom_report_range_test.php'); ?>
 	   <?php genMiscLink('RTop','rep','0',xl('Duplicate Bill'),'reports/finalbillcopy.php'); ?>
 	  <?php//  genMiscLink('RBot','pb','0',xl('Print Bills'),'reports/multiple_bills.php?framed=1'); ?> 
@@ -1054,7 +1055,7 @@ if (!empty($reg)) {
               <i class="fa fa-angle-left pull-right"></i>
             </span></a>
     <ul class="treeview-menu">
-	  <?php genMiscLink('RTop','fin','0',xl('Patients'),'main/finder/dynamic_finder.php'); ?>
+	  <?php genMiscLink('RTop','fin','0',xl('Outside Patients'),'main/finder/dynamic_finder_opd.php'); ?>
 	  <?php genMiscLink('RTop','fin','0',xl('Todays Patients'),'main/finder/dynamic_finder_ph.php'); ?>
 	  <?php genTreeLink('RTop','neo',($GLOBALS['full_new_patient_form'] ? xl('Outside Patient') : xl('OPD'))); ?>
 	  <!--<?php genMiscLink('RTop','fin','0',xl('InPatients'),'main/finder/p_dynamic_finder_ip.php'); ?>-->
@@ -1065,6 +1066,8 @@ if (!empty($reg)) {
 	   <!--<?php genMiscLink('RTop','rep','0',xl('Print Bill'),'reports/custom_report_pharmacy.php'); ?>-->
 	  <?php genMiscLink('RTop','adm','0',xl('Stock Purchase'),'drugs/drug_inventory.php'); ?>
 	  <?php genMiscLink('RTop','rep','0',xl('Daily Reports'),'reports/inventory_transactions.php'); ?>
+	  <?php genMiscLink('RBot','adm','0',xl('Schedule H Sale'),'patient_file/schedule_h.php'); ?>
+	   <?php genMiscLink('RBot','adm','0',xl('Summary'),'patient_file/pharmacy_billed_patients.php'); ?>
 	   <!--<?php genMiscLink('RTop','rop','0',xl('Bill Cancel'), 'reports/bill_cancel_pharm.php'); ?>-->
       <?php // genMiscLink('RTop','adm','0',xl('Dispense Meds'),'patient_file/summary/rx_frameset.php'); ?>
 	 

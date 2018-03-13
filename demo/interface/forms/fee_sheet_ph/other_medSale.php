@@ -44,9 +44,12 @@ $inventory_id=111;
  $_SESSION['maxId']=$tmpid['id'];
 if (isset($_POST['submit_val'])) {
  $gch=$_POST['gch'];
+  $mode = $_POST['mode'];
+  $rrn = $_POST['rrn'];
   $subtotal= $_POST['old_price'];
  $discounts=$_SESSION['dcnt']=$_POST['discount'];
  $discount = ($discounts/100)*$subtotal;
+ $total = $subtotal-$discount;
  $patient=$_POST['patname'];
  $encounter=$_SESSION['visit']=$_POST['visit'];
  $pid=$_SESSION['patId']=$_POST['pid'];
@@ -65,6 +68,8 @@ $values = mysql_real_escape_string($value);
 
 sqlQuery("UPDATE form_encounter SET provider_id='4',supervisor_id='0' where pid='$pid' and encounter='$ecnounter'"); 
 sqlQuery("insert into ar_activity(pid,encounter,code_type,post_time,adj_amount,memo)values('$pid','$encounter','Pharmacy Charge',NOW(),'$discount','Discount')"); 
+sqlQuery("insert into payments(pid,encounter,amount1,dtime,user,towards,method,source,stage)
+            values('$pid','$encounter','$total',NOW(),'$user',1,'$mode','$rrn','pharm')");
 
 
 $j=0;
@@ -74,7 +79,7 @@ foreach($_POST['name'] as $selected){
 		 $batch= $_POST['batch'][$j];
 		 $qty = $_POST['qty'][$j];
 		 $price = $_POST['price'][$j];
-		 $expdate = $_POST['expdate'][$j];
+		// $expdate = $_POST['expdate'][$j];
 		  $fee = $price * $qty ;
 		
 		
@@ -100,13 +105,14 @@ foreach($_POST['name'] as $selected){
   
 		
 		
-   $expupdate = sqlInsert("update drugs set expdate='$expdate-28'  where drug_id=$selected ");		
+  // $expupdate = sqlInsert("update drugs set expdate='$expdate-28'  where drug_id=$selected ");		
 		
 
 		
- $bil = sqlInsert("insert into billing (date,encounter,servicegrp_id,service_id, code_type, code, code_text, pid, authorized, user, groupname,units,fee,activity,modifier)
+ $bil = sqlInsert("insert into billing (date,encounter,servicegrp_id,service_id, code_type, code, code_text, pid, authorized, user, groupname,units,fee,activity,modifier,schedule_h)
  values
- (NOW(),'$encounter', '$servicegrp_id', '$service_id', 'Pharmacy Charge', '$code' ,'$code_text', '$pid','1','$user_id','Default','$qty','$fee',1,1)");
+ (NOW(),'$encounter', '$servicegrp_id', '$service_id', 'Pharmacy Charge', '$code' ,'$code_text', '$pid','1','$user_id','Default','$qty','$fee',1,1,
+ '$schedule_h')");
  
  
 		
@@ -250,19 +256,23 @@ $("#<?php echo 'price'.$a ?>").val(html);
 
 } 
 });
+
 $.ajax
 ({
 type: "POST",
 
 url: "ajaxMed.php",
-data: dataString+"&action=expdate",
+data: dataString+"&action=schedule_h",
 cache: false,
 success: function(html)
 {
-$("#<?php echo 'expdate'.$a ?>").val(html);
+$("#<?php echo 'schedule_h'.$a ?>").val(html);
 
 } 
 });
+
+
+
 });
 
 
@@ -356,6 +366,19 @@ $(document).on("focus", ".net", function() {
 });
 
 
+function set_rrn() {
+	var mode = $('#payment_mode').val();
+	if(mode=='card_payment'){
+		$("#rrn").css("display",'');
+	}
+	else{
+		 $("#rrn").css("display","none");
+	}
+	
+	
+}
+
+
 
 </script>
 
@@ -391,8 +414,9 @@ $(document).on("focus", ".net", function() {
 						<th class="text-left col-sm-2">
 							Batch
 						</th>
+						
 						<th class="text-left col-sm-2">
-							Expiry Date
+							Schedule H
 						</th>
 						<th class="text-right col-sm-2">
 							Price
@@ -411,7 +435,7 @@ $(document).on("focus", ".net", function() {
 			<?php 
 			//include_once('dbconnect.php');
 			$exp = date('Y-m-d', strtotime('+1 month'));
-			 $qry = "SELECT name, drug_id, expdate  FROM drugs"; 
+			 $qry = "SELECT name, drug_id FROM drugs"; 
 			  $result = sqlStatement($qry);
 			$i=1;
 			while ($jarray = sqlFetchArray($result))
@@ -484,11 +508,11 @@ $(document).on("focus", ".net", function() {
  
                           </td>
 						  
+						 
+						  
 						  <td>
-						<input type="text"  id='<?php echo 'expdate'.$i ?>' name='expdate[]' pattern='[0-9]{4}-(0[1-9]|1[012])' placeholder='YYYY-MM' value="" class="form-control"/>
+						<input type="text" id='<?php echo 'schedule_h'.$i ?>' name='schedule_h[]'  value="" class="form-control" readonly />
 						</td>
-						  
-						  
                           						
  					       <td>
 						<input type="text" style="text-align:right;" id='<?php echo 'price'.$i ?>' name='price[]'  value="" class="form-control"/>
@@ -533,9 +557,26 @@ $(document).on("focus", ".net", function() {
 <input type="number" style="text-align:right;" class="form-control net" step='0.01'   name="new_price" value=""  />
  </td>
  </tr>
+  <tr>
+ <th class="danger">Mode:</th>
+ <td>
+<select class="form-control" name='mode' id='payment_mode' onchange='set_rrn()'>
+  <option value="cash">Cash Payment</option>
+  <option value="card_payment">Card Payment</option>
+
+  
+</select>
+ </td>
+ </tr>
+ <tr style="display:none" id='rrn'>
+ <th class="danger">RRN :</th>
+ <td>
+<input type="Text" style="text-align:right;" class="form-control net" name="rrn" value=""  />
+ </td>
+ </tr>
 </tbody>
  </table>
-  <input type="submit"  class="btn btn-primary affix" name="submit_val" value="Take Payment" style="margin: 10% 6%;" />
+  <input type="submit"  class="btn btn-primary affix" name="submit_val" value="Take Payment" style="margin: 20% 6%;" />
  
 </div>
  </div></div>

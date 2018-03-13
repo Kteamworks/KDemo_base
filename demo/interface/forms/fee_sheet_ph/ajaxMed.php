@@ -67,6 +67,37 @@ echo $data;
 
 }
 }
+
+
+
+if($_POST['id'] && $_POST['action']=='schedule_h')
+{
+	
+$id=$_POST['id'];
+
+$sql=sqlStatement("SELECT schedule_h FROM drugs WHERE name = (select name from drugs where drug_id = '$id')limit 1");
+//$sql=mysqli_query($con,"SELECT batch FROM drugs WHERE drug_id = '$id'");
+
+while($row=sqlFetchArray($sql))
+{
+
+$data=$row['schedule_h'];
+if($data==0)
+{ 
+$data = 'NO';
+}
+else {
+	  $data = 'Yes';
+     } 
+
+//$data1= substr($data,0,7);
+//echo '<input type="text" value="'.$id.'">';
+echo $data;
+//echo $data;
+
+}
+}
+
  
  
  
