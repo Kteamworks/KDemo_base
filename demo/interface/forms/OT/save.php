@@ -61,7 +61,7 @@ diagnosis                   = '" . add_escape_custom($_POST["diagnosis"]) ."'";
   sqlStatement("UPDATE list_options SET is_default=1 WHERE list_id='".$adm_to. "'and option_id= '".$adm_time. "'");
   $pid=$_SESSION['pid'];
   $encounter=$_SESSION['encounter'];
- addForm($encounter, "Admission", $newid, "admit", $pid, $userauthorized);
+ //addForm($encounter, "Admission", $newid, "admit", $pid, $userauthorized);
 
   }
 else {

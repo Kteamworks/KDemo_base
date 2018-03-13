@@ -16,26 +16,27 @@ $results = sqlStatement($qry, array($drug_id));
 		        <div class="form-group">
             <label>Dosage Type</label>
 <table>
-<tr class="rating">
 <td>
-                    <input name="dosagetype" ng-model="dosagetype" value="1" data-radio-fx="music" type="radio">
-					<a data-radio-fx="music" class="radio-fx" href="#"><span class="radio icon-set-preview-112-md-community icon-set-preview-112-md-community-pill"></span></a>
-                     </input></td>
+<tr class="rating">
+<td class="value">
+                    <input name="dosagetype" id="tab" ng-model="dosagetype" value="1" data-radio-fx="music" type="radio">
+					<span><i  data-fa-transform="shrink-5.5" class="fas fa-pills fa-3x" data-fa-mask="fas fa-circle"></i></span>
+                     </td>
 
     <td class="value">
-                    <input name="dosagetype" ng-model="dosagetype" value="2" data-radio-fx="music" type="radio">
-					<a data-radio-fx="music" class="radio-fx" href="#"><span class="radio icon-set-preview-112-symbolicons-block icon-set-preview-112-symbolicons-block-syringe"></span></a>
+                    <input name="dosagetype" id="syrup" ng-model="dosagetype" value="2" data-radio-fx="music" type="radio">
+					<span><i  data-fa-transform="shrink-5.5" class="fas fa-archive fa-3x" data-fa-mask="fas fa-circle"></i></span>
         </input>
     </td>
         <td class="value">
-                    <input name="dosagetype" ng-model="dosagetype" value="3" data-radio-fx="music" type="radio">
-					<a data-radio-fx="music" class="radio-fx" href="#"><span class="radio icon-set-preview-112-community icon-set-preview-112-community-pillbottle"></span></a>
+                    <input name="dosagetype" id="syringe" ng-model="dosagetype" value="3" data-radio-fx="music" type="radio">
+					<span><i  data-fa-transform="shrink-5.5" class="fas fa-syringe fa-3x" data-fa-mask="fas fa-circle"></i></span>
         </input>
     </td>
         
 </tr>
 </table>
-			<select ng-init="dosagetype = options[0]" name="dosagetype" class="form-control" ng-model="dosagetype" required>
+			<select ng-init="dosagetype = options[0]" name="dosagetype" class="form-control" ng-model="dosagetype" style="visibility:hidden;position:absolute;" required>
 			<option value="">-- Choose Dosage Type --</option>
     <option value="1" selected="">Tablet</option>
     <option value="2">Syrup</option>
@@ -60,37 +61,41 @@ $results = sqlStatement($qry, array($drug_id));
 
         <!-- EMAIL -->
         <div class="form-group">
-            <label>Take</label>
-			<select name="take1" ng-model="take1"  style="width:45px" ng-required="false">
+            <label>Advise</label>
+			<div class="row"><div class="col-md-2">
+			<select name="take1" ng-model="take1"  class="form-control" ng-required="false">
   <option value="0">0</option>
     <option value="1" selected="selected">1</option>
     <option value="2">2</option>
- </select>
- <select name="take2" style="width:45px" ng-model="take2"  ng-required="false">
+ </select></div><div class="col-md-2">
+ <select name="take2" class="form-control" ng-model="take2"  ng-required="false">
     <option value="0" selected="selected">0</option>
     <option value="1">1</option>
     <option value="2">2</option>
- </select>
- <select name="take3" style="width:45px" ng-model="take3"  ng-required="false">
+ </select></div><div class="col-md-2">
+ <select name="take3" class="form-control" ng-model="take3"  ng-required="false">
    <option value="0">0</option>
     <option value="1" selected="selected">1</option>
     <option value="2">2</option>
- </select> 
+ </select> </div><div class="col-md-4">
               <select name="name" class="form-control" ng-model="name"  style="width:150px" ng-required="false">
   <option value="BF">Before Food</option>
     <option value="AF"  selected="">After Food</option>
- </select>
+ </select></div></div>
          <input name="email" class="form-control" ng-model="email" type="hidden" ng-required="false">
            <p ng-show="form.userForm.email.$invalid && !form.userForm.email.$pristine" class="help-block">Take is required.</p> 
         </div>
 				<div class="form-group">
             <label>Duration</label>
- <select name="duration" class="form-control" ng-model="duration"  ng-required="false">
-<option value="">-- Choose Duration --</option>
-   <option value="1">1 Week</option>
-    <option value="2" selected="selected">2 Weeks</option>
-    <option value="3">3 Weeks</option>
- </select>
+			<div class="row">
+			<div class="col-md-4"><input type="text" name="duration" class="form-control" placeholder="In Numbers" ng-model="duration"  ng-required="false"></div>
+<div class="col-md-4"><select name="time_frame" class="form-control" ng-model="time_frame"  ng-required="false" placeholder="Select time span" >
+
+   <option value="1">Days</option>
+    <option value="2" selected="selected">Weeks</option>
+    <option value="3">Months</option>
+	<option value="4">Years</option>
+ </select></div></div>
 	</div>
 		<div class="form-group">
             <label>Notes</label>

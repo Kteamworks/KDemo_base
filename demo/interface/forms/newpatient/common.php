@@ -667,7 +667,7 @@ if ($fres) {
                     
       <input type='text' size='10' class='form-control' name='form_date' id='form_date' <?php echo $disabled ?>
        value='<?php echo $viewmode ? date("d-m-Y h:i:s", strtotime($result['date'])) : date('d-m-Y h:i:s'); ?>'
-       title='<?php echo xla('yyyy-mm-dd Date of service'); ?>' />
+       title='<?php echo xla('dd-mm-yyyy Date of service'); ?>' />
 	   <span class="input-group-addon">
                         <span class="glyphicon glyphicon-calendar"></span>
                     </span>
@@ -688,7 +688,7 @@ if ($fres) {
                     
       <input type='text' size='10' class='form-control' name='form_onset_date' id='form_onset_date'
        value='<?php echo $viewmode && $result['onset_date']!='00-00-0000 00:00:00' ? date("d-m-Y h:i:s", strtotime($result['onset_date'])) : ''; ?>' 
-       title='<?php echo xla('yyyy-mm-dd Date of onset or hospitalization'); ?>' />
+       title='<?php echo xla('dd-mm-yyyy Date of onset or hospitalization'); ?>' />
       <!-- onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' -->
 	      <span class="input-group-addon">
                         <span class="glyphicon glyphicon-calendar"></span>

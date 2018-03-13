@@ -321,11 +321,11 @@ $query_seen = "select a.*, b.*,round(((b.pending_patient/a.total_no_of_patients 
 from
 (SELECT count(b.id) total_no_of_patients 
 FROM patient_data a,form_encounter b 
-where a.pid=b.pid and b.provider_id='".$providerid."'  and date(b.date)=date('".$today."') )a,
+where a.pid=b.pid and b.pc_catid != 12 and b.provider_id='".$providerid."'  and date(b.date)=date('".$today."') )a,
 
 (SELECT count(b.id)pending_patient
 FROM patient_data a,form_encounter b 
-where a.pid=b.pid and b.provider_id='".$providerid."'  and date(b.date)=date('".$today."') 
+where a.pid=b.pid and b.pc_catid != 12 and b.provider_id='".$providerid."'  and date(b.date)=date('".$today."') 
 and out_to is null and out_time is  null)b";
 } else if($row2['newcrop_user_role'] == 'erxnurse') {
 	$query_seen = 
@@ -335,11 +335,11 @@ round((((a.total_no_of_patients-b.pending_patient)/a.total_no_of_patients)*100),
 from
 (SELECT count(b.id) total_no_of_patients 
 FROM patient_data a,form_encounter b 
-where a.pid=b.pid and b.provider_id IN ($X) and date(b.date)=date('".$today."') )a,
+where a.pid=b.pid and b.pc_catid != 12 and b.provider_id IN ($X) and date(b.date)=date('".$today."') )a,
 
 (SELECT count(b.id)pending_patient
 FROM patient_data a,form_encounter b 
-where a.pid=b.pid and b.provider_id IN ($X) and date(b.date)=date('".$today."') 
+where a.pid=b.pid and b.pc_catid != 12 and b.provider_id IN ($X) and date(b.date)=date('".$today."') 
  and nurse_out_time is null)b";
 }
 //$query_seen = "SELECT  coalesce(count(b.id),0) total_no_of_patients FROM patient_data a,form_encounter b where a.pid=b.pid and b.provider_id='".$providerid."'  and date(b.date)='".$today."' and b.out_to='Examined By'";

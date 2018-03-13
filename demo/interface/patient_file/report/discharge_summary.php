@@ -105,26 +105,27 @@ $ip_note=$visit_data['ip_note'];
    if($note!=null){
    ?>
    
-<h3>DIAGNOSIS –</h3>
+<h3>DIAGNOSIS </h3>
 <blockquote>
 <?php echo $note['title']?>
 </blockquote>
 </div>
    <?php }?>
    <div class="table-title">
-<?php $qry2 = "SELECT reason FROM form_encounter WHERE pid = ? AND encounter = ?";
-   $notes= sqlStatement($qry2, array($pid,$encounter));
-   $note=sqlFetchArray($notes);
-   if($note!=null){
+<?php $reason_qry2 = "SELECT reason FROM form_encounter WHERE pid = ? AND encounter = ?";
+   $reason_notes= sqlStatement($reason_qry2, array($pid,$encounter));
+   $reason_note=sqlFetchArray($reason_notes);
+
+   if($reason_note!=null){
    ?>
    
-<h3>CHIEF COMPLAINTS –</h3>
+<h3>CHIEF COMPLAINTS </h3>
 <blockquote>
-<?php echo $note['reason']?>
+<?php echo $reason_note['reason']?>
 </blockquote>
 </div>
    <?php }?>
-     <div class="table-title">
+   <!--  <div class="table-title">
 <?php $qry2 = "SELECT reason FROM form_encounter WHERE pid = ? AND encounter = ?";
    $notes= sqlStatement($qry2, array($pid,$encounter));
    $note=sqlFetchArray($notes);
@@ -137,6 +138,7 @@ $ip_note=$visit_data['ip_note'];
 </blockquote>
 </div>
    <?php }?>
+   -->
    <?php
    
   echo "<hr />";
@@ -150,8 +152,8 @@ $ip_note=$visit_data['ip_note'];
             
             echo "</div>";
    ?>
-<?php $qry2 = "SELECT * FROM lists WHERE pid = ? AND encounter != ?";
-   $issues = sqlStatement($qry2, array($pid,$encounter));
+<?php $pi_qry2 = "SELECT * FROM lists WHERE pid = ? AND encounter != ?";
+   $issues = sqlStatement($pi_qry2, array($pid,$encounter));
 $issues1=sqlFetchArray($issues);
    
    $i=1;
@@ -185,8 +187,8 @@ $issues1=sqlFetchArray($issues);
 </div>
    <?php }?>
 
-  <?php $qry2 = "SELECT * FROM  form_ros WHERE pid = ? AND encounter = ?";
-   $ros = sqlStatement($qry2, array($pid,$encounter));
+  <?php $ros_qry2 = "SELECT * FROM  form_ros WHERE pid = ? AND encounter = ?";
+   $ros = sqlStatement($ros_qry2, array($pid,$encounter));
 $ros1=sqlFetchArray($ros);
 if($ros1!=null){   ?>
 <div class="table-title">
@@ -1188,8 +1190,8 @@ foreach($ros as $ros1) {
 </div>
 <?php }?>
 
-<?php $qry2 = "SELECT * FROM  form_vitals WHERE pid = ?";
-   $vitals= sqlStatement($qry2, array($pid));
+<?php $vit_qry2 = "SELECT * FROM  form_vitals WHERE pid = ?";
+   $vitals= sqlStatement($vit_qry2, array($pid));
 $vitals1=sqlFetchArray($vitals);
 if($vitals1!=null){   ?>
 <div class="table-title">
@@ -1209,10 +1211,10 @@ if($vitals1!=null){   ?>
 <?php }?>
 </div>
    <div class="table-title">
-<?php $qry2 = "SELECT reason FROM form_encounter WHERE pid = ? AND encounter = ?";
-   $notes= sqlStatement($qry2, array($pid,$encounter));
-   $note=sqlFetchArray($notes);
-   if($note!=null){
+<?php $c_qry2 = "SELECT reason FROM form_encounter WHERE pid = ? AND encounter = ?";
+   $c_notes= sqlStatement($c_qry2, array($pid,$encounter));
+   $c_note=sqlFetchArray($c_notes);
+   if($c_note!=null){
    ?>
    
 <h2>COURSE OF STAY IN HOSPITAL –</h2>

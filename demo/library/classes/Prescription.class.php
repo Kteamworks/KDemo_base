@@ -146,7 +146,11 @@ class Prescription extends ORDataObject {
     var $refills;
     var $per_refill;
     var $medication;
-
+    var $drug_intervals;
+	 var $duration;
+	 var $drug_meal_time;
+	  var $time_frame;
+	   var $days;
     var $drug_id;
     var $active;
 
@@ -162,8 +166,8 @@ class Prescription extends ORDataObject {
         $this->route_array = load_drug_attributes('drug_route');        
         $this->form_array = load_drug_attributes('drug_form');
         $this->interval_array = load_drug_attributes('drug_interval');
-		$this->interval_array2 = load_drug_attributes('drug_timings');
-	    $this->unit_array = load_drug_attributes('drug_units');
+	  $this->unit_array = load_drug_attributes('drug_units');
+	
 
         $this->substitute_array = array("",xl("substitution allowed"),
             xl ("do not substitute"));
@@ -231,6 +235,11 @@ class Prescription extends ORDataObject {
         	."Drug: " . $this->drug. "\n"
         	."Form: " . $this->form_array[$this->form]. "\n"
         	."Dosage: " . $this->dosage. "\n"
+			."Drug Intervals: " . $this->drug_intervals. "\n"
+			."Duration: " . $this->duration. "\n"
+			."Drug Meal Time: " . $this->drug_meal_time. "\n"
+			."Time Frame: " . $this->time_frame. "\n"
+			."Days: " . $this->days. "\n"
         	."Qty: " . $this->quantity. "\n"
         	."Size: " . $this->size. "\n"
         	."Unit: " . $this->unit_array[$this->unit] . "\n"
@@ -282,7 +291,46 @@ class Prescription extends ORDataObject {
     function get_dosage() {
         return $this->dosage;
     }
-
+	
+ function set_drug_intervals($drug_intervals) {
+    	$this->drug_intervals = $drug_intervals;
+    }
+    function get_drug_intervals() {
+        return $this->drug_intervals;
+    }
+	
+	
+	
+	function set_time_frame($time_frame) {
+    	$this->time_frame = $time_frame;
+    }
+    function get_time_frame() {
+        return $this->time_frame;
+    }
+	
+	
+	function set_days($days) {
+    	$this->days = $days;
+    }
+    function get_days() {
+        return $this->days;
+    }
+	
+	
+function set_duration($duration) {
+    	$this->duration = $duration;
+    }
+    function get_duration() {
+        return $this->duration;
+    }
+	
+	 function set_drug_meal_time($drug_meal_time) {
+    	$this->drug_meal_time = $drug_meal_time;
+    }
+    function get_drug_meal_time() {
+        return $this->drug_meal_time;
+    }
+	
     function set_form($form) {
         if (is_numeric($form)) { $this->form = $form; }
     }

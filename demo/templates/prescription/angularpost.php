@@ -29,7 +29,7 @@ if ($res['cnt'] == 0) {
 	$drugs = mysql_fetch_object($drugs1);
 $drug_tmp = mysql_fetch_object($drug_tmp1);
 	
-	$qry = 'INSERT INTO prescriptions (patient_id,date_added,encounter,drug_id,drug,form,dosage,drug_meal_time,size,unit,route,drug_intervals,note,duration) values ("' . $ptid . '","'. date('Y-m-d h:i:s').'","' . $encounter . '","' . $drug_id . '","' .$drugs->name. '","' .$values->dosagetype. '","' .$drug_dosage. '","' .$values->quantity. '","' .$drugs->size. '","1","' .$drugs->route. '","' .$drug_intervals. '","' .$values->note. '","'. $values->duration .'")';
+	$qry = 'INSERT INTO prescriptions (patient_id,date_added,encounter,drug_id,drug,form,dosage,drug_meal_time,size,unit,route,drug_intervals,note,duration,time_frame) values ("' . $ptid . '","'. date('Y-m-d h:i:s').'","' . $encounter . '","' . $drug_id . '","' .$drugs->name. '","' .$values->dosagetype. '","' .$drug_dosage. '","' .$values->quantity. '","' .$drugs->size. '","1","' .$drugs->route. '","' .$drug_intervals. '","' .$values->note. '","'. $values->duration .'","'. $values->time_frame .'")';
 	
     $qry_res = sqlStatement($qry);
 	
