@@ -452,6 +452,19 @@ $(document).on("focus", "#<?php echo 'sum'.$i ?>", function() {
 	
 });
 
+function set_rrn() {
+	var mode = $('#payment_mode').val();
+	if(mode=='card_payment'){
+		$("#rrn").css("display",'');
+	}
+	else{
+		 $("#rrn").css("display","none");
+	}
+	
+	
+}
+
+
 
 	 
 				</script>
@@ -492,7 +505,7 @@ $(document).on("focus", "#<?php echo 'sum'.$i ?>", function() {
 	
 	
 
-<div class="col-md-2">
+<div class="col-sm-2">
 
 
  <table class="affix">
@@ -500,23 +513,39 @@ $(document).on("focus", "#<?php echo 'sum'.$i ?>", function() {
  <tr>
  <th class="danger">Subtotal:</th>
  <td>
- <input type="number" style="text-align:right;" class="form-control total" step='0.01'onkeydown="updateNewPrice()"  name="old_price" value=""  />
- </td>
+ <input type="number" style="text-align:right;" class="form-control total" onkeydown="updateNewPrice()" step='0.01'  name="old_price" value=""  /></td>
  </tr>
  <tr>
  <th class="danger">Discount:</th>
  <td>
- <input type="number" style="text-align:right;" class="form-control discount" step='0.01' onkeydown="updateNewPrice()" name="discount" value="" placeholder="%" /></td>
+<input type="number" style="text-align:right;" class="form-control discount" onkeydown="updateNewPrice()" name="discount" value="" placeholder="%" /></td>
  </tr>
  <tr>
  <th class="danger">Total:</th>
  <td>
- <input type="number" style="text-align:right;" class="form-control net"  step='0.01'  name="new_price" value=""  />
+<input type="number" style="text-align:right;" class="form-control net" step='0.01'   name="new_price" value=""  />
  </td>
  </tr>
- </tbody>
+  <tr>
+ <th class="danger">Mode:</th>
+ <td>
+<select class="form-control" name='mode' id='payment_mode' onchange='set_rrn()'>
+  <option value="cash">Cash Payment</option>
+  <option value="card_payment">Card Payment</option>
+
+  
+</select>
+ </td>
+ </tr>
+ <tr style="display:none" id='rrn'>
+ <th class="danger">RRN :</th>
+ <td>
+<input type="Text" style="text-align:right;" class="form-control net" name="rrn" value=""  />
+ </td>
+ </tr>
+</tbody>
  </table>
-  <input type="submit"  class="btn btn-primary affix" name="submit_val" value="Take Payment" style="margin: 10% 6%;" />
+  <input type="submit"  class="btn btn-primary affix" name="submit_val" value="Take Payment" style="margin: 20% 6%;" />
  
 </div>
  </div></div>

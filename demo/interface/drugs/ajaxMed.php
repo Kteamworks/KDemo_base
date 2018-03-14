@@ -23,6 +23,22 @@ echo '<option value="'.$id.'">'.$data.'</option>';
 }
 
 
+if($_POST['id'] && $_POST['action']=='schedule')
+{
+$id1=$_POST['id'];
+//$id1=mysqli_real_escape_string($con,$id);
+$sql=sqlStatement("SELECT schedule_h FROM medicine_master WHERE Medicine_Name = '$id1'");
+
+while($row=sqlFetchArray($sql))
+{
+$id=$row['schedule_h'];
+$data=$row['schedule_h'];
+echo '<option value="'.$id.'">'.$data.'</option>';
+
+}
+}
+
+
 
 
 if($_POST['id'] && $_POST['action']=='manu')

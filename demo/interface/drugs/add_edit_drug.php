@@ -231,6 +231,19 @@ $.ajax
 type: "POST",
 
 url: "ajaxMed.php",
+data: dataString+"&action=schedule",
+cache: false,
+success: function(html)
+{
+$("#sch_h1").html(html);
+} 
+});
+
+$.ajax
+({
+type: "POST",
+
+url: "ajaxMed.php",
 data: dataString+"&action=manu",
 cache: false,
 success: function(html)
@@ -271,6 +284,20 @@ success: function(html)
 $("#mtype2").html(html);
 } 
 });
+
+$.ajax
+({
+type: "POST",
+
+url: "ajaxMed.php",
+data: dataString+"&action=schedule",
+cache: false,
+success: function(html)
+{
+$("#sch_h2").html(html);
+} 
+});
+
 $.ajax
 ({
 type: "POST",
@@ -313,6 +340,19 @@ cache: false,
 success: function(html)
 {
 $("#mtype3").html(html);
+} 
+});
+
+$.ajax
+({
+type: "POST",
+
+url: "ajaxMed.php",
+data: dataString+"&action=schedule",
+cache: false,
+success: function(html)
+{
+$("#sch_h3").html(html);
 } 
 });
 $.ajax
@@ -359,6 +399,20 @@ success: function(html)
 $("#mtype4").html(html);
 } 
 });
+
+$.ajax
+({
+type: "POST",
+
+url: "ajaxMed.php",
+data: dataString+"&action=schedule",
+cache: false,
+success: function(html)
+{
+$("#sch_h4").html(html);
+} 
+});
+
 $.ajax
 ({
 type: "POST",
@@ -410,6 +464,20 @@ $.ajax
 type: "POST",
 
 url: "ajaxMed.php",
+data: dataString+"&action=schedule",
+cache: false,
+success: function(html)
+{
+$("#sch_h5").html(html);
+} 
+});
+
+
+$.ajax
+({
+type: "POST",
+
+url: "ajaxMed.php",
 data: dataString+"&action=med",
 cache: false,
 success: function(html)
@@ -449,6 +517,19 @@ success: function(html)
 $("#mtype6").html(html);
 } 
 });
+$.ajax
+({
+type: "POST",
+
+url: "ajaxMed.php",
+data: dataString+"&action=schedule",
+cache: false,
+success: function(html)
+{
+$("#sch_h6").html(html);
+} 
+});
+
 $.ajax
 ({
 type: "POST",
@@ -495,6 +576,20 @@ success: function(html)
 $("#mtype7").html(html);
 } 
 });
+
+$.ajax
+({
+type: "POST",
+
+url: "ajaxMed.php",
+data: dataString+"&action=schedule",
+cache: false,
+success: function(html)
+{
+$("#sch_h7").html(html);
+} 
+});
+
 $.ajax
 ({
 type: "POST",
@@ -539,6 +634,21 @@ success: function(html)
 $("#mtype8").html(html);
 } 
 });
+
+$.ajax
+({
+type: "POST",
+
+url: "ajaxMed.php",
+data: dataString+"&action=schedule",
+cache: false,
+success: function(html)
+{
+$("#sch_h8").html(html);
+} 
+});
+
+
 $.ajax
 ({
 type: "POST",
@@ -583,6 +693,20 @@ success: function(html)
 $("#mtype9").html(html);
 } 
 });
+
+$.ajax
+({
+type: "POST",
+
+url: "ajaxMed.php",
+data: dataString+"&action=schedule",
+cache: false,
+success: function(html)
+{
+$("#sch_h9").html(html);
+} 
+});
+
 $.ajax
 ({
 type: "POST",
@@ -628,6 +752,21 @@ success: function(html)
 $("#mtype10").html(html);
 } 
 });
+
+$.ajax
+({
+type: "POST",
+
+url: "ajaxMed.php",
+data: dataString+"&action=schedule",
+cache: false,
+success: function(html)
+{
+$("#sch_h10").html(html);
+} 
+});
+
+
 $.ajax
 ({
 type: "POST",
@@ -1431,6 +1570,7 @@ if (($_POST['form_save'] || $_POST['form_delete']) && !$alertmsg) {
 		$pack= $_POST['pack'][$j];
 		$mrp= $_POST['mrp'][$j];
 		$group= $_POST['group'][$j];
+		$schedule_h= $_POST['schedule_h'][$j];
 		
 		$mfr= $_POST['mfr'][$j];
 		$instock= $_POST['instock'][$j];
@@ -1484,9 +1624,9 @@ if (($_POST['form_save'] || $_POST['form_delete']) && !$alertmsg) {
  
 	
 			 $drug_id = sqlInsert("INSERT INTO drugs ( " .
-    "name,mfr,inStock,supplier,batch,medType,quantity,medGroup,totalStock,free,date,pack,packType,expdate,mrp,mrpa,PricePerUnit,tradePrice,discount,vat,totalValue,invoice,max_level, form, " .
+    "name,mfr,inStock,supplier,batch,medType,schedule_h,quantity,medGroup,totalStock,free,date,pack,packType,expdate,mrp,mrpa,PricePerUnit,tradePrice,discount,vat,totalValue,invoice,max_level, form, " .
     "size, unit, route, cyp_factor, related_code, " .
-    "allow_multiple, allow_combining, active " .
+    "allow_multiple, allow_combining,active " .
     ") VALUES ( " .
     "'" .  mysqli_real_escape_string($con,$selected)        . "', " .
     "'" . $mfr          . "', " .
@@ -1494,6 +1634,7 @@ if (($_POST['form_save'] || $_POST['form_delete']) && !$alertmsg) {
 	 "'" .$sup. "', " .
     "'" . $batch    . "', " .
 	 "'" . $medType    . "', " .
+	  "'" . $schedule_h    . "', " .
     "'" . $qty      . "', " .
 	 "'" . $group      . "', " .
 	 "'" . $totalStock      . "', " .
@@ -1801,6 +1942,7 @@ else {
    <!--<th nowrap>New</br>Medicine</th>-->
    <th nowrap>In </br>Stock</th>
    <th  nowrap>Batch </br>Number</th>
+    <th  nowrap>Schedule </br>H</th>
   <th  nowrap>Quantity</th>
   <th  nowrap>Free</th>
   <th  nowrap>Pack</th>
@@ -1955,6 +2097,14 @@ else {
   <td>
    <input type='text' name='batch[]'  style="width:80px;height:2em;border:1px solid white;"  value=''  id="<?php echo 'b'.$i?>"/>
   </td>
+  
+  <td>
+ <select style="width:100%;height:2em;border:1px solid white;"  name="schedule_h[]" id="<?php echo 'sch_h'.$i?>" >
+    
+       
+    </select>
+ 
+ </td>
   
   <td>
    <input type='text' size="10" name='qty[]' maxlength='80' value='' class="rgt " style="width:80px;height:2em;border:1px solid white;"  id="<?php echo 'q'.$i?>"  pattern="\d*" />
