@@ -112,14 +112,14 @@ $vid=sqlStatement("SELECT form_id from forms where encounter='".$_SESSION['encou
 <span class=text><?php echo xlt('Additional Notes:'); ?> </span><br><textarea class="form-control"  wrap=virtual name="additional_notes" ></textarea><br>
 <div class="row"> <div class="col-md-9">
  Next Review: <!--<input type="text" name="reviewafter"><br><br>-->
- 	                 <div class='input-group date'  id='datetimepicker' >
+ 	                 <div class='input-group date' >
                     
-      <input type='text' size='16' class='form-control' name='form_date_collected' id='form_date_collected'
+      <input type='text' size='16' class='form-control' name='form_date_collected' id='datetimepicker'
        value=''
        title='<?php echo xla('yyyy-mm-dd event date or starting date'); ?>' />
-	   <span class="input-group-addon">
+	   <label class="input-group-addon" for="datetimepicker">
                         <span class="glyphicon glyphicon-calendar"></span>
-                    </span>   <a href="#" value="Add" style="margin-left:20px" onclick="newEvt()" class="css_button" title="Add Appointment"><span><i style="padding:2px" class="fa fa-plus"></i></span></a>
+                    </label>   <a href="#" value="Add" style="margin-left:20px" onclick="newEvt()" class="css_button" title="Add Appointment"><span><i style="padding:2px" class="fa fa-plus"></i></span></a>
                 </div></div>
 				</div><br>
 
@@ -139,10 +139,10 @@ $vid=sqlStatement("SELECT form_id from forms where encounter='".$_SESSION['encou
  onclick="top.restoreSession()"><?php echo xlt('Cancel'); ?></a>
 <?php } ?>
  </div></div>
- <script language='JavaScript'>
+<!-- <script language='JavaScript'>
 Calendar.setup({inputField:'form_date_collected', ifFormat:'%Y-%m-%d %H:%M',
  button:'img_date_collected', showsTime:true});
-</script>
+</script>-->
 </form>
 </div>
 
