@@ -189,7 +189,7 @@ if ($alertmsg) {
 }
 if ($GLOBALS['concurrent_layout']) {
   //echo "window.location='a.php";
-  header('location:../main/finder/dynamic_finder_ph.php');
+  header('location:../main/finder/dynamic_finder_opd.php');
 
    // "set_pid=$pid&is_new=1';\n";
 } else {

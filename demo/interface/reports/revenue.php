@@ -1,4 +1,5 @@
 <?php
+
 // Copyright (C) 2006-2010 Rod Roark <rod@sunsetsystems.com>
 //
 // This program is free software; you can redistribute it and/or
@@ -16,6 +17,76 @@ require_once("$srcdir/acl.inc");
 require_once("$srcdir/formatting.inc.php");
 require_once "$srcdir/options.inc.php";
 require_once "$srcdir/formdata.inc.php";
+
+
+$user = $_SESSION['authUser'];
+
+ 
+
+if(isset($_POST['submit']))
+  {
+	  
+	 
+	$revenue = $_POST['revenue'];
+	$payment = $_POST['payment'];
+    $discount = $_POST['discount'];
+	$collection = $_POST['collection'];
+	$difference = $_POST['difference'];
+    $collection_date = $_POST['collection_date']; 
+	
+	
+	 $collection_exist = sqlQuery("select count(collection) as num from revenue where date='$collection_date'"); 
+	$col_exist = $collection_exist['num']; 
+	?>
+	
+	
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<style type="text/css">
+	.bs-example{
+		margin: 20px;
+	}
+</style>
+	
+	<?php
+	
+	
+	if($col_exist >=1) {
+		sqlStatement("update revenue set collection = '$collection',difference = '$difference', user='$user' where date = '$collection_date' ");
+	?>
+	
+	<div class="bs-example">
+    <div class="alert alert-success fade in">
+        <a href="#" class="close" data-dismiss="alert">&times;</a>
+       <font size="3"> <strong>Success!</strong> Data updated successfully.</font>
+    </div>
+	
+	<?php
+	
+	}
+	 
+	else {
+	 
+	
+	 sqlInsert("INSERT INTO revenue(revenue,payment,discount,collection,difference,date,user) values('$revenue','$payment','$discount','$collection',
+	 '$difference','$collection_date','$user')");
+	 ?>
+	 
+	 <div class="bs-example">
+    <div class="alert alert-success fade in">
+        <a href="#" class="close" data-dismiss="alert">&times;</a>
+        <font size="3"> <strong>Success!</strong> Data updated successfully.</font>
+    </div>
+	<?php
+	 
+	 
+	}
+	
+  }
+
+
+
 
 function bucks($amount) {
   if ($amount) echo oeFormatMoney($amount);
@@ -37,6 +108,9 @@ function thisLineItem($patient_id, $encounter_id, $rowcat, $description, $transd
 
   //$invnumber = $irnumber ? $irnumber : "$patient_id.$encounter_id";
   $rowamount = sprintf('%01.2f', $amount);
+  
+  
+  
 
     
 ?>
@@ -79,7 +153,7 @@ function thisLineItem($patient_id, $encounter_id, $rowcat, $description, $transd
   if (!$INTEGRATED_AR) SLConnect();
 
   $form_from_date = fixDate($_POST['form_from_date'], date('Y-m-d'));
-  $form_to_date   = fixDate($_POST['form_to_date']  , date('Y-m-d'));
+  $form_to_date   = fixDate($_POST['form_from_date']  , date('Y-m-d'));
   $form_facility  = $_POST['form_facility'];
 
   if ($_POST['form_csvexport']) {
@@ -133,6 +207,18 @@ function thisLineItem($patient_id, $encounter_id, $rowcat, $description, $transd
     }
 }
 </style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+$(document).on("focus", "#difference", function() {
+   var pay = $("#payment").val();
+   var col = $("#collection").val();
+   var result = (+pay)-(+col);
+   $("#difference").val(result);
+   
+   
+   
+});
+</script>
 
 <title><?php xl('Dashboard','e') ?></title>
 </head>
@@ -141,7 +227,7 @@ function thisLineItem($patient_id, $encounter_id, $rowcat, $description, $transd
 
 <span class='title'><?php xl('Report','e'); ?> - <?php xl('Dashboard','e'); ?></span>
 
-<form method='post' action='revenue.php' id='theform'>
+<form method='POST' action='' id='theform'>
 
 <div id="report_parameters">
 <input type='hidden' name='form_refresh' id='form_refresh' value=''/>
@@ -160,7 +246,7 @@ function thisLineItem($patient_id, $encounter_id, $rowcat, $description, $transd
 			<?php dropdown_facility(strip_escape_custom($form_facility), 'form_facility', true); ?>
 			</td>
 			<td class='label'>
-			   <?php xl('From','e'); ?>:
+			   <?php xl('Date','e'); ?>:
 			</td>
 			<td>
 			   <input type='text' name='form_from_date' id="form_from_date" size='10' value='<?php echo $form_from_date ?>'
@@ -169,7 +255,7 @@ function thisLineItem($patient_id, $encounter_id, $rowcat, $description, $transd
 				id='img_from_date' border='0' alt='[?]' style='cursor:pointer'
 				title='<?php xl('Click here to choose a date','e'); ?>'>
 			</td>
-			<td class='label'>
+			<!--<td class='label'>
 			   <?php xl('To','e'); ?>:
 			</td>
 			<td>
@@ -178,7 +264,7 @@ function thisLineItem($patient_id, $encounter_id, $rowcat, $description, $transd
 			   <img src='../pic/show_calendar.gif' align='absbottom' width='24' height='22'
 				id='img_to_date' border='0' alt='[?]' style='cursor:pointer'
 				title='<?php xl('Click here to choose a date','e'); ?>'>
-			</td>
+			</td>-->
 		</tr>
 	</table>
 
@@ -234,13 +320,16 @@ function thisLineItem($patient_id, $encounter_id, $rowcat, $description, $transd
 </tr>
 </table>
 </div>
+
+
+
 <div id="report_results">
 <table >
  <thead>
   <th><b>
    <?php xl('Name','e'); ?></b>
   </th>
-   <th align="right"><b>
+   <th><b>
   <?php xl('Amount','e'); ?></b>
   </th>
  </thead>
@@ -264,19 +353,20 @@ function thisLineItem($patient_id, $encounter_id, $rowcat, $description, $transd
 
     if ($INTEGRATED_AR) {
 		
-    
+  
 		
 		$query="SELECT ".
                     "(SELECT SUM(b.fee) FROM billing AS b,form_encounter c".
-                       " WHERE b.activity = 1 AND b.code not in ('INSURANCE DIFFERENCE AMOUNT','INSURANCE CO PAYMENT') and c.pid=b.pid and c.encounter=b.encounter ".
+                       " WHERE b.activity = 1 AND b.code not in ('INSURANCE DIFFERENCE AMOUNT','INSURANCE CO PAYMENT') 
+					   and b.code_type not in ('Pharmacy Charge') and c.pid=b.pid and c.encounter=b.encounter ".
                      " AND b.date >= '$from_date 00:00:00' AND b.date <= '$to_date 23:59:59')AS REV,".
                     " (SELECT sum(amount1+amount2) as pay FROM payments a ".
-                      " where activity=1 ".
+                      " where activity=1 and a.stage not in ('pharm') ".
                      " AND a.dtime>= '$from_date 00:00:00' AND a.dtime <= '$to_date 23:59:59'  ) AS payments, ".
-                     " (select sum(adj_amount) from ar_activity ".
-                       " where post_time >='$from_date 00:00:00' and post_time<='$to_date 23:59:59' and memo='Discount') AS discounts, ".
-                    " (select sum(amount) from vouchers  ".
-                     " where posted_date >= '$from_date 00:00:00' and  posted_date<='$to_date 23:59:59') AS expenses";
+                     " (select sum(adj_amount) from ar_activity d ".
+                       " where post_time >='$from_date 00:00:00' and post_time<='$to_date 23:59:59' and memo='Discount' and d.code_type not in ('Pharmacy Charge')) AS discounts " ;
+                   /* " (select sum(amount) from vouchers  ".
+                     " where posted_date >= '$from_date 00:00:00' and  posted_date<='$to_date 23:59:59') AS expenses"; */
 		
       
       //
@@ -299,34 +389,53 @@ function thisLineItem($patient_id, $encounter_id, $rowcat, $description, $transd
 	  
 <tr bgcolor="#ddddff">
 <td class="detail"><b><?php xl('Total Revenue','e'); ?></b></td>
-  <td align="right">
-   <?php echo bucks($row['REV']) ?>
+  <td>
+  <input type='number' value='<?php echo $row['REV'] ?>' name='revenue' style="text-align:right; width: 8em;" readonly>
+   
   </td>
   </tr>
   <tr bgcolor="#ddddff">
   <td class="detail"><b><?php xl('Payments','e'); ?></b></td>
-  <td align="right">
-   <?php echo bucks($row['payments']); ?>
+  <td>
+  <input type='number' value='<?php echo $row['payments'] ?>' id='payment' name='payment' style="text-align:right; width: 8em;" readonly>
+   
   </td>
   </tr>
-  <tr bgcolor="#ddddff">
+ 
+ <tr bgcolor="#ddddff">
   <td class="detail"><b><?php xl('Discounts','e'); ?></b></td>
-  <td align="right">
-   <?php echo bucks($row['discounts']); ?>
+  <td >
+  <input type='number' value='<?php echo $row['discounts'] ?>' name='discount' style="text-align:right; width: 8em;" readonly>
+  
   </td>
   </tr>
+  <?php  $prev_amt = sqlQuery("select collection,approve from revenue where date='$form_from_date'");  
+          $aprv = $prev_amt['approve'];  
+  ?>
+  
+  
   <tr bgcolor="#ddddff">
-  <td class="detail"><b><?php xl('Expenses','e'); ?></b></td>
-  <td align="right">
-   <?php bucks($row['expenses']); ?>
+  <td class="detail"><b><?php xl('Collection','e'); ?></b></td>
+  <?php  if($aprv ==1)  { ?>
+  <td>
+  <input type='number' name='collection' id='collection' value='<?php echo $prev_amt['collection']; ?>' style="text-align:right; width: 8em;" required readonly>
   </td>
+  <?php  }  else {  ?>
+  
+  <td>
+  <input type='number' name='collection' id='collection' value='<?php echo $prev_amt['collection']; ?>' style="text-align:right; width: 8em;" required >
+  </td>
+  <?php  }  ?>
  </tr>
   <tr bgcolor="#ddddff">
-  <td class="detail"><b><?php xl('Margin','e'); ?></b></td>
-  <td align="right">
-   <?php bucks($row['REV']-$row['expenses']-$row['discounts']); ?>
+  <td class="detail"><b><?php xl('Difference','e'); ?></b></td>
+  <td>
+   <input type='number' name='difference' id='difference' value='' style="text-align:right; width: 8em;" required>
   </td>
  </tr>
+ <tr><th><input type='hidden' name='collection_date' value='<?php echo $form_from_date ?>'> </th></tr>
+ <tr><th><input type='submit' name='submit' value='Save'></th></tr>
+ 
        
      <?php
  $total1 += $row['fee']; 	
@@ -381,8 +490,9 @@ function thisLineItem($patient_id, $encounter_id, $rowcat, $description, $transd
 
 <script language="Javascript">
  Calendar.setup({inputField:"form_from_date", ifFormat:"%Y-%m-%d", button:"img_from_date"});
- Calendar.setup({inputField:"form_to_date", ifFormat:"%Y-%m-%d", button:"img_to_date"});
+ //Calendar.setup({inputField:"form_to_date", ifFormat:"%Y-%m-%d", button:"img_to_date"});
 </script>
+
 
 </html>
 <?php

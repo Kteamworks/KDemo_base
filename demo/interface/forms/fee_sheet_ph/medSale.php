@@ -47,6 +47,7 @@ if (isset($_POST['submit_val'])) {
   $subtotal= $_POST['old_price'];
  $discounts=$_SESSION['dcnt']=$_POST['discount'];
  $discount = ($discounts/100)*$subtotal;
+ $total = $subtotal-$discount;
  $patient=$_POST['patname'];
  $encounter=$_SESSION['visit']=$_POST['visit'];
  $pid=$_SESSION['patId']=$_POST['pid'];
@@ -65,13 +66,18 @@ $values = mysql_real_escape_string($value);
 
 sqlQuery("UPDATE form_encounter SET provider_id='4',supervisor_id='0' where pid='$pid' and encounter='$ecnounter'"); 
 sqlQuery("insert into ar_activity(pid,encounter,code_type,post_time,adj_amount,memo)values('$pid','$encounter','Pharmacy Charge',NOW(),'$discount','Discount')"); 
-
+sqlQuery("insert into payments(pid,encounter,amount1,dtime,user,towards,method,source,stage)
+            values('$pid','$encounter','$total',NOW(),'$user',1,'$mode','$rrn','pharm')"); 
 
 $j=0;
 foreach($_POST['name'] as $selected){
 		
 
 		 $batch= $_POST['batch'][$j];
+		 $schedule_h= $_POST['schedule_h'][$j];
+		 if($schedule_h=='NO')
+		 { $schedule_h = 0; }
+	     else { $schedule_h = 1; }
 		 $qty = $_POST['qty'][$j];
 		 $price = $_POST['price'][$j];
 		  $fee = $price * $qty ;
@@ -101,9 +107,9 @@ foreach($_POST['name'] as $selected){
 		
 
 		
- $bil = sqlInsert("insert into billing (date,encounter,servicegrp_id,service_id, code_type, code, code_text, pid, authorized, user, groupname,units,fee,activity,modifier)
+ $bil = sqlInsert("insert into billing (date,encounter,servicegrp_id,service_id, code_type, code, code_text, pid, authorized, user, groupname,units,fee,activity,modifier,schedule_h)
  values
- (NOW(),'$encounter', '$servicegrp_id', '$service_id', 'Pharmacy Charge', '$code' ,'$code_text', '$pid','1','$user_id','Default','$qty','$fee',1,1)");
+ (NOW(),'$encounter', '$servicegrp_id', '$service_id', 'Pharmacy Charge', '$code' ,'$code_text', '$pid','1','$user_id','Default','$qty','$fee',1,1,'$schedule_h')");
  
  
 		
@@ -291,14 +297,15 @@ $(document).on("focus", ".net", function() {
 			<table class="table table-bordered table-fixed" id="tab_logic">
 				<thead>
 					<tr class="danger">
-						<th class="text-left col-sm-1">
-							S.No.
-						</th>
+						
 						<th class="text-left col-sm-3">
 							Medicine
 						</th>
 						<th class="text-left col-sm-2">
 							Batch
+						</th>
+						<th class="text-left col-sm-2">
+							Schedule H
 						</th>
 						<th class="text-right col-sm-2">
 							Price
@@ -316,7 +323,7 @@ $(document).on("focus", ".net", function() {
 
 			<?php 
 			//include_once('dbconnect.php');
-			$qry = "select a.name,a.drug_id,a.quantity from drugs a,prescriptions b where a.drug_id = b.drug_id and b.encounter=".$_GET['encounter'];
+			$qry = "select a.name,a.drug_id,a.quantity,a.schedule_h  from drugs a,prescriptions b where a.drug_id = b.drug_id and b.encounter=".$_GET['encounter'];
 			// $qry = "SELECT name, drug_id  FROM drugs "; 
 			  $result = sqlStatement($qry);
 			$i=1;
@@ -324,11 +331,17 @@ $(document).on("focus", ".net", function() {
  
             $rowCount = sqlNumRows($result);
 
-			while($i<=$rowCount){ while ($jarray = sqlFetchArray($result)) {?>
+			while($i<=$rowCount){ while ($jarray = sqlFetchArray($result)) {
+			$sch_h = $jarray['schedule_h'];  
+             if($sch_h==1){
+				 $sch_h='YES';
+			 }
+			 else {
+				 $sch_h = 'NO';
+			 }
+			?>
 					<tr id='addr<?php echo $i; ?>'>
-						<td>
-						<?php echo $i; ?>
-						</td>
+						
 						<td>
 						<div>
 				<div>
@@ -452,6 +465,10 @@ $(document).on("focus", "#<?php echo 'sum'.$i ?>", function() {
     </select>
  
  </td>
+ 
+ <td>
+						<input type="text" name='schedule_h[]'  value="<?php echo $sch_h ;  ?>" class="form-control" readonly />
+						</td>
                           						
  					       <td>
 						<input type="text" style="text-align:right;" id='<?php echo 'price'.$i ?>' name='price[]'  value="" class="form-control"/>

@@ -783,6 +783,7 @@ if ($GLOBALS['athletic_team']) {
   <?php genTreeLink('RBot','msg',xl('Messages')); ?> 
    <?php if (acl_check('admin', 'super')){?>
   <?php genTreeLink('RTop','ddb',xl('Dashboard')); ?>
+  
    <?php genTreeLink('RTop','ana',xl('OPs Dashboard')); ?>
    <?php }?>
   
@@ -962,6 +963,8 @@ if (!empty($reg)) {
 	  <?php genMiscLink('RTop','voc','0',xl('General Voucher'),'reports/General_Voucher.php?framed=1');?> 
   <?php }?>
       <?php genMiscLink('RBot','pay','1',xl('Payment'),'patient_file/front_payment.php'); ?>
+	  <?php if($newcrop_user_role['newcrop_user_role']=='erxrep') { ?>
+	  <?php genMiscLink('RTop','rep','0',xl('Revenue'),'reports/revenue.php'); } ?>
 	   <?php if($newcrop_user_role['newcrop_user_role']=='erxcash'||acl_check('admin', 'super')){
   ?>
 	   <?php genMiscLink('RBot','pay','1',xl('Payment IP'),'patient_file/front_payment_test.php'); ?>
@@ -1112,6 +1115,7 @@ if (!empty($reg)) {
             </span></a>
     <ul class="treeview-menu">
 	<?php if ( $newcrop_user_role['newcrop_user_role']=='erxadmin' || $newcrop_user_role['newcrop_user_role']=='erxlab') { ?>
+	<?php genMiscLink('RTop','rep','0',xl('Collection'),'reports/collected_amount.php'); ?>
 	<li><a href="#"><span>Lab Admin</span><span class="pull-right-container">
                   <i class="fa fa-angle-left pull-right"></i>
                 </span></a>
@@ -1173,12 +1177,30 @@ if (!empty($reg)) {
     </ul>
   </li>
   <?php }  if (acl_check('admin', 'super'    )) { ?>
-  <li class="treeview"><a href="#" ><i class="fa fa-pie-chart"></i><span><?php xl('Reports','e') ?></span><span class="pull-right-container">
+  
+  
+  <li class="treeview"><a href="#"><i class="fa fa-share"></i><span><?php xl('Reports','e') ?></span><span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span></a>
+    <ul class="treeview-menu">
+	 <?php genMiscLink('RTop','rop','0',xl('Doctor'), 'reports/DocStatistics.php'); ?>
+	 <?php genMiscLink('RTop','rep','0',xl('IN Patients'), 'reports/bed_managment_report.php'); ?>
+		<!--<?php genMiscLink('RTop','rep','0',xl('Patients By Sub Category'), 'reports/subCatstatistics.php'); ?>-->
+		<?php genMiscLink('RTop','rep','0',xl('Referral Patients'), 'reports/refPatient.php'); ?>
+		<?php genMiscLink('RTop','rep','0',xl('Registered Patients'), 'reports/RegPat.php'); ?>
+		
+		<?php genMiscLink('RTop','adm','0',xl('Visit'),'drugs/visit.php'); ?>
+
+    </ul>
+  </li>
+  
+
+  <!--<li class="treeview"><a href="#" ><i class="fa fa-pie-chart"></i><span><?php xl('Reports','e') ?></span><span class="pull-right-container">
                   <i class="fa fa-angle-left pull-right"></i>
                 </span></a>
-    <ul class="treeview-menu">
+    <ul class="treeview-menu">tics
 				<?php 	
-				$module_query = sqlStatement("SELECT msh.*,ms.menu_name,ms.path,m.mod_ui_name,m.type FROM modules_hooks_settings AS msh LEFT OUTER JOIN modules_settings AS ms ON
+				/*$module_query = sqlStatement("SELECT msh.*,ms.menu_name,ms.path,m.mod_ui_name,m.type FROM modules_hooks_settings AS msh LEFT OUTER JOIN modules_settings AS ms ON
                                     obj_name=enabled_hooks AND ms.mod_id=msh.mod_id LEFT OUTER JOIN modules AS m ON m.mod_id=ms.mod_id 
                                     WHERE fld_type=3 AND mod_active=1 AND sql_run=1 AND attached_to='reports' ORDER BY mod_id");
 				if (sqlNumRows($module_query)) {
@@ -1359,11 +1381,11 @@ if (!empty($reg)) {
           <?php genMiscLink('RTop','rep','0',xl('Direct Message Log'),'reports/direct_message_log.php'); ?>
         </ul>
       </li>
-    <?php } ?>
+    <?php } */?>
 
       <?php // genTreeLink('RTop','rep','Other'); ?>
     </ul>
-  </li>
+  </li>-->
 
   <li class="treeview"><a href="#" ><i class="fa fa-bar-chart" aria-hidden="true"></i>
 <span><?php xl('Analytics','e') ?></span><span class="pull-right-container">
