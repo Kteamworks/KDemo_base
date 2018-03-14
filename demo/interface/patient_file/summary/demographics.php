@@ -744,6 +744,23 @@ expand_collapse_widget($widgetTitle, $widgetLabel, $widgetButtonLabel,
 ?>
         <br>
 <?php
+
+		$query4="select fname,lname,amount1,amount2 from payments pa,patient_data p where pa.pid=p.pid and
+ towards=1 and pa.pid=$pid GROUP BY p.pid";
+ $resadvance = sqlStatement($query4); 
+  while($radv=sqlFetchArray($resadvance))
+  {
+	 
+	// echo '<span style = "font-color: blue"> Movie List for ' . $key . ' 2013 </span>';
+	
+	 $amount=$radv['amount1']+$radv['amount2'];
+	 echo '<span style="color:red;text-align:right;font-weight: bold"> &nbsp;&nbsp;Advance Amount:'.$amount.' </span>';
+	//echo '<span style = "font-color:red"> Advance: ' . $amount . ' </span>';
+		 
+  }
+
+
+
 		//PATIENT BALANCE,INS BALANCE naina@capminds.com
 		$patientbalance = get_patient_balance($pid, false);
 		//Debit the patient balance from insurance balance
