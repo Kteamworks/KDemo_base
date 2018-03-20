@@ -980,7 +980,7 @@ function getAge(dateString) {
 										
 
 <script language="javascript">
-alert = function() {};
+//alert = function() {};
 /* required for popup calendar 
 Calendar.setup({inputField:"form_date", ifFormat:"%Y-%m-%d", button:"img_form_date"});
 Calendar.setup({inputField:"form_onset_date", ifFormat:"%Y-%m-%d", button:"img_form_onset_date"});
