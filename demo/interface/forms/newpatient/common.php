@@ -177,15 +177,36 @@ ul.price li {
 
  function saveClicked() {
   var f = document.forms[0];
-
 <?php if (!$GLOBALS['athletic_team']) { ?>
+<?php
+  //IP Patient List
+  $ipadmit = sqlStatement("SELECT c.status as IP FROM form_encounter a,patient_data b,t_form_admit c 
+  where a.pid=b.pid  and a.encounter=c.encounter and a.pc_catid=12 and
+  c.status='admit' and c.pid='".$pid."'  group by a.pid,a.encounter");
+  $ipadmit1=sqlFetchArray($ipadmit);
+?>
+  var ippat='<?php echo $ipadmit1['IP']?>';
   var category = document.forms[0].pc_catid.value;
+  var pat = document.getElementById('selectpat').value;
+  var id= document.getElementById('pc_catid').value;
+  var patid='<?php echo $_SESSION['pid'] ?>';
+  alert(pat);
+  if(pat == '')
+  {
+  alert("<?php echo xls('Please select a Patient'); ?>");
+   return false;
+	  
+  }
+  if(category==12 && ippat=='admit')
+  {
+ alert("<?php echo xls('Patient is already admitted with different Visit'); ?>");
+   return false;
+  }
   if ( category == '_blank' ) {
    alert("<?php echo xls('You must select a visit category'); ?>");
-   return;
+   return false;
   }
 <?php } ?>
-
   top.restoreSession();
   f.submit();
  }
@@ -312,7 +333,7 @@ function setMyPatient() {
 <body class="body_top" onload="javascript:document.new_encounter.reason.focus();">
 <?php } $newcrop_user_role=sqlQuery("select newcrop_user_role from users where username='".$_SESSION['authUser']."'"); 
 		if($newcrop_user_role['newcrop_user_role']!='erxdoctor' && $newcrop_user_role['newcrop_user_role']!='erxnurse') { 	 ?>
-    <div class="container" style="margin-bottom:15px">
+    <div class="container" style="margin-bottom:15px" id="selectpat">
             <h1>Select Patient</h1>
             <input type="text" name="city" size="30" class="city" id="TypeAheadInput" placeholder="Please Enter Patient Name or MRN">
     </div>
@@ -385,7 +406,7 @@ check out</a></li>
 	</nav>
 </section>  
  <?php }?>
-<form method='post' action="<?php echo $rootdir ?>/forms/newpatient/save.php" name='new_encounter'
+<form method='post' action="<?php echo $rootdir ?>/forms/newpatient/save.php" name='new_encounter' onsubmit="return saveClicked();"
  <?php if (!$GLOBALS['concurrent_layout']) echo "target='Main'"; ?> >
 
 
@@ -781,8 +802,8 @@ while ($irow = sqlFetchArray($ires)) {
 top: 10px;
 right: 80px;"><div class="columns row" id="price" >
 </div>
-     <div><input type="submit" name="submit" onclick="javascript:saveClicked();" class="btn btn-primary" value="Save" style="margin-right: 15px;"></input>
-	 <?php if (acl_check('acct', 'rep')) {	?>  <input type="submit" name="pay" id="pay" style="display:none" onclick="javascript:saveClicked();"  class="btn btn-primary"  value="Save and Pay" formtarget="_blank"></input><?php }	  ?></div>
+     <div><input type="submit" name="submit"  class="btn btn-primary" value="Save" style="margin-right: 15px;"></input>
+	 <?php if (acl_check('acct', 'rep')) {	?>  <input type="submit" name="pay" id="pay" style="display:none"  class="btn btn-primary"  value="Save and Pay" formtarget="_blank"></input><?php }	  ?></div>
     </div>
 
 	  <?php 
@@ -988,6 +1009,7 @@ Calendar.setup({inputField:"form_onset_date", ifFormat:"%Y-%m-%d", button:"img_f
 <?php
 if (!$viewmode) { ?>
  function duplicateVisit(enc, datestr) {
+	 var p=<?php echo $pid  ?>;
      $.jAlert({'type': 'confirm', 'confirmQuestion': 'A visit already exists for this patient today. Click NO to open it, or YES to proceed with creating a new one.','!onConfirm': function(){
        
   }, 'onDeny': function(){
@@ -1006,7 +1028,8 @@ if (!$viewmode) { ?>
             return;
         }*/
         // otherwise just continue normally
-    }    
+    }  
+	
 <?php
 
   // Search for an encounter from today
@@ -1016,7 +1039,7 @@ if (!$viewmode) { ?>
     " AND fe.date >= ? " . 
     " AND fe.date <= ? " .
     " AND " .
-    "f.formdir = 'newpatient' AND f.form_id = fe.id AND f.deleted = 0 " .
+    "f.formdir = 'newpatient' AND f.form_id = fe.id AND f.deleted = 0 and fe.pid!=0 " .
     "ORDER BY fe.encounter DESC LIMIT 1",array($pid,date('Y-m-d 00:00:00'),date('Y-m-d 23:59:59')));
 
   if (!empty($erow['encounter'])) {
