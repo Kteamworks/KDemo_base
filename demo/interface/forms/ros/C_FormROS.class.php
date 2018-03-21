@@ -23,6 +23,7 @@ class C_FormROS extends Controller {
     	$this->template_mod = $template_mod;
     	$this->template_dir = dirname(__FILE__) . "/templates/ros/";
     	$this->assign("FORM_ACTION", $GLOBALS['web_root']);
+		$res = sqlQuery("select * from users where username='".$_SESSION{"authUser"}."'");
 		if($res['newcrop_user_role'] != 'erxnurse' && $res['newcrop_user_role'] != 'erxdoctor' ){
     	$this->assign("DONT_SAVE_LINK",$GLOBALS['webroot'] . "/interface/patient_file/encounter/$returnurl");
 		}else
@@ -52,7 +53,6 @@ class C_FormROS extends Controller {
 		$this->assign("summary_LINK",$GLOBALS['webroot'] . "/interface/patient_file/summary/summary_print.php");
 		$this->assign("redirect_LINK",$GLOBALS['webroot'] . "/interface/patient_file/summary/nurse_checkout.php");
 		$this->assign("STYLE", $GLOBALS['style']);
-		$res = sqlQuery("select * from users where username='".$_SESSION{"authUser"}."'");
 		if($res['newcrop_user_role'] == 'erxnurse'){
 		$this->assign("DISPLAYNONE", "display:none");
 		}

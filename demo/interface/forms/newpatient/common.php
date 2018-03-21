@@ -815,10 +815,17 @@ if($newcrop_user_role['newcrop_user_role']!='erxdoctor' && $newcrop_user_role['n
   
       <a href="<?php echo "$rootdir/patient_file/encounter/encounter_top.php"; ?>"
         class="btn btn-default" style="margin:10px" onClick="top.restoreSession()"><span><?php echo xlt('Cancel'); ?></span></a>
-<?php }else {?>
+<?php }else if($newcrop_user_role['newcrop_user_role']=='erxdoctor') {?>
      <a href="<?php echo "$rootdir/patient_file/encounter/load_form.php?formname=procedure_order"; ?>"
         class="btn btn-default" style="margin:10px" onClick="top.restoreSession()"><span><?php echo xlt('Cancel'); ?></span></a>
-<?php }?>
+<?php } else {
+ ?>
+ <a href="<?php echo "$rootdir/main/finder/p_dynamic_finder.php"; ?>"
+        class="btn btn-default" style="margin:10px" onClick="top.restoreSession()"><span><?php echo xlt('Cancel'); ?></span></a>
+<?php sqlStatement("UPDATE form_encounter SET nurse_out_time=NOW() where encounter= '".$encounter."'");
+ $_SESSION['nurseVisit'] = $encounter; $_SESSION['LAST_ACTIVITY_nurse'] = time();
+ }
+ ?>
   <?php } else { ?>
       <a href="<?php echo "$rootdir/patient_file/encounter/patient_encounter.php"; ?>"
         class="btn btn-warning" target='Main' onClick="top.restoreSession()">
