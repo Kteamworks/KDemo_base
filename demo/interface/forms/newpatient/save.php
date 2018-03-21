@@ -40,7 +40,10 @@ require_once("$srcdir/options.inc.php");
 require_once("$srcdir/encounter_events.inc.php");
 require_once("$srcdir/classes/Document.class.php");
 require_once("$srcdir/classes/Note.class.php");
-
+if(empty($pid))
+{
+	 die(xl("Internal error: Please select the patient"));
+}
 
 $date             = (isset($_POST['form_date']))            ? $_POST['form_date'] : '';
 if($date) {

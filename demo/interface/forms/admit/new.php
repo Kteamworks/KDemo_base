@@ -247,7 +247,7 @@ if($resulty!=0)
 
 else if($resy1!=0)
 {
-    echo "Patient has already admitted with different encounter";
+    echo "Patient has already admitted with different visit";
 	exit;
 }
 else

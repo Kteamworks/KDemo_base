@@ -32,7 +32,7 @@ require_once("$srcdir/formdata.inc.php");
 require_once("$srcdir/patient.inc");
 
 if (! $encounter) { // comes from globals.php
- die(xl("Internal error: we do not seem to be in an encounter!"));
+ die(xl("Internal error: we do not seem to be in an visit!"));
 }
 
 
