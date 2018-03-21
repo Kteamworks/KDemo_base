@@ -187,15 +187,13 @@ ul.price li {
 ?>
   var ippat='<?php echo $ipadmit1['IP']?>';
   var category = document.forms[0].pc_catid.value;
-  var pat = document.getElementById('selectpat').value;
+  var pat = document.getElementById('TypeAheadInput').value;
   var id= document.getElementById('pc_catid').value;
   var patid='<?php echo $_SESSION['pid'] ?>';
-  alert(pat);
-  if(pat == '')
-  {
+  var frameDocument = $('frame[name="Title"]', top.document)[0].contentDocument;
+  if (! $(frameDocument).find('#EncounterHistory')[0]) {
   alert("<?php echo xls('Please select a Patient'); ?>");
    return false;
-	  
   }
   if(category==12 && ippat=='admit')
   {
@@ -815,7 +813,7 @@ if($newcrop_user_role['newcrop_user_role']!='erxdoctor' && $newcrop_user_role['n
   
       <a href="<?php echo "$rootdir/patient_file/encounter/encounter_top.php"; ?>"
         class="btn btn-default" style="margin:10px" onClick="top.restoreSession()"><span><?php echo xlt('Cancel'); ?></span></a>
-<?php }else if($newcrop_user_role['newcrop_user_role']=='erxdoctor') {?>
+<?php } else if($newcrop_user_role['newcrop_user_role']=='erxdoctor') {?>
      <a href="<?php echo "$rootdir/patient_file/encounter/load_form.php?formname=procedure_order"; ?>"
         class="btn btn-default" style="margin:10px" onClick="top.restoreSession()"><span><?php echo xlt('Cancel'); ?></span></a>
 <?php } else {
