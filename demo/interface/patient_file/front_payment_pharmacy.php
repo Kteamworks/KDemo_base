@@ -448,7 +448,7 @@ $rateplan=$patdata['rateplan'];
 					//echo $d['mrp']."</br>";
 					//$vatamount=($b['units']*($d['vat']*$d['PricePerUnit'])/100);
 					$r = ($rate/($d['vat'] + 100))* 100 ;
-					$vatamount = $rate - $r ; 
+					$vatamount = $b['units'] *($rate - $r) ; 
 				    $totalvat = $vatamount + $totalvat;
 					if($b['code_type']=='Pharmacy Charge'){
                     echo "<tr>";

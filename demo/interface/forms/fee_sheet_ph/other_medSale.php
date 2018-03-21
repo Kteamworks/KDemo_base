@@ -77,6 +77,10 @@ foreach($_POST['name'] as $selected){
 		
 		
 		 $batch= $_POST['batch'][$j];
+		  $schedule_h= $_POST['schedule_h'][$j];
+		 if($schedule_h=='NO')
+		 { $schedule_h = 0; }
+	     else { $schedule_h = 1; }
 		 $qty = $_POST['qty'][$j];
 		 $price = $_POST['price'][$j];
 		// $expdate = $_POST['expdate'][$j];

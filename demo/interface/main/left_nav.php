@@ -1060,7 +1060,7 @@ if (!empty($reg)) {
     <ul class="treeview-menu">
 	  <?php genMiscLink('RTop','fin','0',xl('Outside Patients'),'main/finder/dynamic_finder_opd.php'); ?>
 	  <?php genMiscLink('RTop','fin','0',xl('Todays Patients'),'main/finder/dynamic_finder_ph.php'); ?>
-	  <?php genTreeLink('RTop','neo',($GLOBALS['full_new_patient_form'] ? xl('Outside Patient') : xl('OPD'))); ?>
+	  <?php genTreeLink('RTop','neo',($GLOBALS['full_new_patient_form'] ? xl('Create Patient') : xl('OPD'))); ?>
 	  <!--<?php genMiscLink('RTop','fin','0',xl('InPatients'),'main/finder/p_dynamic_finder_ip.php'); ?>-->
 	  <!--<?php genMiscLink('RTop','fin','0',xl('Todays Patients'),'main/finder/ph_dynamic_finder.php'); ?>-->
 	  <!--<?php genMiscLink('RBot','cod','2',xl('Add Medicines'),'patient_file/encounter/load_form.php?formname=fee_sheet_ph'); ?>-->
@@ -1185,7 +1185,7 @@ if (!empty($reg)) {
     <ul class="treeview-menu">
 	 <?php genMiscLink('RTop','rop','0',xl('Doctor'), 'reports/DocStatistics.php'); ?>
 	 <?php genMiscLink('RTop','rep','0',xl('IN Patients'), 'reports/bed_managment_report.php'); ?>
-		<!--<?php genMiscLink('RTop','rep','0',xl('Patients By Sub Category'), 'reports/subCatstatistics.php'); ?>-->
+		<?php genMiscLink('RTop','rep','0',xl('Patients By Sub Category'), 'reports/subCatstatistics.php'); ?>
 		<?php genMiscLink('RTop','rep','0',xl('Referral Patients'), 'reports/refPatient.php'); ?>
 		<?php genMiscLink('RTop','rep','0',xl('Registered Patients'), 'reports/RegPat.php'); ?>
 		

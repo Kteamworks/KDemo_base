@@ -2142,7 +2142,7 @@ else {
  
   <td>
  <select name="year[]" style="width:80px;height:2em;border:1px solid white;"  >
-  <option value="2017">2017</option>
+  
   <option value="2018">2018</option>
   <option value="2019">2019</option>
   <option value="2020">2020</option>
@@ -2206,7 +2206,7 @@ else {
 
 ?>
 
- <tr><th colspan="19" style="text-align:right">Total Amount: </th>
+ <tr><th colspan="20" style="text-align:right">Total Amount: </th>
  <th><input type="number" step="any" class="total" id="rgt" style="width:80px;height:2em;border:1px solid white;" value="" required /></th><tr> 
  
   

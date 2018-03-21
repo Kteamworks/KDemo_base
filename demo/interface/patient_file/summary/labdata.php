@@ -254,11 +254,11 @@ if($printable) {
 	
 	echo "<table border=0 width=100%>";
 	echo "<tr><td>" . xlt('LAB NO') . ":" .  text($result['order_id']) . "</td>";
-	echo "<td>" . xlt('Order Date') . ":" . text(date('d-M-y')) . "</td></tr>";
+	echo "<td>" . xlt('Order Date') . ":" .text($newDate). "</td></tr>";
 	echo "<tr><td>" . xlt('Name') . ": <b>" . text($firstname) . "  " . text($lastname) . "</td>";
 	echo "<td>" . xlt('Patient ID') . ":" . text($genericname1) . "</td></tr>";
 	echo "<tr><td>" . xlt('Age/Gender') . ":" . ageCalculator($dob) ." ,". text($Gender)."</td>";
-	echo "<td>" . xlt('Report Date') . ":" . text($newDate) . "</td></tr>";
+	echo "<td>" . xlt('Report Date') . ":" . text(date('d-M-y'))  . "</td></tr>";
 	//echo "<tr><td>" . xlt('Referred') . ":" . text($row2['fname'])  ." ".text($row2['lname']). "</td>"; 
    echo "<td>" . xlt('') . "</td></tr>";
 	echo "</table>";
