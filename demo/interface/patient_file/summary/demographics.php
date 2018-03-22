@@ -634,11 +634,18 @@ if ($GLOBALS['patient_id_category_name']) {
 <?php //note that we have temporarily removed report screen from the modal view ?>
 <a href="../report/patient_report.php" onclick='top.restoreSession()'>
 <?php echo htmlspecialchars(xl('Report'),ENT_NOQUOTES); ?></a>
+<?php 
+$ipadmit = sqlStatement("SELECT c.status as IP FROM form_encounter a,patient_data b,t_form_admit c 
+  where a.pid=b.pid  and a.encounter=c.encounter and a.pc_catid=12 and
+  c.status='admit' and c.pid='".$pid."'  group by a.pid,a.encounter");
+  $ipadmit1=sqlFetchArray($ipadmit);
+  if ($ipadmit1['IP']=='admit'){?>
 |
-<?php //note that we have temporarily removed report screen from the modal view ?>
+  
 <a href="../report/discharge_summary.php" onclick='top.restoreSession()'>
-<?php echo htmlspecialchars(xl('Discharge Summary'),ENT_NOQUOTES); ?></a>
+  <?php echo htmlspecialchars(xl('Discharge Summary'),ENT_NOQUOTES); ?></a>
 |
+  <?php }?>
 <?php //note that we have temporarily removed document screen from the modal view ?>
 <a href="../../../controller.php?document&list&patient_id=<?php echo $pid;?>" onclick='top.restoreSession()'>
 <?php echo htmlspecialchars(xl('Documents'),ENT_NOQUOTES); ?></a>

@@ -90,11 +90,13 @@ $ip_note=$visit_data['ip_note'];
 <p><label>OP No</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  : <?php echo $result_visit2['encounter'] ?></p>
 <p><label>IP No</label>&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  : <?php echo $visit_encounter ?></p>
 </div>
+<?php if($admit_date!=null){?>
 <div class="col-md-4">
 <p><label>Ward</label>   :  <?php echo $visit_ward ?> <?php echo $visit_bed ?></p>
 <p><label>DOA</label>  &nbsp;  :  <?php echo date('Y-m-d H:i:s',strtotime($admit_date)) ?></p>
 <p><label>DOD</label>  &nbsp;  :  <?php echo date('Y-m-d H:i:s',strtotime($discharge_date)) ?> </p>
 </div>
+<?php }?>
 </div>
 
 <h1 style="text-align:center">DEPARTMENT OF MEDICINE</h1>
