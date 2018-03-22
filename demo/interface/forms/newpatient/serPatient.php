@@ -11,6 +11,7 @@
   $lname = $qry['lname'];
   $dob = $qry['DOB'];
   $gname = $qry['genericname1'];
+  $languange=$qry['language'];
   $rows = array();
 
     $result4 = sqlStatement("SELECT fe.encounter,fe.encounter_ipop,fe.date,openemr_postcalendar_categories.pc_catname FROM form_encounter AS fe ".
@@ -21,7 +22,7 @@
 }
 if(sqlNumRows($result4)>0) {
 $data = array();
-$data['fruits'] = array($pid,$fname,$lname,$gname,$dob);
+$data['fruits'] = array($pid,$fname,$lname,$gname,$dob,$language);
 $data['animals'] = $rows;
 echo json_encode($data);
 
