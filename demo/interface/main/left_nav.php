@@ -1183,8 +1183,6 @@ if (!empty($reg)) {
               <i class="fa fa-angle-left pull-right"></i>
             </span></a>
     <ul class="treeview-menu">
-	 <?php genMiscLink('RTop','rop','0',xl('Doctor'), 'reports/DocStatistics.php'); ?>
-	 <?php genMiscLink('RTop','rep','0',xl('IN Patients'), 'reports/bed_managment_report.php'); ?>
 		<?php genMiscLink('RTop','rep','0',xl('Patients By Sub Category'), 'reports/subCatstatistics.php'); ?>
 		<?php genMiscLink('RTop','rep','0',xl('Referral Patients'), 'reports/refPatient.php'); ?>
 		<?php genMiscLink('RTop','rep','0',xl('Registered Patients'), 'reports/RegPat.php'); ?>
@@ -1195,12 +1193,12 @@ if (!empty($reg)) {
   </li>
   
 
-  <!--<li class="treeview"><a href="#" ><i class="fa fa-pie-chart"></i><span><?php xl('Reports','e') ?></span><span class="pull-right-container">
+  <li class="treeview"><a href="#" ><i class="fa fa-pie-chart"></i><span><?php xl('Reports','e') ?></span><span class="pull-right-container">
                   <i class="fa fa-angle-left pull-right"></i>
                 </span></a>
-    <ul class="treeview-menu">tics
+    <ul class="treeview-menu">
 				<?php 	
-				/*$module_query = sqlStatement("SELECT msh.*,ms.menu_name,ms.path,m.mod_ui_name,m.type FROM modules_hooks_settings AS msh LEFT OUTER JOIN modules_settings AS ms ON
+				$module_query = sqlStatement("SELECT msh.*,ms.menu_name,ms.path,m.mod_ui_name,m.type FROM modules_hooks_settings AS msh LEFT OUTER JOIN modules_settings AS ms ON
                                     obj_name=enabled_hooks AND ms.mod_id=msh.mod_id LEFT OUTER JOIN modules AS m ON m.mod_id=ms.mod_id 
                                     WHERE fld_type=3 AND mod_active=1 AND sql_run=1 AND attached_to='reports' ORDER BY mod_id");
 				if (sqlNumRows($module_query)) {
@@ -1237,7 +1235,7 @@ if (!empty($reg)) {
 					}
         echo "</ul>";
       } ?>
-      <li><a href="#"><span><?php xl('Clients','e') ?></span><span class="pull-right-container">
+      <li><a href="#"><span><?php xl('Patients','e') ?></span><span class="pull-right-container">
                   <i class="fa fa-angle-left pull-right"></i>
                 </span></a>
         <ul class="treeview-menu">
@@ -1245,41 +1243,42 @@ if (!empty($reg)) {
           <?php //genMiscLink('RTop','rep','0',xl('Rx'),'reports/prescriptions_report.php'); ?>
           <?php if (acl_check('patients', 'med')) genMiscLink('RTop','rep','0',xl('Clinical'),'reports/clinical_reports.php'); ?>
 	  <?php genMiscLink('RTop','rep','0',xl('Referrals'),'reports/referrals_report.php'); ?>
-	  <?php genMiscLink('RTop','rep','0',xl('Immunization Registry'),'reports/immunization_report.php'); ?>
+	  <?php //genMiscLink('RTop','rep','0',xl('Immunization Registry'),'reports/immunization_report.php'); ?>
         </ul>
       </li>
-      <li><a href="#"><span><?php xl('Clinic','e') ?></span><span class="pull-right-container">
+      <!--<li><a href="#"><span><?php xl('Clinic','e') ?></span><span class="pull-right-container">
                   <i class="fa fa-angle-left pull-right"></i>
                 </span></a>
         <ul class="treeview-menu">
-          <?php if ($GLOBALS['enable_cdr'] || $GLOBALS['enable_cqm']  || $GLOBALS['enable_amc']) genMiscLink('RTop','rep','0',xl('Report Results'),'reports/report_results.php'); ?>
-          <?php if ($GLOBALS['enable_cdr']) genMiscLink('RTop','rep','0',xl('Standard Measures'),'reports/cqm.php?type=standard'); ?>
-          <?php if ($GLOBALS['enable_cdr']) genMiscLink('RTop','rep','0',xl('Standard Measures'),'reports/cqm.php?type=standard'); ?>
-          <?php if ($GLOBALS['enable_cqm']) genMiscLink('RTop','rep','0',xl('Quality Measures (CQM)'),'reports/cqm.php?type=cqm'); ?>
-          <?php if ($GLOBALS['enable_amc']) genMiscLink('RTop','rep','0',xl('Automated Measures (AMC)'),'reports/cqm.php?type=amc'); ?>
-          <?php if ($GLOBALS['enable_amc_tracking']) genMiscLink('RTop','rep','0',xl('AMC Tracking'),'reports/amc_tracking.php'); ?>
+          <?php //if ($GLOBALS['enable_cdr'] || $GLOBALS['enable_cqm']  || $GLOBALS['enable_amc']) genMiscLink('RTop','rep','0',xl('Report Results'),'reports/report_results.php'); ?>
+          <?php //if ($GLOBALS['enable_cdr']) genMiscLink('RTop','rep','0',xl('Standard Measures'),'reports/cqm.php?type=standard'); ?>
+          <?php //if ($GLOBALS['enable_cdr']) genMiscLink('RTop','rep','0',xl('Standard Measures'),'reports/cqm.php?type=standard'); ?>
+          <?php //if ($GLOBALS['enable_cqm']) genMiscLink('RTop','rep','0',xl('Quality Measures (CQM)'),'reports/cqm.php?type=cqm'); ?>
+          <?php //if ($GLOBALS['enable_amc']) genMiscLink('RTop','rep','0',xl('Automated Measures (AMC)'),'reports/cqm.php?type=amc'); ?>
+          <?php //if ($GLOBALS['enable_amc_tracking']) genMiscLink('RTop','rep','0',xl('AMC Tracking'),'reports/amc_tracking.php'); ?>
         </ul>
-      </li>
+      </li>-->
       <li><a  href="#"><span><?php xl('Visits','e') ?></span><span class="pull-right-container">
                   <i class="fa fa-angle-left pull-right"></i>
                 </span></a>
         <ul class="treeview-menu">
           <?php if (!$GLOBALS['disable_calendar']) genMiscLink('RTop','rep','0',xl('Appointments'),'reports/appointments_report.php'); ?>
-                    <?php if (!$GLOBALS['disable_pat_trkr'] && !$GLOBALS['disable_calendar']) genMiscLink('RTop','rep','0',xl('Patient Flow Board'),'reports/patient_flow_board_report.php'); ?>          
+                    <?php //if (!$GLOBALS['disable_pat_trkr'] && !$GLOBALS['disable_calendar']) genMiscLink('RTop','rep','0',xl('Patient Flow Board'),'reports/patient_flow_board_report.php'); ?>          
 
-		  <?php  genMiscLink('RTop','rep','0',xl('Encounters'),'reports/encounters_report.php'); ?>
-          <?php if (!$GLOBALS['disable_calendar']) genMiscLink('RTop','rep','0',xl('Appt-Enc'),'reports/appt_encounter_report.php'); ?>
+		  <?php  genMiscLink('RTop','rep','0',xl('Visits'),'reports/encounters_report.php'); ?>
+          <?php if (!$GLOBALS['disable_calendar']) genMiscLink('RTop','rep','0',xl('Appt-Visit'),'reports/appt_encounter_report.php'); ?>
 <?php if (empty($GLOBALS['code_types']['IPPF'])) { ?>
-          <?php genMiscLink('RTop','rep','0',xl('Superbill'),'reports/custom_report_range.php'); ?>
+          <?php// genMiscLink('RTop','rep','0',xl('Superbill'),'reports/custom_report_range.php'); ?>
 <?php } ?>
-	  <?php  genMiscLink('RTop','rep','0',xl('Eligibility'),'reports/edi_270.php'); ?>
-	  <?php  genMiscLink('RTop','rep','0',xl('Eligibility Response'),'reports/edi_271.php'); ?>
+	  <?php  //genMiscLink('RTop','rep','0',xl('Eligibility'),'reports/edi_270.php'); ?>
+	  <?php  //genMiscLink('RTop','rep','0',xl('Eligibility Response'),'reports/edi_271.php'); ?>
 	  
 
-          <?php if (!$GLOBALS['disable_chart_tracker']) genMiscLink('RTop','rep','0',xl('Chart Activity'),'reports/chart_location_activity.php'); ?>
-          <?php if (!$GLOBALS['disable_chart_tracker']) genMiscLink('RTop','rep','0',xl('Charts Out'),'reports/charts_checked_out.php'); ?>
+          <?php// if (!$GLOBALS['disable_chart_tracker']) genMiscLink('RTop','rep','0',xl('Chart Activity'),'reports/chart_location_activity.php'); ?>
+          <?php //if (!$GLOBALS['disable_chart_tracker']) genMiscLink('RTop','rep','0',xl('Charts Out'),'reports/charts_checked_out.php'); ?>
           <?php genMiscLink('RTop','rep','0',xl('Services'), 'reports/services_by_category.php'); ?>
-          <?php genMiscLink('RTop','rep','0',xl('Syndromic Surveillance'),'reports/non_reported.php'); ?>
+          <?php //genMiscLink('RTop','rep','0',xl('Syndromic Surveillance'),'reports/non_reported.php'); ?>
+		  <?php genMiscLink('RTop','rop','0',xl('Doctor'), 'reports/DocStatistics.php'); ?>
 		   <?php genMiscLink('RTop','rep','0',xl('Bed Occupancy'), 'reports/bed_managment_report.php'); ?>
         </ul>
       </li>
@@ -1302,7 +1301,7 @@ if (!empty($reg)) {
         </ul>
       </li>
 <?php } ?>
-<?php if ($GLOBALS['inhouse_pharmacy']) { ?>
+<?php /*if ($GLOBALS['inhouse_pharmacy']) { ?>
       <li><a href="#"><span><?php xl('Inventory','e') ?></span><span class="pull-right-container">
                   <i class="fa fa-angle-left pull-right"></i>
                 </span></a>
@@ -1312,18 +1311,18 @@ if (!empty($reg)) {
           <?php genMiscLink('RTop','rep','0',xl('Transactions'),'reports/inventory_transactions.php'); ?>
         </ul>
       </li>
-<?php } ?>
+<?php } */?>
 
 
-      <li><a href="#"><span><?php xl('Procedures','e') ?></span><span class="pull-right-container">
+    <!--  <li><a href="#"><span><?php xl('Procedures','e') ?></span><span class="pull-right-container">
                   <i class="fa fa-angle-left pull-right"></i>
                 </span></a>
         <ul class="treeview-menu">
-          <?php genPopLink(xl('Pending Res'),'../orders/pending_orders.php'); ?>
-          <?php if (!empty($GLOBALS['code_types']['IPPF'])) genPopLink(xl('Pending F/U'),'../orders/pending_followup.php'); ?>
-          <?php genPopLink(xl('Statistics'),'../orders/procedure_stats.php'); ?>
+          <?php //genPopLink(xl('Pending Res'),'../orders/pending_orders.php'); ?>
+          <?php //if (!empty($GLOBALS['code_types']['IPPF'])) genPopLink(xl('Pending F/U'),'../orders/pending_followup.php'); ?>
+          <?php //genPopLink(xl('Statistics'),'../orders/procedure_stats.php'); ?>
         </ul>
-      </li>
+      </li>-->
 <?php if (! $GLOBALS['simplified_demographics']) { ?>
       <li><a href="#"><span><?php xl('Insurance','e') ?></span><span class="pull-right-container">
                   <i class="fa fa-angle-left pull-right"></i>
@@ -1341,7 +1340,7 @@ if (!empty($reg)) {
         </ul>
       </li>
 <?php } ?>
-<?php if (!empty($GLOBALS['code_types']['IPPF'])) { ?>
+<?php /* if (!empty($GLOBALS['code_types']['IPPF'])) { ?>
       <li><a href="#"><span><?php xl('Statistics','e') ?></span><span class="pull-right-container">
                   <i class="fa fa-angle-left pull-right"></i>
                 </span></a>
@@ -1353,7 +1352,7 @@ if (!empty($reg)) {
           <?php genPopLink(xl('Daily Record'),'ippf_daily.php'); ?>
         </ul>
       </li>
-<?php } // end ippf-specific ?>
+<?php } // end ippf-specific*/ ?>
       <li><a href="#"><span><?php xl('Blank Forms','e') ?></span><span class="pull-right-container">
                   <i class="fa fa-angle-left pull-right"></i>
                 </span></a>
@@ -1372,7 +1371,7 @@ if (!empty($reg)) {
 ?>
         </ul>
       </li>
-    <?php if (acl_check('admin','super')) { ?>
+    <?php /*if (acl_check('admin','super')) { ?>
       <li><a href="#"><span><?php echo xlt('Services') ?></span><span class="pull-right-container">
                   <i class="fa fa-angle-left pull-right"></i>
                 </span></a>
@@ -1381,11 +1380,11 @@ if (!empty($reg)) {
           <?php genMiscLink('RTop','rep','0',xl('Direct Message Log'),'reports/direct_message_log.php'); ?>
         </ul>
       </li>
-    <?php } */?>
+    <?php }*/?>
 
       <?php // genTreeLink('RTop','rep','Other'); ?>
     </ul>
-  </li>-->
+  </li>
 
   <li class="treeview"><a href="#" ><i class="fa fa-bar-chart" aria-hidden="true"></i>
 <span><?php xl('Analytics','e') ?></span><span class="pull-right-container">
