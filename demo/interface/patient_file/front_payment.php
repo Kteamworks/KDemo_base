@@ -1481,7 +1481,9 @@ function make_hide_row()
  {
   document.getElementById('table_display').style.display="none";
   document.getElementById('table_display_prepayment').style.display="";
+    jQuery("#form_towards").val('Advance');
  }
+ 
 function make_self()
  {
   make_visible_row();
