@@ -791,9 +791,10 @@ while ($irow = sqlFetchArray($ires)) {
 <?php $newcrop_user_role=sqlQuery("select newcrop_user_role from users where username='".$_SESSION['authUser']."'");
  ?>
   <?php if($newcrop_user_role['newcrop_user_role']=='erxdoctor'||$newcrop_user_role['newcrop_user_role']=='erxnurse') { ?>
-  <div style = 'float:left; margin-left:8px;margin-top:0px'>
-      <a href="javascript:saveClicked();" class="btn btn-primary link_submit" style="margin:10px"><span><?php echo xlt('Save'); ?></span></a>
-    </div>
+  <div style = 'float:left; margin-left:8px;margin-top:10px'>
+     <!-- <a href="javascript:saveClicked();" class="btn btn-primary link_submit" style="margin:10px"><span><?php echo xlt('Save'); ?></span></a>-->
+    <input type="submit" name="submit"  class="btn btn-primary link_submit" value="Save" style="margin-right: 10px;"></input>
+	</div>
 	  <?php }else{
 		  ?>
     <div style="position: fixed; style='display:none' ;
