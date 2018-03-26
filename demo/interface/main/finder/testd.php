@@ -73,10 +73,10 @@ FROM
 (SELECT count(id)no_of_admitted_patient FROM form_encounter where pc_catid=12)a,
 (SELECT count(id)no_of_op_patient FROM form_encounter where pc_catid!=12)b,
 (SELECT count(id)no_of_op_patient_today 
-FROM form_encounter where pc_catid!=12 and date=current_date())c,
+FROM form_encounter where pc_catid!=12 and date(date)=current_date())c,
 (SELECT count(id)no_of_ip_patient_today 
-FROM form_encounter where pc_catid=12 and date=current_date())d,
-(SELECT count(id)no_of_visits_today FROM form_encounter where date=current_Date())e,
+FROM form_encounter where pc_catid=12 and date(date)=current_date())d,
+(SELECT count(id)no_of_visits_today FROM form_encounter where date(date)=current_Date())e,
 (SELECT count(id)total_registrations from patient_Data)f");
 ?>
 <div class="body-content">
