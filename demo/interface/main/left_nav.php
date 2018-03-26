@@ -1294,7 +1294,7 @@ if (!empty($reg)) {
 		   <?php // genMiscLink('RTop','rep','0',xl('Voucher Rec'), 'reports/voucher_receipts_report.php'); ?>
 		   <?php // genMiscLink('RTop','rep','0',xl('Heads Vouc'), 'reports/doctors_voucher_reports.php'); ?>
           <?php // genMiscLink('RTop','rep','0',xl('Pmt Method'), 'reports/receipts_by_method_report.php'); ?>
-		  <?php genMiscLink('RTop','rep','0',xl('OP Docwise'), 'reports/op_cons_doc_wise.php'); ?>
+		  <?php //genMiscLink('RTop','rep','0',xl('OP Docwise'), 'reports/op_cons_doc_wise.php'); ?>
           <?php genMiscLink('RTop','rep','0',xl('Collections'), 'reports/collections_report.php'); ?>
 	 	  <!--<?php genMiscLink('RTop','rep','0',xl('Collections Report'), 'reports/collections_report _new.php'); ?> -->
           <?php genMiscLink('RTop','rep','0',xl('Financial Summary by Service Code'),'reports/svc_code_financial_report.php'); ?>

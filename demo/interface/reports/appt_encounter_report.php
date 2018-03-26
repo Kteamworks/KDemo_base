@@ -171,12 +171,12 @@ function postError($msg) {
 }
 
 </style>
-<title><?php  xl('Appointments and Encounters','e'); ?></title>
+<title><?php  xl('Appointments and Visits','e'); ?></title>
 </head>
 
 <body class="body_top">
 
-<span class='title'><?php xl('Report','e'); ?> - <?php xl('Appointments and Encounters','e'); ?></span>
+<span class='title'><?php xl('Report','e'); ?> - <?php xl('Appointments and Visits','e'); ?></span>
 
 <div id="report_parameters_daterange">
 <?php echo date("d F Y", strtotime($form_from_date)) ." &nbsp; to &nbsp; ". date("d F Y", strtotime($form_to_date)); ?>
@@ -288,7 +288,7 @@ function postError($msg) {
   <th> &nbsp;<?php  xl('Date/Appt','e'); ?> </th>
   <th> &nbsp;<?php  xl('Patient','e'); ?> </th>
   <th> &nbsp;<?php  xl('ID','e'); ?> </th>
-  <th align='right'> <?php  xl('MED No.','e'); ?>&nbsp; </th>
+  <th align='right'> <?php  xl('Patient ID','e'); ?>&nbsp; </th>
   <th align='right'> <?php  xl('Encounter','e'); ?>&nbsp; </th>
   <th align='right'> <?php  xl('Charges','e'); ?>&nbsp; </th>
   <th align='right'> <?php  xl('Copays','e'); ?>&nbsp; </th>

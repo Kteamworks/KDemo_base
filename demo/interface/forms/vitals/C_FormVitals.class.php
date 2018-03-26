@@ -52,7 +52,12 @@ $vid=sqlStatement("SELECT form_id from forms where encounter='".$_SESSION['encou
     	$this->assign("DONT_SAVE_LINK",$GLOBALS['webroot'] . "/interface/patient_file/encounter/$returnurl");
 		}else
 		{
+			if($rid2 == null) {
 		$this->assign("DONT_SAVE_LINK",$GLOBALS['webroot'] . "/interface/patient_file/encounter/load_form.php?formname=ros");
+			}else
+			{
+		$this->assign("DONT_SAVE_LINK",$GLOBALS['webroot'] . "/interface/patient_file/encounter/view_form.php?formname=ros&id=".$rid2);
+			}
 		}
 		$this->assign("NEXT_LINK",$GLOBALS['webroot'] . "/interface/patient_file/encounter/load_form.php?formname=ros");
 		$this->assign("BACK_LINK",$GLOBALS['webroot'] . "/interface/patient_file/encounter/view_form.php?formname=newpatient&id=". $id2);

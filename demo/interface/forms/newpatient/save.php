@@ -938,7 +938,6 @@ else if ($mode == 'update')
   if($newcrop_user_role['newcrop_user_role'] == 'erxdoctor' || $newcrop_user_role['newcrop_user_role'] == 'erxnurse' )
    {
 	   sqlStatement("UPDATE form_encounter SET " .
-    "date = now(), " .
     "onset_date = '" . add_escape_custom($onset_date) . "', " .
     "reason = '" . add_escape_custom($reason) . "', " .
 	 "referral_source = '" . add_escape_custom($referral_source) . "' " .

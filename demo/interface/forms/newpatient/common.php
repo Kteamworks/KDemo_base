@@ -818,11 +818,19 @@ if($newcrop_user_role['newcrop_user_role']!='erxdoctor' && $newcrop_user_role['n
      <a href="<?php echo "$rootdir/patient_file/encounter/load_form.php?formname=procedure_order"; ?>"
         class="btn btn-default" style="margin:10px" onClick="top.restoreSession()"><span><?php echo xlt('Cancel'); ?></span></a>
 <?php } else {
+$rid=sqlStatement("SELECT form_id from forms where encounter='".$_SESSION['encounter']."' and formdir='ros' order by form_id desc limit 1 ");
+		$rid1=sqlFetchArray($rid);
+		$rid2=$rid1['form_id'];
+			
+		if($rid2 == null) {
  ?>
- <a href="<?php echo "$rootdir/main/finder/p_dynamic_finder.php"; ?>"
+ <a href="<?php echo "$rootdir/patient_file/encounter/load_form.php?formname=ros"; ?>"
         class="btn btn-default" style="margin:10px" onClick="top.restoreSession()"><span><?php echo xlt('Cancel'); ?></span></a>
-<?php sqlStatement("UPDATE form_encounter SET nurse_out_time=NOW() where encounter= '".$encounter."'");
- $_SESSION['nurseVisit'] = $encounter; $_SESSION['LAST_ACTIVITY_nurse'] = time();
+<?php }else{?>
+			 <a href="<?php echo "$rootdir/patient_file/encounter/view_form.php?formname=ros&id=".$rid2; ?>"
+        class="btn btn-default" style="margin:10px" onClick="top.restoreSession()"><span><?php echo xlt('Cancel'); ?></span></a>
+	<?php	}
+	
  }
  ?>
   <?php } else { ?>
