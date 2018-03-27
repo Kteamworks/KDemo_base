@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.2, created on 2017-12-07 11:35:16
+<?php /* Smarty version 2.6.2, created on 2018-03-27 10:35:25
          compiled from C:%5Cxampp%5Chtdocs%5CKDemo_base%5Cdemo%5Cinterface%5Cforms%5Cvitals/templates/vitals/general_new.html */ ?>
 <?php require_once(SMARTY_DIR . 'core' . DIRECTORY_SEPARATOR . 'core.load_plugins.php');
 smarty_core_load_plugins(array('plugins' => array(array('function', 'xl', 'C:\xampp\htdocs\KDemo_base\demo\interface\forms\vitals/templates/vitals/general_new.html', 35, false),array('function', 'math', 'C:\xampp\htdocs\KDemo_base\demo\interface\forms\vitals/templates/vitals/general_new.html', 184, false),array('modifier', 'date_format', 'C:\xampp\htdocs\KDemo_base\demo\interface\forms\vitals/templates/vitals/general_new.html', 153, false),)), $this); ?>
@@ -149,8 +149,7 @@ td,th {
 ;"></i><em>Vitals</em></li>
 			<li id="ros" style="<?php echo $this->_tpl_vars['DISPLAYNONE1']; ?>
 ;"><a><i class="fa fa-note" style="margin-right: 8px;"></i>Review of systems</a></li>
-			<li id="visit" style="<?php echo $this->_tpl_vars['DISPLAYNONE']; ?>
-;<?php echo $this->_tpl_vars['DISPLAYNONE1']; ?>
+			<li id="visit" style="<?php echo $this->_tpl_vars['DISPLAYNONE1']; ?>
 ;"><a><i class="fa fa-note" style="margin-right: 8px;"></i>Visit Notes</a></li>
 			<li id="lab" style="<?php echo $this->_tpl_vars['DISPLAYNONE']; ?>
 ;<?php echo $this->_tpl_vars['DISPLAYNONE1']; ?>
@@ -204,10 +203,10 @@ td,th {
 		<?php if ($this->_tpl_vars['units_of_measurement'] == 3): ?><tr class="hide"><?php else: ?><tr><?php endif; ?>
                 <?php if ($this->_tpl_vars['units_of_measurement'] == 1): ?><td class="unfocus graph" id="temperature_metric"><?php else: ?><td class="graph" id="temperature_metric"><?php endif;  echo smarty_function_xl(array('t' => 'Temperature'), $this);?>
 </td>
-		<?php if ($this->_tpl_vars['units_of_measurement'] == 1): ?><td class="unfocus"><?php else: ?><td><?php endif;  echo smarty_function_xl(array('t' => "°C"), $this);?>
+		<?php if ($this->_tpl_vars['units_of_measurement'] == 1): ?><td class="unfocus"><?php else: ?><td><?php endif;  echo smarty_function_xl(array('t' => "°F"), $this);?>
 </td>
                 <?php if ($this->_tpl_vars['units_of_measurement'] == 1): ?><td class="valuesunfocus"><?php else: ?><td class='currentvalues'><?php endif; ?>
-                <input type="text" size='5' name='temperature' id='temperature_input_metric' value="<?php if ($this->_tpl_vars['vitals']->get_temperature() != 0):  echo $this->_tpl_vars['vitals']->get_temperature();  endif; ?>" ;"/>
+                <input type="number" min="80" max="110" size='5'  name='temperature' id='temperature_input_metric' value="<?php if ($this->_tpl_vars['vitals']->get_temperature() != 0):  echo $this->_tpl_vars['vitals']->get_temperature();  endif; ?>" ;"/>
                 </td>
         <?php if (count($_from = (array)$this->_tpl_vars['results'])):
     foreach ($_from as $this->_tpl_vars['result']):
@@ -466,6 +465,10 @@ var bp = $( "#bpd_input" ).val();
 if (bp > 80) {
 $( "span" ).remove();
  $( "#bpd_input" ).after("<span style=\'color:#cc0000;\'>&#8226; Above range </span>");
+}
+else if (bp < 60) {
+$( "span" ).remove();
+ $( "#bpd_input" ).after("<span style=\'color:#cc0000;\'>&#8226; Below range </span>");
 }
 else {
 $( "span" ).remove();

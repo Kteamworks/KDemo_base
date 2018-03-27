@@ -1562,10 +1562,10 @@ function make_insurance()
   while ($brow1112 = sqlFetchArray($bres1112)) 
    {
     if($brow1112['title']=='Advance')
-   {echo "<option value='".htmlspecialchars($brow1112['option_id'], ENT_QUOTES)."' selected >".htmlspecialchars(xl_list_label($brow1112['title']), ENT_QUOTES)."</option>";}
+   {echo "<option value='".htmlspecialchars($brow1112['option_id'], ENT_QUOTES)."'  >".htmlspecialchars(xl_list_label($brow1112['title']), ENT_QUOTES)."</option>";}
   else
   {
-	  echo "<option value='".htmlspecialchars($brow1112['option_id'], ENT_QUOTES)."' >".htmlspecialchars(xl_list_label($brow1112['title']), ENT_QUOTES)."</option>";
+	  echo "<option value='".htmlspecialchars($brow1112['option_id'], ENT_QUOTES)."' selected >".htmlspecialchars(xl_list_label($brow1112['title']), ENT_QUOTES)."</option>";
   }
 
    }

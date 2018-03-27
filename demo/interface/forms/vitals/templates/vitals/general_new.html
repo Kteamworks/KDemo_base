@@ -160,9 +160,9 @@ td,th {
 	{/foreach}</tr>
 		{if $units_of_measurement == 3}<tr class="hide">{else}<tr>{/if}
                 {if $units_of_measurement == 1}<td class="unfocus graph" id="temperature_metric">{else}<td class="graph" id="temperature_metric">{/if}{xl t="Temperature"}</td>
-		{if $units_of_measurement == 1}<td class="unfocus">{else}<td>{/if}{xl t="°C"}</td>
+		{if $units_of_measurement == 1}<td class="unfocus">{else}<td>{/if}{xl t="°F"}</td>
                 {if $units_of_measurement == 1}<td class="valuesunfocus">{else}<td class='currentvalues'>{/if}
-                <input type="text" size='5' name='temperature' id='temperature_input_metric' value="{if $vitals->get_temperature() != 0}{$vitals->get_temperature()}{/if}" ;"/>
+                <input type="number" min="90" max="105" size='5'  name='temperature' id='temperature_input_metric' value="{if $vitals->get_temperature() != 0}{$vitals->get_temperature()}{/if}" ;"/>
                 </td>
         {foreach item=result from=$results}
                 <td  class='historicalvalues'>{if $result.temperature != 0}{$result.temperature}{/if}</td>
@@ -181,7 +181,7 @@ td,th {
                 {if $units_of_measurement == 1}<td class="unfocus graph" id="weight_metric">{else}<td class="graph" id="weight_metric">{/if}{xl t="Weight"}</td>
 		{if $units_of_measurement == 1}<td class="unfocus">{else}<td>{/if}{xl t="kg"}</td>
                 {if $units_of_measurement == 1}<td class="valuesunfocus">{else}<td class='currentvalues'>{/if}
-                <input type="text" size='5' id='weight_input_metric' value="{if $vitals->get_weight() != 0}{math equation="number * constant" number=$vitals->get_weight() constant=0.45359237 format="%.2f"}{/if}" onChange="convKgtoLb('weight_input');"/>
+                <input type="number" min="0" max="400" id='weight_input_metric' value="{if $vitals->get_weight() != 0}{math equation="number * constant" number=$vitals->get_weight() constant=0.45359237 format="%.2f"}{/if}" onChange="convKgtoLb('weight_input');"/>
                 </td>
         {foreach item=result from=$results}
                 <td  class='historicalvalues'>{if $result.weight != 0}{math equation="number * constant" number=$result.weight constant=0.45359237 format="%.2f"}{/if}</td>
@@ -191,7 +191,7 @@ td,th {
 	        {if $units_of_measurement == 2}<td class="unfocus graph" id="height">{else}<td class="graph" id="height">{/if}{xl t="Height/Length"}</td>
 		{if $units_of_measurement == 2}<td class="unfocus">{else}<td>{/if}{xl t="in"}</td>
 		{if $units_of_measurement == 2}<td class="valuesunfocus">{else}<td class='currentvalues'>{/if}
-                <input type="text" size='5' name='height' id='height_input' value="{if $vitals->get_height() != 0}{$vitals->get_height()}{/if}" onChange="convIntoCm('height_input');"/>
+                <input type="number" min="0" max="11" name='height' id='height_input' value="{if $vitals->get_height() != 0}{$vitals->get_height()}{/if}" onChange="convIntoCm('height_input');"/>
                 </td>
 	{foreach item=result from=$results}
 		<td class='historicalvalues'>{if $result.height != 0}{$result.height}{/if}</td>
@@ -201,21 +201,21 @@ td,th {
                 {if $units_of_measurement == 1}<td class="unfocus graph" id="height_metric">{else}<td class="graph" id="height_metric">{/if}{xl t="Height/Length"}</td>
 		{if $units_of_measurement == 1}<td class="unfocus">{else}<td>{/if}{xl t="cm"}</td>
                 {if $units_of_measurement == 1}<td class="valuesunfocus">{else}<td class='currentvalues'>{/if}
-                <input type="text" size='5' id='height_input_metric' value="{if $vitals->get_height() != 0}{math equation="number * constant" number=$vitals->get_height() constant=2.54 format="%.2f"}{/if}" onChange="convCmtoIn('height_input');"/>
+                <input type="number" min="0" max="275" size='5' id='height_input_metric' value="{if $vitals->get_height() != 0}{math equation="number * constant" number=$vitals->get_height() constant=2.54 format="%.2f"}{/if}" onChange="convCmtoIn('height_input');"/>
                 </td>
         {foreach item=result from=$results}
                 <td class='historicalvalues'>{if $result.height != 0}{math equation="number * constant" number=$result.height constant=2.54 format="%.2f"}{/if}</td>
         {/foreach}</tr>
 	
 	<tr><td class="graph" id="bps">{xl t="BP Systolic"}</td><td>{xl t="mmHg"}</td>
-		<td class='currentvalues'><input type="text" size='5'
+		<td class='currentvalues'><input type="number" min="50" max="250" size='5'
 			name='bps' id='bps_input' value="{$vitals->get_bps()}"/></td>
 	{foreach item=result from=$results}
 		<td class='historicalvalues'>{$result.bps}</td>
 	{/foreach}</tr>
 
 	<tr><td class="graph" id="bpd">{xl t="BP Diastolic"}</td><td>{xl t="mmHg"}</td>
-		<td class='currentvalues'><input type="text" size='5'
+		<td class='currentvalues'><input type="number" min="0" max="100" size='5'
 			name='bpd' id='bpd_input' value="{$vitals->get_bpd()}"/></td>
 	{foreach item=result from=$results}
 		<td  class='historicalvalues'>{$result.bpd}</td>
@@ -346,6 +346,10 @@ var bp = $( "#bpd_input" ).val();
 if (bp > 80) {
 $( "span" ).remove();
  $( "#bpd_input" ).after("<span style='color:#cc0000;'>&#8226; Above range </span>");
+}
+else if (bp < 60) {
+$( "span" ).remove();
+ $( "#bpd_input" ).after("<span style='color:#cc0000;'>&#8226; Below range </span>");
 }
 else {
 $( "span" ).remove();
