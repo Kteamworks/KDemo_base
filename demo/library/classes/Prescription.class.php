@@ -281,7 +281,7 @@ class Prescription extends ORDataObject {
             return( $this->dosage );
         }
         else {
-            return ($this->dosage . " " . $this->unit_array[$this->unit] . " " . $this->interval_array[$this->interval]);
+            return ($this->dosage . " " . $this->unit_array[$this->unit]);
         } 
     }
 
