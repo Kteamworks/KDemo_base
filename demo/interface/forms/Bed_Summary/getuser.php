@@ -117,7 +117,7 @@ while($row2=sqlFetchArray($result2))
     //echo "<td>".$row2['discharge_date']."</td>"; 
 	//echo "<td>".$days." days"."</td>";
 	//echo "<td>".$row2['diagnosis']."</td> </tr>";
-    echo "<td>" ."<input type=\"checkbox\" name=\"checkbox[]\" id=\"checkbox[]\" value=\"$encounter\"></input>"."</td></tr>";
+   // echo "<td>" ."<input type=\"checkbox\" name=\"checkbox[]\" id=\"checkbox[]\" value=\"$encounter\"></input>"."</td></tr>";
 	
 	}
 
