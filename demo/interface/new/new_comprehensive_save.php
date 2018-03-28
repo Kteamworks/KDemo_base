@@ -110,6 +110,35 @@ updateEmployerData1($pid, $newdata['employer_camp'], true);
 }
 NotificationController::create($pid, $_SESSION['authUserID'], '1');
 updatePatientData($pid, $newdata['patient_data'], true);
+
+$user = 'kavaii';
+$password = '12345';
+$sender_id = 'KAVAII';//helloz welcom FAPcop abhiii'hiiiii
+$sender = $_POST['form_phone_cell'];//9673776599 9320491970
+$genericid=getPatientData($pid, "genericname1,facility_id");
+$facility=sqlStatement("select name from facility where id='".$genericid['facility_id']."'");
+$facility1=sqlFetchArray($facility);
+$facility_name=$facility1['name'];
+$regid=$genericid['genericname1'];
+$msg = 'Thanks for Registration with "'.$facility_name.'" Hospital. Your Registration Id is "'.$regid.'" ';
+$priority = 'sdnd';
+$sms_type = 'normal';
+$data='user='.$user.'&pass='.$password.'&sender='.$sender_id.'&phone='.$sender.'&text='.$msg.'&stype='.$sms_type.'&priority=sdnd'; 
+$ch = curl_init('http://bhashsms.com/api/sendmsg.php?'.$data);
+			//echo var_dump($data);
+curl_setopt($ch, CURLOPT_POST, true);
+curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			//echo var_dump($ch);
+try {
+	$response = curl_exec($ch);
+			//echo var_dump($ch);
+    curl_close($ch);
+			//echo var_dump($response);
+			//echo 'Message has been sent.';
+	}catch(Exception $e){
+	echo 'Message: ' .$e->getMessage();
+			}
 updateEmployerData($pid, $newdata['employer_data'], true);	
 if($_POST['form_visit_category']!=null)
 {
