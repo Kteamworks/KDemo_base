@@ -47,7 +47,6 @@ echo "<table>
 <th>Patient Name</th>
 <th>Patient ID</th>
 <th>Visit ID</th>
-<th>Department</th>
 <th>Ward</th>
 <th>Bed</th>
 
@@ -69,7 +68,6 @@ echo "<table>
 	echo "<td>" . $row2['name'] . "</td>";
 	echo "<td>" . $row2['genericname1'] . "</td>";
 	echo "<td>" . $row2['encounter'] . "</td>";
-	echo "<td>" . "" . "</td>";
 	echo "<td>" . $row2['admit_to_ward'] . "</td>";
     echo "<td>" . $row2['admit_to_bed'] . "</td>";
     echo "<td>".$row2['admit_date']."</td>";

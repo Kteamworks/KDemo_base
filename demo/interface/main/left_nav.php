@@ -1176,10 +1176,10 @@ if (!empty($reg)) {
 	  <?php } ?>
     </ul>
   </li>
-  <?php }  if (acl_check('admin', 'super'    )) { ?>
+  <?php }?>
   
   
-  <li class="treeview"><a href="#"><i class="fa fa-share"></i><span><?php xl('Reports','e') ?></span><span class="pull-right-container">
+ <!-- <li class="treeview"><a href="#"><i class="fa fa-share"></i><span><?php xl('Reports','e') ?></span><span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span></a>
     <ul class="treeview-menu">
@@ -1190,7 +1190,7 @@ if (!empty($reg)) {
 		<?php genMiscLink('RTop','adm','0',xl('Visit'),'drugs/visit.php'); ?>
 
     </ul>
-  </li>
+  </li>-->
   
 
   <li class="treeview"><a href="#" ><i class="fa fa-pie-chart"></i><span><?php xl('Reports','e') ?></span><span class="pull-right-container">
@@ -1280,6 +1280,8 @@ if (!empty($reg)) {
           <?php //genMiscLink('RTop','rep','0',xl('Syndromic Surveillance'),'reports/non_reported.php'); ?>
 		  <?php genMiscLink('RTop','rop','0',xl('Doctor'), 'reports/DocStatistics.php'); ?>
 		   <?php genMiscLink('RTop','rep','0',xl('Bed Occupancy'), 'reports/bed_managment_report.php'); ?>
+		   <?php genMiscLink('RTop','rep','0',xl('Patients By Sub Category'), 'reports/subCatstatistics.php'); ?>
+		<?php genMiscLink('RTop','rep','0',xl('Referral Patients'), 'reports/refPatient.php'); ?>
         </ul>
       </li>
 <?php if (acl_check('acct', 'rep_a')) { ?>
@@ -1291,7 +1293,7 @@ if (!empty($reg)) {
 		  <?php genMiscLink('RTop','rep','0',xl('Sales By Category'),'reports/sales_by_category.php'); ?>
           <?php // genMiscLink('RTop','rep','0',xl('Cash Rec'), 'billing/sl_receipts_report.php'); ?>
           <?php genMiscLink('RTop','rep','0',xl('Front Rec'), 'reports/front_receipts_report.php'); ?>
-		   <?php // genMiscLink('RTop','rep','0',xl('Voucher Rec'), 'reports/voucher_receipts_report.php'); ?>
+		   <?php genMiscLink('RTop','rep','0',xl('Voucher Rec'), 'reports/voucher_receipts_report.php'); ?>
 		   <?php // genMiscLink('RTop','rep','0',xl('Heads Vouc'), 'reports/doctors_voucher_reports.php'); ?>
           <?php // genMiscLink('RTop','rep','0',xl('Pmt Method'), 'reports/receipts_by_method_report.php'); ?>
 		  <?php //genMiscLink('RTop','rep','0',xl('OP Docwise'), 'reports/op_cons_doc_wise.php'); ?>
@@ -1300,7 +1302,6 @@ if (!empty($reg)) {
           <?php genMiscLink('RTop','rep','0',xl('Financial Summary by Service Code'),'reports/svc_code_financial_report.php'); ?>
         </ul>
       </li>
-<?php } ?>
 <?php /*if ($GLOBALS['inhouse_pharmacy']) { ?>
       <li><a href="#"><span><?php xl('Inventory','e') ?></span><span class="pull-right-container">
                   <i class="fa fa-angle-left pull-right"></i>
@@ -1371,6 +1372,7 @@ if (!empty($reg)) {
 ?>
         </ul>
       </li>
+	  <?php } ?>
     <?php /*if (acl_check('admin','super')) { ?>
       <li><a href="#"><span><?php echo xlt('Services') ?></span><span class="pull-right-container">
                   <i class="fa fa-angle-left pull-right"></i>
@@ -1397,7 +1399,6 @@ if (!empty($reg)) {
         </ul>
       
   </li>
-  <?php }?>
   <?php if(acl_check('admin','super')){?>
   <li class="treeview"><a href="#"><i class="fa fa-folder-open" aria-hidden="true"></i>
 
