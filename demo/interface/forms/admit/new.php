@@ -188,9 +188,9 @@ echo "<form method='post' name='my_form' " .
 		<td align="left colspan="3" style="padding-bottom:7px;"></td>
 </tr>	
 <?php 
-		$today = date('Y-m-d',strtotime("+0 days"));
+		$today = date('Y-m-d H:i:s',strtotime("+0 days"));
 		
-		$tomorrow = date('Y-m-d',strtotime("+1 days"));
+		$tomorrow = date('Y-m-d H:i:s',strtotime("+1 days"));
 		?>
 		 <tr>
 		<td align="left" class="forms"><b><?php echo xlt('Admit date'); ?>:</td>
