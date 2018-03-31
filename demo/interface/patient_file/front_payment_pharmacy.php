@@ -508,10 +508,17 @@ $rateplan=$patdata['rateplan'];
 			
 			echo "<td class='bold' colspan=4 style='text-align:right'>".xlt('Amount:')."&nbsp&nbsp"."</td><td class='text' align='right'>" . oeFormatMoney($total - $totaldis + abs($copays)) . "</td></tr>";
 			//echo "<tr style='border-bottom: 1px solid #000;'><td class='bold' colspan=9 style='text-align:right'>".xlt('Primary Sponsor Amount:')."&nbsp&nbsp"."</td><td //class='text' align='right'>" . oeFormatMoney($approved_amt) . "</td></tr>";
+			$DL =sqlQuery("SELECT * FROM `drug_licence`");
 			
+			?>
 			
-			//echo "<tr style='border-bottom: 1px solid #000;'><td class='bold' colspan=9 style='text-align:right'>".xlt('Pri Sponsor Due:')."&nbsp&nbsp"."</td><td class='text' //align='right'>" . oeFormatMoney($ins_due) . "</td></tr>";
-            //echo "<tr><td class='bold' colspan=5 style='text-align:right'>".xlt('Total:')."&nbsp&nbsp"."</td><td class='text'>" . oeFormatMoney($total) . "</td></tr>";
+			<tr><td colspan=5 style='text-align:left;font-size:12'><?php echo 'GSTIN: '. $DL['GST'];?></td><td class='text' align='right'></td></tr>
+			<tr><td colspan=5 style='text-align:left;font-size:12'><?php echo 'PAN: '. $DL['PAN'];?></td><td class='text' align='right'></td></tr>
+			<tr><td colspan=5 style='text-align:left;font-size:12'><?php echo 'DL: '. $DL['DL'];;?></td><td class='text' align='right'> </td></tr>
+			<tr><td colspan=5 style='text-align:left;font-size:12'><?php echo $a;?></td><td class='text' align='right'></td></tr>
+			<tr><td colspan=5 style='text-align:left;font-size:12'><?php echo $a;?></td><td class='text' align='right'></td></tr>
+			
+			<?php
             echo "</table>";
             echo "<pre>";
 

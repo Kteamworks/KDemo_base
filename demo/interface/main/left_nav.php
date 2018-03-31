@@ -1116,6 +1116,7 @@ if (!empty($reg)) {
     <ul class="treeview-menu">
 	<?php if ( $newcrop_user_role['newcrop_user_role']=='erxadmin' || $newcrop_user_role['newcrop_user_role']=='erxlab') { ?>
 	<?php genMiscLink('RTop','rep','0',xl('Collection'),'reports/collected_amount.php'); ?>
+	<?php genMiscLink('RTop','rep','0',xl('Main Report'),'reports/briefreport.php'); ?>
 	<li><a href="#"><span>Lab Admin</span><span class="pull-right-container">
                   <i class="fa fa-angle-left pull-right"></i>
                 </span></a>
