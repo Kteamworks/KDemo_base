@@ -18,7 +18,7 @@ $e=$_GET["encounter"] ? $_GET["encounter"] : $GLOBALS['encounter'];
   include_once("$srcdir/pid.inc");
   setpid($_GET['set_pid']);
  }
-$returnurl = $GLOBALS['concurrent_layout'] ? 'encounter_top.php' : 'patient_encounter.php';
+$returnurl = $GLOBALS['concurrent_layout'] ? 'p_dynamic_finder_ip.php' : 'patient_encounter.php';
 
 if ($_POST['confirm']) {
        // set the deleted flag of the indicated form
@@ -277,7 +277,7 @@ $(document).ready(function(){
 	return ConfirmTransfer(); 
 	}
 	});
-    $("#cancel").click(function() { location.href='<?php echo "$rootdir/patient_file/encounter/$returnurl";?>'; });
+    $("#cancel").click(function() { location.href='<?php echo "$rootdir/main/finder/$returnurl";?>'; });
 });
 
 function ConfirmTransfer() {

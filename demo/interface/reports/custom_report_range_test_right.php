@@ -599,7 +599,7 @@ $rateplan=$patdata['rateplan'];
 							<?php echo xlt('Print'); ?>
 						</span>
 					</a>
-					<a href='#' class='css_button' onclick="window.location.href ='../../interface/main/finder/p_tp_dynamic_finder.php'">
+					<a href='#' class='css_button' onclick="window.location.href ='../../interface/main/finder/p_dynamic_finder_ip.php'">
 						<span>
 							<?php echo xlt('Cancel'); ?>
 						</span>

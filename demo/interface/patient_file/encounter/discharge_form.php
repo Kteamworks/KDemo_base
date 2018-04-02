@@ -17,7 +17,7 @@ require_once("$srcdir/erx_javascript.inc.php");
 
 // when the Cancel button is pressed, where do we go?
 $enc=$_POST['encounter'];
-$returnurl = $GLOBALS['concurrent_layout'] ? 'encounter_top.php' : 'patient_encounter.php';
+$returnurl = $GLOBALS['concurrent_layout'] ? 'p_dynamic_finder_ip.php' : 'patient_encounter.php';
 $e=$_GET["encounter"] ? $_GET["encounter"] : $GLOBALS['encounter'];
  $encounter=$_GET["encounter"] ? $_GET["encounter"] : $GLOBALS['encounter'];
   setencounter($encounter);
@@ -226,7 +226,7 @@ Calendar.setup({inputField:"discharge_date", ifFormat:"%Y-%m-%d %H:%M:%S", butto
 
 $(document).ready(function(){
     $("#confirmbtn").click(function() { return ConfirmDelete(); });
-    $("#cancel").click(function() { location.href='<?php echo "$rootdir/patient_file/encounter/$returnurl";?>'; });
+    $("#cancel").click(function() { location.href='<?php echo "$rootdir/main/finder/$returnurl";?>'; });
 });
 
 function ConfirmDelete() {

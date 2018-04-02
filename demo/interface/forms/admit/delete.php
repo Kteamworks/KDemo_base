@@ -3,7 +3,7 @@ include_once("../../globals.php");
 
 // allow a custom 'delete' form
 
-$returnurl = $GLOBALS['concurrent_layout'] ? 'encounter_top.php' : 'patient_encounter.php';
+$returnurl = $GLOBALS['concurrent_layout'] ? 'p_dynamic_finder_ip.php' : 'patient_encounter.php';
 
 if ($_POST['confirm']) {
     // set the deleted flag of the indicated form
@@ -34,7 +34,7 @@ if ($_POST['confirm']) {
     newEvent("delete", $_SESSION['authUser'], $_SESSION['authProvider'], 1, "Form ".$_POST['formname']." deleted from Encounter ".$_POST['encounter']);
 
     // redirect back to the encounter
-    $address = "{$GLOBALS['rootdir']}/patient_file/encounter/$returnurl";
+    $address = "{$GLOBALS['rootdir']}/main/finder/$returnurl";
     echo "\n<script language='Javascript'>top.restoreSession();window.location='$address';</script>\n";
     exit;
 }
@@ -76,7 +76,7 @@ You are about to delete the form  '<?php echo $_GET['formname'];?>' from <?php x
 
 $(document).ready(function(){
     $("#confirmbtn").click(function() { return ConfirmDelete(); });
-    $("#cancel").click(function() { location.href='<?php echo "$rootdir/patient_file/encounter/$returnurl";?>'; });
+    $("#cancel").click(function() { location.href='<?php echo "$rootdir/main/finder/$returnurl";?>'; });
 });
 
 function ConfirmDelete() {
