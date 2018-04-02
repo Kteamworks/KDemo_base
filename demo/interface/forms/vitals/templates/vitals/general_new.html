@@ -162,7 +162,7 @@ td,th {
                 {if $units_of_measurement == 1}<td class="unfocus graph" id="temperature_metric">{else}<td class="graph" id="temperature_metric">{/if}{xl t="Temperature"}</td>
 		{if $units_of_measurement == 1}<td class="unfocus">{else}<td>{/if}{xl t="°F"}</td>
                 {if $units_of_measurement == 1}<td class="valuesunfocus">{else}<td class='currentvalues'>{/if}
-                <input type="number" min="90" max="105" size='5'  name='temperature' id='temperature_input_metric' value="{if $vitals->get_temperature() != 0}{$vitals->get_temperature()}{/if}" ;"/>
+                <input type="number" min="90" max="105" size='5'  autocomplete='off' name='temperature' id='temperature_input_metric' value="{if $vitals->get_temperature() != 0}{$vitals->get_temperature()}{/if}" ;"/>
                 </td>
         {foreach item=result from=$results}
                 <td  class='historicalvalues'>{if $result.temperature != 0}{$result.temperature}{/if}</td>
@@ -171,7 +171,7 @@ td,th {
 		{if $units_of_measurement == 2}<td class="unfocus graph" id="weight">{else}<td class="graph" id="weight">{/if}{xl t="Weight"}</td>
 		{if $units_of_measurement == 2}<td class="unfocus">{else}<td>{/if}{xl t="lbs"}</td>
 		{if $units_of_measurement == 2}<td class="valuesunfocus">{else}<td class='currentvalues'>{/if}
-                <input type="text" size='5' name='weight' id='weight_input' value="{if $vitals->get_weight() != 0}{$vitals->get_weight()}{/if}" onChange="convLbtoKg('weight_input');" title='{xl t="Decimal pounds or pounds and ounces separated by #(e.g. 5#4)"}'/>
+                <input type="text" size='5' name='weight' id='weight_input'   value="{if $vitals->get_weight() != 0}{$vitals->get_weight()}{/if}"  onChange="convLbtoKg('weight_input');" title='{xl t="Decimal pounds or pounds and ounces separated by #(e.g. 5#4)"}'/>
                 </td>		
 	{foreach item=result from=$results}
 		<td  class='historicalvalues'>{$vitals->display_weight($result.weight)}</td>
@@ -181,7 +181,7 @@ td,th {
                 {if $units_of_measurement == 1}<td class="unfocus graph" id="weight_metric">{else}<td class="graph" id="weight_metric">{/if}{xl t="Weight"}</td>
 		{if $units_of_measurement == 1}<td class="unfocus">{else}<td>{/if}{xl t="kg"}</td>
                 {if $units_of_measurement == 1}<td class="valuesunfocus">{else}<td class='currentvalues'>{/if}
-                <input type="number" min="0" max="400" id='weight_input_metric' value="{if $vitals->get_weight() != 0}{math equation="number * constant" number=$vitals->get_weight() constant=0.45359237 format="%.2f"}{/if}" onChange="convKgtoLb('weight_input');"/>
+                <input type="number" min="0" max="400"  autocomplete='off' id='weight_input_metric' value="{if $vitals->get_weight() != 0}{math equation="number * constant" number=$vitals->get_weight() constant=0.45359237 format="%.2f"}{/if}" onChange="convKgtoLb('weight_input');"/>
                 </td>
         {foreach item=result from=$results}
                 <td  class='historicalvalues'>{if $result.weight != 0}{math equation="number * constant" number=$result.weight constant=0.45359237 format="%.2f"}{/if}</td>
@@ -191,7 +191,7 @@ td,th {
 	        {if $units_of_measurement == 2}<td class="unfocus graph" id="height">{else}<td class="graph" id="height">{/if}{xl t="Height/Length"}</td>
 		{if $units_of_measurement == 2}<td class="unfocus">{else}<td>{/if}{xl t="in"}</td>
 		{if $units_of_measurement == 2}<td class="valuesunfocus">{else}<td class='currentvalues'>{/if}
-                <input type="number" min="0" max="11" name='height' id='height_input' value="{if $vitals->get_height() != 0}{$vitals->get_height()}{/if}" onChange="convIntoCm('height_input');"/>
+                <input type="number" min="0" max="11" autocomplete='off' name='height' id='height_input' value="{if $vitals->get_height() != 0}{$vitals->get_height()}{/if}" onChange="convIntoCm('height_input');"/>
                 </td>
 	{foreach item=result from=$results}
 		<td class='historicalvalues'>{if $result.height != 0}{$result.height}{/if}</td>
@@ -208,14 +208,14 @@ td,th {
         {/foreach}</tr>
 	
 	<tr><td class="graph" id="bps">{xl t="BP Systolic"}</td><td>{xl t="mmHg"}</td>
-		<td class='currentvalues'><input type="number" min="50" max="250" size='5'
+		<td class='currentvalues'><input type="number"  autocomplete='off' min="50" max="250" size='5'
 			name='bps' id='bps_input' value="{$vitals->get_bps()}"/></td>
 	{foreach item=result from=$results}
 		<td class='historicalvalues'>{$result.bps}</td>
 	{/foreach}</tr>
 
 	<tr><td class="graph" id="bpd">{xl t="BP Diastolic"}</td><td>{xl t="mmHg"}</td>
-		<td class='currentvalues'><input type="number" min="0" max="100" size='5'
+		<td class='currentvalues'><input type="number" autocomplete='off' min="0" max="100" size='5'
 			name='bpd' id='bpd_input' value="{$vitals->get_bpd()}"/></td>
 	{foreach item=result from=$results}
 		<td  class='historicalvalues'>{$result.bpd}</td>
