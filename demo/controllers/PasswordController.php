@@ -49,7 +49,7 @@ class PasswordController extends Controller
     $mail->SetFrom($email_sender, $email_sender);
     $mail->Subject = $email_subject;
    // $mail->MsgHTML("<html><body><div class='wrapper'>".$logo."&nbsp;".$message."</div></body></html>");
-    $mail->MsgHTML("<html><body><div class='wrapper'><p>Click on the url below to reset your password.<br> <a href='http://".$_SERVER["HTTP_NAME"]."".$GLOBALS['webroot']."/interface/reset/reset.php?token=".$code."'>Reset Link</a></p></div></body></html>");
+    $mail->MsgHTML("<html><body><div class='wrapper'><p>Click on the url below to reset your password.<br> <a href='http://demo.medsmart.co.in/".$GLOBALS['webroot']."/interface/reset/reset.php?token=".$code."'>Reset Link</a></p></div></body></html>");
     $mail->IsHTML(true);
     $mail->AltBody = 'Password Reset';
 	 $mail->AddAddress($user['email'], 'MedSmart');

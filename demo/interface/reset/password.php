@@ -90,10 +90,23 @@ include_once("$srcdir/sql.inc");
     <input type="hidden" name="_token" value="<?php echo md5(uniqid(rand(), TRUE)); ?>">
     <!-- Email -->
     <!-- <div class="input-group margin"> -->
-    <div class="form-group has-feedback">
-            <label>Enter your Email/Mobile No:</label>
+	<div class="form-group has-feedback otp_form" id="otp">
+			<label>Enter OTP</label>
+		<p style="color:#31ab00;">Check your mobile for the OTP</p>
+			
+		<div class="tablerow">
+			<input type="text" name="otp" placeholder="One Time Password" class="form-control" required>
+		</div>
+		<!--<div class="tableheader">
+		<input type="submit" name="submit_otp" value="Submit"  onclick="email()" class="btnSubmit">
+		<button type="button" style="margin-left: 10px;" class="btn btn-primary btn-block btn-flat" onclick="sendOTP()">Submit OTP</button>
+		</div>-->
+		</div>
+		
+    <div class="form-group has-feedback" id="user_details">
+            <label>Enter your User ID/Mobile No:</label>
 
-        <input type="email" class="form-control" name="email" placeholder="Email / Mobile No:" >
+        <input type="email" class="form-control" name="email" placeholder="User ID / Mobile No:" >
          <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
     </div>
     
@@ -107,7 +120,9 @@ include_once("$srcdir/sql.inc");
     </div>
     <div class="col-xs-8">
         <!--<span class="input-group-btn"><button type="button" class="btn btn-primary btn-block btn-flat" onclick="otp()">Send OTP</button></span>-->
-        <span class="input-group-btn"><button type="button" style="margin-left: 10px;" class="btn btn-primary btn-block btn-flat" onclick="email()">Send Email</button></span>
+        <span class="input-group-btn">
+		<button type="button" style="margin-left: 10px;"id="otp_btn"  class="btn btn-primary btn-block btn-flat" onclick="sendOTP()">Submit OTP</button>
+		<button type="button" id="email_btn" style="margin-left: 10px;" class="btn btn-primary btn-block btn-flat" onclick="email()">Send Email / OTP</button></span>
         <br/>
     </div>
     </div> 
@@ -152,6 +167,8 @@ include_once("$srcdir/sql.inc");
             <!-- Slimscroll -->
 		            
 			    <script type="text/javascript">
+				$("#otp").hide();
+				$("#otp_btn").hide();
 				    function otp() {
 		  var f = document.getElementById('password-reset-form');
   if (!f.email.value) {
@@ -210,6 +227,13 @@ if(response == 1) {
 		$("#reset-form").hide();
         $("#response").show();
 } 
+else if(response == 123) {
+	$("#loading").hide();
+		$("#user_details").hide();
+        $("#otp").show();
+		$("#otp_btn").show();
+			$("#email_btn").hide();
+}
 else {
 alert(response);
 }
@@ -218,6 +242,42 @@ alert(response);
         });
 
   }
+    }
+	function sendOTP() {
+		  var f = document.getElementById('password-reset-form');
+
+	  		  var data = $("#password-reset-form").serialize();
+ // var dataString = 'form_category='+form_category+'&form_date='+form_date+'&form_title='+form_title+'&form_minute='+form_minute+'&form_ampm='+form_ampm+'&form_hour='+form_hour;
+  	 		        $.ajax({
+                // Where to send request
+                url: 'passwordHandler.php',
+                // What to send
+                data: data,
+                // How to send
+                type: 'post',
+                // What to do when request succeeds
+						beforeSend: function(){
+			$("#loading").show();
+		},
+                success: function(response) {
+					alert(response)
+if(response == 11) {
+			$("#user_details").hide();
+        $("#otp").show();
+		
+		alert("Invalid OTP Please try again!");
+} 
+else if(response == 12) {
+		alert("OTP Authenticated");
+}
+else {
+alert(response);
+}
+		
+				}
+        });
+
+  
     }
 	</script>
 </body>
