@@ -371,7 +371,7 @@ function generate_receipt($patient_id, $encounter=0) {
     "pid = ? AND encounter = ? LIMIT 1", array($patient_id,$encounter) );
   $invoice_refno = $encrow['invoice_refno'];
     // redirect back to the encounter
-   $address = "{$GLOBALS['rootdir']}/main/finder/p_tp_dynamic_finder.php";
+   $address = "{$GLOBALS['rootdir']}/main/finder/pa_dynamic_finder.php";
     echo "\n<script language='Javascript'>top.restoreSession();window.location='$address';</script>\n";
     exit;
 ?>
@@ -964,7 +964,15 @@ while ($urow = sqlFetchArray($ures)) {
 <?php include_once("{$GLOBALS['srcdir']}/dynarch_calendar_en.inc.php"); ?>
 <script type="text/javascript" src="../../library/dynarch_calendar_setup.js"></script>
 <script type="text/javascript" src="../../library/dialog.js"></script>
-<script type="text/javascript" src="../../library/js/jquery-1.2.2.min.js"></script>
+<!--<script type="text/javascript" src="../../library/js/jquery-1.2.2.min.js"></script>-->
+<link rel="stylesheet" href="../../library/js/jAlert-master/src/jAlert-v3.css" />
+<link rel="stylesheet" href="../../library/js/jquery.treeview-1.4.1/jquery.treeview.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
+ <script src="../../library/js/jquery-1.7.2.min.js"></script> 
+<script src="../../library/js/jAlert-master/src/jAlert-v3.js"></script>
+<script src="../../library/js/jAlert-master/src/jAlert-functions.js"> //optional!!</script>
+<link rel="stylesheet" type="text/css" href="../../library/js/fancybox-1.3.4/jquery.fancybox-1.3.4.css" media="screen" />
+<!--<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-1.4.3.min.js"></script>-->
 <script type="text/javascript">
 function setMyPatient() {
 <?php if ($GLOBALS['concurrent_layout']) { ?>
@@ -1103,12 +1111,23 @@ $(window).load(function() {
   return true;
  }
 
+ function saveClicked() {
+  var f = document.forms[0];
+  var discount_amount = document.forms[0].form_discount.value;
+  if ( discount_amount == ""|| discount_amount == null ) {
+   alert("<?php echo xls('Please enter the amount'); ?>");
+   return false;
+  }
+
+  top.restoreSession();
+  f.submit();
+ }
 </script>
 </head>
 
 <body class="body_top">
 
-<form method='post' action='pos_checkout_right.php'>
+<form method='post' action='pos_checkout_right.php' onsubmit="return saveClicked();">
 <input type='hidden' name='form_pid' value='<?php echo attr($patient_id) ?>' />
 
 <center>
@@ -1336,7 +1355,7 @@ else if (!empty($GLOBALS['gbl_mask_invoice_number'])) {
    &nbsp;<br>
    <input type='submit' name='form_save' value='<?php echo xla('Save'); ?>' /> &nbsp;
 
-   <input type='button' value='<?php echo xla('Cancel'); ?>' onclick="window.location.href ='../../interface/main/finder/p_tp_dynamic_finder.php'" />
+   <input type='button' value='<?php echo xla('Cancel'); ?>' onclick="window.location.href ='../../interface/main/finder/pa_dynamic_finder.php'" />
 
 <?php $inv_encounter=$_SESSION['encounter']; ?>
    <input type='hidden' name='form_provider'  value='<?php echo attr($inv_provider)  ?>' />
