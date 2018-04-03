@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.2, created on 2018-03-27 10:35:25
+<?php /* Smarty version 2.6.2, created on 2018-04-03 13:51:47
          compiled from C:%5Cxampp%5Chtdocs%5CKDemo_base%5Cdemo%5Cinterface%5Cforms%5Cvitals/templates/vitals/general_new.html */ ?>
 <?php require_once(SMARTY_DIR . 'core' . DIRECTORY_SEPARATOR . 'core.load_plugins.php');
 smarty_core_load_plugins(array('plugins' => array(array('function', 'xl', 'C:\xampp\htdocs\KDemo_base\demo\interface\forms\vitals/templates/vitals/general_new.html', 35, false),array('function', 'math', 'C:\xampp\htdocs\KDemo_base\demo\interface\forms\vitals/templates/vitals/general_new.html', 184, false),array('modifier', 'date_format', 'C:\xampp\htdocs\KDemo_base\demo\interface\forms\vitals/templates/vitals/general_new.html', 153, false),)), $this); ?>
@@ -206,7 +206,7 @@ td,th {
 		<?php if ($this->_tpl_vars['units_of_measurement'] == 1): ?><td class="unfocus"><?php else: ?><td><?php endif;  echo smarty_function_xl(array('t' => "°F"), $this);?>
 </td>
                 <?php if ($this->_tpl_vars['units_of_measurement'] == 1): ?><td class="valuesunfocus"><?php else: ?><td class='currentvalues'><?php endif; ?>
-                <input type="number" min="80" max="110" size='5'  name='temperature' id='temperature_input_metric' value="<?php if ($this->_tpl_vars['vitals']->get_temperature() != 0):  echo $this->_tpl_vars['vitals']->get_temperature();  endif; ?>" ;"/>
+                <input type="number" min="90" max="105" size='5'  autocomplete='off' name='temperature' id='temperature_input_metric' value="<?php if ($this->_tpl_vars['vitals']->get_temperature() != 0):  echo $this->_tpl_vars['vitals']->get_temperature();  endif; ?>" ;"/>
                 </td>
         <?php if (count($_from = (array)$this->_tpl_vars['results'])):
     foreach ($_from as $this->_tpl_vars['result']):
@@ -219,7 +219,7 @@ td,th {
 		<?php if ($this->_tpl_vars['units_of_measurement'] == 2): ?><td class="unfocus"><?php else: ?><td><?php endif;  echo smarty_function_xl(array('t' => 'lbs'), $this);?>
 </td>
 		<?php if ($this->_tpl_vars['units_of_measurement'] == 2): ?><td class="valuesunfocus"><?php else: ?><td class='currentvalues'><?php endif; ?>
-                <input type="text" size='5' name='weight' id='weight_input' value="<?php if ($this->_tpl_vars['vitals']->get_weight() != 0):  echo $this->_tpl_vars['vitals']->get_weight();  endif; ?>" onChange="convLbtoKg('weight_input');" title='<?php echo smarty_function_xl(array('t' => "Decimal pounds or pounds and ounces separated by #(e.g. 5#4)"), $this);?>
+                <input type="text" size='5' name='weight' id='weight_input'   value="<?php if ($this->_tpl_vars['vitals']->get_weight() != 0):  echo $this->_tpl_vars['vitals']->get_weight();  endif; ?>"  onChange="convLbtoKg('weight_input');" title='<?php echo smarty_function_xl(array('t' => "Decimal pounds or pounds and ounces separated by #(e.g. 5#4)"), $this);?>
 '/>
                 </td>		
 	<?php if (count($_from = (array)$this->_tpl_vars['results'])):
@@ -235,7 +235,7 @@ td,th {
 		<?php if ($this->_tpl_vars['units_of_measurement'] == 1): ?><td class="unfocus"><?php else: ?><td><?php endif;  echo smarty_function_xl(array('t' => 'kg'), $this);?>
 </td>
                 <?php if ($this->_tpl_vars['units_of_measurement'] == 1): ?><td class="valuesunfocus"><?php else: ?><td class='currentvalues'><?php endif; ?>
-                <input type="text" size='5' id='weight_input_metric' value="<?php if ($this->_tpl_vars['vitals']->get_weight() != 0):  echo smarty_function_math(array('equation' => "number * constant",'number' => $this->_tpl_vars['vitals']->get_weight(),'constant' => "0.45359237",'format' => "%.2f"), $this); endif; ?>" onChange="convKgtoLb('weight_input');"/>
+                <input type="number" min="0" max="400"  autocomplete='off' id='weight_input_metric' value="<?php if ($this->_tpl_vars['vitals']->get_weight() != 0):  echo smarty_function_math(array('equation' => "number * constant",'number' => $this->_tpl_vars['vitals']->get_weight(),'constant' => "0.45359237",'format' => "%.2f"), $this); endif; ?>" onChange="convKgtoLb('weight_input');"/>
                 </td>
         <?php if (count($_from = (array)$this->_tpl_vars['results'])):
     foreach ($_from as $this->_tpl_vars['result']):
@@ -249,7 +249,7 @@ td,th {
 		<?php if ($this->_tpl_vars['units_of_measurement'] == 2): ?><td class="unfocus"><?php else: ?><td><?php endif;  echo smarty_function_xl(array('t' => 'in'), $this);?>
 </td>
 		<?php if ($this->_tpl_vars['units_of_measurement'] == 2): ?><td class="valuesunfocus"><?php else: ?><td class='currentvalues'><?php endif; ?>
-                <input type="text" size='5' name='height' id='height_input' value="<?php if ($this->_tpl_vars['vitals']->get_height() != 0):  echo $this->_tpl_vars['vitals']->get_height();  endif; ?>" onChange="convIntoCm('height_input');"/>
+                <input type="number" min="0" max="11" autocomplete='off' name='height' id='height_input' value="<?php if ($this->_tpl_vars['vitals']->get_height() != 0):  echo $this->_tpl_vars['vitals']->get_height();  endif; ?>" onChange="convIntoCm('height_input');"/>
                 </td>
 	<?php if (count($_from = (array)$this->_tpl_vars['results'])):
     foreach ($_from as $this->_tpl_vars['result']):
@@ -263,7 +263,7 @@ td,th {
 		<?php if ($this->_tpl_vars['units_of_measurement'] == 1): ?><td class="unfocus"><?php else: ?><td><?php endif;  echo smarty_function_xl(array('t' => 'cm'), $this);?>
 </td>
                 <?php if ($this->_tpl_vars['units_of_measurement'] == 1): ?><td class="valuesunfocus"><?php else: ?><td class='currentvalues'><?php endif; ?>
-                <input type="text" size='5' id='height_input_metric' value="<?php if ($this->_tpl_vars['vitals']->get_height() != 0):  echo smarty_function_math(array('equation' => "number * constant",'number' => $this->_tpl_vars['vitals']->get_height(),'constant' => "2.54",'format' => "%.2f"), $this); endif; ?>" onChange="convCmtoIn('height_input');"/>
+                <input type="number" min="0" step=".01" size='5' id='height_input_metric' value="<?php if ($this->_tpl_vars['vitals']->get_height() != 0):  echo smarty_function_math(array('equation' => "number * constant",'number' => $this->_tpl_vars['vitals']->get_height(),'constant' => "2.54",'format' => "%.2f"), $this); endif; ?>" onChange="convCmtoIn('height_input');"/>
                 </td>
         <?php if (count($_from = (array)$this->_tpl_vars['results'])):
     foreach ($_from as $this->_tpl_vars['result']):
@@ -274,7 +274,7 @@ td,th {
 	<tr><td class="graph" id="bps"><?php echo smarty_function_xl(array('t' => 'BP Systolic'), $this);?>
 </td><td><?php echo smarty_function_xl(array('t' => 'mmHg'), $this);?>
 </td>
-		<td class='currentvalues'><input type="text" size='5'
+		<td class='currentvalues'><input type="number"  autocomplete='off' min="50" max="250" size='5'
 			name='bps' id='bps_input' value="<?php echo $this->_tpl_vars['vitals']->get_bps(); ?>
 "/></td>
 	<?php if (count($_from = (array)$this->_tpl_vars['results'])):
@@ -287,7 +287,7 @@ td,th {
 	<tr><td class="graph" id="bpd"><?php echo smarty_function_xl(array('t' => 'BP Diastolic'), $this);?>
 </td><td><?php echo smarty_function_xl(array('t' => 'mmHg'), $this);?>
 </td>
-		<td class='currentvalues'><input type="text" size='5'
+		<td class='currentvalues'><input type="number" autocomplete='off' min="0" max="100" size='5'
 			name='bpd' id='bpd_input' value="<?php echo $this->_tpl_vars['vitals']->get_bpd(); ?>
 "/></td>
 	<?php if (count($_from = (array)$this->_tpl_vars['results'])):

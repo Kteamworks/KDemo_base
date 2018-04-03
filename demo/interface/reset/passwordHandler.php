@@ -19,7 +19,7 @@ if(isset($id)) {
 		 $mail_status = SendSMS($number,$otp);
 		 
 		 if($mail_status == 1) {
-			$otp_result = sqlQuery("INSERT INTO otp_expiry(otp,is_expired,create_at) VALUES ('" . $otp . "', 0, '" . date("Y-m-d H:i:s"). "')");
+			$otp_result = sqlQuery("INSERT INTO otp_expiry(otp,mobile_no,is_expired,create_at) VALUES ('" . $otp . "','" . $number . "', 0, '" . date("Y-m-d H:i:s"). "')");
 			//$current_id = mysqli_insert_id($conn);
 
 				$result=123;
@@ -45,9 +45,9 @@ if(!empty($_POST["otp"])) {
 	if(!empty($count)) {
 		
 		$result_otp = sqlQuery("UPDATE otp_expiry SET is_expired = 1 WHERE otp = '" . $_POST["otp"] . "'");
-		$result = 12;	
+		$result = json_encode(array("result" => "12", "otp" => $_POST["otp"]));		
 	} else {
-		$result =11;
+		$result = json_encode(array("result" => "11", "message" =>"Invalid OTP!"));;
 		$error_message = "Invalid OTP!";
 	}	
 }

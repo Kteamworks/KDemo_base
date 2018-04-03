@@ -106,7 +106,7 @@ include_once("$srcdir/sql.inc");
     <div class="form-group has-feedback" id="user_details">
             <label>Enter your User ID/Mobile No:</label>
 
-        <input type="email" class="form-control" name="email" placeholder="User ID / Mobile No:" >
+        <input type="email" class="form-control" id="email" name="email" placeholder="User ID / Mobile No:" >
          <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
     </div>
     
@@ -229,7 +229,7 @@ if(response == 1) {
 } 
 else if(response == 123) {
 	$("#loading").hide();
-		$("#user_details").hide();
+		$("#user_details").remove();
         $("#otp").show();
 		$("#otp_btn").show();
 			$("#email_btn").hide();
@@ -260,18 +260,21 @@ alert(response);
 			$("#loading").show();
 		},
                 success: function(response) {
-					alert(response)
-if(response == 11) {
-			$("#user_details").hide();
+					var myObj = jQuery.parseJSON(response);
+					
+if(myObj.result === '11') {
+		$("#user_details").hide();
         $("#otp").show();
-		
-		alert("Invalid OTP Please try again!");
+		$("#loading").hide();
 } 
-else if(response == 12) {
-		alert("OTP Authenticated");
+else if(myObj.result === '12') {
+			$("#loading").hide();
+	window.top.location = "reset.php?token="+myObj.otp;
+		//alert("OTP Authenticated");
 }
 else {
-alert(response);
+	alert(myObj.message);
+		$("#loading").hide();
 }
 		
 				}

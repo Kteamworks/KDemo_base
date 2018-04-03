@@ -246,6 +246,14 @@ function getRatePlan(plan)
 }
 function getCatId(id)
 {
+	if(id =="10") {
+		document.getElementById('price').style.display = '';
+		document.getElementById('pay').style.display = '';
+	}
+	else {
+		document.getElementById('price').style.display = 'none';
+		document.getElementById('pay').style.display = 'none';
+	}
 	if(id=="12")
 	{
 		document.getElementById('hospa').style.display = '';
@@ -283,7 +291,7 @@ if(document.getElementById('pc_catid').value == 10) {
 					}
 					else {
 					//	$("#save_btn").prop("disabled",false);
-						$("#price").remove();
+						$("#price").hide();
 					document.getElementById('pay').style.display = 'none';
 					}
                 }

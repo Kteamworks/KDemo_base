@@ -191,7 +191,7 @@ td,th {
 	        {if $units_of_measurement == 2}<td class="unfocus graph" id="height">{else}<td class="graph" id="height">{/if}{xl t="Height/Length"}</td>
 		{if $units_of_measurement == 2}<td class="unfocus">{else}<td>{/if}{xl t="in"}</td>
 		{if $units_of_measurement == 2}<td class="valuesunfocus">{else}<td class='currentvalues'>{/if}
-                <input type="number" min="0" max="11" autocomplete='off' name='height' id='height_input' value="{if $vitals->get_height() != 0}{$vitals->get_height()}{/if}" onChange="convIntoCm('height_input');"/>
+                <input type="number" min="0" max="11" step=".01" autocomplete='off' name='height' id='height_input' value="{if $vitals->get_height() != 0}{$vitals->get_height()}{/if}" onChange="convIntoCm('height_input');"/>
                 </td>
 	{foreach item=result from=$results}
 		<td class='historicalvalues'>{if $result.height != 0}{$result.height}{/if}</td>
@@ -201,7 +201,7 @@ td,th {
                 {if $units_of_measurement == 1}<td class="unfocus graph" id="height_metric">{else}<td class="graph" id="height_metric">{/if}{xl t="Height/Length"}</td>
 		{if $units_of_measurement == 1}<td class="unfocus">{else}<td>{/if}{xl t="cm"}</td>
                 {if $units_of_measurement == 1}<td class="valuesunfocus">{else}<td class='currentvalues'>{/if}
-                <input type="number" size='5' id='height_input_metric' value="{if $vitals->get_height() != 0}{math equation="number * constant" number=$vitals->get_height() constant=2.54 format="%.2f"}{/if}" onChange="convCmtoIn('height_input');"/>
+                <input type="number" min="0" step=".01" size='5' id='height_input_metric' value="{if $vitals->get_height() != 0}{math equation="number * constant" number=$vitals->get_height() constant=2.54 format="%.2f"}{/if}" onChange="convCmtoIn('height_input');"/>
                 </td>
         {foreach item=result from=$results}
                 <td class='historicalvalues'>{if $result.height != 0}{math equation="number * constant" number=$result.height constant=2.54 format="%.2f"}{/if}</td>
