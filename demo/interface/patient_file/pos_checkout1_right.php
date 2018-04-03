@@ -373,7 +373,7 @@ function generate_receipt($patient_id, $encounter=0) {
     "pid = ? AND encounter = ? LIMIT 1", array($patient_id,$encounter) );
   $invoice_refno = $encrow['invoice_refno'];
   $address = "{$GLOBALS['rootdir']}/main/finder/pa_dynamic_finder.php";
-    echo "\n<script language='Javascript'>top.restoreSession();window.location='$address';</script>\n";
+    echo "\n<script language='Javascript'>top.restoreSession();window.history.go(-2);</script>\n";
     exit;
 ?>
 <!--<html>
@@ -1428,7 +1428,7 @@ else if (!empty($GLOBALS['gbl_mask_invoice_number'])) {
   <td colspan='2' align='center'>
    &nbsp;<br>
    <input type='submit' name='form_save' value='<?php echo xla('Save'); ?>' /> &nbsp;
-<input type='button' value='<?php echo xla('Cancel'); ?>' onclick="window.location.href ='../../interface/main/finder/pa_dynamic_finder.php'" />
+<input type='button' value='<?php echo xla('Cancel'); ?>' onclick="history.go(-1);" />
 
 <?php $inv_encounter=$_SESSION['encounter'];?>
    <input type='hidden' name='form_provider'  value='<?php echo attr($inv_provider)  ?>' />
