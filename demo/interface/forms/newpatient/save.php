@@ -912,11 +912,11 @@ $age_days=$age_days;
 
 
 
-<div id='printPageButton'>
+<!--<div id='printPageButton'>
 <p>
 <input type='button' value='<?php echo xla('Print'); ?>' onclick='printme()' />
 <input type='button' value='<?php echo xla('Back'); ?>' onclick="location.href='<?php echo $GLOBALS['webroot']?>/interface/forms/newpatient/new.php';" />
-</div>
+</div>-->
 </body>
 <?php
 	}
