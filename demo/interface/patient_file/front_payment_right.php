@@ -1107,7 +1107,7 @@ $age_days=$age_days;
 <div id='hideonprint'>
 <p>
 <input type='button' value='<?php echo xla('Print'); ?>' onclick='printme()' />
-<input type='button' value='<?php echo xla('Back'); ?>' onclick="location.href='<?php echo $GLOBALS['webroot']?>/interface/main/finder/p_tp_dynamic_finder.php';" />
+<input type='button' value='<?php echo xla('Back'); ?>' onclick="history.go(-1);" />
 <?php
   $todaysenc = todaysEncounterIf($pid);
   if ($todaysenc && $todaysenc != $encounter) {
