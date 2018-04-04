@@ -281,9 +281,9 @@ function getCatId(id)
                     // Save the contents of the response into
                     // whatever has the id="list"
 					if(response) {
+						$("#price").html(response);
 if(document.getElementById('pc_catid').value == 10) {
-                    $("#price").html(response);
-
+document.getElementById('price').style.display = '';
 		document.getElementById('pay').style.display = '';
 	
 }
