@@ -137,7 +137,8 @@ $form_dob = date("Y-m-d",$dob1); // getting the date of birth here
       "WHERE pid = '$pid'");
   }
  sqlQuery("UPDATE patient_data SET opd = 1 where pid='$pid'");
-
+ $generic = sqlQuery("select genericname1 from patient_data where pid='$pid'");
+  $gch_id = $generic['genericname1'];
    $provider_id = $_SESSION['authUserID'] ;
   $encounter = generate_id();
   $pos_code='';
@@ -184,12 +185,15 @@ $form_dob = date("Y-m-d",$dob1); // getting the date of birth here
 <body>
 <script language="Javascript">
 <?php
+
 if ($alertmsg) {
   echo "alert('$alertmsg');\n";
 }
 if ($GLOBALS['concurrent_layout']) {
   //echo "window.location='a.php";
-  header('location:../main/finder/dynamic_finder_opd.php');
+//header('location:../main/finder/dynamic_finder_ph.php');
+//header('location:../forms/fee_sheet_ph/medSale.php');
+ echo "window.location='../forms/fee_sheet_ph/medSale.php?set_pid=$gch_id';\n";
 
    // "set_pid=$pid&is_new=1';\n";
 } else {

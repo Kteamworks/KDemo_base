@@ -477,15 +477,17 @@ $i = 0;
 				else if($myrow['abnormal'] == 'No' || $myrow['abnormal'] == 'no'  || $myrow['abnormal'] == '' || $myrow['abnormal'] == NULL ) {
 					echo "<td class='list_item' align='center' nowrap>&nbsp;&nbsp;&nbsp;" . text($myrow['result']) . " ".generate_display_field(array('data_type'=>'1','list_id'=>'proc_unit'),$myrow['units']) ."&nbsp;&nbsp;</td>";
 				} else {
-					echo "<td class='list_result_abnorm' nowrap>&nbsp;" ;
-					if($myrow['abnormal'] == 'high') {
-						echo "+ ";
+					echo "<td class='list_result_abnorm' nowrap>" ;
+					/*if($myrow['abnormal'] == 'high') {
+						//echo "+ ";
 					} elseif ($myrow['abnormal'] == 'low') {
-						echo "- ";
+						//echo "- ";
 					} else {
 						echo "&nbsp;&nbsp;";
-					}
-					echo text($myrow['result']) . " ".generate_display_field(array('data_type'=>'1','list_id'=>'proc_unit'),$myrow['units']) ."&nbsp;&nbsp;</td>";
+					} */ ?>
+					<b>
+					<?php
+	echo text($myrow['result']) . " ".generate_display_field(array('data_type'=>'1','list_id'=>'proc_unit'),$myrow['units']) ."&nbsp;&nbsp;</td></b>";
 				}
 				if($myrow['range']==null)
 				{
