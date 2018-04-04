@@ -24,9 +24,34 @@ include_once('../globals.php');
 		  margin-left: 0px;
 		  margin-right: 10px;
 	  }
+	  #txt {
+		      position: absolute;
+    left: 119px;
+	  top: 13px;
+	  }
+	  .main-header .sidebar-toggle {
+    margin-left: 75px;
+}
 </style>
 
 <script type="text/javascript" language="javascript">
+
+function startTime() {
+    var today = new Date();
+    var h = today.getHours();
+    var m = today.getMinutes();
+    var s = today.getSeconds();
+    m = checkTime(m);
+    s = checkTime(s);
+    document.getElementById('txt').innerHTML =
+    h + ":" + m + ":" + s;
+    var t = setTimeout(startTime, 500);
+}
+function checkTime(i) {
+    if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
+    return i;
+}
+
 function toencounter(rawdata) {
 //This is called in the on change event of the Encounter list.
 //It opens the corresponding pages.
@@ -90,7 +115,7 @@ function showhideMenu() {
 }
 </script>
 </head>
-<body class="body_title">
+<body class="body_title" onload="startTime()">
 <?php
 $res = sqlQuery("select * from users where username='".$_SESSION{"authUser"}."'");
 
@@ -104,8 +129,8 @@ $res = sqlQuery("select * from users where username='".$_SESSION{"authUser"}."'"
 
 <?php if (acl_check('patients','demo','',array('write','addonly') )) { ?>
 <tr class="main-header"><td style="vertical-align:text-bottom;">
-<a  href='main_title.php' onclick="javascript:parent.left_nav.goHome();return false;" class="logo">
-      <span class="logo-lg"><img src=" <?php echo $GLOBALS['webroot']?>/interface/pic/logo.png" /></span>
+<a  href='main_title.php' onclick="javascript:parent.left_nav.goHome();return false;" class="logo" style="margin:0px">
+      <span class="logo-lg"><img src=" <?php echo $GLOBALS['webroot']?>/interface/pic/logo.png" /></span><div id="txt"></div>
     </a>
 	<a href="#" class="sidebar-toggle"  href="main_title.php" id='showMenuLink' title="Hide Sidebar" onclick='javascript:showhideMenu();return false;'>
         <span class="sr-only"><?php xl('Hide Menu','e'); ?></span>
