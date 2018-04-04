@@ -25,7 +25,7 @@ if(!empty($_POST['token'])) {
 					        require_once("$srcdir/authentication/password_change.php");
         $password_err_msg="";
 		$adminID = '1';
-		$adminpass = 'pass12';
+		$adminpass = 'pass';
         $success=update_password($adminID,$user['id'],$adminpass,$password,$password_err_msg);
 
         if(!$success)
