@@ -140,7 +140,7 @@ try {
 	echo 'Message: ' .$e->getMessage();
 			}
 updateEmployerData($pid, $newdata['employer_data'], true);	
-if($_POST['form_visit_category']!=null)
+if($_POST['form_visit_category']!=null && $_POST['form_doctor']!=null )
 {
 	$encounter = generate_id();
 	$date= date("Y-m-d H:i:s"); 

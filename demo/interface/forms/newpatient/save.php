@@ -485,13 +485,11 @@ body
  // Process click on Print button.
  function printme() {
 	 var restoreoriginalpage = document.body.innerHTML;
-  var divstyle = document.getElementById('hideonprint').style;
+  var divstyle = document.getElementById('hideonprint').innerHTML;
   divstyle.display = 'none';
-  window.print();
   document.body.innerHTML = restoreoriginalpage;
-  //window.close();
-  //localStorage.setItem('showTable', true); 
-  // divstyle.display = 'block';
+ window.print();
+  
  }
  // Process click on Delete button.
  function deleteme() {
@@ -912,11 +910,11 @@ $age_days=$age_days;
 
 
 
-<!--<div id='printPageButton'>
+<div id='printPageButton'>
 <p>
-<input type='button' value='<?php echo xla('Print'); ?>' onclick='printme()' />
-<input type='button' value='<?php echo xla('Back'); ?>' onclick="location.href='<?php echo $GLOBALS['webroot']?>/interface/forms/newpatient/new.php';" />
-</div>-->
+<input type='button' value='<?php echo xla('Print'); ?>' onclick='window.print();' />
+<!--<input type='button' value='<?php echo xla('Back'); ?>' onclick="location.href='<?php echo $GLOBALS['webroot']?>/interface/forms/newpatient/new.php';" />-->
+</div>
 </body>
 <?php
 	}
