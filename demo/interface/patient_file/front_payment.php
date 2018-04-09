@@ -949,9 +949,6 @@ $age_days=$age_days;
                 
 				foreach ($billing as $b)				
 				{
-					if($b['code_type']=='Pharmacy Charge'){
-						continue;
-					}
 				     //Discount
 					 $memo="Discount";
                     $discount=0;
