@@ -962,12 +962,12 @@ if (!empty($reg)) {
 	 <?php  //genMiscLink('RBot','pb','0',xl('Print Bills'),'reports/multiple_bills.php?framed=1'); ?> 
 	  <?php genMiscLink('RTop','voc','0',xl('General Voucher'),'reports/General_Voucher.php?framed=1');?> 
   <?php }?>
-      <?php genMiscLink('RBot','pay','1',xl('Payment'),'patient_file/front_payment.php'); ?>
+      <?php genMiscLink('RBot','pay','2',xl('Payment'),'patient_file/front_payment.php'); ?>
 	  <?php if($newcrop_user_role['newcrop_user_role']=='erxrep') { ?>
 	  <?php genMiscLink('RTop','rep','0',xl('Revenue'),'reports/revenue.php'); } ?>
 	   <?php if($newcrop_user_role['newcrop_user_role']=='erxcash'||acl_check('admin', 'super')){
   ?>
-	   <?php genMiscLink('RBot','pay','1',xl('Payment IP'),'patient_file/front_payment_test.php'); ?>
+	   <?php genMiscLink('RBot','pay','2',xl('Payment IP'),'patient_file/front_payment_test.php'); ?>
       <?php genMiscLink('RBot','bil','2',xl('Discount'),'patient_file/pos_checkout.php?framed=1'); ?> 
 	  <?php genMiscLink('RBot','bil','2',xl('Refund'),'patient_file/pos_checkout1.php?framed=1'); ?> 
 	  <?php genMiscLink('RBot','bil','0',xl('cash ho'),'reports/ecash.php?framed=1'); ?> 
