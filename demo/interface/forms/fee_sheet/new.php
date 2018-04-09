@@ -1282,6 +1282,11 @@ if ($billresult) {
       continue;
     }
     
+	if($iter['code_type'] == 'Pharmacy Charge'){//moved copay display to below
+      --$bill_lino;
+      continue;
+    }
+    
     // list($code, $modifier) = explode("-", $iter["code"]);
     echoLine($bill_lino, $iter["code_type"], trim($iter["code"]),
       $modifier, $ndc_info,  $authorized,
@@ -1330,7 +1335,7 @@ if ($_POST['bill']) {
 
 // Generate lines for items already in the drug_sales table for this encounter.
 //
-$query = "SELECT * FROM drug_sales WHERE " .
+/*$query = "SELECT * FROM drug_sales WHERE " .
   "pid = ? AND encounter = ? " .
   "ORDER BY sale_id";
 $sres = sqlStatement($query, array($pid,$encounter) );
@@ -1353,7 +1358,7 @@ while ($srow = sqlFetchArray($sres)) {
   }
   echoProdLine($prod_lino, $drug_id, $del, $units, $fee, $sale_id, $billed);
 }
-
+*/
 // Echo new product items from this form here, but omit any line
 // whose Delete checkbox is checked.
 //
