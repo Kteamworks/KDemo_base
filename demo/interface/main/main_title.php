@@ -14,6 +14,10 @@ include_once('../globals.php');
 <link rel="stylesheet" href="../../library/dist/css/AdminLTE.css">
 <link rel="stylesheet" href="../../library/css/mycss.css">
 <style type="text/css">
+@font-face {
+    font-family: 'digital';
+    src: url('../../library/fonts/digital-7.ttf');
+}
       .hidden {
         display:none;
       }
@@ -27,7 +31,7 @@ include_once('../globals.php');
 	  #txt {
 		      position: absolute;
     left: 119px;
-	  top: 13px;
+	  top: 8px;
 	  }
 	  .main-header .sidebar-toggle {
     margin-left: 75px;
@@ -43,8 +47,12 @@ function startTime() {
     var s = today.getSeconds();
     m = checkTime(m);
     s = checkTime(s);
-    document.getElementById('txt').innerHTML =
+	elem = document.getElementById('txt');
+    elem.innerHTML =
     h + ":" + m + ":" + s;
+elem.style.fontFamily = "digital";
+elem.style.fontSize = "30px";
+
     var t = setTimeout(startTime, 500);
 }
 function checkTime(i) {
