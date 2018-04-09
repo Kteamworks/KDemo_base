@@ -11,8 +11,8 @@ $sanitize_all_escapes=true;
 
 require_once("../../globals.php");
 require_once("$srcdir/acl.inc");
-require_once("$srcdir/forms.inc");
 require_once("$srcdir/api.inc");
+require_once("$srcdir/forms.inc");
 require_once("codes.php");
 require_once("../../../custom/code_types.inc.php");
 require_once("../../drugs/drugs.inc.php");
@@ -22,8 +22,10 @@ require_once("$srcdir/formdata.inc.php");
 
 // Some table cells will not be displayed unless insurance billing is used.
 $usbillstyle = $GLOBALS['ippf_specific'] ? " style='display:none'" : "";
+
 // This may be an error message or warning that pops up when the form is loaded.
 $alertmsg = '';
+
 function alphaCodeType($id) {
   global $code_types;
   foreach ($code_types as $key => $value) {
@@ -78,17 +80,20 @@ function contraceptionClass($code_type, $code) {
   }
   return $contra;
 }
-
+  $_SESSION['encounter']=$encounter;
 // This writes a billing line item to the output page.
 //
 function echoLine($lino,$codetype, $code, $modifier, $ndc_info='',
   $auth = TRUE, $del = FALSE, $units = NULL, $fee = NULL, $id = NULL,
-  $billed = FALSE, $code_text = NULL, $justify = NULL, $provider_id = 0, $notecodes='',$grpb)
+  $billed = FALSE, $code_text = NULL, $justify = NULL, $provider_id = 0, $notecodes='',$payout='',$referral='',$grpb)
 {
   global $code_types, $ndc_applies, $ndc_uom_choices, $justinit, $pid;
   global $contraception, $usbillstyle, $hasCharges;
 /* $grpbillq=sqlQuery("select grpbill,id from billing where encounter='$enc'");
 $gbfa=sqlFetchArray($grpbillq); */
+
+
+	
   if ($codetype == 'COPAY') {
     if (!$code_text) $code_text = 'Cash';
     if ($fee > 0) $fee = 0 - $fee;
@@ -160,6 +165,7 @@ $gbfa=sqlFetchArray($grpbillq); */
         "<input type='hidden' name='bill[".attr($lino)."][mod]' value='".attr($modifier)."'></td>\n";
     }
     if (fees_are_used()) {
+		
       echo "  <td class='billcell' align='right'>" . text(oeFormatMoney($price)) . "</td>\n";
       if ($codetype != 'COPAY') {
         echo "  <td class='billcell' align='center'>" . text($units) . "</td>\n";
@@ -197,9 +203,24 @@ $gbfa=sqlFetchArray($grpbillq); */
 	  {
 	  echo "  <td class='billcell' align='center'><input type='checkbox' name='grpbill[]' " .
       "value='".$id."'". ($grpbill ? " " : "") . " /></td>\n";
+	  
 	  }
+	 echo "  <td class='billcell' align='center'>" .
+        htmlspecialchars($payout, ENT_NOQUOTES) . "</td>\n";
+			 echo "  <td class='billcell' align='center'>" .
+        htmlspecialchars($referral, ENT_NOQUOTES) . "</td>\n";
   }
-  else { // not billed
+  else {
+
+
+
+  // not billed
+  
+ 
+  
+ 
+  
+  
     if (modifiers_are_used(true)) {
       if ($codetype != 'COPAY' && ($code_types[$codetype]['mod'] || $modifier)) {
         echo "  <td class='billcell'><input type='text' name='bill[".attr($lino)."][mod]' " .
@@ -211,7 +232,11 @@ $gbfa=sqlFetchArray($grpbillq); */
       }
     }
     if (fees_are_used()) {
+		
+      
       if ($codetype == 'COPAY' || $code_types[$codetype]['fee'] || $fee != 0) {
+		  
+		
         echo "  <td class='billcell' align='right'>" .
           "<input type='text' name='bill[".attr($lino)."][price]' " .
           "value='" . attr($price) . "' size='6'";
@@ -272,9 +297,25 @@ $gbfa=sqlFetchArray($grpbillq); */
 	  echo "  <td class='billcell' align='center'><input type='checkbox'  name='grpbill[]' " .
       "value='".$id."'". ($grpbill ? " checked" : "") . " /></td>\n";
 	  }
+	  echo "  <td class='billcell' align='center'><input type='text' name='bill[".attr($lino)."][payout]' " .
+        "value='" . htmlspecialchars($payout, ENT_QUOTES) . "' size='8' /></td>\n";
+		echo "  <td class='billcell' align='center'><input type='text' name='bill[".attr($lino)."][referral]' " .
+        "value='" . htmlspecialchars($referral, ENT_QUOTES) . "' size='8' /></td>\n";
   }
-
-  echo "  <td class='billcell'>$strike1" . text($code_text) . "$strike2</td>\n";
+  $enc1=$_SESSION['encounter'];
+  if (strpos($code_text,DR) !== false) {
+                //$des = '(Consultation)';
+			    $ipop=sqlQuery("select encounter_ipop from form_encounter where encounter='$enc1' ");
+				$ipopcheck=$ipop[encounter_ipop];
+				if (strpos($ipopcheck,IP) !== false) {
+				$specialty=sqlQuery("select specialty from users where username='$code_text' ");
+				$des=' ('.$specialty['specialty'].')';
+				}else{
+					$des = '(Consultation)';
+				}
+  }
+  echo "  <td class='billcell'>$strike1" . text($code_text).$des  . "$strike2</td>\n";
+    
   echo " </tr>\n";
 
   // If NDC info exists or may be required, add a line for it.
@@ -314,6 +355,7 @@ $gbfa=sqlFetchArray($grpbillq); */
 
   if ($fee == 0) $hasCharges = true;
 }
+
 
 // This writes a product (drug_sales) line item to the output page.
 //
@@ -397,7 +439,7 @@ function genProviderSelect($selname, $toptext, $default=0, $disabled=false) {
   $res = sqlStatement($query);
   echo "   <select name='" . attr($selname) . "'";
   if ($disabled) echo " disabled";
-  echo ">\n";
+  echo " required>\n";
   echo "    <option value=''>" . text($toptext) . "\n";
   while ($row = sqlFetchArray($res)) {
     $provid = $row['id'];
@@ -491,42 +533,18 @@ $bilgrpval=$_POST[''];
 	
 	
 	
-	
   }
   
  
 
 }
 if (!$alertmsg && ($_POST['bn_save'] || $_POST['bn_save_close'])) {
-	  // Post discount.
-  if (!empty($_POST['form_discount'])) {
-	 $amount  = sprintf('%01.2f', trim($_POST['form_discount']));
-     $memo = xl('Discount');
-	$reason_code=$_POST['reason_code'];
-	$approved_by=$_POST['approved_by'];
-      $time = date('Y-m-d H:i:s');
-      $query = "INSERT INTO ar_activity ( " .
-        "pid, encounter, code, modifier, payer_type, post_user, post_time, " .
-        "session_id, memo, adj_amount,reason_code,approved_by " .
-        ") VALUES ( " .
-        "?, " .
-        "?, " .
-        "'', " .
-        "'', " .
-        "'0', " .
-        "?, " .
-        "?, " .
-        "'0', " .
-        "?, " .
-		"?, " .
-		"?, " .
-        "? " .
-        ")";
-      sqlStatement($query, array($pid,$encounter,$_SESSION['authUserID'],$time,$memo,$amount,$reason_code,$approved_by) );
-	  sqlQuery("Update billing_main_copy set dis_amt=? where encounter=?",array($amount,$encounter));   
-    
- 
-  }
+	$newcrop_user_role=sqlQuery("select newcrop_user_role from users where username='".$_SESSION['authUser']."'");
+ if($newcrop_user_role['newcrop_user_role']=='erxdoctor') { 
+	$doctor = $_SESSION['authUserID'];
+ $qry = "UPDATE patient_data SET visit_status='1', doctor='$doctor' WHERE pid='$pid'";
+ $res = sqlStatement($qry);
+ }
   $main_provid = 0 + $_POST['ProviderID'];
   $main_supid  = 0 + $_POST['SupervisorID'];
   if ($main_supid == $main_provid) $main_supid = 0;
@@ -594,6 +612,8 @@ if (!$alertmsg && ($_POST['bn_save'] || $_POST['bn_save_close'])) {
     }
     $justify   = trim($iter['justify']);
     $notecodes = trim($iter['notecodes']);
+	$payout = trim($iter['payout']);
+	$referral = trim($iter['referral']);
     if ($justify) $justify = str_replace(',', ':', $justify) . ':';
     // $auth      = $iter['auth'] ? "1" : "0";
     $auth      = "1";
@@ -610,10 +630,6 @@ if (!$alertmsg && ($_POST['bn_save'] || $_POST['bn_save_close'])) {
       if ($del) {
 		  
         deleteBilling($id);
-		if($code_type=="Lab Test")
-		{
-		sqlQuery("DELETE FROM procedure_order_code where procedure_name=?",array($code));
-		}
 		sqlQuery("Update billing_main_copy set total_charges=total_charges - ? where encounter=?",array($fee,$encounter));   
       }
       else {
@@ -624,9 +640,9 @@ if (!$alertmsg && ($_POST['bn_save'] || $_POST['bn_save_close'])) {
         sqlQuery("UPDATE billing SET code = ?, " .
           "units = ?, fee = ?, modifier = ?, " .
           "authorized = ?, provider_id = ?, " .
-          "ndc_info = ?, justify = ?, notecodes = ? " .
+          "ndc_info = ?, justify = ?, notecodes = ?,payout=? ,referral=? " .
           "WHERE " .
-          "id = ? AND billed = 0 AND activity = 1", array($code,$units,$fee,$modifier,$auth,$provid,$ndc_info,$justify,$notecodes,$id) );
+          "id = ? AND billed = 0 AND activity = 1", array($code,$units,$fee,$modifier,$auth,$provid,$ndc_info,$justify,$notecodes,$payout,$referral,$id) );
 		  
 		  sqlQuery("Update billing_main_copy set total_charges=total_charges - ? + ? where encounter=?",array($feeold,$fee,$encounter));   
 		  //$t_amount+=$fee;
@@ -636,10 +652,26 @@ if (!$alertmsg && ($_POST['bn_save'] || $_POST['bn_save_close'])) {
     // Otherwise it's a new item...
     else if (! $del) {
 	  $code_text = lookup_code_descriptions($code_type.":".$code);
-      addBilling($encounter,$ct,$service_id, $code_type, $code, $code_text, $pid, $auth,
+	  
+	  if($code_type=='Pharmacy Charge')
+	  {
+	  $result = sqlQuery("SELECT * FROM drugs WHERE " .
+        "drug_id = ?", array($code) );
+		$quantity=$result['quantity'];
+	    $pack=$result['pack'];
+		$totalValue=$result['mrp'];
+		$fee=($quantity*$pack)/$totalValue;
+		$code_text=$code;
+		$code=$result['name'];
+		
+	  addBilling($encounter,$ct,$service_id, $code_type, $code, $code_text, $pid, $auth,
       $provid, $modifier, $units, $fee, $ndc_info, $justify, 0, $notecodes,$modifier);
-	   
-	   	  	   if($code_type=="Lab Test")
+	  }
+	  else
+	  {
+      addBilling($encounter,$ct,$service_id, $code_type, $code, $code_text, $pid, $auth,
+      $provid, $modifier, $units, $fee, $ndc_info, $justify, 0, $notecodes,$payout,$referral,$modifier);
+	 	  	   if($code_type=="Lab Test")
   {
 	  $query4=sqlStatement("select form_id from forms where form_name='Lab Investigation' and encounter='".$encounter."' and deleted=0 ");
 	  $query5=sqlFetchArray($query4);
@@ -679,6 +711,7 @@ if (!$alertmsg && ($_POST['bn_save'] || $_POST['bn_save_close'])) {
 		}
 	 }
   }
+	  }
 	  sqlQuery("Update billing_main_copy set total_charges=total_charges + ? where encounter=?",array($fee,$encounter));   
 	
     }
@@ -766,7 +799,7 @@ if (!$alertmsg && ($_POST['bn_save'] || $_POST['bn_save_close'])) {
         "pid = ? AND encounter = ? AND billed = 0", array($pid,$encounter));
       sqlStatement("UPDATE billing SET billed = 1, bill_date = NOW() WHERE " .
         "pid = ? AND encounter = ? AND billed = 0 AND " .
-        "activity = 1", array($pid,$encounter));
+        "activity = 1 AND code_type!='Pharmacy Charge'", array($pid,$encounter));
     }
     else {
       // Would be good to display an error message here... they clicked
@@ -802,12 +835,9 @@ if (!$alertmsg && ($_POST['bn_save'] || $_POST['bn_save_close'])) {
     formFooter();
     exit;
   }
-  
 }
-  
+
 $billresult = getBillingByEncounter($pid, $encounter, "*");
-
-
 ?>
 <html>
 <head>
@@ -816,7 +846,15 @@ $billresult = getBillingByEncounter($pid, $encounter, "*");
 <style>
 .billcell { font-family: sans-serif; font-size: 10pt }
 </style>
+   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 <script language="JavaScript">
+$(document).ready(function(){
+$("tr td:nth-child(8)").css("display","none");
+//$("tr td:nth-child(7)").css("display","none");
+$("tr td:nth-child(3)").css("display","none");
+$("tr td:nth-child(6)").css("display","none");
+$("tr td:nth-child(9)").css("display","none");
+});
 
 var diags = new Array();
 
@@ -1009,7 +1047,7 @@ while ($prow = sqlFetchArray($pres)) {
 }
 
 // Create one more drop-list, for Products.
-/* if ($GLOBALS['sell_non_drug_products']) {
+if ($GLOBALS['sell_non_drug_products']) {
   ++$i;
   echo ($i <= 1) ? " <tr>\n" : "";
   echo "  <td width='50%' align='center' nowrap>\n";
@@ -1031,7 +1069,7 @@ while ($prow = sqlFetchArray($pres)) {
     echo " </tr>\n";
     $i = 0;
   }
-} */
+}
 //Lab Test
   ++$i;
   echo ($i <= 1) ? " <tr>\n" : "";
@@ -1099,17 +1137,39 @@ while ($prow = sqlFetchArray($pres)) {
     echo " </tr>\n";
     $i = 0;
   }  
-  
-  
-  //Pharmacy
- /* ++$i;
+//Scans
+    ++$i;
   echo ($i <= 1) ? " <tr>\n" : "";
   echo "  <td width='50%' align='center' nowrap>\n";
-  echo "   <select name='Pharmacy Charges' style='width:96%' onchange='codeselect(this)'>\n";
-  echo "    <option value=''> " . xlt('Pharmacy') . "\n";
+  echo "   <select name='Scans' style='width:96%' onchange='codeselect(this)'>\n";
+  echo "    <option value=''> " . xlt('Scans') . "\n";
+  $tres = sqlStatement("SELECT c.Service_Id,c.code,c.code_text,c.code_type " .
+    "FROM codes AS c WHERE " .
+    " c.active = 1 AND c.code_type=14  " .
+    "ORDER BY c.code");
+  while ($trow = sqlFetchArray($tres)) {
+    echo "    <option value='Scans|" . attr($trow['code']) . '|' . attr($trow['code_text']) . "'>" .
+      text($trow['code_text']);
+    //if ($trow['name'] !== $trow['selector']) echo ' ' . text($trow['name']);
+    echo "</option>\n";
+  }
+  echo "   </select>\n";
+  echo "  </td>\n";
+  if ($i >= $FEE_SHEET_COLUMNS) {
+    echo " </tr>\n";
+    $i = 0;
+  }  
+  
+  //Pharmacy
+  /*
+  ++$i;
+  echo ($i <= 1) ? " <tr>\n" : "";
+  echo "  <td width='50%' align='center' nowrap>\n";
+  echo "   <select name='Pharmacy Charge' style='width:96%' onchange='codeselect(this)'>\n";
+  echo "    <option value=''> " . xlt('Pharmacy Charge') . "\n";
   $tres = sqlStatement("select a.name name,a.drug_id drgid,b.lot_number lm,b.expiration from drugs a, drug_inventory b where a.drug_id=b.drug_id and b.on_hand > 0");
   while ($trow = sqlFetchArray($tres)) {
-    echo "    <option value='Pharmacy Charges|" . attr($trow['drgid']) . '|' . attr($trow['lm']) . "'>" .
+    echo "    <option value='Pharmacy Charge|" . attr($trow['drgid']) . "'>" .
       text($trow['name']);
     //if ($trow['name'] !== $trow['selector']) echo ' ' . text($trow['name']);
     echo "</option>\n";
@@ -1119,9 +1179,35 @@ while ($prow = sqlFetchArray($pres)) {
   if ($i >= $FEE_SHEET_COLUMNS) {
     echo " </tr>\n";
     $i = 0;
-  }  */
+  }  
   
+  */
   
+  /*
+  
+  $rowdrug = sqlQuery("SELECT * FROM drugs WHERE " .
+    "drug_id = '$drug_id'");
+    $sql = "insert into billing (date, encounter, code_type, code, code_text, " .
+    "pid, authorized, user, groupname, activity, billed, provider_id, " .
+    "modifier, units, fee, ndc_info, justify, notecodes) values (" .
+    "NOW(), ?, ?, ?, ?, ?, ?, ?, ?, 1, ?, ?, ?, ?, ?, ?, ?, ?)";
+	$code_type="Pharma Charges";
+	$code=$rowdrug['name'];
+	$code_text=$drug_id;
+	$authorized=0;
+	$billed=0;
+	$provider="none";
+	$modifier="";
+	$ndc_info="";
+	$justify="";
+	$notecodes="";
+	$fee=$fee*$quantity;
+	//$pricelevel="standard";
+    sqlInsert($sql, array($encounter_id,$code_type,$code,$code_text,$pid,$authorized,
+    $_SESSION['authId'],$_SESSION['authProvider'],$billed,$provider,$modifier,$quantity,$fee,
+    $ndc_info,$justify,$notecodes));
+  
+  */
   
 $search_type = $default_search_type;
 if ($_POST['search_type']) $search_type = $_POST['search_type'];
@@ -1143,11 +1229,11 @@ if ($_POST['bn_search'] && $_POST['search_term']) {
   }
 }
 
-/*echo "   <select name='Search Results' style='width:98%' " .
+echo "   <select name='Search Results' style='width:98%' " .
   "onchange='codeselect(this)'";
 if (! $numrows) echo ' disabled';
 echo ">\n";
-echo "    <option value=''> " . xlt("Search Results") . " ($numrows " . xlt("items") . ")\n";*/
+echo "    <option value=''> " . xlt("Search Results") . " ($numrows " . xlt("items") . ")\n";
 
 if ($numrows) {
   while ($row = sqlFetchArray($res)) {
@@ -1166,13 +1252,12 @@ echo " </tr>\n";
 </table>
 
 <p style='margin-top:8px;margin-bottom:8px'>
-<!--
 <table>
  <tr>
-  <td>
+ <!-- <td>
    <input type='button' value='<?php echo xla('Add Copay');?>'
     onclick="copayselect()" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  </td>
+  </td>-->
   <td>
    <?php echo xlt('Search'); ?>&nbsp;
   </td>
@@ -1205,7 +1290,7 @@ echo " </tr>\n";
    <input type='submit' name='bn_search' value='<?php echo xla('Search');?>'>
   </td>
  </tr>
-</table>-->
+</table>
 </p>
 <p style='margin-top:16px;margin-bottom:8px'>
 
@@ -1230,7 +1315,10 @@ echo " </tr>\n";
   <td class='billcell' align='center'<?php echo $usbillstyle; ?>><b><?php echo xlt('Auth');?></b></td>
   <td class='billcell' align='center'><b><?php echo xlt('Delete');?></b></td>
    <td class='billcell' align='center' <?php echo $usbillstyle; ?> ><b><?php echo xlt('Bill');?></b></td>
+    <td class='billcell'><b><?php echo xlt('Doctor Share');?></b></td>
+	  <td class='billcell'><b><?php echo xlt('Referral Amount');?></b></td>
   <td class='billcell'><b><?php echo xlt('Description');?></b></td>
+  
  </tr>
 
 <?php
@@ -1257,6 +1345,8 @@ if ($billresult) {
     $ndc_info   = $iter["ndc_info"];
     $justify    = trim($iter['justify']);
     $notecodes  = trim($iter['notecodes']);
+	$payout  = trim($iter['payout']);
+	$referral  = trim($iter['referral']);
 	$grpb=$iter['grpbill'];
     if ($justify) $justify = substr(str_replace(':', ',', $justify), 0, strlen($justify) - 1);
     $provider_id = $iter['provider_id'];
@@ -1274,6 +1364,8 @@ if ($billresult) {
       }
       $justify    = $bline['justify'];
       $notecodes  = trim($bline['notecodes']);
+	  $payout  = trim($bline['payout']);
+	  $referral  = trim($bline['referral']);
       $provider_id = 0 + $bline['provid'];
     }
     
@@ -1281,12 +1373,20 @@ if ($billresult) {
       --$bill_lino;
       continue;
     }
-    
+	
+	if($iter['code_type'] == 'Pharmacy Charge'){//moved copay display to below
+      --$bill_lino;
+      continue;
+    }
+   
+	
     // list($code, $modifier) = explode("-", $iter["code"]);
     echoLine($bill_lino, $iter["code_type"], trim($iter["code"]),
       $modifier, $ndc_info,  $authorized,
       $del, $units, $fee, $iter["id"], $iter["billed"],
-      $iter["code_text"], $justify, $provider_id, $notecodes,$grpb);
+      $iter["code_text"], $justify, $provider_id, $notecodes,$payout,$referral,$grpb);
+	  
+	
   }
 }
 
@@ -1321,10 +1421,12 @@ if ($_POST['bill']) {
       if($fee > 0)
       $fee = 0 - $fee;
     }
+	
     echoLine(++$bill_lino, $iter["code_type"], $iter["code"], trim($iter["mod"]),
       $ndc_info, $iter["auth"], $iter["del"], $units,
       $fee, NULL, FALSE, NULL, $iter["justify"], 0 + $iter['provid'],
-      $iter['notecodes']);
+      $iter['notecodes'],$iter['payout'],$iter['referral']);
+	
   }
 }
 
@@ -1351,7 +1453,7 @@ while ($srow = sqlFetchArray($sres)) {
     $units = max(1, intval(trim($pline['units'])));
     $fee   = sprintf('%01.2f',(0 + trim($pline['price'])) * $units);
   }
-  echoProdLine($prod_lino, $drug_id, $del, $units, $fee, $sale_id, $billed);
+  //echoProdLine($prod_lino, $drug_id, $del, $units, $fee, $sale_id, $billed);
 }
 
 // Echo new product items from this form here, but omit any line
@@ -1364,7 +1466,7 @@ if ($_POST['prod']) {
     // $fee = 0 + trim($iter['fee']);
     $units = max(1, intval(trim($iter['units'])));
     $fee   = sprintf('%01.2f',(0 + trim($iter['price'])) * $units);
-    echoProdLine(++$prod_lino, $iter['drug_id'], FALSE, $units, $fee);
+    //echoProdLine(++$prod_lino, $iter['drug_id'], FALSE, $units, $fee);
   }
 }
 
@@ -1397,8 +1499,10 @@ if ($_POST['newcodes']) {
         "prices.pr_level = patient_data.pricelevel " .
         "LIMIT 1", array($pid,$newcode,$newsel) );
       $fee = empty($prrow) ? 0 : $prrow['pr_price'];
-      echoProdLine(++$prod_lino, $newcode, FALSE, $units, $fee);
+      //echoProdLine(++$prod_lino, $newcode, FALSE, $units, $fee);
     }
+	
+	
     else {
       list($code, $modifier) = explode(":", $newcode);
       $ndc_info = '';
@@ -1409,6 +1513,7 @@ if ($_POST['newcodes']) {
           "ORDER BY date DESC LIMIT 1", array($newtype,$code) );
         if (!empty($tmp)) $ndc_info = $tmp['ndc_info'];
       }
+	 
       echoLine(++$bill_lino, $newtype, $code, trim($modifier), $ndc_info);
     }
   }
@@ -1433,26 +1538,15 @@ echo xlt('Providers') . ": &nbsp;";
 
 echo "&nbsp;&nbsp;" . xlt('Rendering') . "\n";
 genProviderSelect('ProviderID', '-- '.xl("Please Select").' --', $encounter_provid, $isBilled);
-/*
-if (!$GLOBALS['ippf_specific']) {
+
+if ($GLOBALS['ippf_specific']) {
   echo "&nbsp;&nbsp;" . xlt('Supervising') . "\n";
   genProviderSelect('SupervisorID', '-- '.xl("N/A").' --', $encounter_supid, $isBilled);
 }
-*/
+
 echo "</b></span>\n";
 ?>
-<br></br>
-<table>
-<tr class='billcell'>
-  <td>
- <b>  <?php echo xlt('Discount Amount')?>:</b>
-  </td>
-  <td>
-   <input type='text' name='form_discount' size='6' maxlength='8' value=''
-    style='text-align:right'>
-  </td>
- </tr>
- </table>
+
 <p>
 &nbsp;
 
@@ -1497,14 +1591,14 @@ if ($prod_lino > 0) { // if any products are in this form
   }
 }
 ?>
-<!--<input type='button' name='bn_gen' value='<?php echo xla('Generate Bill');?>' onclick="top.restoreSession();location='<?php echo "$rootdir/reports/custom_report_range_bill.php" ?>'" />-->
+<input type='button' name='bn_gen' value='<?php echo xla('Pharma Bill');?>' onclick="top.restoreSession();location='<?php echo "$rootdir/reports/custom_report_ins.php" ?>'" />
 
 <?php
 // Allow the patient price level to be fixed here.
 $plres = sqlStatement("SELECT option_id, title FROM list_options " .
   "WHERE list_id = 'pricelevel' ORDER BY seq");
 if (true) {
-  /*$trow = sqlQuery("SELECT pricelevel FROM patient_data WHERE " .
+  $trow = sqlQuery("SELECT pricelevel FROM patient_data WHERE " .
     "pid = ? LIMIT 1", array($pid) );
   $pricelevel = $trow['pricelevel'];
   echo "   <span class='billcell'><b>" . xlt('Price Level') . ":</b></span>\n";
@@ -1518,7 +1612,7 @@ if (true) {
     if ($key == $pricelevel) echo ' selected';
     echo ">" . text($val) . "</option>\n";
   }
-  echo "   </select>\n";*/
+  echo "   </select>\n";
 }
 ?>
 
@@ -1527,7 +1621,7 @@ if (true) {
 <?php if (!$isBilled) { ?>
 
 <input type='submit' name='bn_gen' value='<?php echo xla('Group Bill');?>'/>
-<input type='submit' name='bn_save' value='<?php echo xla('Save');?>' />
+<input type='submit' name='bn_save' onclick="setEnc()" value='<?php echo xla('Save');?>' />
 &nbsp;
 <?php if (!$hasCharges) { ?>
 <input type='submit' name='bn_save_close' value='<?php echo xla('Mark as Billed');?>' />
