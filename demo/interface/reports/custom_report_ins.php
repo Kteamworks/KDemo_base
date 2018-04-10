@@ -398,6 +398,12 @@ $rateplan=$patdata['rateplan'];
                 
 				foreach ($billing as $b)				
 				{
+					
+					if($b['code_type']=='Pharmacy Charge'){
+						continue;
+					}
+					
+					
 				    //Discount
 					 $memo="Discount";
                     $discount=0;

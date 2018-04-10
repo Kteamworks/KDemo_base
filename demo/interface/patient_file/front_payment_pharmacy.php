@@ -409,7 +409,7 @@ $rateplan=$patdata['rateplan'];
                   $discount = sqlQuery("SELECT SUM(adj_amount) AS adjustments FROM ar_activity WHERE memo='$memo' and pid = '$form_pid' and encounter='$e' and sequence_no > $tmpid1") ;
 	                                         
 									  
-				  echo $totaldis=$discount['adjustments'];
+				   $totaldis=$discount['adjustments'];
 				
 				
                  while($b=sqlFetchArray($billing))				

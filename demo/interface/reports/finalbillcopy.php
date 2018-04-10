@@ -393,6 +393,9 @@ $rateplan=$patdata['rateplan'];
                 
 				foreach ($billing as $b)				
 				{
+					if($b['code_type']=='Pharmacy Charge'){
+						continue;
+					}
 				    //Discount
 					 $memo="Discount";
                     $discount=0;
@@ -480,7 +483,7 @@ $rateplan=$patdata['rateplan'];
             echo "<td class='bold' width='10%' align='right'>".xlt('Amount')."</td></b></tr>\n";
              
 			  $inres = sqlStatement("SELECT user,dtime,amount1,amount2,receipt_id,method FROM payments WHERE " .
-          "pid = ? AND encounter = ?  AND activity=1  " .
+          "pid = ? AND encounter = ?  AND activity=1 AND stage!='pharm' " .
       "ORDER BY dtime", array($form_pid,$encounter) );
     while ($inrow = sqlFetchArray($inres)) {
       $payer = empty($inrow['payer_type']) ? 'Pt' : ('Ins' . $inrow['payer_type']);
