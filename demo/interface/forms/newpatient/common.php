@@ -341,7 +341,7 @@ function setMyPatient() {
 		if($newcrop_user_role['newcrop_user_role']!='erxdoctor' && $newcrop_user_role['newcrop_user_role']!='erxnurse') { 	 ?>
     <div class="container" style="margin-bottom:15px" id="selectpat">
             <h1>Select Patient</h1>
-            <input type="text" name="city" size="30" class="city" id="TypeAheadInput" placeholder="Please Enter Patient Name or MRN">
+            <input type="text" name="city" size="30" class="city" id="TypeAheadInput" placeholder="Search by Name, Mobile or MRN No.">
     </div>
 <?php } ?>
 <!-- Required for the popup date selectors -->
