@@ -60,12 +60,13 @@ if ($_POST['form_create']) {
   $form_mname = ucwords(trim(''));
   $form_mb = ucwords(trim($_POST["mb"]));
   $form_age=trim($_POST['age']);
+  //$form_sex = trim($_POST["sex"]);
   // ===================
   // DBC SYSTEM WAS REMOVED
-  $form_sex               = trim('NotRequired') ;
+  $form_sex               = trim($_POST["sex"]);
   $form_dob               = trim($_POST["DOB"]) ;
   $form_street            = '' ;
-  $form_city              = '' ;
+  $form_city              = 'Bangalore' ;
   $form_postcode          = '' ;
   $form_countrycode       = '' ;
   // EOS DBC
@@ -193,7 +194,7 @@ if ($GLOBALS['concurrent_layout']) {
   //echo "window.location='a.php";
 //header('location:../main/finder/dynamic_finder_ph.php');
 //header('location:../forms/fee_sheet_ph/medSale.php');
- echo "window.location='../forms/fee_sheet_ph/medSale.php?set_pid=$gch_id';\n";
+ echo "window.location='../forms/fee_sheet_ph/other_medSale.php?set_pid=$gch_id';\n";
 
    // "set_pid=$pid&is_new=1';\n";
 } else {
