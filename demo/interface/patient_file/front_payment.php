@@ -1958,7 +1958,7 @@ $discount=0;
 	  "pid = ? and encounter = ? ",array($pid,$enc));
 	 $iamount = sqlQuery("SELECT sum(approved_amt) approved_amt  FROM billing_activity_final WHERE " .
 	  "pid = ? and encounter = ? ",array($pid,$enc));
-	  $duept= $brow['amount'] + $srow['amount'] - $drow['payments'] - $drow['adjustments']- $iamount['approved_amt'];
+	  $duept= $brow['amount'] + $srow['amount'] - $drow['payments'] - $drow['adjustments'];
 	 }
     echoLine("form_upay[$enc]",$dispdate, $value['charges'],
       $dpayment_pat, ($dpayment + $dadjustment),$discount, $duept, $enc,$inscopay,$patcopay);
