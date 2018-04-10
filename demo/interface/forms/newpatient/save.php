@@ -129,7 +129,7 @@ if ($mode == 'new')
       "provider_id = '" . add_escape_custom($provider_id) . "'"),
       "newpatient", $pid, $userauthorized, $date);
 	   sqlQuery("Update patient_data set rateplan=? where pid=?",array($rateplan,$pid)); 
-	   sqlQuery("Update insurance_data set provider=? where id=?",array($tpaid,$pid));
+	   sqlQuery("Update insurance_data set provider=? where pid=?",array($tpaid,$pid));
 	$p=sqlQuery("select date from patient_data where pid='$pid'");
 	sqlFetchArray($p);
 	$regdate=$p['date'];
@@ -959,7 +959,7 @@ else if ($mode == 'update')
     "WHERE id = '" . add_escape_custom($id) . "'");
 	
     sqlQuery("Update patient_data set rateplan=? where pid=?",array($rateplan,$pid));
- sqlQuery("Update insurance_data set provider=? where id=?",array($tpaid,$pid));	
+ sqlQuery("Update insurance_data set provider=? where pid=?",array($tpaid,$pid));	
 	// billing_main_copy needs to be changed here / updated. 
    }
 	}
