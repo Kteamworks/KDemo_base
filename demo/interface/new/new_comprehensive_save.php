@@ -120,7 +120,7 @@ $facility=sqlStatement("select name from facility where id='".$genericid['facili
 $facility1=sqlFetchArray($facility);
 $facility_name=$facility1['name'];
 $regid=$genericid['genericname1'];
-$msg = 'Thanks for Registration with "'.$facility_name.'" Hospital. Your Registration Id is "'.$regid.'" ';
+$msg = 'Thank you for Registering with "'.$facility_name.'" Hospital. Your Registration Id is "'.$regid.'" ';
 $priority = 'sdnd';
 $sms_type = 'normal';
 $data='user='.$user.'&pass='.$password.'&sender='.$sender_id.'&phone='.$sender.'&text='.$msg.'&stype='.$sms_type.'&priority=sdnd'; 
