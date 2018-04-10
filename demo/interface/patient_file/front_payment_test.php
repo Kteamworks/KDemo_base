@@ -892,7 +892,7 @@ $rateplan=$patdata['rateplan'];
 	// echo "<tr style='border-bottom: 1px solid #000;'><td class='bold' colspan=6 style='text-align:right'>".xlt('Net Payments :')."&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp"."</td><td class='text'>" . oeFormatMoney($nettotal) . "</td></tr>";
 	echo "<tr style='border-top: 1px solid #000;' ><td></td><td></td><td></td><td></td><td class='bold' style='border-bottom: 0px solid #000;' nowrap style='text-align:right'>".xlt('Patient Payments ')."</td><td class='text' style='border-bottom: 0px solid #000;'align='right' >" ."". oeFormatMoney($nettotal) . "</td></tr>";
   
-  	echo "<tr><td></td><td></td><td></td><td></td><td class='bold' style='border-bottom: 1px solid #000;'  style='align:right' nowrap>".xlt('Insurance Payments')."</td><td class='text' style='border-bottom: 1px solid #000;' align='right'>" . oeFormatMoney($approved_amt) . "</td></tr>";
+  	echo "<tr><td></td><td></td><td></td><td></td><td class='bold' style='border-bottom: 1px solid #000;'  style='align:right' nowrap>".xlt('Approved Amount')."</td><td class='text' style='border-bottom: 1px solid #000;' align='right'>" . oeFormatMoney($approved_amt) . "</td></tr>";
 	
 	
   echo "<tr><td></td><td></td><td></td><td></td><td class='bold' style='border-bottom: 0px solid #000;' style='align:right' nowrap>".xlt('Patient Due')."</td><td class='text' style='border-bottom: 0px solid #000;' align='right'>" . oeFormatMoney($total-$nettotal-$approved_amt-$totaldis) . "</td></tr>";

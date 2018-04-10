@@ -863,6 +863,7 @@ $row3=sqlFetchArray($row32);
 $approve=sqlStatement("SELECT * from billing_activity_final where encounter='".$encounter."'");
 $approved=sqlFetchArray($approve);
 $approved_amt=$approved['approved_amt'];
+$approved_paid=$approved['rec_amt'];
 $dob = strtotime($patdata['DOB']);
 $current_time = time();
 $age_years = date('Y',$current_time) - date('Y',$dob);
