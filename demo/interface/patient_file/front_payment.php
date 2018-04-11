@@ -2073,8 +2073,9 @@ if($FP==1 && $ins1==0)
 ?>  
 
 
-<input type='submit' name='form_save' value='<?php echo htmlspecialchars( xl('Confirm payment & Print Invoice'), ENT_QUOTES);?>' /> &nbsp;
-<input type='button' value='<?php echo xla('Cancel'); ?>' onclick='document.location.href="../patient_file/encounter/forms.php"' />
+<input type='submit' name='form_save' value='<?php echo htmlspecialchars( xl('Confirm payment & Print Invoice'), ENT_QUOTES);?>'onclick = "this.style.visibility='hidden', loading.style.visibility='visible',cncl.style.visibility='hidden'" /> &nbsp; 
+<input type='button'  name='cncl' value='<?php echo xla('Cancel'); ?>' onclick='document.location.href="../patient_file/encounter/forms.php"' />
+<img src="InternetSlowdown_Day.gif" alt="" border="0" name = "loading" style="display: block; margin: 0 auto; width: 100px;visibility:hidden;">
 <?php  } ?>
 <input type="hidden" name="hidden_patient_code" id="hidden_patient_code" value="<?php echo attr($pid);?>"/>
 <input type='hidden' name='ajax_mode' id='ajax_mode' value='' />
