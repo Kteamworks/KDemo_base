@@ -1068,6 +1068,7 @@ if (!empty($reg)) {
 	  <!--<?php genMiscLink('RBot','pay','1',xl('Take Payment'),'patient_file/front_payment_pharmacy.php'); ?>-->
 	   <!--<?php genMiscLink('RTop','rep','0',xl('Print Bill'),'reports/custom_report_pharmacy.php'); ?>-->
 	  <?php genMiscLink('RTop','adm','0',xl('Stock Purchase'),'drugs/drug_inventory.php'); ?>
+	   
 	  <?php genMiscLink('RTop','rep','0',xl('Daily Reports'),'reports/inventory_transactions.php'); ?>
 	  <?php genMiscLink('RBot','adm','0',xl('Schedule H Sale'),'patient_file/schedule_h.php'); ?>
 	   <?php genMiscLink('RBot','adm','0',xl('Summary'),'patient_file/pharmacy_billed_patients.php'); ?>
@@ -1116,7 +1117,8 @@ if (!empty($reg)) {
     <ul class="treeview-menu">
 	<?php if ( $newcrop_user_role['newcrop_user_role']=='erxadmin' || $newcrop_user_role['newcrop_user_role']=='erxlab') { ?>
 	<?php genMiscLink('RTop','rep','0',xl('Collection'),'reports/collected_amount.php'); ?>
-	<?php genMiscLink('RTop','rep','0',xl('Main Report'),'reports/briefreport.php'); ?>
+	<?php genMiscLink('RTop','adm','0',xl('Drug Licence'),'drugs/drug_licence.php'); ?>
+	
 	<li><a href="#"><span>Lab Admin</span><span class="pull-right-container">
                   <i class="fa fa-angle-left pull-right"></i>
                 </span></a>
