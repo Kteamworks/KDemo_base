@@ -63,7 +63,7 @@ if (isset($_GET['iSortCol_0'])) {
 $where = '';
 if (isset($_GET['sSearch']) && $_GET['sSearch'] !== "") {
 
-
+ $sSearch = add_escape_custom($_GET['sSearch']);  
   foreach ($aColumns as $colname) {
     $where .= $where ? "OR " : "WHERE ( ";
     if ($colname == 'name') {
@@ -140,9 +140,13 @@ $out = array(
   "iTotalDisplayRecords" => $iFilteredTotal,
   "aaData"               => array()
 );
-
-$query ="SELECT $sellist FROM form_encounter a,patient_data b,t_form_ot c $where where a.pid=b.pid and a.encounter=c.encounter and a.pc_catid=12 and c.status=1  group by a.pid,a.encounter  order by $orderby, c.status ,a.encounter desc  $limit";
-
+if($where)
+{
+$query ="SELECT $sellist FROM form_encounter a,patient_data b,t_form_ot c $where AND a.pid=b.pid and a.encounter=c.encounter and a.pc_catid=12 and c.status=1  group by a.pid,a.encounter  order by $orderby, c.status ,a.encounter desc  $limit";
+}else
+{
+$query ="SELECT $sellist FROM form_encounter a,patient_data b,t_form_ot c  where a.pid=b.pid and a.encounter=c.encounter and a.pc_catid=12 and c.status=1  group by a.pid,a.encounter  order by $orderby, c.status ,a.encounter desc  $limit";
+}
 $res = sqlStatement($query);
 while ($row = sqlFetchArray($res)) {
  

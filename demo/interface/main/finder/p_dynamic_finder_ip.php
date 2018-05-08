@@ -32,7 +32,7 @@ while ($row = sqlFetchArray($res)) {
   $header .= text($title);
   $header .= "</th>\n";
    $header0 .= "   <td align='center'><input type='text' size='10' ";
-  $header0 .= "value='' class='search_init' /></td>\n"; 
+  $header0 .= "value='' class='search_init' placeholder='Search column'  /></td>\n"; 
   if ($coljson) $coljson .= ", ";
   $coljson .= "{\"sName\": \"" . addcslashes($colname, "\t\r\n\"\\") . "\"}";
   ++$colcount;
