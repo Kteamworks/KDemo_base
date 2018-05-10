@@ -62,7 +62,7 @@ if (isset($_GET['iSortCol_0'])) {
 //
 $where = '';
 if (isset($_GET['sSearch']) && $_GET['sSearch'] !== "") {
-
+$sSearch = add_escape_custom($_GET['sSearch']);
 
   foreach ($aColumns as $colname) {
     $where .= $where ? "OR " : "WHERE ( ";
@@ -71,7 +71,10 @@ if (isset($_GET['sSearch']) && $_GET['sSearch'] !== "") {
         "fname LIKE '$sSearch%' OR " .
         "mname LIKE '$sSearch%' OR " .
         "lname LIKE '$sSearch%' ";
-    }
+    }else if($colname == 'procedure_order_id') {
+		$where .=
+		"d.procedure_order_id LIKE '$sSearch%' ";
+	}
     else {
       $where .= "`" . escape_sql_column_name($colname,array('patient_data','form_encounter','procedure_order','procedure_report')) . "` LIKE '$sSearch%' ";
     }
@@ -92,7 +95,10 @@ for ($i = 0; $i < count($aColumns); ++$i) {
         "fname LIKE '$sSearch%' OR " .
         "mname LIKE '$sSearch%' OR " .
         "lname LIKE '$sSearch%' )";
-    }
+    }else if($colname == 'procedure_order_id') {
+		$where .=
+		" d.procedure_order_id LIKE '$sSearch%' ";
+	}
 	
     else {
       $where .= " `" . escape_sql_column_name($colname,array('patient_data','form_encounter','procedure_order','procedure_report')) . "` LIKE '$sSearch%'";
@@ -143,9 +149,13 @@ $out = array(
   "iTotalDisplayRecords" => $iFilteredTotal,
   "aaData"               => array()
 );
-
-$query ="SELECT $sellist FROM form_encounter a,patient_data b,procedure_order c,procedure_report d $where where a.pid=b.pid and a.encounter=c.encounter_id and c.procedure_order_id=d.procedure_order_id and d.report_status='final' and  d.review_status='received' and d.report_collected=0  group by a.pid,a.encounter  order by $orderby, d.report_status ,a.encounter desc  $limit";
-
+if($where)
+{
+$query ="SELECT $sellist FROM form_encounter a,patient_data b,procedure_order c,procedure_report d $where and a.pid=b.pid and a.encounter=c.encounter_id and c.procedure_order_id=d.procedure_order_id and d.report_status='final' and  d.review_status='received' and d.report_collected=0  group by a.pid,a.encounter  order by $orderby, d.report_status ,a.encounter desc  $limit";
+}else
+{
+$query ="SELECT $sellist FROM form_encounter a,patient_data b,procedure_order c,procedure_report d where a.pid=b.pid and a.encounter=c.encounter_id and c.procedure_order_id=d.procedure_order_id and d.report_status='final' and  d.review_status='received' and d.report_collected=0  group by a.pid,a.encounter  order by $orderby, d.report_status ,a.encounter desc  $limit";
+}
 $res = sqlStatement($query);
 while ($row = sqlFetchArray($res)) {
  
