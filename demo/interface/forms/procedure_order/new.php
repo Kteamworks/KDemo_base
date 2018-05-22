@@ -298,7 +298,9 @@ td {
  padding-left:2px;
  padding-right:2px;
 }
-
+.item {
+font-size: 9pt;
+}
 </style>
 
 <style type="text/css">@import url(<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar.css);</style>
@@ -526,7 +528,7 @@ margin-bottom: 10px;' class="pull-right" onclick="top.restoreSession();location=
 
 </p>
 
-<div class="">
+<div class="container-fluid">
 <div class="col-md-8">
 <?php $newcrop_user_role=sqlQuery("select newcrop_user_role from users where username='".$_SESSION['authUser']."'"); ?>
 

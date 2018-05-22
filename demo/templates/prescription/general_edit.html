@@ -277,10 +277,7 @@ $vid=sqlStatement("SELECT form_id from forms where encounter='".$_SESSION['encou
 <div class="row">
 <div class="col-md-7">
 <form name="prescribe" id="prescribe" method="post" action="{$FORM_ACTION}">
-<table>
-    <tr><td class="title"><font><b>{xl t='Add Prescription'}</b></font>&nbsp;</td>
-	</tr>
-	</table>
+<h3><b>{xl t='Add Prescription'}</b></font>&nbsp;</h3>
 <table class="displaynone">
     <tr><td class="title"><font><b>{xl t='Add'}/{xl t='Edit'}</b></font>&nbsp;</td>
 		<td><a href=# onclick="submitfun();" class="css_button_small"><span>{xl t='Save'}</span></a>
@@ -344,10 +341,9 @@ $vid=sqlStatement("SELECT form_id from forms where encounter='".$_SESSION['encou
 </tr>
 {if $DRUG_ARRAY_VALUES}
 <tr ng-controller="Main" ng-click="showAlert(dessert)" class="displayblock">
-	<td COLSPAN="1" class="text" ALIGN="right" VALIGN="MIDDLE" >&nbsp; {xl t='in-house Drugs: '} </td>
 	<td COLSPAN="2" ALIGN="LEFT" VALIGN="MIDDLE" >
-	<input type = "text" ng-model = "yourName" placeholder = "Search by drug name..." style="    margin-bottom: 17%;">
-		<select name="drug_id" onchange="drugselected(this)" multiple ng-model="selectedValues" ng-change="search2()">
+	<input type = "text" ng-model = "yourName" class="form-control" placeholder = "Search in-house Drugs">
+		<select name="drug_id" onchange="drugselected(this)"  class="form-control" multiple ng-model="selectedValues" ng-change="search2()">
 		<option  ng-repeat="cust in customers | filter: yourName" value="<% cust.id %>"><% cust.name %></option>
      
 		</select>
@@ -586,11 +582,18 @@ var ModalInstanceCtrl = function ($scope,$http, $modalInstance, userForm) {
 }
             $http(req).success(function(data){
                     console.log(data);
-					$.post('templates/prescription/getPrescription.php', function(current) {
+										if(data == 1) {
 					
+			$.post('templates/prescription/getPrescription.php', function(current) {
         $('#myDiv').html(current);
     });
-					BootstrapDialog.alert('The Drug has been saved as prescription!');
+	BootstrapDialog.alert('The Drug has been saved as prescription!');
+					}
+					else {
+					BootstrapDialog.alert('Oops! something went wrong please try again.');
+					}
+
+
                     }).error(function(error){
                     console.log(error);
                });

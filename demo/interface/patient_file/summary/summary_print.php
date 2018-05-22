@@ -1246,10 +1246,29 @@ AND encounter = ?";
 		 if($pres['form'] == 1) { $drug_form = 'TAB'; }
 			else if($pres['form'] == 2) { $drug_form = 'SYR'; }
 			else if($pres['form'] == 3) { $drug_form = 'INJ'; }
-			$qtyz = str_replace(".00", "", (string)number_format ($pres['dosage'], 2, ".", "")); ?>
+			$qtyz = str_replace(".00", "", (string)number_format ($pres['dosage'], 2, ".", ""));
+						 $times = explode('-',$pres['drug_intervals']);
+  $time1 = $times[0];
+    $time2 = $times[1];
+	  $time3 = $times[2];
+	if($time1 == 0.5) {
+		$f1= '<span>&#189;</span>';
+	} else {
+		$f1 = $time1;
+	}
+	if($time2 == 0.5) {
+		$f2= '<span>&#189;</span>';
+	} else {
+		$f2 = $time2;
+	}	if($time3 == 0.5) {
+		$f3= '<span>&#189;</span>';
+	} else {
+		$f3 = $time3;
+	}
+$interval= $f1.'-'.$f2.'-'.$f3;			?>
 <tr>
 <td class="text-left"><?php echo $pres['drug']; ?>&nbsp;<sub>(<?php echo $drug_form ?>)</sub> <?php echo $qtyz ?> mg</td>
-<td class="text-left"><?php echo $pres['drug_intervals']?> (<?php echo $pres['drug_meal_time'] ?>) for <?php echo $pres['duration']?> Weeks</td>
+<td class="text-left"><?php echo $interval; ?> (<?php echo $pres['drug_meal_time'] ?>) for <?php echo $pres['duration']?> Weeks</td>
 </tr>
 <?php
 		  }
