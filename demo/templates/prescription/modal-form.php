@@ -65,16 +65,19 @@ $results = sqlStatement($qry, array($drug_id));
 			<div class="row"><div class="col-md-2">
 			<select name="take1" ng-model="take1"  class="form-control" ng-required="false">
   <option value="0">0</option>
+     <option value="0.5"><span>&#189;</span></option>
     <option value="1" selected="selected">1</option>
     <option value="2">2</option>
  </select></div><div class="col-md-2">
  <select name="take2" class="form-control" ng-model="take2"  ng-required="false">
     <option value="0" selected="selected">0</option>
+	   <option value="0.5"><span>&#189;</span></option>
     <option value="1">1</option>
     <option value="2">2</option>
  </select></div><div class="col-md-2">
  <select name="take3" class="form-control" ng-model="take3"  ng-required="false">
    <option value="0">0</option>
+      <option value="0.5"><span>&#189;</span></option>
     <option value="1" selected="selected">1</option>
     <option value="2">2</option>
  </select> </div><div class="col-md-4">

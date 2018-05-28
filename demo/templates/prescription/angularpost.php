@@ -14,7 +14,7 @@ $drug_id = implode(';', $values->drugId);
 
 // mysql_select_db('mhat', $con);
 
-	$qry_em = 'select count(*) as cnt from prescriptions where (drug_id ="' . $drug_id . '" AND patient_id = "' . $ptid . '" AND encounter= "'.$encounter.'")';
+	$qry_em = 'select count(*) as cnt from prescriptions where (drug_id ="' . $drug_id . '" AND dosage="'.$drug_dosage.'" AND patient_id = "' . $ptid . '" AND encounter= "'.$encounter.'")';
 	    $qry_res1 = sqlStatement($qry_em);
 if($qry_res1 == 'false') {
 	echo "false statement";
@@ -34,9 +34,7 @@ $drug_tmp = mysql_fetch_object($drug_tmp1);
     $qry_res = sqlStatement($qry);
 	
     if ($qry_res) {
-        $arr = array('msg' => "Data saved Successfully!!!", 'error' => '');
-        $jsn = json_encode($arr);
-        print_r($jsn);
+echo 1;
     } else {
 		$dberr = mysql_error();
         $arr = array('msg' => "", 'error' => 'Error In inserting record');
