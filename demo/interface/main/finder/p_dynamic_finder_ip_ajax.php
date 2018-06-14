@@ -64,7 +64,7 @@ if (isset($_GET['iSortCol_0'])) {
 $where = '';
 if (isset($_GET['sSearch']) && $_GET['sSearch'] !== "") {
 
-
+$sSearch = add_escape_custom($_GET['sSearch']);  
   foreach ($aColumns as $colname) {
     $where .= $where ? "OR " : "WHERE ( ";
     if ($colname == 'name') {
@@ -172,7 +172,7 @@ if($where)
 {
 	
 $query ="SELECT $sellist FROM form_encounter a,patient_data b,t_form_admit c $where AND a.pid=b.pid AND a.encounter=c.encounter AND a.pc_catid=12  AND c.status='admit'  group by a.pid,a.encounter  order by  $orderby ,c.status ,a.encounter desc  $limit";
-var_dump($query);
+//var_dump($query);
 }else{
 
 $query ="SELECT $sellist FROM form_encounter a,patient_data b,t_form_admit c  where a.pid=b.pid and a.encounter=c.encounter and a.pc_catid=12 and c.status='admit'  group by a.pid,a.encounter  order by  $orderby, c.status ,a.encounter desc  $limit";
