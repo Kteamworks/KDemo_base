@@ -60,6 +60,7 @@ if ($_POST['form_create']) {
   $form_mname = ucwords(trim(''));
   $form_mb = ucwords(trim($_POST["mb"]));
   $form_age=trim($_POST['age']);
+  $doctor_fname = ucwords(trim($_POST["dname"]));
   //$form_sex = trim($_POST["sex"]);
   // ===================
   // DBC SYSTEM WAS REMOVED
@@ -159,7 +160,7 @@ $form_dob = date("Y-m-d",$dob1); // getting the date of birth here
       "pid = '" . add_escape_custom($pid) . "', " .
       "encounter = '" . add_escape_custom($encounter) . "', " .
       "pos_code = '" . add_escape_custom($pos_code) . "', " .
-      "provider_id = '" . add_escape_custom($provider_id) . "'"),
+      "doctor = '" . add_escape_custom($doctor_fname) . "'"),
     "newpatient", $pid, $userauthorized, $date);
 /*	
   //function addBilling($encounter_id, $code_type, $code, $code_text, $pid,

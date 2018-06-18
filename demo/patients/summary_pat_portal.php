@@ -795,15 +795,21 @@ $str = $_GET['item_number'];
 <?php } // end CCR/CCD reporting options ?>
 
 <?php echo "<tr><td width='650px'>";
+
+
+	//expand_collapse_widget($widgetTitle, $widgetLabel, $widgetButtonLabel , $widgetButtonLink, $widgetButtonClass, $linkMethod, $bodyClass, $widgetAuth, $fixedWidth);
 // Lab tests results expand collapse widget
 $widgetTitle = xl("Lab Test Results");
 $widgetLabel = "labtestresults";
 $widgetButtonLabel = xl("");
-$widgetButtonClass = "hidden";
-$linkMethod = "html";
-$bodyClass = "notab";
-$widgetAuth = false;
-$fixedWidth = true;
+$widgetButtonLink = "../../demo/interface/patient_file/summary/labdata.php?pid=".htmlspecialchars($pid, ENT_QUOTES);
+        $widgetButtonClass = "edit_event iframe";
+//$widgetButtonClass = "hidden";
+$linkMethod = "";
+$bodyClass = "summary_item small";
+//$bodyClass = "notab";
+$widgetAuth = true;
+$fixedWidth = false;
 expand_collapse_widget($widgetTitle, $widgetLabel, $widgetButtonLabel,
   $widgetButtonLink, $widgetButtonClass, $linkMethod, $bodyClass,
   $widgetAuth, $fixedWidth);

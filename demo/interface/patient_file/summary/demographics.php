@@ -608,7 +608,7 @@ $(window).load(function() {
   //Patient Portal
 
   // If patient is deceased, then show this (along with the number of days patient has been deceased for)
-  //$days_deceased = is_patient_deceased($pid);
+  $days_deceased = is_patient_deceased($pid);
   if ($days_deceased) {
     echo "<td style='padding-left:1em;font-weight:bold;color:red'>" . htmlspecialchars( xl('DECEASED') ,ENT_NOQUOTES) . " (" . htmlspecialchars($days_deceased,ENT_NOQUOTES) . " " .  htmlspecialchars( xl('days ago') ,ENT_NOQUOTES) . ")</td>";
   }

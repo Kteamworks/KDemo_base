@@ -156,6 +156,19 @@ while ($orow = sqlFetchArray($ores)) {
   </td>
  </tr>
 
+ <tr>
+  <td>
+   <span class='bold'><?php xl('Gender','e');?>: </span>
+  </td>
+  <td>
+   <select name='sex' style="width: 10.5em;" required >
+   <option value="">Select</option>
+  <option value="Male">Male</option>
+  <option value="Female">Female</option>
+  
+</select>
+  </td>
+ </tr>
  
 
  <tr>
@@ -177,19 +190,17 @@ while ($orow = sqlFetchArray($ores)) {
   </td>
  </tr>
  
+ 
+ 
  <tr>
   <td>
-   <span class='bold'><?php xl('Gender','e');?>: </span>
+   <span class='bold'><?php xl('Doctor','e');?>: </span>
   </td>
   <td>
-   <select name='sex' style="width: 10.5em;" required >
-   <option value="">Select</option>
-  <option value="Male">Male</option>
-  <option value="Female">Female</option>
-  
-</select>
+   <input type='entry' size='15' name='dname' value='' onkeypress="return lettersOnly()" required>
   </td>
  </tr>
+ 
 
 
 
