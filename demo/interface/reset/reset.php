@@ -25,7 +25,7 @@ if(!empty($_POST['token'])) {
 					        require_once("$srcdir/authentication/password_change.php");
         $password_err_msg="";
 		$adminID = '1';
-		$adminpass = 'pass11';
+		$adminpass = 'pass';
         $success=update_password($adminID,$user['id'],$adminpass,$password,$password_err_msg);
 
         if(!$success)
@@ -285,9 +285,17 @@ input:not(:focus):valid ~ .floating-label{
     </ul>
   </div>
 		<div class="row">
-  
+  <?php
+          $get_token = $_GET['token'];
+		$get_password_tokens = sqlQuery("SELECT * from password_resets where token='$get_token'");
+		        if ($get_password_tokens) {
+					$uid = $get_password_tokens['email'];
+				
+				}
+
+  ?>
         <div class="form-group has-feedback input-field col s12" ng-class="{ 'has-error' : add_user_form.user_email.$dirty && add_user_form.user_email.$invalid }">
-            <input type="text" class="form-control validate"  id="user_email" name="user_email" ng-model="email" required>
+            <input type="text" class="form-control validate"  id="user_email" name="user_email" placeholder="<?php echo $uid; ?>" value="<?php echo $uid; ?>" ng-model="email" readonly>
             <label for="email" data-error="wrong" data-success="right" class="active">User ID</label>
 			<span class="glyphicon glyphicon-envelope form-control-feedback" style="top: 10px;"></span>
 			         <div class="help-block" ng-messages="add_user_form.user_email.$error" ng-if="add_user_form.user_email.$dirty">

@@ -98,7 +98,7 @@ for ($i = 0; $i < count($aColumns); ++$i) {
 // Compute list of column names for SELECT clause.
 // Always includes pid because we need it for row identification.
 //
-$sellist = 'a.pid,b.encounter';
+$sellist = 'distinct a.pid,b.encounter';
 $today = date('Y-m-d',strtotime("+0 days"));
 foreach ($aColumns as $colname) {
   if ($colname == 'pid') continue;
@@ -137,6 +137,7 @@ form_encounter b ON d.encounter=b.encounter
 LEFT JOIN openemr_postcalendar_categories c 
 ON c.pc_catid=b.pc_catid 
  WHERE date(b.date)='".$today."' 
+  GROUP BY b.encounter
 order by b.encounter desc  $limit";
 $res = sqlStatement($query);
 while ($row = sqlFetchArray($res)) {
