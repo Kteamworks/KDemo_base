@@ -19,7 +19,25 @@ $pid = $_SESSION["pid"];
 		   			while ( $pres=sqlFetchArray($prescription)) {
 												$prev_drug = $pres['drug'];
 						$drug_meal_time = $pres['drug_meal_time'];
-						$interval = $pres['drug_intervals'];
+						 $times = explode('-',$pres['drug_intervals']);
+  $time1 = $times[0];
+    $time2 = $times[1];
+	  $time3 = $times[2];
+	if($time1 == 0.5) {
+		$f1= '<span>&#189;</span>';
+	} else {
+		$f1 = $time1;
+	}
+	if($time2 == 0.5) {
+		$f2= '<span>&#189;</span>';
+	} else {
+		$f2 = $time2;
+	}	if($time3 == 0.5) {
+		$f3= '<span>&#189;</span>';
+	} else {
+		$f3 = $time3;
+	}
+$interval= $f1.'-'.$f2.'-'.$f3;
 						$duration = $pres['duration'];
 						$time_frame = $pres['time_frame'];
 						$days = $pres['days'];

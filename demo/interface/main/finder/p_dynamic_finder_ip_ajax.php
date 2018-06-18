@@ -58,12 +58,13 @@ if (isset($_GET['iSortCol_0'])) {
 	}
 }
 
+
 // Global filtering.
 //
 $where = '';
 if (isset($_GET['sSearch']) && $_GET['sSearch'] !== "") {
 
-
+$sSearch = add_escape_custom($_GET['sSearch']);  
   foreach ($aColumns as $colname) {
     $where .= $where ? "OR " : "WHERE ( ";
     if ($colname == 'name') {
@@ -71,7 +72,21 @@ if (isset($_GET['sSearch']) && $_GET['sSearch'] !== "") {
         "fname LIKE '$sSearch%' OR " .
         "mname LIKE '$sSearch%' OR " .
         "lname LIKE '$sSearch%' ";
-    }
+    } else if($colname== 'admit'){
+		 $where .=
+        "admit_to_ward LIKE '$sSearch%' OR " .
+        "admit_to_bed LIKE '$sSearch%' ";
+	
+  }
+  else if($colname== 'status'){
+		 $where .=
+        "c.status LIKE '$sSearch%' ";
+	
+  }else if($colname== 'rateplan'){
+		 $where .=
+        "b.rateplan LIKE '$sSearch%' ";
+	
+  }
     else {
       $where .= "`" . escape_sql_column_name($colname,array('patient_data','form_encounter','t_form_admit','billing')) . "` LIKE '$sSearch%' ";
     }
@@ -133,9 +148,14 @@ $iTotal = $row['count'];
 // Get total number of rows in the table after filtering.
 //
 
-
-$row = sqlQuery("SELECT COUNT(distinct(a.encounter)) AS count FROM form_encounter a,patient_data b,t_form_admit c where a.pid=b.pid and a.encounter=c.encounter and a.pc_catid=12 and c.status='admit'");
-
+if($where)
+{
+$row = sqlQuery("SELECT COUNT(distinct(a.encounter)) AS count FROM form_encounter a,patient_data b,t_form_admit c $where AND a.pid=b.pid and a.encounter=c.encounter and a.pc_catid=12 and c.status='admit'");
+}
+else
+{
+	$row = sqlQuery("SELECT COUNT(distinct(a.encounter)) AS count FROM form_encounter a,patient_data b,t_form_admit c where a.pid=b.pid and a.encounter=c.encounter and a.pc_catid=12 and c.status='admit'");
+}
 
 $iFilteredTotal = $row['count'];
 
@@ -148,8 +168,15 @@ $out = array(
   "aaData"               => array()
 );
 
-$query ="SELECT $sellist FROM form_encounter a,patient_data b,t_form_admit c $where where a.pid=b.pid and a.encounter=c.encounter and a.pc_catid=12 and c.status='admit'  group by a.pid,a.encounter  order by $orderby, c.status ,a.encounter desc  $limit";
+if($where)
+{
+	
+$query ="SELECT $sellist FROM form_encounter a,patient_data b,t_form_admit c $where AND a.pid=b.pid AND a.encounter=c.encounter AND a.pc_catid=12  AND c.status='admit'  group by a.pid,a.encounter  order by  $orderby ,c.status ,a.encounter desc  $limit";
+//var_dump($query);
+}else{
 
+$query ="SELECT $sellist FROM form_encounter a,patient_data b,t_form_admit c  where a.pid=b.pid and a.encounter=c.encounter and a.pc_catid=12 and c.status='admit'  group by a.pid,a.encounter  order by  $orderby, c.status ,a.encounter desc  $limit";
+}
 $res = sqlStatement($query);
 while ($row = sqlFetchArray($res)) {
  

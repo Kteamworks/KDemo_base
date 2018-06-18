@@ -73,7 +73,11 @@ if (isset($_GET['sSearch']) && $_GET['sSearch'] !== "") {
         "lname LIKE '$sSearch%' OR " .
         "fname LIKE '$sSearch%' OR " .
         "mname LIKE '$sSearch%' ";
-    }
+    }else if($colname== 'provider'){
+    $where .=
+	  "provider_id LIKE '$sSearch%' ";
+	
+  }
     else {
       $where .= "`" . escape_sql_column_name($colname,array('patient_data','form_encounter','users','openemr_postcalendar_categories')) . "` LIKE '$sSearch%' ";
     }
@@ -93,7 +97,10 @@ for ($i = 0; $i < count($aColumns); ++$i) {
         "lname LIKE '$sSearch%' OR " .
         "fname LIKE '$sSearch%' OR " .
         "mname LIKE '$sSearch%' )";
-    }
+    }else if($colname== 'provider'){
+    $where .=
+	  " provider_id LIKE '$sSearch%' ";
+	}
     else {
       $where .= " `" . escape_sql_column_name($colname,array('patient_data','form_encounter','users','openemr_postcalendar_categories')) . "` LIKE '$sSearch%'";
     }
@@ -174,11 +181,23 @@ $out = array(
 );
 if($row2["newcrop_user_role"]=="erxnurse")
 {
-$query ="SELECT $sellist FROM patient_data a,form_encounter b ,openemr_postcalendar_categories c where a.pid=b.pid and c.pc_catid=b.pc_catid and date(b.date)='".$today."' order by encounter desc  $limit";
+	if($where)
+	{
+$query ="SELECT $sellist FROM patient_data a,form_encounter b ,openemr_postcalendar_categories c $where and  a.pid=b.pid and c.pc_catid=b.pc_catid and date(b.date)='".$today."' order by encounter desc  $limit";
+	}else
+	{
+		$query ="SELECT $sellist FROM patient_data a,form_encounter b ,openemr_postcalendar_categories c where a.pid=b.pid and c.pc_catid=b.pc_catid and date(b.date)='".$today."' order by encounter desc  $limit";
+	}
 }
 else 
 {
+	if($where)
+	{
+$query = "SELECT $sellist FROM patient_data a,form_encounter b ,openemr_postcalendar_categories c $where and a.pid=b.pid and c.pc_catid=b.pc_catid and date(b.date)='".$today."' order by encounter desc  $limit";
+    }else
+	{
 $query = "SELECT $sellist FROM patient_data a,form_encounter b ,openemr_postcalendar_categories c where a.pid=b.pid and c.pc_catid=b.pc_catid and date(b.date)='".$today."' order by encounter desc  $limit";
+	}
 }
 $res = sqlStatement($query);
 while ($row = sqlFetchArray($res)) {

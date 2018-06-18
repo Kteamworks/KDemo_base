@@ -62,7 +62,7 @@ if (isset($_GET['iSortCol_0'])) {
 //
 $where = '';
 if (isset($_GET['sSearch']) && $_GET['sSearch'] !== "") {
-
+$sSearch = add_escape_custom($_GET['sSearch']);
 
   foreach ($aColumns as $colname) {
     $where .= $where ? "OR " : "WHERE ( ";
@@ -71,11 +71,10 @@ if (isset($_GET['sSearch']) && $_GET['sSearch'] !== "") {
         "fname LIKE '$sSearch%' OR " .
         "mname LIKE '$sSearch%' OR " .
         "lname LIKE '$sSearch%' ";
+    }else if ($colname == 'procedure_order_id') {
+      $where .=
+        "c.procedure_order_id LIKE '$sSearch%'";
     }
-	/*	    if ($colname == 'procedure_order_id') {
-      $where .= " ( " .
-        "c.procedure_order_id LIKE '$sSearch%')";
-    } */
     else {
       $where .= "`" . escape_sql_column_name($colname,array('patient_data','form_encounter','procedure_order','procedure_order_code')) . "` LIKE '$sSearch%' ";
     }
@@ -151,7 +150,7 @@ $out = array(
   "iTotalDisplayRecords" => $iFilteredTotal,
   "aaData"               => array()
 );
-if($where != "") {
+if($where) {
 $query ="SELECT $sellist FROM patient_data b,procedure_order c,procedure_order_code d $where and c.patient_id=b.pid and c.procedure_order_id=d.procedure_order_id and c.order_status IN ('pending','collected','received')  group by b.pid,c.encounter_id,c.procedure_order_id  order by c.procedure_order_id desc  $limit";
 } else {
 	$query = "SELECT $sellist FROM patient_data b,procedure_order c,procedure_order_code d where c.patient_id=b.pid and c.procedure_order_id=d.procedure_order_id and c.order_status IN ('pending','collected','received')  group by b.pid,c.encounter_id,c.procedure_order_id  order by c.procedure_order_id desc  $limit";

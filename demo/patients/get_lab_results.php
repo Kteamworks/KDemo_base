@@ -84,8 +84,9 @@
           "ORDER BY seq, name, procedure_type_id, result_code";
 
         $rres = sqlStatement($query);
+		$proc_name=NULL;
+		$dat=NULL;
         while ($rrow = sqlFetchArray($rres)) {
-
   			if ($even) {
   				$class="class1_even";
   				$even=false;
@@ -94,12 +95,27 @@
   				$even=true;
   			}
   			$date=explode('-',$row['date_ordered']);
+			
   			echo "<tr class='".$class."'>";
-  			echo "<td>".htmlspecialchars($date[1]."/".$date[2]."/".$date[0],ENT_NOQUOTES)."</td>";
+			if($dat!=$datee)
+			{
+  			echo "<td>".htmlspecialchars($date[2]."/".$date[1]."/".$date[0],ENT_NOQUOTES)."</td>";
+			}else
+			{
+				echo "<td>".htmlspecialchars(' ',ENT_NOQUOTES)."</td>";	
+			}
+			$datee=$dat;
+			if($proc_name!=$row['procedure_name'])
+			{
   			echo "<td>".htmlspecialchars($row['procedure_name'],ENT_NOQUOTES)."</td>";
+			}else
+			{
+			echo "<td>".htmlspecialchars(' ',ENT_NOQUOTES)."</td>";	
+			}
+			$row['procedure_name']=$proc_name;
                         echo "<td>".htmlspecialchars($rrow['name'],ENT_NOQUOTES)."</td>";
                         echo "<td>".generate_display_field(array('data_type'=>'1','list_id'=>'proc_res_abnormal'),$rrow['abnormal'])."</td>";
-  			echo "<td>".htmlspecialchars($row['result'],ENT_NOQUOTES)."</td>";
+  			echo "<td>".htmlspecialchars($rrow['result'],ENT_NOQUOTES)."</td>";
                         echo "<td>".htmlspecialchars($rrow['pt2_range'],ENT_NOQUOTES)."</td>";
                         echo "<td>".generate_display_field(array('data_type'=>'1','list_id'=>'proc_unit'),$rrow['pt2_units'])."</td>";
                         echo "<td>".generate_display_field(array('data_type'=>'1','list_id'=>'proc_res_status'),$rrow['result_status'])."</td>";

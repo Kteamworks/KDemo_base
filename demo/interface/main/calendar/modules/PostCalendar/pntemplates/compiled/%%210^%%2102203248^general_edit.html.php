@@ -1,7 +1,7 @@
-<?php /* Smarty version 2.6.2, created on 2018-03-14 06:39:48
+<?php /* Smarty version 2.6.2, created on 2018-05-22 11:04:32
          compiled from C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html */ ?>
 <?php require_once(SMARTY_DIR . 'core' . DIRECTORY_SEPARATOR . 'core.load_plugins.php');
-smarty_core_load_plugins(array('plugins' => array(array('function', 'xl', 'C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html', 274, false),array('function', 'amcCollect', 'C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html', 305, false),array('function', 'html_select_date', 'C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html', 326, false),array('function', 'html_options', 'C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html', 332, false),array('function', 'html_radios', 'C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html', 420, false),)), $this); ?>
+smarty_core_load_plugins(array('plugins' => array(array('function', 'xl', 'C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html', 274, false),array('function', 'amcCollect', 'C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html', 302, false),array('function', 'html_select_date', 'C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html', 323, false),array('function', 'html_options', 'C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html', 329, false),array('function', 'html_radios', 'C:/xampp/htdocs/KDemo_base/demo/templates/prescription/general_edit.html', 416, false),)), $this); ?>
 <html>
 <head>
 <?php html_header_show(); ?>
@@ -317,11 +317,8 @@ $vid=sqlStatement("SELECT form_id from forms where encounter='".$_SESSION['encou
 <div class="col-md-7">
 <form name="prescribe" id="prescribe" method="post" action="<?php echo $this->_tpl_vars['FORM_ACTION']; ?>
 ">
-<table>
-    <tr><td class="title"><font><b><?php echo smarty_function_xl(array('t' => 'Add Prescription'), $this);?>
-</b></font>&nbsp;</td>
-	</tr>
-	</table>
+<h3><b><?php echo smarty_function_xl(array('t' => 'Add Prescription'), $this);?>
+</b></font>&nbsp;</h3>
 <table class="displaynone">
     <tr><td class="title"><font><b><?php echo smarty_function_xl(array('t' => 'Add'), $this);?>
 /<?php echo smarty_function_xl(array('t' => 'Edit'), $this);?>
@@ -407,11 +404,9 @@ $vid=sqlStatement("SELECT form_id from forms where encounter='".$_SESSION['encou
 </tr>
 <?php if ($this->_tpl_vars['DRUG_ARRAY_VALUES']): ?>
 <tr ng-controller="Main" ng-click="showAlert(dessert)" class="displayblock">
-	<td COLSPAN="1" class="text" ALIGN="right" VALIGN="MIDDLE" >&nbsp; <?php echo smarty_function_xl(array('t' => 'in-house Drugs: '), $this);?>
- </td>
 	<td COLSPAN="2" ALIGN="LEFT" VALIGN="MIDDLE" >
-	<input type = "text" ng-model = "yourName" placeholder = "Search by drug name..." style="    margin-bottom: 17%;">
-		<select name="drug_id" onchange="drugselected(this)" multiple ng-model="selectedValues" ng-change="search2()">
+	<input type = "text" ng-model = "yourName" class="form-control" placeholder = "Search in-house Drugs">
+		<select name="drug_id" onchange="drugselected(this)"  class="form-control" multiple ng-model="selectedValues" ng-change="search2()">
 		<option  ng-repeat="cust in customers | filter: yourName" value="<% cust.id %>"><% cust.name %></option>
      
 		</select>
@@ -683,11 +678,18 @@ var ModalInstanceCtrl = function ($scope,$http, $modalInstance, userForm) {
 }
             $http(req).success(function(data){
                     console.log(data);
-					$.post(\'templates/prescription/getPrescription.php\', function(current) {
+										if(data == 1) {
 					
+			$.post(\'templates/prescription/getPrescription.php\', function(current) {
         $(\'#myDiv\').html(current);
     });
-					BootstrapDialog.alert(\'The Drug has been saved as prescription!\');
+	BootstrapDialog.alert(\'The Drug has been saved as prescription!\');
+					}
+					else {
+					BootstrapDialog.alert(\'Oops! something went wrong please try again.\');
+					}
+
+
                     }).error(function(error){
                     console.log(error);
                });

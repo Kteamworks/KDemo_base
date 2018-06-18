@@ -162,7 +162,7 @@ td,th {
                 {if $units_of_measurement == 1}<td class="unfocus graph" id="temperature_metric">{else}<td class="graph" id="temperature_metric">{/if}{xl t="Temperature"}</td>
 		{if $units_of_measurement == 1}<td class="unfocus">{else}<td>{/if}{xl t="°F"}</td>
                 {if $units_of_measurement == 1}<td class="valuesunfocus">{else}<td class='currentvalues'>{/if}
-                <input type="number" min="90" max="105" size='5'  autocomplete='off' name='temperature' id='temperature_input_metric' value="{if $vitals->get_temperature() != 0}{$vitals->get_temperature()}{/if}" ;"/>
+                <input type="number" min="90" max="108" size='5'  autocomplete='off' name='temperature' id='temperature_input_metric' value="{if $vitals->get_temperature() != 0}{$vitals->get_temperature()}{/if}" ;"/>
                 </td>
         {foreach item=result from=$results}
                 <td  class='historicalvalues'>{if $result.temperature != 0}{$result.temperature}{/if}</td>
@@ -191,7 +191,7 @@ td,th {
 	        {if $units_of_measurement == 2}<td class="unfocus graph" id="height">{else}<td class="graph" id="height">{/if}{xl t="Height/Length"}</td>
 		{if $units_of_measurement == 2}<td class="unfocus">{else}<td>{/if}{xl t="in"}</td>
 		{if $units_of_measurement == 2}<td class="valuesunfocus">{else}<td class='currentvalues'>{/if}
-                <input type="number" min="0" max="11" step=".01" autocomplete='off' name='height' id='height_input' value="{if $vitals->get_height() != 0}{$vitals->get_height()}{/if}" onChange="convIntoCm('height_input');"/>
+                <input type="number" min="0" max="108" step=".01" autocomplete='off' name='height' id='height_input' value="{if $vitals->get_height() != 0}{$vitals->get_height()}{/if}" onChange="convIntoCm('height_input');"/>
                 </td>
 	{foreach item=result from=$results}
 		<td class='historicalvalues'>{if $result.height != 0}{$result.height}{/if}</td>

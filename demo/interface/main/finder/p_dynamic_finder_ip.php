@@ -32,7 +32,7 @@ while ($row = sqlFetchArray($res)) {
   $header .= text($title);
   $header .= "</th>\n";
    $header0 .= "   <td align='center'><input type='text' size='10' ";
-  $header0 .= "value='' class='search_init' /></td>\n"; 
+  $header0 .= "value='' class='search_init' placeholder='Search column'  /></td>\n"; 
   if ($coljson) $coljson .= ", ";
   $coljson .= "{\"sName\": \"" . addcslashes($colname, "\t\r\n\"\\") . "\"}";
   ++$colcount;
@@ -300,6 +300,57 @@ function openNewTopWindow(pid) {
 		<li><a href="#">Payments</a></li>
 	</ul>
 </div>
+<?php
+$progress_ipd = sqlQuery("SELECT a.current_month,b.last_month,a.current_month-b.last_month change_value,
+round(((a.current_month-b.last_month)/b.last_month)*100,0)  as change_percentage 
+FROM 
+(
+  SELECT count(id)current_month 
+  FROM form_encounter
+       WHERE date(date) BETWEEN  DATE_FORMAT(NOW() ,'%Y-%m-01') 
+                    AND NOW() 
+       AND pc_catid=12)a,
+(
+  SELECT count(id)last_month
+    FROM form_encounter
+    WHERE date(date) BETWEEN date_format(LAST_DAY(NOW() - INTERVAL 1 MONTH),'%Y-%m-01') 
+                         AND (date(NOW()) - INTERVAL 1 MONTH)
+                         AND pc_catid=12
+   )b  "); 
+
+
+$progress_bed = sqlQuery("SELECT a.current_month,b.last_month,a.current_month-b.last_month change_value,
+ round(((a.current_month-b.last_month)/b.last_month)*100,0) as change_percentage
+      FROM 
+          (
+            SELECT count(id)current_month 
+              FROM t_form_admit
+            WHERE date(admit_date) BETWEEN  DATE_FORMAT(NOW() ,'%Y-%m-01') 
+                                    AND NOW() 
+                                    AND activity=1)a,
+          (
+            SELECT count(id)last_month
+            FROM t_form_admit
+            WHERE date(admit_date) BETWEEN date_format(LAST_DAY(NOW() - INTERVAL 1 MONTH),'%Y-%m-01') 
+                         AND (date(NOW()) - INTERVAL 1 MONTH)
+                                     AND activity=1 )
+                                     b");
+$progress_discharge = sqlQuery("SELECT a.current_month,b.last_month,a.current_month-b.last_month change_value,
+ round(((a.current_month-b.last_month)/b.last_month)*100,0) as change_percentage
+      FROM 
+          (
+            SELECT count(id)current_month 
+              FROM t_form_admit
+            WHERE date(admit_date) BETWEEN  DATE_FORMAT(NOW() ,'%Y-%m-01') 
+                                    AND NOW() 
+                                    AND activity=1 AND status='discharge')a,
+          (
+            SELECT count(id)last_month
+            FROM t_form_admit
+            WHERE date(admit_date) BETWEEN date_format(LAST_DAY(NOW() - INTERVAL 1 MONTH),'%Y-%m-01') 
+                         AND (date(NOW()) - INTERVAL 1 MONTH)
+                                     AND activity=1 AND status='discharge' )
+                                     b");									 ?>
 <div class="col-md-12">
 <div class="col-md-4">
           <!-- Info Boxes Style 2 -->
@@ -307,14 +358,14 @@ function openNewTopWindow(pid) {
             <span class="info-box-icon"><i class="ion ion-ios-people-outline"></i></span>
 
             <div class="info-box-content">
-              <span class="info-box-text">TOTAL IPD REGISTRATION</span>
-              <span class="info-box-number">4</span>
+              <span class="info-box-text">IPD Registrations</span>
+              <span class="info-box-number"><?php echo $progress_ipd['current_month']; ?></span>
 
               <div class="progress">
-                <div class="progress-bar" style="width: 50%"></div>
+                <div class="progress-bar" style="width: <?php echo $progress_ipd['change_percentage']; ?>%"></div>
               </div>
                   <span class="progress-description">
-                    70% Increase in 30 Days
+                    <?php echo $progress_ipd['change_percentage']; ?>% (<?php echo $progress_ipd['last_month']; ?>) <?php if($progress_ipd['change_value'] < 0) { echo "<i class='fa fa-arrow-down' aria-hidden='true'></i>"; } else { echo "<i class='fa fa-arrow-up' aria-hidden='true'></i>"; } ?> from <?php $date = date('F', strtotime('-1 month')); echo $date; ?>
                   </span>
             </div>
             <!-- /.info-box-content -->
@@ -327,13 +378,13 @@ function openNewTopWindow(pid) {
 
             <div class="info-box-content">
               <span class="info-box-text">TOTAL ADMISSION</span>
-              <span class="info-box-number">3</span>
+               <span class="info-box-number"><?php echo $progress_bed['current_month']; ?></span>
 
               <div class="progress">
-                <div class="progress-bar" style="width: 20%"></div>
+                <div class="progress-bar" style="width: <?php echo $progress_bed['change_percentage']; ?>%"></div>
               </div>
                   <span class="progress-description">
-                    60% Increase in 30 Days
+                    <?php echo $progress_bed['change_percentage']; ?>% (<?php echo $progress_bed['last_month']; ?>) <?php if($progress_bed['change_value'] < 0) { echo "<i class='fa fa-arrow-down' aria-hidden='true'></i>"; } else { echo "<i class='fa fa-arrow-up' aria-hidden='true'></i>"; } ?> from <?php $date = date('F', strtotime('-1 month')); echo $date; ?>
                   </span>
             </div>
             <!-- /.info-box-content -->
@@ -346,13 +397,13 @@ function openNewTopWindow(pid) {
 
             <div class="info-box-content">
               <span class="info-box-text">Total IPD DISCHARGE</span>
-              <span class="info-box-number">3</span>
+                <span class="info-box-number"><?php echo $progress_discharge['current_month']; ?></span>
 
               <div class="progress">
-                <div class="progress-bar" style="width: 70%"></div>
+                <div class="progress-bar" style="width: <?php echo $progress_discharge['change_percentage']; ?>%"></div>
               </div>
                   <span class="progress-description">
-                    70% Increase in 30 Days
+                    <?php echo $progress_discharge['change_percentage']; ?>% (<?php echo $progress_discharge['last_month']; ?>) <?php if($progress_discharge['change_value'] < 0) { echo "<i class='fa fa-arrow-down' aria-hidden='true'></i>"; } else { echo "<i class='fa fa-arrow-up' aria-hidden='true'></i>"; } ?> from <?php $date = date('F', strtotime('-1 month')); echo $date; ?>
                   </span>
             </div>
 			            <!-- /.info-box-content -->

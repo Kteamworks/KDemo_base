@@ -68,7 +68,17 @@ if (isset($_GET['sSearch']) && $_GET['sSearch'] !== "") {
         "fname LIKE '$sSearch%' OR " .
         "lname LIKE '$sSearch%' OR " .
         "mname LIKE '$sSearch%' ";
-    }
+    }else if($colname == 'fees'){
+		 $where .=
+		"fee LIKE '$sSearch%' ";
+	}
+		else if($colname == 'encounter'){
+		 $where .=
+		"a.encounter LIKE '$sSearch%' ";
+	}else if($colname == 'payments'){
+		 $where .=
+		"fee LIKE '$sSearch%' ";
+	}
     else {
       $where .= "`" . escape_sql_column_name($colname,array('patient_data','form_encounter','billing','openemr_postcalendar_categories','payments')) . "` LIKE '$sSearch%' ";
     }
@@ -88,7 +98,17 @@ for ($i = 1; $i < count($aColumns); ++$i) {
         "fname LIKE '$sSearch%' OR " .
         "lname LIKE '$sSearch%' OR " .
         "mname LIKE '$sSearch%' )";
-    }
+    }else if($colname == 'fees'){
+		 $where .=
+		" fee LIKE '$sSearch%' ";
+	}
+		else if($colname == 'encounter'){
+		 $where .=
+		" a.encounter LIKE '$sSearch%' ";
+	}else if($colname == 'payments'){
+		 $where .=
+		" fee LIKE '$sSearch%' ";
+	}
     else {
       $where .= " `" . escape_sql_column_name($colname,array('patient_data','form_encounter','billing','openemr_postcalendar_categories','payments')) . "` LIKE '$sSearch%'";
     }
@@ -142,12 +162,20 @@ $out = array(
   "iTotalDisplayRecords" => $iFilteredTotal,
   "aaData"               => array()
 );
-
+if($where)
+{
 $query = "SELECT  $sellist,sum(fee) fees,(SELECT coalesce(sum(amount1+amount2),0) as pay FROM payments a  where activity=1 and encounter=d.encounter ) payments 
+FROM form_encounter a,patient_data b ,billing d,openemr_postcalendar_categories c $where and a.pc_catid=c.pc_catid and  a.pid=d.pid 
+and a.encounter=d.encounter and a.pid=b.pid 
+and d.activity=1   group by d.encounter order by d.encounter asc  $limit";
+//var_dump($query);
+}else
+{
+	$query = "SELECT  $sellist,sum(fee) fees,(SELECT coalesce(sum(amount1+amount2),0) as pay FROM payments a  where activity=1 and encounter=d.encounter ) payments 
 FROM form_encounter a,patient_data b ,billing d,openemr_postcalendar_categories c where a.pc_catid=c.pc_catid and  a.pid=d.pid 
 and a.encounter=d.encounter and a.pid=b.pid 
 and d.activity=1   group by d.encounter order by d.encounter asc  $limit";
-
+}
 $res = sqlStatement($query);
 while ($row = sqlFetchArray($res)) {
   // Each <tr> will have an ID identifying the patient.
