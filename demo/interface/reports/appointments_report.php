@@ -23,9 +23,9 @@ $patient = $_REQUEST['patient'];
 if ($patient && ! $_POST['form_from_date']) {
 	// If a specific patient, default to 2 years ago.
 	$tmp = date('Y') - 2;
-	$from_date = date("$tmp-m-d");
+	$from_date = date("$tmp-m-01");
 } else {
-	$from_date = fixDate($_POST['form_from_date'], date('Y-m-d'));
+	$from_date = fixDate($_POST['form_from_date'], date('Y-m-01'));
 	$to_date = fixDate($_POST['form_to_date'], date('Y-m-d'));
 }
 

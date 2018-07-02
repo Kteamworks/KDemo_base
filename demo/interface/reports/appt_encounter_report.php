@@ -78,10 +78,10 @@ function postError($msg) {
  }
 
  $form_facility  = isset($_POST['form_facility']) ? $_POST['form_facility'] : '';
- $form_from_date = fixDate($_POST['form_from_date'], date('Y-m-d'));
+ $form_from_date = fixDate($_POST['form_from_date'], date('Y-m-01'));
  $form_to_date = fixDate($_POST['form_to_date'], date('Y-m-d'));
  if ($_POST['form_refresh']) {
-  $form_from_date = fixDate($_POST['form_from_date'], date('Y-m-d'));
+  $form_from_date = fixDate($_POST['form_from_date'], date('Y-m-01'));
   $form_to_date = fixDate($_POST['form_to_date'], "");
 
   // MySQL doesn't grok full outer joins so we do it the hard way.
@@ -100,6 +100,7 @@ function postError($msg) {
    "LEFT OUTER JOIN patient_data AS p ON p.pid = e.pc_pid " .
    // "LEFT OUTER JOIN users AS u ON BINARY u.username = BINARY f.user WHERE ";
    "LEFT OUTER JOIN users AS u ON u.id = fe.provider_id WHERE ";
+   
   if ($form_to_date) {
    $query .= "e.pc_eventDate >= '$form_from_date' AND e.pc_eventDate <= '$form_to_date' ";
   } else {

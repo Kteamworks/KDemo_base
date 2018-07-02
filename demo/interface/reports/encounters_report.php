@@ -40,7 +40,7 @@ function show_doc_total($lastdocname, $doc_encounters) {
   }
 }
 
-$form_from_date = fixDate($_POST['form_from_date'], date('Y-m-d'));
+$form_from_date = fixDate($_POST['form_from_date'], date('Y-m-01'));
 $form_to_date = fixDate($_POST['form_to_date'], date('Y-m-d'));
 $form_provider  = $_POST['form_provider'];
 $form_facility  = $_POST['form_facility'];

@@ -167,7 +167,7 @@ function thisLineItem($patient_id, $encounter_id, $rowcat, $description, $transd
 
   if (!$INTEGRATED_AR) SLConnect();
 
-  $form_from_date = fixDate($_POST['form_from_date'], date('Y-m-d'));
+  $form_from_date = fixDate($_POST['form_from_date'], date('Y-m-01'));
   $form_to_date   = fixDate($_POST['form_to_date']  , date('Y-m-d'));
   $form_facility  = $_POST['form_facility'];
   $docuser  = $_POST['doc'];
