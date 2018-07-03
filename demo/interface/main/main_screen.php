@@ -111,6 +111,9 @@ else if ($GLOBALS['concurrent_layout']) {
  }else if($newcrop_user_role['newcrop_user_role']=='erxrep')
  {
 	 $frame1url="../forms/newpatient/new.php";
+ } else if($newcrop_user_role['newcrop_user_role']=='erxsupervisingDoctor')
+ {
+	 $frame1url="../main/finder/p_dynamic_finder_ip.php";
  }  
  else
  {

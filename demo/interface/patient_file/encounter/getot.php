@@ -45,7 +45,7 @@ echo "<table>";
 	$result = sqlStatement($sql);
 	$i=0;
 	
-	echo "<i>"."Estimated Bed Charges per night '"."<b>".$row2['price']."Rs/-</b>"."'"."</i>";
+	echo "<i>"."Estimated Bed Charges per night '"."<b>".$row2['price']."&nbsp;Rs/-</b>"."'"."</i>";
 	while($row=sqlFetchArray($result))
 	{
     echo "<tr>";
