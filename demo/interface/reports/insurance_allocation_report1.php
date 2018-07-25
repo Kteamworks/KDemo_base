@@ -66,7 +66,7 @@ if ($_POST['form_csvexport']) {
 	{
 		echo '"Received Amount ",';
 		echo '"Received Date ",';
-		echo '"TDS ",';
+		//echo '"TDS ",';
 		echo '"Insurance Disallowance ",';
 		echo '"Days"' . "\n";
 	}
@@ -271,7 +271,8 @@ else {
   <th align='right'> <?php xl('Total Amount','e'); ?> </th>
   <th align='right'> <?php xl('Claim Amount','e'); ?> </th>
   <th align='right'> <?php xl('Approved Amount','e'); ?> </th>
-  <th align='right'> <?php xl('Patient Paid','e'); ?> </th>
+  <!-----------------------changes-------------------------------------->
+  <th align='right'> <?php xl('','e'); ?> </th>
  
   <?php if($st=='O') { ?>
   <th align='right'> <?php xl('Ins Outstanding Amt','e'); ?> </th>
@@ -281,8 +282,8 @@ else {
   <?php if($st=='R') { ?>
   <th align='right'> <?php xl('Received Amount','e'); ?> </th>
   <th align='right'> <?php xl('Received Date','e'); ?> </th>
-   <th align='right'> <?php xl('TDS','e'); ?> </th>
-  <th align='right'> <?php xl('Insurance Disallowance','e'); ?> </th>
+   <th align='right'> <?php xl('','e'); ?> </th>
+  <th align='right'> <?php xl('','e'); ?> </th>
   <th align='right'> <?php xl('Days','e'); ?> </th>
   <?php } ?>
   <!--<th align='right'> <?php xl('Status','e'); ?> </th>-->
@@ -363,7 +364,7 @@ if ($_POST['form_refresh'] || $_POST['form_csvexport']) {
  //SELECT a.*,c.fee as pat_pay from billing_activity_final a LEFT JOIN insurance_data b ON a.pid=b.pid LEFT JOIN billing c ON b.pid=c.pid AND c.code='HOSPITAL CHARGES' and activity= 1 and a.date >= '$from_date' AND a.date <= '$to_date' group by a.pid
  /*$query = "SELECT * from billing_activity_final a, insurance_data b WHERE  a.pid=b.pid AND ".
 			" a.date >= '$from_date 00:00:00' AND a.date <= '$to_date 23:59:59'"; */
-$query="SELECT a.*,sum(c.fee) as pat_pay ,e.memo,e.adj_amount,d.genericname1,d.title as t, d.fname f , d.mname m, d.lname l, b.provider as provider,a.bill_date date from billing_activity_final a LEFT JOIN insurance_data b ON a.pid=b.pid ".
+  $query="SELECT a.*,sum(c.fee) as pat_pay ,e.memo,e.adj_amount,d.genericname1,d.title as t, d.fname f , d.mname m, d.lname l, b.provider as provider,a.bill_date date from billing_activity_final a LEFT JOIN insurance_data b ON a.pid=b.pid ".
         "LEFT JOIN patient_data d ON a.pid=d.pid ".
         "LEFT JOIN billing c ON b.pid=c.pid AND c.code in ('HOSPITAL CHARGES','INSURANCE DIFFERENCE AMOUNT','INSURANCE CO PAYMENT','REGISTRATION CHARGES') and activity= 1 ".
         "LEFT JOIN ar_activity e ON b.pid=e.pid AND e.memo in ('Discount') WHERE a.bill_date >= '$from_date 00:00:00' AND a.bill_date <= '$to_date 23:59:59' AND a.status in $status  ".
@@ -423,7 +424,7 @@ $query="SELECT a.*,sum(c.fee) as pat_pay ,e.memo,e.adj_amount,d.genericname1,d.t
   $tds = ceil($row['tds']);
   //$interpatpay=$row['pat_pay']-$discount;
 //  $patpay=$interpatpay+$row['by_patient_amt'];
-  $patpay=$row['by_patient_amt'];
+  //$patpay=$row['by_patient_amt'];
   $patpay=$patpay+$row['new_col_bkp'];
   //Calculat
   //
@@ -472,8 +473,8 @@ $days=-($days);
 //$date2Timestamp=now();
 //$date2Timestamp = strtotime($date2Timestamp);
 $diff = ($date2Timestamp - $date1Timestamp);
-$days = floor($diff / (60*60*24) );
-$days=($days+1);
+    $days = floor($diff / (60*60*24) );
+    $days=($days+1);
     $date=$claim_date;
     if ($_POST['form_csvexport']) {
     echo '"' . oeFormatShortDate(substr($billdate, 0, 10)) . '",';

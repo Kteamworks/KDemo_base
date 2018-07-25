@@ -223,7 +223,7 @@ console.log(drug_id);
 {/literal}
 </head>
 <body class="body_top">
-{php} $newcrop_user_role=sqlQuery("select newcrop_user_role from users where username='".$_SESSION['authUser']."'");{/php}
+{php} $newcrop_user_role=sqlQuery("select newcrop_user_role,specialty from users where username='".$_SESSION['authUser']."'");{/php}
   {php} if($newcrop_user_role['newcrop_user_role']=='erxdoctor') { {/php}
 {php} 
 $rid=sqlStatement("SELECT form_id from forms where encounter='".$_SESSION['encounter']."' and formdir='ros' order by form_id desc limit 1 ");
@@ -244,6 +244,7 @@ $vid=sqlStatement("SELECT form_id from forms where encounter='".$_SESSION['encou
 <section>
 	<nav>
 		<ol class="cd-breadcrumb triangle custom-icons">
+		   {php}    if($newcrop_user_role['specialty'] !='Gyneacology') {  {/php}
 		   <li><a href="{$WEBROOT}/interface/patient_file/summary/stats_full.php">Medical Issues</a></li>
 			{php} if($vid2 == null) { {/php}
 			<li><a href="{$WEBROOT}/interface/patient_file/encounter/load_form.php?formname=vitals">Vitals</a></li>
@@ -255,14 +256,26 @@ $vid=sqlStatement("SELECT form_id from forms where encounter='".$_SESSION['encou
 			<li><a href="{$WEBROOT}/interface/patient_file/encounter/view_form.php?formname=ros&id={php} echo $rid2 {/php}">Review of systems</a></li>
 			{php} } {/php}
 			<li><a href="{$WEBROOT}/interface/patient_file/encounter/view_form.php?formname=newpatient&id={php} echo $nvid2; {/php}">Visit Notes</a></li>
+			{php}  }   if($newcrop_user_role['specialty'] =='Gyneacology') { {/php}
+			
+			
+			<li><a href="{$WEBROOT}/interface/patient_file/history/gyanic_form.php"><i class="fa fa-note" style="margin-right: 8px;"></i>Obstetric History</a></li>
+		    <li><a href="{$WEBROOT}/interface/patient_file/history/prev_preg.php"><i class="fa fa-note" style="margin-right: 8px;"></i>Past History</a></li>
+			<li><a href="{$WEBROOT}/interface/patient_file/history/family_history.php"><i class="fa fa-note" style="margin-right: 8px;"></i>Family History</a></li>
+			<li><a href="{$WEBROOT}/interface/patient_file/history/obstetric_examination.php"><i class="fa fa-note" style="margin-right: 8px;"></i>Obstetric Examination</a></li>
+			  {php} }{/php}
+			
 			<li><a href="{$WEBROOT}/interface/patient_file/encounter/load_form.php?formname=procedure_order">Lab Tests</a></li>
 			<li class="current"></i><em>Prescription</em></li>
+						{php} if($newcrop_user_role['specialty'] !='Gyneacology') {    {/php}
+						
 						{php} if($plid2 == null) { {/php}
 			<li><a href="{$WEBROOT}/interface/patient_file/encounter/load_form.php?formname=dictation">Plan</a></li>
 									{php} } else { {/php}
 									<li><a href="{$WEBROOT}/interface/patient_file/encounter/view_form.php?formname=dictation&id={php} echo $plid2 {/php}">Plan</a></li>
 									{php} } {/php}
 			<li><a href="{$WEBROOT}/interface/patient_file/transaction/add_transaction.php">Referral</a></li>
+			{php} }  {/php}
 			<li><a href="{$WEBROOT}/interface/patient_file/encounter/admit_doctor_form.php">Admission</a></li>
 			<li><a href="{$WEBROOT}/interface/patient_file/summary/summary_print.php">Summary</a></li>
 		</ol>

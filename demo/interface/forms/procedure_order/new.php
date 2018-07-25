@@ -462,7 +462,7 @@ function validate(f) {
 
 </head>
 <body class="body_top" style="background: white">
-<?php $newcrop_user_role=sqlQuery("select newcrop_user_role from users where username='".$_SESSION['authUser']."'");
+<?php $newcrop_user_role=sqlQuery("select newcrop_user_role,specialty from users where username='".$_SESSION['authUser']."'");
  ?>
   <?php if($newcrop_user_role['newcrop_user_role']=='erxdoctor') { ?>
 <?php 
@@ -484,6 +484,7 @@ $vid=sqlStatement("SELECT form_id from forms where encounter='".$_SESSION['encou
 <section>
 	<nav>
 		<ol class="cd-breadcrumb triangle custom-icons">
+		<?php if($newcrop_user_role['specialty']!='Gyneacology') { ?>
 		<li><a href="../summary/stats_full.php"><i class="fa fa-note" style="margin-right: 8px;"></i>Medical Issues</a></li>
 			<?php if($vid2 == null) { ?>
 			<li><a href="../encounter/load_form.php?formname=vitals"><i class="fa fa-note" style="margin-right: 8px;"></i>Vitals</a></li>
@@ -495,14 +496,26 @@ $vid=sqlStatement("SELECT form_id from forms where encounter='".$_SESSION['encou
 			<li><a href="../../patient_file/encounter/view_form.php?formname=ros&id=<?php echo $rid2 ?>"><i class="fa fa-note" style="margin-right: 8px;"></i>Review of systems</a></li>
 			<?php } ?>
 			<li><a href="../encounter/view_form.php?formname=newpatient&id=<?php echo $nvid2; ?>"><i class="fa fa-note" style="margin-right: 8px;"></i>Visit Notes</a></li>
+		<?php  }  
+           if($newcrop_user_role['specialty'] =='Gyneacology') { 
+
+  		?>
+		
+		    <li><a href="../../patient_file/history/gyanic_form.php"><i class="fa fa-note" style="margin-right: 8px;"></i>Obstetric History</a></li>
+		    <li><a href="../../patient_file/history/prev_preg.php"><i class="fa fa-note" style="margin-right: 8px;"></i>Past History</a></li>
+			<li><a href="../../patient_file/history/family_history.php"><i class="fa fa-note" style="margin-right: 8px;"></i>Family History</a></li>
+			<li><a href="../../patient_file/history/obstetric_examination.php"><i class="fa fa-note" style="margin-right: 8px;"></i>Obstetric Examination</a></li>
+			 <?php   } ?>
 			<li class="current"></i><em>Lab Tests</em></li>
 			<li><a href="../../../controller.php?prescription&edit&id=&pid=<?php echo $pid ?>"><i class="fa fa-note" style="margin-right: 8px;"></i>Prescription</a></li>
+				<?php if($newcrop_user_role['specialty']!='Gyneacology') { ?>		
 						<?php if($plid2 == null) { ?>
 			<li><a href="../encounter/load_form.php?formname=dictation"><i class="fa fa-note" style="margin-right: 8px;"></i>Plan</a></li>
 									<?php } else { ?>
 									<li><a href="../encounter/view_form.php?formname=dictation&id=<?php echo $plid2 ?>"><i class="fa fa-note" style="margin-right: 8px;"></i>Plan</a></li>
 									<?php } ?>
 			<li><a href="../transaction/add_transaction.php"><i class="fa fa-note" style="margin-right: 8px;"></i>Referral</a></li>
+				<?php  }   ?>
 			<li><a href="../../patient_file/encounter/admit_doctor_form.php"><i class="fa fa-note" style="margin-right: 8px;"></i>Admission</a></li>
 			<li><a href="../../patient_file/summary/summary_print.php">Summary</a></li>
 		</ol>

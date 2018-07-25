@@ -53,7 +53,7 @@ $pstreet = $result_patient['street'];
 <script type="text/javascript" src="../../../library/js/jquery-1.6.4.min.js"></script>
 <script type="text/javascript" src="../../../library/js/common.js"></script>
 <script type="text/javascript" src="../../../library/js/fancybox/jquery.fancybox-1.2.6.js"></script>
-<?php $newcrop_user_role=sqlQuery("select newcrop_user_role from users where username='".$_SESSION['authUser']."'");
+<?php $newcrop_user_role=sqlQuery("select newcrop_user_role,specialty from users where username='".$_SESSION['authUser']."'");
  ?>
   <?php if($newcrop_user_role['newcrop_user_role']=='erxdoctor') { ?>
 <?php 
@@ -75,6 +75,7 @@ $vid=sqlStatement("SELECT form_id from forms where encounter='".$_SESSION['encou
 <section>
 	<nav>
 		<ol class="cd-breadcrumb triangle custom-icons">
+		<?php   if($newcrop_user_role['specialty'] !='Gyneacology') {   ?>
 		<li><a href="../summary/stats_full.php"><i class="fa fa-note" style="margin-right: 8px;"></i>Medical Issues</a></li>
 			<?php if($vid2 == null) { ?>
 			<li><a href="../encounter/load_form.php?formname=vitals"><i class="fa fa-note" style="margin-right: 8px;"></i>Vitals</a></li>
@@ -86,14 +87,27 @@ $vid=sqlStatement("SELECT form_id from forms where encounter='".$_SESSION['encou
 			<li><a href="../../patient_file/encounter/view_form.php?formname=ros&id=<?php echo $rid2 ?>"><i class="fa fa-note" style="margin-right: 8px;"></i>Review of systems</a></li>
 			<?php } ?>
 			<li><a href="../encounter/view_form.php?formname=newpatient&id=<?php echo $nvid2; ?>"><i class="fa fa-note" style="margin-right: 8px;"></i>Visit Notes</a></li>
+		<?php } if($newcrop_user_role['specialty'] =='Gyneacology') { 
+
+  		?>
+		
+		    <li><a href="../../patient_file/history/gyanic_form.php"><i class="fa fa-note" style="margin-right: 8px;"></i>Obstetric History</a></li>
+		    <li><a href="../../patient_file/history/prev_preg.php"><i class="fa fa-note" style="margin-right: 8px;"></i>Past History</a></li>
+			<li><a href="../../patient_file/history/family_history.php"><i class="fa fa-note" style="margin-right: 8px;"></i>Family History</a></li>
+			<li><a href="../../patient_file/history/obstetric_examination.php"><i class="fa fa-note" style="margin-right: 8px;"></i>Obstetric Examination</a></li>
+			 <?php   } ?>
+
+	
 			<li><a href="../encounter/load_form.php?formname=procedure_order"><i class="fa fa-note" style="margin-right: 8px;"></i>Lab Tests</a></li>
 			<li><a href="../../../controller.php?prescription&edit&id=&pid=<?php echo $pid ?>"><i class="fa fa-note" style="margin-right: 8px;"></i>Prescription</a></li>
+			<?php if($newcrop_user_role['specialty']!='Gyneacology') { ?>
 			<?php if($plid2 == null) { ?>
 			<li><a href="../encounter/load_form.php?formname=dictation"><i class="fa fa-note" style="margin-right: 8px;"></i>Plan</a></li>
 									<?php } else { ?>
 									<li><a href="../encounter/view_form.php?formname=dictation&id=<?php echo $plid2 ?>"><i class="fa fa-note" style="margin-right: 8px;"></i>Plan</a></li>
 									<?php } ?>
 			<li><a href="../../patient_file/transaction/add_transaction.php"><i class="fa fa-note" style="margin-right: 8px;"></i>Referral</a></li>
+			<?php  }   ?>
 				<li><a href="../../patient_file/encounter/admit_doctor_form.php"><i class="fa fa-note" style="margin-right: 8px;"></i>Admission</a></li>
 			<li class="current"></i><em>Summary</em></li>
 			<li>
@@ -125,7 +139,7 @@ sqlStatement("UPDATE form_encounter SET out_to='Examined By',out_time=NOW() wher
 <div class="row auo-mar">
 <img WIDTH='500pt' src='../../pic/city_hospital_logo.png' style="    margin-left: 13%;
     margin-bottom: 6%;"/>
-<p style="display:inline"><b>Serial No:</b>&nbsp;</th><td><?php echo $pserial ?></p>
+<p style="display:inline">&nbsp;&nbsp;&nbsp;<b>Serial No:</b>&nbsp;</th><td><?php echo $pserial ?></p>
 <p class="pull-right"><b>Date:</b>&nbsp;</th><td><?php echo date("d-M-y",strtotime($result_visit2['date'])) ?></p>
 </div>
 <!--<div style="text-align: center">
@@ -133,10 +147,10 @@ sqlStatement("UPDATE form_encounter SET out_to='Examined By',out_time=NOW() wher
 <p>Registration No: 13954 (T C Medical Council)</p>
 </div>-->
 <div class="row pdata">
-<p style='display: inline;'>Patient Full Name: <?php echo $pfname; ?>&nbsp<?php echo $plname ?>&nbsp<?php echo $pmname ?></p><p class="pull-right">Gender: <?php echo $pgender ?></p>
+<p style='display: inline;'>&nbsp;&nbsp;&nbsp;Patient Full Name: <?php echo $pfname; ?>&nbsp<?php echo $plname ?>&nbsp<?php echo $pmname ?></p><p class="pull-right">Gender: <?php echo $pgender ?></p>
 </div>
 <div class="row pdata">
-<p style='display: inline;'>Patient’s Address and Phone number: <?php echo $pstreet ?>, <?php echo $pmob ?></p><p class="pull-right">Age: <?php echo $page ?> Years</p>
+<p style='display: inline;'>&nbsp;&nbsp;&nbsp;Patient’s Address and Phone number: <?php echo $pstreet ?>, <?php echo $pmob ?></p><p class="pull-right">Age: <?php echo $page ?> Years</p>
 </div>
 </div>
 <?php $qry2 = "SELECT * FROM lists WHERE pid = ? AND encounter = ?";
@@ -174,16 +188,47 @@ $issues1=sqlFetchArray($issues);
 </div>
    <?php }?>
 <div class="table-title">
+
+<?php $qry4 = "SELECT Complaint,Treatment FROM gyanic_obstetric_examination WHERE pid = ? AND encounter = ?";
+   $note4= sqlStatement($qry4, array($pid,$encounter));
+   $note5=sqlFetchArray($note4);
+   ?>
+  
+ <?php   if($newcrop_user_role['specialty'] =='Gyneacology') {   ?> 
+ 
+<h2> History of Present Illness</h2>
+
+<b>&#9642; Chief Complaints</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
+<?php echo $note5['Complaint'];?><br><br>
+
+
+
+<b> &#9642; Treatment & Advice</b>&nbsp;:
+<?php echo $note5['Treatment'];
+
+ }
+?>
+
+
+
+
+
 <?php $qry2 = "SELECT reason FROM form_encounter WHERE pid = ? AND encounter = ?";
    $notes= sqlStatement($qry2, array($pid,$encounter));
    $note=sqlFetchArray($notes);
    if($note!=null){
    ?>
    
+
+
+   
+ <?php   if($newcrop_user_role['specialty'] !='Gyneacology') {   ?>  
+   
 <h2>Notes –</h2>
 <blockquote>
 <?php echo $note['reason']?>
 </blockquote>
+ <?php  }   ?>
 </div>
    <?php }?>
   <?php $qry2 = "SELECT * FROM  form_ros WHERE pid = ? AND encounter = ?";

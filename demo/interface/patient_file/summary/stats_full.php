@@ -184,18 +184,25 @@ $vid=sqlStatement("SELECT form_id from forms where encounter='".$_SESSION['encou
 
  $nvid2=$nvid1['id'];
 		?>
-		<?php $newcrop_user_role=sqlQuery("select newcrop_user_role from users where username='".$_SESSION['authUser']."'");
+		<?php $newcrop_user_role=sqlQuery("select newcrop_user_role,specialty from users where username='".$_SESSION['authUser']."'");
  ?>
-  <?php if($newcrop_user_role['newcrop_user_role']=='erxdoctor') { ?>
+  <?php if($newcrop_user_role['newcrop_user_role']=='erxdoctor' && $newcrop_user_role['specialty']!='Gyneacology') { ?>
 <section>
 	<nav>
 		<ol class="cd-breadcrumb triangle custom-icons">
 			<li class="current"></i><em>Medical Issues</em></li>
+			
 			<?php if($vid2 == null) { ?>
 			<li><a href="../encounter/load_form.php?formname=vitals"><i class="fa fa-note" style="margin-right: 8px;"></i>Vitals</a></li>
+			
 			<?php } else { ?>
 			<li><a href="../encounter/view_form.php?formname=vitals&id=<?php echo $vid2; ?>"><i class="fa fa-note" style="margin-right: 8px;"></i>Vitals</a></li>
-			<?php } if($rid2 == null) { ?>
+			<?php }    ?>
+             <!--<li><a href="../history/gyanic_form.php"><i class="fa fa-note" style="margin-right: 8px;"></i>Obstetric History</a></li>
+			 <li><a href="../history/prev_preg.php"><i class="fa fa-note" style="margin-right: 8px;"></i>Past History</a></li>-->
+
+             <?php  
+  			if($rid2 == null) { ?>
 			<li><a href="../../patient_file/encounter/load_form.php?formname=ros"><i class="fa fa-note" style="margin-right: 8px;"></i>Review of systems</a></li>
 						<?php } else { ?>
 			<li><a href="../../patient_file/encounter/view_form.php?formname=ros&id=<?php echo $rid2 ?>"><i class="fa fa-note" style="margin-right: 8px;"></i>Review of systems</a></li>
@@ -215,7 +222,12 @@ $vid=sqlStatement("SELECT form_id from forms where encounter='".$_SESSION['encou
 		</ol>
 	</nav>
 </section>
-  <?php } elseif($newcrop_user_role['newcrop_user_role']=='erxnurse'){?>
+  <?php } elseif($newcrop_user_role['newcrop_user_role']=='erxdoctor' && $newcrop_user_role['specialty']=='Gyneacology') {
+  header('location:../history/gyanic_form.php');  }
+  
+  
+  
+  elseif($newcrop_user_role['newcrop_user_role']=='erxnurse'){?>
   <section>
 	<nav>
 		<ol class="cd-breadcrumb triangle custom-icons">
