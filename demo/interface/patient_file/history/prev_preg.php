@@ -24,7 +24,7 @@ require_once($GLOBALS['srcdir'].'/acl.inc');
 require_once($GLOBALS['fileroot'].'/custom/code_types.inc.php');
 require_once($GLOBALS['srcdir'].'/options.inc.php');
 
-$past_data = sqlQuery("select * from gyanic_past_history where encounter = '$encounter' and pid= '$pid'");
+$past_data = sqlQuery("select * from gyanic_past_history where pid= '$pid'");
 
 /*
 GET["encounter"] ? $_GET["encounter"] : $GLOBALS['encounter'];

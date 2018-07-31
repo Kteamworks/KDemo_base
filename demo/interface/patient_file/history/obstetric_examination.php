@@ -26,7 +26,7 @@ require_once($GLOBALS['srcdir'].'/options.inc.php');
 
 
 $obs_data = sqlQuery("select * from gyanic_obstetric_examination where encounter= '$encounter' and pid= '$pid'");
-$examination  = sqlStatement("select * from gyanic_obstetric_examination where encounter= '$encounter' and pid= '$pid'");
+$examination  = sqlStatement("select * from gyanic_obstetric_examination where  pid= '$pid'");
 
 
 /*

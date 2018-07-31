@@ -25,7 +25,7 @@ require_once($GLOBALS['fileroot'].'/custom/code_types.inc.php');
 require_once($GLOBALS['srcdir'].'/options.inc.php');
 
 
-$obs_data = sqlQuery("select * from gyanic_obstetric_history where encounter= '$encounter' and pid= '$pid'");
+$obs_data = sqlQuery("select * from gyanic_obstetric_history where  pid= '$pid'");
 
 
 /*
@@ -168,7 +168,7 @@ $(document).ready(function(){
   <br>
   <form action="" method='POST'>
     <div class="form-group">
-      <label for="gravidity">Gravitity</label>
+      <label for="gravidity">Gravidity</label>
 	  <input type='number' class='form-control' name='gravidity' value='<?php echo $obs_data['gravidity']; ?>'>
       
     </div>

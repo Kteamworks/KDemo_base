@@ -44,7 +44,7 @@ setencounter($encounter);
 $tmp = getPatientData($pid, 'language');
 $language = $tmp['language'];
 */
-$past_data = sqlQuery("select * from gyanic_family_history where encounter = '$encounter' and pid= '$pid'");
+$past_data = sqlQuery("select * from gyanic_family_history where  pid= '$pid'");
 
 if(isset($_POST['submit'])){
 
