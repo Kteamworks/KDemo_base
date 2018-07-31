@@ -286,7 +286,7 @@ else
 			
 	<tr>
 	
-	<td><a href='emptybeds.php'> <img src="bed.png" align='center' height='42', width='40',name="nothing" readonly></img></a><b><?php echo xlt('Ward/Bed'); ?>:
+	<td><a href='../../patient_file/encounter/emptybeds.php'> <img src="bed.png" align='center' height='42', width='40'></img></a><b><?php echo xlt('Ward/Bed'); ?>:
 	
 	<input type=hidden name ="adm_to" value=<?php echo $_POST['adm_to']; ?> > </input>
 	<?
