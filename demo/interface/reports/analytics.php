@@ -37,7 +37,7 @@ if ($_POST['form_csvexport']) {
 else {
 	if(1)
 	{
-		$address = "http://45.118.183.174:8080/kavaii/login.html?j_username=hpademo&j_password=hpademo&singlesingon=y";
+		$address = "http://103.230.38.89:8080/jasperserver/login.html?j_username=hpademo&j_password=hpademo&singlesingon=y&cust=demo";
 			  echo"<script type='text/javascript'>top.restoreSession();window.location='$address';</script>";
 	}
 ?>
