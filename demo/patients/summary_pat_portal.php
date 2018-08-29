@@ -965,11 +965,11 @@ expand_collapse_widget($widgetTitle, $widgetLabel, $widgetButtonLabel,
 			<div id='stats_div' style="display:none">
             	<div style='margin-left:10px' class='text'><img src='images/ajax-loader.gif'/></div>
         	</div>
-
-		</td>
+</td>
 	</tr>
+	<tr><th><a href="chat.php?name=<?php echo $result['fname'];  ?>" target="_blank">Chat with Doctor</a></th></tr>
    </table>
-
+ 
   </div>
 
   </td>
@@ -982,8 +982,10 @@ expand_collapse_widget($widgetTitle, $widgetLabel, $widgetButtonLabel,
     </div>
     <!-- /.container -->
   </div>
+  
   <!-- /.content-wrapper -->
   <footer class="main-footer">
+  
     <div class="container">
       <div class="pull-right hidden-xs">
         <b>Version</b> 1.3

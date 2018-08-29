@@ -164,6 +164,7 @@ $result  = getPatientData($pid, "*, DATE_FORMAT(DOB,'%Y-%m-%d') as DOB_YMD");
 $result2 = getEmployerData($pid);
 $result3 = getInsuranceData($pid, "primary", "copay, provider, DATE_FORMAT(`date`,'%Y-%m-%d') as effdate");
 $insco_name = "";
+  $_SESSION['idd'] = $result['pid'];
 if ($result3['provider']) {   // Use provider in case there is an ins record w/ unassigned insco
   $insco_name = getInsuranceProvider($result3['provider']);
 }
@@ -183,6 +184,7 @@ if ($result3['provider']) {   // Use provider in case there is an ins record w/ 
 <script type="text/javascript" src="../../../library/js/jquery-1.6.4.min.js"></script>
 <script type="text/javascript" src="../../../library/js/common.js"></script>
 <script type="text/javascript" src="../../../library/js/fancybox/jquery.fancybox-1.2.6.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <script type="text/javascript" language="JavaScript">
 
  var mypcc = '<?php echo htmlspecialchars($GLOBALS['phone_country_code'],ENT_QUOTES); ?>';
@@ -551,7 +553,7 @@ $(window).load(function() {
   exit();
  }
  if ($thisauth) {
-  echo "<table><tr><td><span class='title'>" .
+  echo "<table width='100%'><tr><td><span class='title'>" .
    htmlspecialchars(getPatientName($pid),ENT_NOQUOTES) .
    "</span></td>";
 
@@ -604,7 +606,16 @@ $(window).load(function() {
   if (!($portalUserSetting)) {
     // Show that the patient has not authorized portal access
     echo "<td style='display: inline-flex;'>" . htmlspecialchars( xl('This patient is not authorized to the Patient Portal '), ENT_NOQUOTES) . "<form id='form-id' action='' method='post'><input type='hidden' name='pt_portal' value='".$_SESSION['pid']."'><button class='css_button_small' type='submit' value='submit'>click here</button></form> to authorize</td>";
-  }
+  } ?>
+  <th><a href="../../../patients/chat.php?name=<?php  echo $result['pid'];  ?>"> <span class='glyphicon glyphicon-envelope' style='font-size:48px;'></span> </a></th>
+  
+  
+  
+  
+  <?php
+  
+  
+ // echo "<th><a href='../../../patients/chat.php?name='> <span class='glyphicon glyphicon-envelope' style='font-size:48px;'></span> </a></th>";
   //Patient Portal
 
   // If patient is deceased, then show this (along with the number of days patient has been deceased for)
