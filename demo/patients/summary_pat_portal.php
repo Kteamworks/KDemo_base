@@ -967,7 +967,7 @@ expand_collapse_widget($widgetTitle, $widgetLabel, $widgetButtonLabel,
         	</div>
 </td>
 	</tr>
-	<tr><th><a href="chat.php?name=<?php echo $result['fname'];  ?>" target="_blank">Chat with Doctor</a></th></tr>
+	<!--<tr><th><a href="chat.php?name=<?php echo $result['fname'];  ?>" target="_blank">Chat with Doctor</a></th></tr>-->
    </table>
  
   </div>
@@ -1006,5 +1006,345 @@ expand_collapse_widget($widgetTitle, $widgetLabel, $widgetButtonLabel,
 <script src="../plugins/fastclick/fastclick.js"></script>
 <!-- AdminLTE App -->
 <script src="../library/dist/js/app.min.js"></script>
+
+<!-----------------------------------------------------chat starts here -------------------------------------------------->
+<?php
+  $patient  = $_GET['name'];
+?>
+
+
+
+    
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>-->
+  <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  
+  <style type="text/css">
+    textarea { border: none;
+    background-color: transparent;
+    resize: none;
+    outline: none;
+	//margin-top: 50px;
+
+      
+	}
+</style>
+  
+  <style>
+	.main-section{
+  width: 400px;
+  position: fixed;
+  right:50px;
+  bottom: -420px;
+  background-color: white;
+}
+
+.first-section:hover{
+  cursor: pointer;
+}
+.open-more{
+  bottom:0px;
+  transition:2s;
+}
+.border-chat{
+  border:1px solid #0078C1;
+  margin: 0px;
+}
+.first-section{
+  background-color:#0078C1;
+}
+.first-section p{
+  color:#fff;
+  margin:0px;
+  padding: 10px 0px;
+}
+.first-section p:hover{
+  color:#fff;
+  cursor: pointer;
+}
+.right-first-section{
+   text-align: right;
+}
+.right-first-section i{
+  color:#fff;
+  font-size: 15px;
+  padding: 12px 3px;
+}
+.right-first-section i:hover{
+  color:#fff;
+}
+.chat-section ul li{
+  list-style: none;
+  margin-top:10px;
+  position: relative;
+}
+.chat-section{
+  overflow-y:scroll;
+  height:300px;
+}
+.chat-section ul{
+  padding: 0px;
+}
+
+
+.left-chat img,.right-chat img{
+  width:50px;
+  height:50px;
+  float:left;
+  margin:0px 10px;
+}
+.right-chat img{
+  float:right;
+}
+.second-section{
+  padding: 0px;
+  margin: 0px;
+  background-color: #F3F3F3;
+  height: 300px;
+}
+.left-chat,.right-chat{
+  overflow: hidden;
+}
+.left-chat p,.right-chat p{
+  background-color:#FD8468;
+  padding: 10px;
+  color:#fff;
+  border-radius: 5px; 
+  float:left;
+  width:60%;
+  margin-bottom:20px;
+}
+.left-chat span,.right-chat span{
+  position: absolute;
+  left:70px;
+  top:60px;
+  color:#B7BCC5;
+}
+.right-chat span{
+  left:45px;
+}
+.right-chat p{
+  float:right;
+  background-color: #FFFFFF;
+  color:#FD8468;
+}
+.third-section{
+  border-top: 1px solid #EEEEEE;
+}
+.text-bar input{
+  width:90%;
+  margin-left:-15px;
+  padding:10px 10px;
+  border:1px solid #fff;
+}
+.text-bar a i{
+  background-color:#FD8468;
+  color:#fff;
+  width:30px;
+  height:30px;
+  padding:7px 0px;
+  border-radius: 50%;
+  text-align: center;
+}
+.left-chat:before{
+  content: " ";
+  position:absolute;
+  top:0px;
+  left:55px;
+  bottom:150px;
+  border:15px solid transparent;
+  border-top-color:#FD8468; 
+}
+.right-chat:before{
+  content: " ";
+  position:absolute;
+  top:0px;
+  right:55px;
+  bottom:150px;
+  border:15px solid transparent;
+  border-top-color:#fff; 
+}
+
+</style>
+
+<script>
+$(document).ready(function(){
+    	$(".left-first-section").click(function(){
+            $('.main-section').toggleClass("open-more");
+        });
+    });
+    $(document).ready(function(){
+    	$(".fa-minus").click(function(){
+            $('.main-section').toggleClass("open-more");
+        });
+    });
+	
+	$(document).ready(function(){
+    	$(".fa-clone").click(function(){
+           
+			window.open('mobile_chat.php');
+        });
+    });
+</script>
+
+   
+<script type="text/javascript">
+
+var t = setInterval(function(){get_chat_msg()},5000);
+
+
+//
+// General Ajax Call
+//
+      
+var oxmlHttp;
+var oxmlHttpSend;
+      
+function get_chat_msg()
+{
+
+    if(typeof XMLHttpRequest != "undefined")
+    {
+        oxmlHttp = new XMLHttpRequest();
+    }
+    else if (window.ActiveXObject)
+    {
+       oxmlHttp = new ActiveXObject("Microsoft.XMLHttp");
+    }
+    if(oxmlHttp == null)
+    {
+        alert("Browser does not support XML Http Request");
+       return;
+    }
+    
+	if (document.getElementById("txtname") != null)
+    {
+        strname = document.getElementById("txtname").value;
+        document.getElementById("txtname").readOnly=true;
+    }
+    oxmlHttp.onreadystatechange = get_chat_msg_result;
+    oxmlHttp.open("GET","chat_recv_ajax.php?name=" + strname,true);
+    oxmlHttp.send(null);
+}
+     
+function get_chat_msg_result()
+{
+    if(oxmlHttp.readyState==4 || oxmlHttp.readyState=="complete")
+    {
+        if (document.getElementById("DIV_CHAT") != null)
+        {
+            document.getElementById("DIV_CHAT").innerHTML =  oxmlHttp.responseText;
+            oxmlHttp = null;
+        }
+        var scrollDiv = document.getElementById("DIV_CHAT");
+        scrollDiv.scrollTop = scrollDiv.scrollHeight;
+    }
+}
+
+      
+function set_chat_msg()
+{
+
+    if(typeof XMLHttpRequest != "undefined")
+    {
+        oxmlHttpSend = new XMLHttpRequest();
+    }
+    else if (window.ActiveXObject)
+    {
+       oxmlHttpSend = new ActiveXObject("Microsoft.XMLHttp");
+    }
+    if(oxmlHttpSend == null)
+    {
+       alert("Browser does not support XML Http Request");
+       return;
+    }
+    
+    var url = "chat_send_ajax.php";
+    var strname="noname";
+    var strmsg="";
+    if (document.getElementById("txtname") != null)
+    {
+        strname = document.getElementById("txtname").value;
+        document.getElementById("txtname").readOnly=true;
+    }
+    if (document.getElementById("txtmsg") != null)
+    {
+        strmsg = document.getElementById("txtmsg").value;
+        document.getElementById("txtmsg").value = "";
+    }
+    
+    url += "?name=" + strname + "&msg=" + strmsg;
+    oxmlHttpSend.open("GET",url,true);
+    oxmlHttpSend.send(null);
+}
+
+</script>
+
+</head>
+<body>
+    &nbsp;
+    <div  class=" main-section">
+       
+      <div class="row border-chat">
+		<div class="col-md-12 col-sm-12 col-xs-12 first-section">
+			<div class="row">
+				<div class="col-md-8 col-sm-6 col-xs-6 left-first-section">
+					<p>Chat</p>
+				</div>
+				<div class="col-md-4 col-sm-6 col-xs-6 right-first-section">
+					<a href="#"><i class="fa fa-minus" aria-hidden="true"></i></a>
+					<a href="#"><i class="fa fa-clone" aria-hidden="true"></i></a>
+					<a href="#"><i class="fa fa-times" aria-hidden="true"></i></a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	   <table class="table">
+            
+            
+                          
+         <input id="txtname" style="width: 150px" type="hidden" name="name" value='<?php echo $patient;  ?>' maxlength="15"/>
+                       
+            <tr>
+                <td colspan="2">
+                    <div id="DIV_CHAT" class='chat-section'>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+				<div class="row border-chat">
+		<div class="col-md-12 col-sm-12 col-xs-12 third-section">
+			<div class="text-bar">
+                    <!--<input id="txtmsg" type="text" placeholder="Write messege" name="msg" /><a href="#"></td>-->
+					<textarea id="txtmsg"  cols='35' placeholder="Write messege" name="msg"></textarea>
+                <td>
+                    <!--<input id="Submit2" type="button" value="Send"  onclick="set_chat_msg()"/></td>-->
+					<button type="button" class="btn btn-primary" onclick="set_chat_msg()">Send</button> 
+            </tr>
+		</div>
+		</div>
+		
+			
+			
+            <tr>
+                <td colspan="1" >
+                    </td>
+                <td colspan="1">
+                </td>
+            </tr>
+        </table>
+    </div>
+
+
+
+
+
+
+
+
+
 </body>
 </html>

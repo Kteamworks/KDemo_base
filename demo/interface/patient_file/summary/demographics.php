@@ -184,7 +184,7 @@ if ($result3['provider']) {   // Use provider in case there is an ins record w/ 
 <script type="text/javascript" src="../../../library/js/jquery-1.6.4.min.js"></script>
 <script type="text/javascript" src="../../../library/js/common.js"></script>
 <script type="text/javascript" src="../../../library/js/fancybox/jquery.fancybox-1.2.6.js"></script>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">-->
 <script type="text/javascript" language="JavaScript">
 
  var mypcc = '<?php echo htmlspecialchars($GLOBALS['phone_country_code'],ENT_QUOTES); ?>';
@@ -607,7 +607,7 @@ $(window).load(function() {
     // Show that the patient has not authorized portal access
     echo "<td style='display: inline-flex;'>" . htmlspecialchars( xl('This patient is not authorized to the Patient Portal '), ENT_NOQUOTES) . "<form id='form-id' action='' method='post'><input type='hidden' name='pt_portal' value='".$_SESSION['pid']."'><button class='css_button_small' type='submit' value='submit'>click here</button></form> to authorize</td>";
   } ?>
-  <th><a href="../../../patients/chat.php?name=<?php  echo $result['pid'];  ?>"> <span class='glyphicon glyphicon-envelope' style='font-size:48px;'></span> </a></th>
+  <!--<th><a href="../../../patients/chat.php?name=<?php  echo $result['pid'];  ?>"> <span class='glyphicon glyphicon-envelope' style='font-size:48px;'></span> </a></th>-->
   
   
   
@@ -1684,6 +1684,365 @@ document.getElementById("activate_pt_portal").addEventListener("click", function
 });
 </script>
 <?php } ?>
+
+
+<!-----------------------------------------------Chat Starts here---------------------------------------------------------------------------------->
+
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>Untitled Page</title>
+	<!--<link rel="stylesheet" href="bootstrap.min.css">-->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  
+  <style type="text/css">
+ 
+
+  
+    textarea { border: none;
+    background-color: transparent;
+    resize: none;
+	//text-align:right;
+    outline: none;
+	//margin-top: 50px;
+ 
+	}
+	
+
+</style>
+  
+  <style>
+  
+  
+
+	.main-section{
+  width: 500px;
+  position: fixed;
+  right:50px;
+  bottom: -350px;
+  background-color: white;
+}
+
+.first-section:hover{
+  cursor: pointer;
+}
+.open-more{
+  bottom:0px;
+  transition:1s;
+}
+.border-chat{
+  border:1px solid #0078C1;
+  margin: 0px;
+}
+.first-section{
+  background-color:#0078C1;
+  height:40px;
+}
+.first-section p{
+  color:#fff;
+  margin:0px;
+  padding: 10px 10px;
+}
+.first-section p:hover{
+  color:#fff;
+  cursor: pointer;
+}
+.right-first-section{
+   text-align: right;
+}
+.right-first-section i{
+  color:#fff;
+  font-size: 15px;
+  padding: 12px 3px;
+}
+.right-first-section i:hover{
+  color:#fff;
+}
+.chat-section ul li{
+  list-style: none;
+  margin-top:10px;
+  position: relative;
+}
+.chat-section{
+  overflow-y:scroll;
+  height:300px;
+  width:500px;
+}
+.chat-section ul{
+  padding: 0px;
+}
+
+
+.left-chat img,.right-chat img{
+  width:50px;
+  height:50px;
+  float:left;
+  margin:0px 10px;
+}
+.right-chat img{
+  float:right;
+}
+.second-section{
+  padding: 0px;
+  margin: 0px;
+  background-color: #F3F3F3;
+  height: 300px;
+}
+.left-chat,.right-chat{
+  overflow: hidden;
+}
+.left-chat p,.right-chat p{
+  background-color:#FD8468;
+  padding: 10px;
+  color:#fff;
+  border-radius: 5px; 
+  float:left;
+  width:60%;
+  margin-bottom:20px;
+}
+.left-chat span,.right-chat span{
+  position: absolute;
+  left:70px;
+  top:60px;
+  color:#B7BCC5;
+}
+.right-chat span{
+  left:45px;
+}
+.right-chat p{
+  float:right;
+  background-color: #FFFFFF;
+  color:#FD8468;
+}
+.third-section{
+  border-top: 1px solid #EEEEEE;
+}
+.text-bar input{
+  width:108%;
+  margin-left:-15px;
+ 
+  padding:10px 10px;
+  border:1px solid #fff;
+}
+.text-bar a i{
+  background-color:#FD8468;
+  color:#fff;
+  width:30px;
+  height:30px;
+  padding:7px 0px;
+  border-radius: 50%;
+  text-align: center;
+}
+.left-chat:before{
+  content: " ";
+  position:absolute;
+  top:0px;
+  left:55px;
+  bottom:150px;
+  border:15px solid transparent;
+  border-top-color:#FD8468; 
+}
+.right-chat:before{
+  content: " ";
+  position:absolute;
+  top:0px;
+  right:55px;
+  bottom:150px;
+  border:15px solid transparent;
+  border-top-color:#fff; 
+}
+
+</style>
+
+<script>
+$(document).ready(function(){
+    	$(".left-first-section").click(function(){
+            $('.main-section').toggleClass("open-more");
+        });
+    });
+    $(document).ready(function(){
+    	$(".fa-minus").click(function(){
+            $('.main-section').toggleClass("open-more");
+        });
+    });
+</script>
+
+   
+<script type="text/javascript">
+
+var t = setInterval(function(){get_chat_msg()},500);
+
+
+//
+// General Ajax Call
+//
+      
+var oxmlHttp;
+var oxmlHttpSend;
+      
+function get_chat_msg()
+{
+
+    if(typeof XMLHttpRequest != "undefined")
+    {
+        oxmlHttp = new XMLHttpRequest();
+    }
+    else if (window.ActiveXObject)
+    {
+       oxmlHttp = new ActiveXObject("Microsoft.XMLHttp");
+    }
+    if(oxmlHttp == null)
+    {
+        alert("Browser does not support XML Http Request");
+       return;
+    }
+    
+	if (document.getElementById("user_name") != null)
+    {
+        strname = document.getElementById("user_name").value;
+        document.getElementById("user_name").readOnly=true;
+    }
+	if (document.getElementById("txtname") != null)
+    {
+        strtxt = document.getElementById("txtname").value;
+        document.getElementById("txtname").readOnly=true;
+    } 
+    oxmlHttp.onreadystatechange = get_chat_msg_result;
+    oxmlHttp.open("GET","chat_recv_ajax.php?name=" + strname + "&txtid=" + strtxt ,true);
+    oxmlHttp.send(null);
+}
+     
+function get_chat_msg_result()
+{
+    if(oxmlHttp.readyState==4 || oxmlHttp.readyState=="complete")
+    {
+        if (document.getElementById("DIV_CHAT") != null)
+        {
+            document.getElementById("DIV_CHAT").innerHTML =  oxmlHttp.responseText;
+            oxmlHttp = null;
+        }
+        var scrollDiv = document.getElementById("DIV_CHAT");
+        scrollDiv.scrollTop = scrollDiv.scrollHeight;
+    }
+}
+
+      
+function set_chat_msg()
+{
+
+    if(typeof XMLHttpRequest != "undefined")
+    {
+        oxmlHttpSend = new XMLHttpRequest();
+    }
+    else if (window.ActiveXObject)
+    {
+       oxmlHttpSend = new ActiveXObject("Microsoft.XMLHttp");
+    }
+    if(oxmlHttpSend == null)
+    {
+       alert("Browser does not support XML Http Request");
+       return;
+    }
+    
+    var url = "chat_send_ajax.php";
+    var strname="noname";
+    var strmsg="";
+	//var strtxt="";
+    if (document.getElementById("user_name") != null)
+    {
+        strname = document.getElementById("user_name").value;
+        document.getElementById("user_name").readOnly=true;
+    }
+	if (document.getElementById("txtname") != null)
+    {
+        strtxt = document.getElementById("txtname").value;
+        document.getElementById("txtname").readOnly=true;
+    } 
+    if (document.getElementById("txtmsg") != null)
+    {
+        strmsg = document.getElementById("txtmsg").value;
+        document.getElementById("txtmsg").value = "";
+    }
+    
+    url += "?user_name=" + strname + "&msg=" + strmsg + "&txtname=" + strtxt;
+    oxmlHttpSend.open("GET",url,true);
+    oxmlHttpSend.send(null);
+}
+
+</script>
+
+</head>
+<body>
+    &nbsp;
+    <div  class=" main-section">
+       
+      <div class="row border-chat">
+		<div class="col-md-12 col-sm-12 col-xs-12 first-section">
+			<div class="row">
+				<div class="col-md-8 col-sm-6 col-xs-6 left-first-section">
+					<p>Chat</p>
+				</div>
+				<div class="col-md-4 col-sm-6 col-xs-6 right-first-section">
+					<a href="#"><i class="fa fa-minus" aria-hidden="true"></i></a>
+					<a href="#"><i class="fa fa-clone" aria-hidden="true"></i></a>
+					<a href="#"><i class="fa fa-times" aria-hidden="true"></i></a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	   <table class="table">
+            
+            
+                          
+         <input id="txtname" style="width: 150px" type="hidden" name="name" value='<?php echo $result["pid"];  ?>' maxlength="15"/>
+		 <input id="user_name" style="width: 150px" type="hidden" name="user_name" value='<?php echo $_SESSION["authUser"];  ?>' maxlength="15"/>
+                       
+            <tr>
+                <td colspan="2">
+                    <div id="DIV_CHAT" class='chat-section'>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+				<div class="row border-chat">
+		<div class="col-md-12 col-sm-12 col-xs-12 third-section">
+			<div class="text-bar">
+                    <!--<input id="txtmsg" type="text" placeholder="Write messege" name="msg" /><a href="#">-->
+					<textarea id="txtmsg" cols='35' placeholder="Write messege" name="msg"></textarea>
+					
+					</td>
+                <td>
+                   <!-- <input id="Submit2" type="button" value="Send"  onclick="set_chat_msg()"/>-->
+				   <button type="button" class="btn btn-primary" onclick="set_chat_msg()">Send</button>   
+				   
+				   </td>
+            </tr>
+		</div>
+		</div>
+		
+			
+			
+            <tr>
+                <td colspan="1" >
+                    </td>
+                <td colspan="1">
+                </td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>
+
+
+
+
 
 </body>
 </html>

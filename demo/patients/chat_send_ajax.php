@@ -47,8 +47,8 @@ global $ignoreAuth;
 	     
 	 
 
-     $sql="INSERT INTO chat(USERNAME,CHATDATE,MSG,receiver,pid) " .
-          "values(" . quote($fname) . "," . quote($dt) . "," . quote($msg) . "," . quote($receiver) . "," . quote($f_id) . ");";
+     $sql="INSERT INTO chat(USERNAME,CHATDATE,MSG,pid) " .
+          "values(" . quote($fname) . "," . quote($dt) . "," . quote($msg) . "," . quote($f_id) . ");";
 
           //echo $sql;
 

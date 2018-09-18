@@ -1,4 +1,14 @@
 <?php
+/*function getRealUserIp(){
+    switch(true){
+      case (!empty($_SERVER['HTTP_X_REAL_IP'])) : return $_SERVER['HTTP_X_REAL_IP'];
+      case (!empty($_SERVER['HTTP_CLIENT_IP'])) : return $_SERVER['HTTP_CLIENT_IP'];
+      case (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) : return $_SERVER['HTTP_X_FORWARDED_FOR'];
+      default : return $_SERVER['REMOTE_ADDR'];
+    }
+ }
+ 
+ echo $ip = getRealUserIp(); */
 /**
  * Login screen.
  *
@@ -31,6 +41,48 @@ $sanitize_all_escapes=true;
 $ignoreAuth=true;
 include_once("../globals.php");
 include_once("$srcdir/sql.inc");
+
+
+
+
+  $a=$_SERVER['REMOTE_ADDR'];
+     if($a != '::1'){
+	
+                     $IP = sqlStatement("select IP from licence");
+                     $i=0;
+                     while($ip = sqlFetchArray($IP)){
+	                      if(!in_array($_SERVER['REMOTE_ADDR'],$ip)){
+	                      
+	                      $check = 0;
+	                      }
+	                     else { 
+	                      $check = 1;
+	                     }
+                    $i++;
+                    }
+          //echo 'value ='. $check;
+		  if($check==0)
+	        die('This website cannot be accessed from your location.');
+	}
+
+
+//if users IP is not in allowed list kill the script
+/* if(!in_array($_SERVER['REMOTE_ADDR'],$allowlist)){
+    die('This website cannot be accessed from your location.');
+}
+*/
+
+
+//if(!in_array($_SERVER['REMOTE_ADDR'],$IP)){
+//die(' This website cannot be accessed from your location.');
+//}
+
+//if(!in_array(getHostByName(getHostName()),$IP)){
+ //die(' This website cannot be accessed from your location.');
+//}
+
+
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -125,7 +177,7 @@ else {
           $defaultLangName = "English";
 }
 // set session variable to default so login information appears in default language
-$_SESSION['language_choice'] = $defaultLangID;
+   $_SESSION['language_choice'] = $defaultLangID;
 // collect languages if showing language menu
 if ($GLOBALS['language_menu_login']) {
     

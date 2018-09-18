@@ -43,6 +43,9 @@ else {
 
 $_SESSION["encounter"] = '';
 
+
+
+
 // Fetch the password expiration date
 $is_expired=false;
 if($GLOBALS['password_expiration_days'] != 0){

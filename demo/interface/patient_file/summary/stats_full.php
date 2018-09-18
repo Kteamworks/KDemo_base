@@ -47,6 +47,14 @@ setencounter($encounter);
 // Get patient's preferred language for the patient education URL.
 $tmp = getPatientData($pid, 'language');
 $language = $tmp['language'];
+
+$check_speciality = sqlQuery("select specialty from users where username='".$_SESSION['authUser']."'");
+if($check_speciality['specialty']=='Gyneacology'){
+	header('location:../history/gyanic_form.php');
+}
+
+
+
 ?>
 <html>
 
@@ -222,11 +230,10 @@ $vid=sqlStatement("SELECT form_id from forms where encounter='".$_SESSION['encou
 		</ol>
 	</nav>
 </section>
-  <?php } elseif($newcrop_user_role['newcrop_user_role']=='erxdoctor' && $newcrop_user_role['specialty']=='Gyneacology') {
-  header('location:../history/gyanic_form.php');  }
+  <?php }
   
-  
-  
+            
+     
   elseif($newcrop_user_role['newcrop_user_role']=='erxnurse'){?>
   <section>
 	<nav>
