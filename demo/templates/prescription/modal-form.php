@@ -63,25 +63,25 @@ $results = sqlStatement($qry, array($drug_id));
         <div class="form-group">
             <label>Advise</label>
 			<div class="row"><div class="col-md-2">
-			<select name="take1" ng-model="take1"  class="form-control" ng-required="false">
+			<select name="take1" ng-init="take1='1'" ng-model="take1"  class="form-control" ng-required="false">
   <option value="0">0</option>
      <option value="0.5"><span>&#189;</span></option>
     <option value="1" selected="selected">1</option>
     <option value="2">2</option>
  </select></div><div class="col-md-2">
- <select name="take2" class="form-control" ng-model="take2"  ng-required="false">
+ <select name="take2" ng-init="take2='0'" class="form-control" ng-model="take2"  ng-required="false">
     <option value="0" selected="selected">0</option>
 	   <option value="0.5"><span>&#189;</span></option>
     <option value="1">1</option>
     <option value="2">2</option>
  </select></div><div class="col-md-2">
- <select name="take3" class="form-control" ng-model="take3"  ng-required="false">
+ <select name="take3" ng-init="take3='1'" class="form-control" ng-model="take3"  ng-required="false">
    <option value="0">0</option>
       <option value="0.5"><span>&#189;</span></option>
     <option value="1" selected="selected">1</option>
     <option value="2">2</option>
  </select> </div><div class="col-md-4">
-              <select name="name" class="form-control" ng-model="name"  style="width:150px" ng-required="false">
+              <select name="name" ng-init="name='BF'" class="form-control" ng-model="name"  style="width:150px" ng-required="false">
   <option value="BF">Before Food</option>
     <option value="AF"  selected="">After Food</option>
  </select></div></div>
@@ -91,8 +91,8 @@ $results = sqlStatement($qry, array($drug_id));
 				<div class="form-group">
             <label>Duration</label>
 			<div class="row">
-			<div class="col-md-4"><input type="text" name="duration" class="form-control" placeholder="In Numbers" ng-model="duration"  ng-required="false"></div>
-<div class="col-md-4"><select name="time_frame" class="form-control" ng-model="time_frame"  ng-required="false" placeholder="Select time span" >
+			<div class="col-md-4"><input type="text" name="duration" class="form-control" placeholder="In Numbers" ng-init="duration='1'" ng-model="duration"  ng-required="false"></div>
+<div class="col-md-4"><select name="time_frame" ng-init="time_frame='2'" class="form-control" ng-model="time_frame"  ng-required="false" placeholder="Select time span" >
 
    <option value="1">Days</option>
     <option value="2" selected="selected">Weeks</option>

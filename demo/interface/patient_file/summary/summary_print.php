@@ -147,10 +147,10 @@ sqlStatement("UPDATE form_encounter SET out_to='Examined By',out_time=NOW() wher
 <p>Registration No: 13954 (T C Medical Council)</p>
 </div>-->
 <div class="row pdata">
-<p style='display: inline;'>&nbsp;&nbsp;&nbsp;Patient Full Name: <?php echo $pfname; ?>&nbsp<?php echo $plname ?>&nbsp<?php echo $pmname ?></p><p class="pull-right">Gender: <?php echo $pgender ?></p>
+<p style='display: inline;'><b>&nbsp;&nbsp;&nbsp;Patient Full Name: </b><?php echo $pfname; ?>&nbsp<?php echo $plname ?>&nbsp<?php echo $pmname ?></p><p class="pull-right"><b>Gender:</b> <?php echo $pgender ?></p>
 </div>
 <div class="row pdata">
-<p style='display: inline;'>&nbsp;&nbsp;&nbsp;Patient’s Address and Phone number: <?php echo $pstreet ?>, <?php echo $pmob ?></p><p class="pull-right">Age: <?php echo $page ?> Years</p>
+<p style='display: inline;'><b>&nbsp;&nbsp;&nbsp;Patient’s Address and Phone Number: </b><?php echo $pstreet ?>, <?php echo $pmob ?></p><p class="pull-right"><b>Age: </b><?php echo $page ?> Years</p>
 </div>
 </div>
 <?php $qry2 = "SELECT * FROM lists WHERE pid = ? AND encounter = ?";
