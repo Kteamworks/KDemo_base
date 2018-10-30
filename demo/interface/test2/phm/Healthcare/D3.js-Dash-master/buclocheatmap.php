@@ -1,7 +1,7 @@
 <?php 
 
-$username='cjoshi'; 
-$password='kavaii123';   
+$username='pavithras'; 
+$password='password123';   
 $host='103.230.38.89';
 $database='mangoo';
 $server = mysql_connect($host, $username, $password);

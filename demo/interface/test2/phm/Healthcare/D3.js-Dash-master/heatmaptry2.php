@@ -1,9 +1,9 @@
 <?php 
 
-$username='cjoshi'; 
-$password='kavaii123';   
+$username='pavithras'; 
+$password='password123';   
 $host='103.230.38.89';
-$database='openemr';
+$database='greencity';
 $server = mysql_connect($host, $username, $password);
 $connection = mysql_select_db($database, $server);
 $myquery = 'select weekday(regdate) day, hour(regdate) hour, count(*) value from billing_main_copy where pid <> 0 and regdate is not null
