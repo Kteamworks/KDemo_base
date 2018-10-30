@@ -28,6 +28,7 @@ require_once($GLOBALS['srcdir'].'/options.inc.php');
 $obs_data = sqlQuery("select * from gyanic_obstetric_history where  pid= '$pid'");
 
 
+
 /*
 GET["encounter"] ? $_GET["encounter"] : $GLOBALS['encounter'];
 setencounter($encounter);
@@ -54,13 +55,15 @@ if(isset($_POST['submit'])){
 	 $lmp       =  $_POST['lmp'];
 	 $edd       =  $_POST['edd'];
 	 
-     $enc = $obs_data['encounter']; 
-	 if($encounter != $enc){
-	
+    //$enc = $obs_data['encounter'];  
+	 
+	 if(!$obs_data){
+	  
 	$obs_history = sqlStatement("insert into gyanic_obstetric_history(gravidity,parity,lmp,edd,encounter,pid)values('$gravidity','$parity','$lmp','$edd','$encounter','$pid')");
 	 }
 	 else{
-		 $obs_history = sqlStatement("update gyanic_obstetric_history set gravidity='$gravidity', parity='$parity', lmp='$lmp',edd='$edd' where pid='$pid'and encounter='$encounter'");
+	      
+		 $obs_history = sqlStatement("update gyanic_obstetric_history set gravidity='$gravidity', parity='$parity', lmp='$lmp',edd='$edd' where pid='$pid'");
 	 }
 	 
 	 
@@ -101,12 +104,40 @@ if(isset($_POST['submit'])){
 <script>
 $(document).ready(function(){
 	$(document).on('change', '#lmp', function() {
-		var name = $("#lmp").val();
-		 
+		var date = $("#lmp").val();
+		//alert(name);
+		
 		
 	});
 	
 });
+
+
+
+
+$(document).ready(function () {
+    $('#lmp').datepicker();
+    $('#edd').datepicker();
+});
+
+function getdate() {
+    var tt = document.getElementById('lmp').value;
+
+    //var date = new Date(tt);
+    var newdate = new Date(tt);
+	
+	newdate.setDate(newdate.getDate() + 280);
+	newdate.setMonth(newdate.getMonth()+1);
+    
+    
+	var dd =(newdate.getDate() < 10 ? '0' : '') + newdate.getDate();
+	var mm =(newdate.getMonth() < 10 ? '0' : '') + newdate.getMonth();
+	var y = newdate.getFullYear();
+    var someFormattedDate = y + '-' + mm + '-' + dd;
+	
+    document.getElementById('edd').value = someFormattedDate;
+	
+}
 
 </script>
 
@@ -178,12 +209,17 @@ $(document).ready(function(){
     </div>
 	 <div class="form-group">
       <label for="LMP">LMP</label>
-      <input type="date" class="form-control" name="lmp" id='lmp' value='<?php echo $obs_data['lmp'];  ?>'>
+      <input type="date" class="form-control" name="lmp" id='lmp' value='<?php echo $obs_data['lmp'];  ?>' max='<?php echo date('Y-m-d') ?>'>
     </div>
 	
+	<div class="form-group">
+      <label for="LMP"> Date Calculator</label><br>
+      <input type="button" onclick="getdate()" class="btn btn-default col-md-12" value="Click Here to Generate Expected Delivery Date" />
+    </div>
+	 
 	 <div class="form-group">
-      <label for="LMP">EDD</label>
-      <input type="date" class="form-control"  name="edd" id='edd' value='<?php echo $obs_data['edd'];  ?>'>
+      <label for="EDD">EDD</label>
+      <input type="date" class="form-control"  name="edd" id='edd' value='<?php echo $obs_data['edd'];  ?>' readonly>
     </div>
 	
 	

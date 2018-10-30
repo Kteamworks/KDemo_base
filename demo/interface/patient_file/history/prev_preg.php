@@ -76,13 +76,13 @@ if(isset($_POST['submit'])){
   $mode = $_POST['mode']; 
   
   $enc = $past_data['encounter']; 
-   if($encounter != $enc){
+   if(!$past_data){
   
   $past_history = sqlStatement("insert into gyanic_past_history(`Diabetes Mellitus`,`Hypertension`,`Hypo Thyroid`	,`Pre-eclampsia`	,`IUGR`,`Uneventful Delivery`,`Birth Injuries`,`PPH`,`Excessive Bleeding`,`Fever`,`pid`,`encounter`,`Length of Gestation`,`Date of Delivery`,`Mode of Delivery`)values('$diabetes','$hypertension','$hypo_thyroid','$pre_eclampsia','$iugr','$unevent_delivery','$birth_injury','$pph','$excessive_bleeding','$fever','$pid','$encounter','$gestation','$dod','$mode')");
   
    }
    else {
-	   $past_history = sqlStatement("update gyanic_past_history set `Diabetes Mellitus` ='$diabetes', `Hypertension`= '$hypertension', `Pre-eclampsia` ='$pre_eclampsia',`IUGR`='$iugr', `Uneventful Delivery`= '$unevent_delivery', `Birth Injuries` = '$birth_injury', `Birth Injuries` = '$birth_injury' , `PPH` = '$pph', `Excessive Bleeding` = '$excessive_bleeding' ,`Fever`= '$fever', `Length of Gestation` = '$gestation',`Date of Delivery`='$dod',`Mode of Delivery` = '$mode' where `pid` = '$pid' and `encounter` = '$encounter'  ");
+	   $past_history = sqlStatement("update gyanic_past_history set `Diabetes Mellitus` ='$diabetes', `Hypertension`= '$hypertension', `Pre-eclampsia` ='$pre_eclampsia',`IUGR`='$iugr', `Uneventful Delivery`= '$unevent_delivery', `Birth Injuries` = '$birth_injury', `Birth Injuries` = '$birth_injury' , `PPH` = '$pph', `Excessive Bleeding` = '$excessive_bleeding' ,`Fever`= '$fever', `Length of Gestation` = '$gestation',`Date of Delivery`='$dod',`Mode of Delivery` = '$mode', `Hypo Thyroid`='$hypo_thyroid' where `pid` = '$pid' ");
    }
   
   header('location:family_history.php');
@@ -247,7 +247,7 @@ if(isset($_POST['submit'])){
 	
 <div class="form-group">
       <label for="LMP">Date of Delivery</label>
-      <input type="date" class="form-control" id="dod"  name="dod"value='<?php  echo $past_data['Date of Delivery']; ?>'>
+      <input type="date" class="form-control" id="dod"  name="dod"value='<?php  echo $past_data['Date of Delivery']; ?>' max='<?php echo date('Y-m-d') ?>'>
     </div>
 	
 	

@@ -409,7 +409,7 @@ $rateplan=$patdata['rateplan'];
 					 $memo="Discount";
                     $discount=0;
                     $discount = sqlQuery("SELECT SUM(adj_amount) AS adjustments FROM ar_activity WHERE " .
-	                                          "memo=? and pid = ? and encounter= ? ",array($memo,$form_pid,$encounter));
+	                                          "code_type NOT in('Pharmacy Charge') and memo=? and pid = ? and encounter= ?  ",array($memo,$form_pid,$encounter));
 					$totaldis=$discount['adjustments'];
 					
 					//$subtotal=0;

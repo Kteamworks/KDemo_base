@@ -274,12 +274,12 @@ $(document).ready(function(){
   <form action="" method='POST'>
     <div class="form-group">
       <label for="date">Date</label>
-	  <input type='date' class='form-control' name='doe' value='<?php echo date('Y-m-d');   ?>'>
+	  <input type='date' class='form-control' name='doe' value='<?php echo date('Y-m-d');   ?>' readonly>
       </div>
 	  
     <div class="form-group">
       <label for="complaints">Complaint</label>
-    <textarea class="form-control" rows="5" name='complaints'><?php echo $obs_data['Complaint'];  ?></textarea>
+    <textarea class="form-control txt" rows="5" name='complaints'><?php echo $obs_data['Complaint'];  ?></textarea>
     </div>
 	 <?php   $check1 = $obs_data['Pallor']; 
 	         if($check1 == 1)  $checked1 = 'checked' ;
@@ -298,13 +298,14 @@ $(document).ready(function(){
 	
 	 <div class="form-group">
       <label for="wt">Weight</label>
-      <input type="text" class="form-control"  name="weight" value="<?php echo $obs_data['Weight'];  ?>">
+	  <small> in kg </small>
+      <input type="Number" class="form-control"  name="weight" value="<?php echo $obs_data['Weight'];  ?>">
     </div>
 	
 	
 	<div class="form-group">
       <label for="bp">Blood Pressure</label>
-      <input type="text" class="form-control"  name="bp" value='<?php echo $obs_data['Blood Pressure'];   ?>' >
+      <input type="text" class="form-control"  name="bp" value='<?php echo $obs_data['Blood Pressure'];   ?>' pattern='^\d{1,3}\/\d{1,3}$' placeholder='Format should be like 120/80' >
     </div>
 	
 	<div class="form-group">
@@ -315,16 +316,27 @@ $(document).ready(function(){
 	
 	<div class="form-group">
       <label for="examination">Examination Findings</label>
-      <textarea class="form-control" rows="5" name='examination'><?php echo $obs_data['Examination'];  ?></textarea>
+      <textarea class="form-control txt" rows="5" name='examination'><?php echo $obs_data['Examination'];  ?></textarea>
     </div>
 	
 	<div class="form-group">
       <label for="treatment">Treatment And Advice</label>
-      <textarea class="form-control" rows="5" name='treat'><?php echo $obs_data['Treatment'];   ?></textarea>
+      <textarea class="form-control txt" rows="5" name='treat'><?php echo $obs_data['Treatment'];   ?></textarea>
 	
     <button type="submit" name='submit' class="btn btn-default">Submit</button>
   </form>
 </div>
 
 </body>
+<script>
+$(function(){
+  $('.txt').keypress(function(e){
+    if(e.which == 34 || e.which == 39 || e.which == 94 || e.which == 96 || e.which == 126 || e.which == 60 || e.which == 62 || e.which == 40 || e.which == 41 || e.which == 91 || e.which == 93 || e.which == 123 || e.which == 125 ){
+		return false;
+    } 
+  });
+});
+</script>
+
+
 </html>
