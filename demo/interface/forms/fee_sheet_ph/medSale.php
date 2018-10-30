@@ -66,7 +66,7 @@ $values = mysql_real_escape_string($value);
 
 //sqlQuery("insert into ar_activity(pid,encounter,code_type,post_time,pay_amount)values('$pid','$encounter','Pharmacy Charge',NOW(),'$total')");
 sqlQuery("UPDATE form_encounter SET provider_id='4',supervisor_id='0' where pid='$pid' and encounter='$ecnounter'"); 
-sqlQuery("insert into ar_activity(pid,encounter,code_type,post_time,adj_amount,memo)values('$pid','$encounter','Pharmacy Charge',NOW(),'$discount','Discount')"); 
+sqlQuery("insert into ar_activity(pid,encounter,code_type,post_time,adj_amount,memo,pay_amount)values('$pid','$encounter','Pharmacy Charge',NOW(),'$discount','Discount','$total')"); 
 sqlQuery("insert into payments(pid,encounter,amount1,dtime,user,towards,method,source,stage)
             values('$pid','$encounter','$total',NOW(),'$user',2,'$mode','$rrn','pharm')");
 
@@ -85,8 +85,8 @@ foreach($_POST['name'] as $selected){
 	     else { $schedule_h = 1; }
 	    $qty = $_POST['qty'][$j]; 
 		 $price = $_POST['price'][$j];
-		 $a= $qty + 1; 
-		$ar_activity =  $a * $price ; 
+		 //$a= $qty + 1; 
+		$ar_activity =  $qty * $price ; 
 		  $fee = $price * $qty ;
 		
 		
@@ -111,7 +111,7 @@ foreach($_POST['name'] as $selected){
     
   
 		//echo "insert into ar_activity(pid,encounter,code_type,post_time,pay_amount)values('$pid','$encounter','Pharmacy Charge',NOW(),'$ar_activity')"; exit;
-	sqlQuery("insert into ar_activity(pid,encounter,code_type,post_time,pay_amount)values('$pid','$encounter','Pharmacy Charge',NOW(),'$ar_activity')");	
+	//sqlQuery("insert into ar_activity(pid,encounter,code_type,post_time,pay_amount)values('$pid','$encounter','Pharmacy Charge',NOW(),'$ar_activity')");	
 
 		
  $bil = sqlInsert("insert into billing (date,encounter,servicegrp_id,service_id, code_type, code, code_text, pid, authorized, user, groupname,units,fee,activity,modifier,schedule_h, billed)

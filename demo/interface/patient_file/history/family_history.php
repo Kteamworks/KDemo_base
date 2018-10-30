@@ -80,7 +80,7 @@ if(isset($_POST['submit'])){
   
   
   $enc = $past_data['encounter']; 
-   if($encounter != $enc){
+   if(!$past_data){
   
   $past_history = sqlStatement("insert into gyanic_family_history(`Cyclic Fibrosis`,`Sickle Cell Anaemia`,`Heamophilia`	,`preg_loss_mother`	,`preg_loss_sister`,`Pre-eclampsia_mother`,`Pre-eclampsia_sister`,`Abnormal Children_mother`,`Abnormal Children_sister`,`pid`,`encounter`)values('$cyclic','$anaemia','$heamophilia','$preg_loss_m','$preg_loss_s','$pre_m','$pre_s','$abnormal_m','$abnormal_s','$pid','$encounter')");
   
@@ -96,7 +96,7 @@ if(isset($_POST['submit'])){
 	   `Pre-eclampsia_sister` = '$pre_s' ,
 	   `Abnormal Children_mother` = '$abnormal_m',
 	   `Abnormal Children_sister` = '$abnormal_s'
-	    where `pid` = '$pid' and `encounter` = '$encounter'  ");
+	    where `pid` = '$pid' ");
    }
   
   header('location:obstetric_examination.php');

@@ -1973,7 +1973,7 @@ function get_patient_balance($pid, $with_insurance=false) {
           "pid = ? AND encounter = ?", array($pid, $encounter));
         $srow = sqlQuery("SELECT SUM(fee) AS amount FROM drug_sales WHERE " .
           "pid = ? AND encounter = ?", array($pid, $encounter));
-        $balance += $brow['amount'] + $srow['amount']
+        $balance += $brow['amount']
           - $drow['payments'] - $drow['adjustments'];
       }
     }
