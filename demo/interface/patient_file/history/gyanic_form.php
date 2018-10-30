@@ -200,12 +200,12 @@ function getdate() {
   <form action="" method='POST'>
     <div class="form-group">
       <label for="gravidity">Gravidity</label>
-	  <input type='number' class='form-control' name='gravidity' value='<?php echo $obs_data['gravidity']; ?>'>
+	  <input type='number' class='form-control' name='gravidity' value='<?php echo $obs_data['gravidity']; ?>' min='0'>
       
     </div>
     <div class="form-group">
       <label for="parity">Parity</label>
-    <input type='number' class='form-control' name='parity' value='<?php echo $obs_data['parity'];  ?>'>
+    <input type='number' class='form-control' name='parity' value='<?php echo $obs_data['parity'];  ?>' min='0'>
     </div>
 	 <div class="form-group">
       <label for="LMP">LMP</label>

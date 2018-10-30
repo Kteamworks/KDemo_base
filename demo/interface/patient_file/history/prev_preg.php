@@ -235,7 +235,7 @@ if(isset($_POST['submit'])){
 <div class="container-fluid col-md-offset-1 col-md-3 ">
            <div class="form-group">
       <label for="gestation">Length of Gestation(in-weeks)</label>
-	  <input type='number' class='form-control' name='gestation' value='<?php  echo $past_data['Length of Gestation']; ?>'>
+	  <input type='number' class='form-control' name='gestation' value='<?php  echo $past_data['Length of Gestation']; ?>' min='0'>
       <!--<select class="form-control" id="sel1">
         <option>40 Weeks</option>
 		<option>37 Weeks</option>

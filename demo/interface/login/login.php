@@ -45,7 +45,7 @@ include_once("$srcdir/sql.inc");
 
 
 
-  $a=$_SERVER['REMOTE_ADDR'];
+ /* $a=$_SERVER['REMOTE_ADDR'];
      if($a != '::1'){
 	
                      $IP = sqlStatement("select IP from licence");
@@ -63,7 +63,7 @@ include_once("$srcdir/sql.inc");
           //echo 'value ='. $check;
 		  if($check==0)
 	        die('This website cannot be accessed from your location.');
-	}
+	} */
 
 
 //if users IP is not in allowed list kill the script
